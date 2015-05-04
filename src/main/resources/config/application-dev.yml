@@ -1,0 +1,50 @@
+server:
+    port: 8080
+
+spring:
+    profiles:
+        active: dev
+
+    datasource:
+        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
+        driver: org.postgresql.Driver
+        url: jdbc:postgresql://cloudopting1.cloudapp.net/cloudopting
+        databaseName: cloudopting
+        serverName: cloudopting1.cloudapp.net
+        username: postgres
+        password: 1qaz2wsx
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+        database: POSTGRESQL
+        openInView: false
+        show_sql: true
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+
+    mail:
+        baseUrl: http://localhost:8080
+
+    thymeleaf:
+        mode: XHTML
+        cache: false
+
+metrics:
+    jmx.enabled: true
+    spark:
+        enabled: false
+        host: localhost
+        port: 9999
+    graphite:
+        enabled: false
+        host: localhost
+        port: 2003
+        prefix: cloudopting
+
+
