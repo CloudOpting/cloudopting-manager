@@ -108,4 +108,9 @@ public class ToscaService {
 	public void getDefinitionFile(String path){
 		
 	}
+	
+	public void getPuppetModules(String id){
+		// here I get the puppet module list and use r10k to download them
+		
+	}
 }
