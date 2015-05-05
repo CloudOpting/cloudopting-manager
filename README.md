@@ -17,4 +17,29 @@ The following tables explains the modules and the subdivision
 | [wordpress-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/wordpress-component "wordpress-component") | | This component contains the code necessary to interact through API with wordpress for the public view of the catalogue | |
 | [webui-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/webui-component "webui-component") | | This component contains the web interface of the project | |
 
-All other folders are legacy code kept for reference.
+## Development environment configuration
+The following description helps setting up a CentOS 7 development environment.
+
+Java 1.8 is needed (OpenJDK can work for the moment, no quirks have discovered to require SUN java)
+
+yum install java-1.8.0-openjdk-devel
+
+In this way you get JDK and not only JRE.
+
+### Setup of Eclipse environment
+Is adviced to start from Sprint Tool Suite environment, but if preferred also a simple eclipse environment can do the job (you have to install the STS plugin yourselves:
+Here is a list of useful plugin is adviced to have installed in the Eclipse environment:
+ * STS
+ * Activiti plugin
+
+With Eclipse you will than import the GitHub repository:
+ * Open the GIT perspective
+ * Clone the repo from CloudOpting account
+ * you will find the cloned repo in the home/git folder (typically)
+ 
+Now is time to import the project using maven import
+ * point to the main pom.xml in the cloudopting-manager and import the project from it
+ * all the modules will get imported
+ 
+Prepare the run configuration as in the image below, this this configuration you will build the whole project to be able to check the working of the modifiers done 
+Than you need to import the GIT repo from the Eclipse environment
