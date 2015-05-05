@@ -36,10 +36,10 @@ With Eclipse you will than import the GitHub repository:
  * Open the GIT perspective
  * Clone the repo from CloudOpting account
  * you will find the cloned repo in the home/git folder (typically)
- 
+
 Now is time to import the project using maven import
  * point to the main pom.xml in the cloudopting-manager and import the project from it
  * all the modules will get imported
- 
+
 Prepare the run configuration as in the image below, this this configuration you will build the whole project to be able to check the working of the modifiers done 
-Than you need to import the GIT repo from the Eclipse environment
+![Setting the run configuration](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/runconfig.png)
