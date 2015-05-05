@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples">
+  <process id="cloudoptingProcess" name="The CloudOpting Orchestration Process" isExecutable="true">
+    <startEvent id="theStart"></startEvent>
+    <sequenceFlow id="flow1" sourceRef="theStart" targetRef="setupTask"></sequenceFlow>
+    <serviceTask id="vmTask" name="generating the VM" activiti:class="eu.cloudopting.activiti.CloudoptingProcessVM">
+      <documentation>In this task we issue the creation of the VM using the Jclouds library.
+This task also prepares the array of Dockercontainers that the process will have to work on.
+In this task we can also process the array of ports that we need to open.
+
+For cleanness we could in the end split this task into a task for analyzing the tosca file and one to create the VM</documentation>
+    </serviceTask>
+    <endEvent id="theEnd"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="vmTask" targetRef="exclusivegateway2"></sequenceFlow>
+    <serviceTask id="vmInstalledTask" name="Check VM installed" activiti:class="eu.cloudopting.activiti.CloudoptingProcessVMinstalled">
+      <documentation>Here we check the cloud to have confirmation of the VM creation and getting IP information in return since we will have to open ports and add to Docker Swarm</documentation>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="vmInstalledTask" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="exclusivegateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vmInstalled== false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway2" targetRef="vmInstalledTask"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="vmPortsTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vmInstalled== true}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="vmPortsTask" name="Open ports on VM" activiti:class="eu.cloudopting.activiti.CloudoptingProcessPorts">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="vmPortsList"></multiInstanceLoopCharacteristics>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="vmPortsTask" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="subDockerPuppetPrepare"></sequenceFlow>
+    <serviceTask id="deployOnDockerTask" name="Deploy on Docker Host" activiti:class="eu.cloudopting.activiti.CloudoptingProcessDockerDeploy"></serviceTask>
+    <sequenceFlow id="flow11" sourceRef="deployOnDockerTask" targetRef="theEnd"></sequenceFlow>
+    <subProcess id="subDockerPuppetPrepare" name="Dockerfile and image management">
+      <documentation>In the subprocess we manage the creation of the Puppet node manifest, of the Dockerfile and the generation of the docker image</documentation>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="dockerNodesList" activiti:elementVariable="dockerNode"></multiInstanceLoopCharacteristics>
+      <startEvent id="startevent1" name="Start"></startEvent>
+      <serviceTask id="dockerTask" name="generating the Dockerfile" activiti:class="eu.cloudopting.activiti.CloudoptingProcessDocker">
+        <documentation>This task is a multi instance that means that the process will instantiate one of this task for all the container nodes it finds in the TOSCA file.
+This task will probably be transformed into a subprocess, but at the moment we needd to start mapping stuff</documentation>
+      </serviceTask>
+      <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="puppetTask"></sequenceFlow>
+      <sequenceFlow id="flow13" sourceRef="dockerTask" targetRef="endevent1"></sequenceFlow>
+      <serviceTask id="puppetTask" name="Generate the puppet node file" activiti:type="shell">
+        <extensionElements>
+          <activiti:field name="command">
+            <activiti:string><![CDATA[touch]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="arg1">
+            <activiti:string><![CDATA[testshell.txt]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="wait">
+            <activiti:string><![CDATA[true]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="outputVariable">
+            <activiti:string><![CDATA[resultVar]]></activiti:string>
+          </activiti:field>
+        </extensionElements>
+      </serviceTask>
+      <sequenceFlow id="flow16" sourceRef="puppetTask" targetRef="dockerTask"></sequenceFlow>
+      <endEvent id="endevent1" name="End"></endEvent>
+    </subProcess>
+    <sequenceFlow id="flow4" sourceRef="subDockerPuppetPrepare" targetRef="r10kTask"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Add new VM to docker swarm" activiti:class="eu.cloudopting.activiti.CloudoptingProcessDockerSwarm"></serviceTask>
+    <serviceTask id="setupTask" name="setup Process" activiti:async="true" activiti:class="eu.cloudopting.activiti.CloudoptingProcessSetup"></serviceTask>
+    <sequenceFlow id="flow17" sourceRef="setupTask" targetRef="vmTask"></sequenceFlow>
+    <subProcess id="subDockerBuild" name="Build Docker Containers">
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="dockerNodesList" activiti:elementVariable="dockerNode"></multiInstanceLoopCharacteristics>
+      <serviceTask id="buildTask" name="build the Docker image" activiti:class="eu.cloudopting.activiti.CloudoptingProcessDockerBuild"></serviceTask>
+      <sequenceFlow id="flow14" sourceRef="buildTask" targetRef="commitTask"></sequenceFlow>
+      <startEvent id="startevent2" name="Start"></startEvent>
+      <serviceTask id="commitTask" name="Commit the Dokerimage" activiti:class="eu.cloudopting.activiti.CloudoptingProcessDockerCommit"></serviceTask>
+      <sequenceFlow id="flow15" sourceRef="commitTask" targetRef="endevent2"></sequenceFlow>
+      <sequenceFlow id="flow18" sourceRef="startevent2" targetRef="buildTask"></sequenceFlow>
+      <endEvent id="endevent2" name="End"></endEvent>
+    </subProcess>
+    <serviceTask id="r10kTask" name="run R10K" activiti:class="eu.cloudopting.activiti.CloudoptingProcessR10K"></serviceTask>
+    <sequenceFlow id="flow19" sourceRef="r10kTask" targetRef="subDockerBuild"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="subDockerBuild" targetRef="taskDockerComposeFile"></sequenceFlow>
+    <serviceTask id="taskDockerComposeFile" name="Prepare Docker Compose file" activiti:class="eu.cloudopting.activiti.CloudoptingProcessDockerComposeFile"></serviceTask>
+    <sequenceFlow id="flow21" sourceRef="taskDockerComposeFile" targetRef="deployOnDockerTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
+    <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">
+      <bpmndi:BPMNShape bpmnElement="theStart" id="BPMNShape_theStart">
+        <omgdc:Bounds height="35.0" width="35.0" x="-60.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="vmTask" id="BPMNShape_vmTask">
+        <omgdc:Bounds height="60.0" width="100.0" x="151.0" y="81.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
+        <omgdc:Bounds height="35.0" width="35.0" x="905.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="vmInstalledTask" id="BPMNShape_vmInstalledTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="530.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="280.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="vmPortsTask" id="BPMNShape_vmPortsTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deployOnDockerTask" id="BPMNShape_deployOnDockerTask">
+        <omgdc:Bounds height="61.0" width="105.0" x="870.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subDockerPuppetPrepare" id="BPMNShape_subDockerPuppetPrepare">
+        <omgdc:Bounds height="161.0" width="395.0" x="65.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="65.0" y="291.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="dockerTask" id="BPMNShape_dockerTask">
+        <omgdc:Bounds height="78.0" width="105.0" x="255.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="puppetTask" id="BPMNShape_puppetTask">
+        <omgdc:Bounds height="67.0" width="105.0" x="125.0" y="275.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="405.0" y="291.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="730.0" y="75.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="setupTask" id="BPMNShape_setupTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="10.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subDockerBuild" id="BPMNShape_subDockerBuild">
+        <omgdc:Bounds height="151.0" width="505.0" x="350.0" y="410.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="buildTask" id="BPMNShape_buildTask">
+        <omgdc:Bounds height="63.0" width="105.0" x="444.0" y="455.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="364.0" y="469.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="commitTask" id="BPMNShape_commitTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="604.0" y="459.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="794.0" y="469.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="r10kTask" id="BPMNShape_r10kTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="550.0" y="283.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="taskDockerComposeFile" id="BPMNShape_taskDockerComposeFile">
+        <omgdc:Bounds height="55.0" width="105.0" x="730.0" y="223.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="-25.0" y="114.0"></omgdi:waypoint>
+        <omgdi:waypoint x="10.0" y="114.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="251.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="455.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="550.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="549.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="299.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="320.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="570.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="705.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="782.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="262.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="922.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="922.0" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="100.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="125.0" y="308.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="360.0" y="309.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="308.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="230.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="255.0" y="309.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="460.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="310.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="115.0" y="114.0"></omgdi:waypoint>
+        <omgdi:waypoint x="151.0" y="111.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="549.0" y="486.0"></omgdi:waypoint>
+        <omgdi:waypoint x="604.0" y="486.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="709.0" y="486.0"></omgdi:waypoint>
+        <omgdi:waypoint x="794.0" y="486.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="399.0" y="486.0"></omgdi:waypoint>
+        <omgdi:waypoint x="444.0" y="486.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="602.0" y="338.0"></omgdi:waypoint>
+        <omgdi:waypoint x="602.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="602.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="782.0" y="278.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="835.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
