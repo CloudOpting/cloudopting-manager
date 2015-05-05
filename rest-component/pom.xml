@@ -137,6 +137,11 @@
         </dependency>
 
         <dependency>
+            <groupId>eu.cloudopting</groupId>
+            <artifactId>tosca-component</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>${javax.inject.version}</version>
