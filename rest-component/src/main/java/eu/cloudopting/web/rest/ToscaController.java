@@ -33,6 +33,6 @@ public class ToscaController {
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @ResponseBody byte[] getToscaGraph(@PathVariable String id) {
         log.debug("REST request to get graph of tosca id : {}", id);
-        return null;
+        return ts.getToscaGraph(id);
     }
 }
