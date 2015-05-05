@@ -9,6 +9,9 @@
     <artifactId>cloud-component</artifactId>
 
     <dependencies>
-
+        <dependency>
+            <groupId>eu.cloudopting</groupId>
+            <artifactId>common-component</artifactId>
+        </dependency>
     </dependencies>
 </project>
