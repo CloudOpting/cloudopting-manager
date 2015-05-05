@@ -22,7 +22,7 @@ import eu.cloudopting.tosca.ToscaService;
 @RestController
 @RequestMapping("/api")
 public class ToscaController {
-	private final Logger log = LoggerFactory.getLogger(UserResource.class);
+	private final Logger log = LoggerFactory.getLogger(ToscaController.class);
 
 	@Autowired
 	private ToscaService ts;
@@ -30,9 +30,9 @@ public class ToscaController {
     @RequestMapping(value = "/toscaGraph/{id}",
             method = RequestMethod.GET,
             produces = MediaType.IMAGE_PNG_VALUE)
-    @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
     @ResponseBody byte[] getToscaGraph(@PathVariable String id) {
-        log.debug("REST request to get graph of tosca id : {}", id);
+        log.info("REST request to get graph of tosca id : {}", id);
         return ts.getToscaGraph(id);
     }
 }
