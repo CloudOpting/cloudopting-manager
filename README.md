@@ -43,3 +43,9 @@ Now is time to import the project using maven import
 
 Prepare the run configuration as in the image below, this this configuration you will build the whole project to be able to check the working of the modifiers done 
 ![Setting the run configuration](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/runconfig.png)
+
+## Processes
+### Service Publishing Process
+The workflow that a Service Provider has to follow to publish a Service in the platform is represented in BPMN notation
+in the following picture
+![Service Publishing Process](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/ServicePublishingProcess.png)
