@@ -13,3 +13,5 @@ node_modules
 src/main/webapp/dist
 .gradle
 build
+*.bak
+
