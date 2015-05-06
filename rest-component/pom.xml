@@ -142,6 +142,11 @@
             <artifactId>tosca-component</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>eu.cloudopting</groupId>
+            <artifactId>bpmn-component</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>javax.inject</groupId>
