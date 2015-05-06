@@ -41,7 +41,7 @@ Now is time to import the project using maven import
  * point to the main pom.xml in the cloudopting-manager and import the project from it
  * all the modules will get imported
 
-Prepare the run configuration as in the image below, this this configuration you will build the whole project to be able to check the working of the modifiers done 
+Prepare the run configuration as in the image below, this this configuration you will build the whole project to be able to check the working of the modifiers done
 ![Setting the run configuration](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/runconfig.png)
 
 ## Processes
@@ -49,3 +49,20 @@ Prepare the run configuration as in the image below, this this configuration you
 The workflow that a Service Provider has to follow to publish a Service in the platform is represented in BPMN notation
 in the following picture
 ![Service Publishing Process](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/ServicePublishingProcess.png)
+
+## Architecture
+The overall architecture of the system is defined in the diagram below
+![Architectural diagram](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/architecture.png)
+As can be seen there is a core component represente by the CloudOpting manager that is the element implemented in this repository.
+
+### Technologies used
+This application is coded in java.
+
+The framework used is [Spring](https://spring.io/) and in particular Spinr-boot since is a headless application.
+
+It has a BPMN engine embedded, and the project opted for [Activiti](http://activiti.org/)
+
+Other libraries used are:
+ * [Freemarker]()
+ * [JGraphT]()
+ * [JClouds]()
