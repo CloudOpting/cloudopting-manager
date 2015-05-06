@@ -23,7 +23,6 @@
         <module>rest-component</module>
         <module>storage-component</module>
         <module>tosca-component</module>
-        <module>webui-component</module>
         <module>wordpress-component</module>
     </modules>
 
