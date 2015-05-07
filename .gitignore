@@ -14,4 +14,5 @@ src/main/webapp/dist
 .gradle
 build
 *.bak
-
+bpmn-component/.bpmn/
+bpmn-component/.xml/

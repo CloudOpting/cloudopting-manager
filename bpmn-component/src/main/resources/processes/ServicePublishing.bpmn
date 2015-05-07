@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <collaboration id="Collaboration">
-    <participant id="pool1" name="Service Publishing" processRef="process_pool1"></participant>
+    <participant id="servicePublishingPool" name="Service Publishing" processRef="process_pool1"></participant>
   </collaboration>
   <process id="myProcess" name="AddService" isExecutable="true">
     <documentation>Aggiunta servizio a catalogo da parte del service provider.
 
 Duale: remove, verifica istanze attive, ecc.</documentation>
     <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="usertask1" name="Service Metadata Retrieval"></userTask>
+    <userTask id="usertask1" name="Service Metadata Retrieval">
+      <extensionElements>
+        <activiti:formProperty id="idServiceName" name="Service Name" type="string" variable="serviceName" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Tosca Archive Selection"></userTask>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <userTask id="usertask3" name="Technical Artifacts Selection">
       <documentation>CSS, DDL, loghi, ecc.</documentation>
     </userTask>
-    <serviceTask id="servicetask1" name="Validation">
+    <serviceTask id="servicetask1" name="Validation" activiti:delegateExpression="${publishValidateToscaPackage}">
       <documentation>Per validazione si intende verifica della sintassi dei "descrittori".</documentation>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
@@ -27,8 +31,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
     </sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
     <userTask id="usertask5" name="Resume and Publishing Confirmation">
-      <documentation>Definizione ok, possiamo pubblicare su catalogo.
-</documentation>
+      <documentation>Definizione ok, possiamo pubblicare su catalogo.</documentation>
     </userTask>
     <sequenceFlow id="valid" name="Validation Ok" sourceRef="exclusivegateway1" targetRef="usertask3"></sequenceFlow>
     <serviceTask id="servicetask2" name="Wordpress Update"></serviceTask>
@@ -40,7 +43,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
     <sequenceFlow id="flow12" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Technical Artifact Storage"></serviceTask>
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="usertask5"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Tosca Archive Upload"></serviceTask>
+    <serviceTask id="servicetask4" name="Tosca Archive Upload" activiti:delegateExpression="${publishUploadToscaPackage}"></serviceTask>
     <sequenceFlow id="flow14" sourceRef="servicetask4" targetRef="servicetask1"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Service Publishing Process</text>
@@ -48,7 +51,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
   </process>
   <process id="process_pool1" name="Service Publishing" isExecutable="true">
     <laneSet id="laneSet_process_pool1">
-      <lane id="lane1" name="Service Provider">
+      <lane id="serviceProviderLane" name="Service Provider">
         <flowNodeRef>startevent1</flowNodeRef>
         <flowNodeRef>usertask1</flowNodeRef>
         <flowNodeRef>exclusivegateway2</flowNodeRef>
@@ -84,7 +87,9 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
     <sequenceFlow id="invalid" name="Validation Failure" sourceRef="exclusivegateway1" targetRef="usertask4">
       <documentation>No</documentation>
     </sequenceFlow>
-    <sequenceFlow id="valid" name="Validation Ok" sourceRef="exclusivegateway1" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="valid" name="Validation Ok" sourceRef="exclusivegateway1" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isToscaPackageValid}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask3" name="Technical Artifacts Selection">
       <documentation>CSS, DDL, loghi, ecc.</documentation>
     </userTask>
@@ -92,8 +97,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
     <serviceTask id="servicetask3" name="Technical Artifact Storage"></serviceTask>
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask5" name="Resume and Publishing Confirmation">
-      <documentation>Definizione ok, possiamo pubblicare su catalogo.
-</documentation>
+      <documentation>Definizione ok, possiamo pubblicare su catalogo.</documentation>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask5" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Wordpress Update"></serviceTask>
@@ -102,10 +106,10 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
     <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
-      <bpmndi:BPMNShape bpmnElement="pool1" id="BPMNShape_pool1">
+      <bpmndi:BPMNShape bpmnElement="servicePublishingPool" id="BPMNShape_servicePublishingPool">
         <omgdc:Bounds height="331.0" width="1031.0" x="10.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="lane1" id="BPMNShape_lane1">
+      <bpmndi:BPMNShape bpmnElement="serviceProviderLane" id="BPMNShape_serviceProviderLane">
         <omgdc:Bounds height="331.0" width="1011.0" x="30.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
@@ -171,7 +175,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
         <omgdi:waypoint x="790.0" y="48.0"></omgdi:waypoint>
         <omgdi:waypoint x="571.0" y="47.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="12.0" width="100.0" x="824.0" y="91.0"></omgdc:Bounds>
+          <omgdc:Bounds height="12.0" width="82.0" x="824.0" y="91.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
