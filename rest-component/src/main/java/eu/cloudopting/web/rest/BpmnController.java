@@ -40,10 +40,9 @@ public class BpmnController {
     
 	@RequestMapping(value = "/process", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	public @ResponseBody String startProcessInstance(
-			@RequestParam(value = "customerId", required = false) String customerId,
-			@RequestParam(value = "cloudId", required = false) String cloudId,
-			@RequestParam(value = "toscaId", required = false) String toscaId) {
-		String pid = bpmn.startDeployProcess();
+			@RequestParam(value = "customizationId", required = false) String customizationId,
+			@RequestParam(value = "cloudId", required = false) String cloudId) {
+		String pid = bpmn.startDeployProcess(customizationId, cloudId);
 		System.out.println("returning pid: " + pid);
 		return pid;
 	}
