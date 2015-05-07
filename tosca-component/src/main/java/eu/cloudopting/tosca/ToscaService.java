@@ -76,6 +76,7 @@ public class ToscaService {
 	}
 	
 	public String getNodeType(String id) {
+		log.debug("in getNodeType");
 		return null;
 		
 	}

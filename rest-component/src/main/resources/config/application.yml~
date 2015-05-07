@@ -7,7 +7,7 @@ endpoints.jolokia.enabled: false
 
 # security configuration (this key should be unique for your application, and kept secret)
 cloudopting.security.rememberme.key: e092330a3cdcf60699bf5128db337ead7e18f363
-spring.freemarker.checkTemplateLocation: false
+spring.freemarker.checkTemplateLocation=false
 async:
     corePoolSize: 2
     maxPoolSize: 50
