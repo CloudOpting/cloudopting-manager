@@ -30,14 +30,21 @@ public class BpmnService {
     @Autowired
     protected ProcessEngineConfiguration processEngineConfiguration;
 
-	public String startDeployProcess(){
+	public String startDeployProcess(String customizationId, String cloudId){
 		log.debug("Before activating process");
+		// the UI will pass the customization ID and the cloud ID since is in that page
+		// will need to retrieve the:
+		// TOSCA csar to unzip it
+		// tosca customization to send it to the tosca service
+		// the customer name to build folders
+		// all this need to go in the process so I send the customization ID to the process
 //		log.debug("\ncustomerId:"+customerId);
 //		System.out.println("\ncloudId:"+cloudId);
 		HashMap<String, Object> v = new HashMap<String, Object>();
 //		v.put("toscaFile", toscaId);
-//		v.put("customer", customerId);
-//		v.put("cloud", cloudId);
+		v.put("customizationId", customizationId);
+		v.put("cloudId", cloudId);
+		// TODO the process string has to go in a constant
         ProcessInstance pi = runtimeService.startProcessInstanceByKey("cloudoptingProcess",v);
         System.out.println("ProcessID:"+pi.getProcessInstanceId());
         return pi.getProcessInstanceId();

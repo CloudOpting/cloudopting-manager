@@ -64,7 +64,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <sequenceFlow id="flow4" sourceRef="subDockerPuppetPrepare" targetRef="r10kTask"></sequenceFlow>
     <serviceTask id="servicetask1" name="Add new VM to docker swarm" activiti:delegateExpression="${deployDockerSwarm}"></serviceTask>
     <serviceTask id="setupTask" name="setup Process" activiti:async="true" activiti:delegateExpression="${deploySetup}"></serviceTask>
-    <sequenceFlow id="flow17" sourceRef="setupTask" targetRef="vmTask"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="setupTask" targetRef="getCustomization"></sequenceFlow>
     <subProcess id="subDockerBuild" name="Build Docker Containers">
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="dockerNodesList" activiti:elementVariable="dockerNode"></multiInstanceLoopCharacteristics>
       <serviceTask id="buildTask" name="build the Docker image" activiti:delegateExpression="${deployDockerBuild}"></serviceTask>
@@ -80,6 +80,12 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <sequenceFlow id="flow20" sourceRef="subDockerBuild" targetRef="taskDockerComposeFile"></sequenceFlow>
     <serviceTask id="taskDockerComposeFile" name="Prepare Docker Compose file" activiti:delegateExpression="${deployDockerCompose}"></serviceTask>
     <sequenceFlow id="flow21" sourceRef="taskDockerComposeFile" targetRef="deployOnDockerTask"></sequenceFlow>
+    <serviceTask id="getCustomization" name="Get service customization" activiti:delegateExpression="${deployManageCustomization}"></serviceTask>
+    <serviceTask id="getCustomer" name="Get customer information" activiti:delegateExpression="${deployManageCustomer}"></serviceTask>
+    <serviceTask id="getToscaCsar" name="Get TOSCA csar" activiti:delegateExpression="${deployManageTosca}"></serviceTask>
+    <sequenceFlow id="flow22" sourceRef="getCustomization" targetRef="getCustomer"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="getCustomer" targetRef="getToscaCsar"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="getToscaCsar" targetRef="vmTask"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
     <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">
@@ -149,6 +155,15 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNShape bpmnElement="taskDockerComposeFile" id="BPMNShape_taskDockerComposeFile">
         <omgdc:Bounds height="55.0" width="105.0" x="730.0" y="223.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="getCustomization" id="BPMNShape_getCustomization">
+        <omgdc:Bounds height="55.0" width="105.0" x="10.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="getCustomer" id="BPMNShape_getCustomer">
+        <omgdc:Bounds height="55.0" width="105.0" x="148.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="getToscaCsar" id="BPMNShape_getToscaCsar">
+        <omgdc:Bounds height="55.0" width="105.0" x="279.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="-25.0" y="114.0"></omgdi:waypoint>
         <omgdi:waypoint x="10.0" y="114.0"></omgdi:waypoint>
@@ -204,8 +219,8 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="550.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="115.0" y="114.0"></omgdi:waypoint>
-        <omgdi:waypoint x="151.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="62.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="62.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="549.0" y="486.0"></omgdi:waypoint>
@@ -230,6 +245,18 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="835.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="870.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="115.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="148.0" y="37.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="253.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="279.0" y="37.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="331.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="201.0" y="81.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
