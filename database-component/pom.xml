@@ -60,11 +60,11 @@
         </dependency>
         <!-- interproject -->
 
-        <dependency>
+        <!--<dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>common-component</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>javax.inject</groupId>
