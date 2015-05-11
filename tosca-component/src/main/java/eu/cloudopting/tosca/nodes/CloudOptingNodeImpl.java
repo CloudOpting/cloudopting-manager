@@ -17,7 +17,8 @@ public class CloudOptingNodeImpl implements CloudOptingNode {
 	public String execute(HashMap<String, String> data) {
 		// TODO Auto-generated method stub
 		String id = data.get("id");
-		String operation = this.tfm.getOperationForNode(id, "Install");
+		String customizationId = data.get("customizationId");
+		String operation = this.tfm.getOperationForNode(customizationId, id, "Install");
 		System.out.println("Invoking method :"+operation+" on node: "+id);
 		Class partypes[] = new Class[1];
         partypes[0] = data.getClass();

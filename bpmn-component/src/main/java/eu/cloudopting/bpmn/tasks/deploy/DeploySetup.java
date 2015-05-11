@@ -21,8 +21,9 @@ public class DeploySetup implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.info("in DeploySetup");
+		String customizationId = (String) execution.getVariable("customizationId");
 		System.out.println("in setup");
-//		toscaService.getNodeType("");
+		String service = toscaService.getServiceName(customizationId);
 		ArrayList<String> dockerPortsList = new ArrayList<String>();
 		dockerPortsList.add("Port1");
 		execution.setVariable("dockerNodesList", dockerPortsList);

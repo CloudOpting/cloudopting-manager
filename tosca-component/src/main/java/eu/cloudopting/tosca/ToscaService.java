@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.xalan.extensions.XPathFunctionResolverImpl;
 import org.apache.xerces.dom.DocumentImpl;
@@ -75,38 +77,38 @@ public class ToscaService {
 		
 	}
 	
-	public byte[] getToscaGraph( String id){
+	public byte[] getToscaGraph(String customizationId){
 		log.info("in the swervice");
 		return null;
 		
 	}
 	
-	public String getOperationForNode(String id,String interfaceType) {
+	public String getOperationForNode(String customizationId, String id,String interfaceType) {
 		return null;
 		
 	}
 	
-	public DTMNodeList getNodesByType(String type) {
+	public DTMNodeList getNodesByType(String customizationId, String type) {
 		return null;
 		
 	}
 	
-	public void getRootNode() {
-		getNodesByType("VMhost");
+	public void getRootNode(String customizationId ) {
+//		getNodesByType("VMhost");
 		return;
 	}
 	
-	public String getTemplateForNode(String id,String templateType) {
+	public String getTemplateForNode(String customizationId, String id,String templateType) {
 		return templateType;
 		
 	}
 	
-	public ArrayList<String> getPuppetModules() {
+	public ArrayList<String> getPuppetModules(String customizationId ) {
 		return null;
 		
 	}
 	
-	public HashMap<String, String> getPuppetModulesProperties(String module) {
+	public HashMap<String, String> getPuppetModulesProperties(String customizationId, String module) {
 		return null;
 		
 	}
@@ -116,22 +118,22 @@ public class ToscaService {
 		
 	}
 	
-	public HashMap<String, String> getPropertiesForNode(String id) {
+	public HashMap<String, String> getPropertiesForNode(String customizationId, String id) {
 		return null;
 		
 	}
 	
-	public HashMap getPropertiesForNodeApplication(String id) {
+	public HashMap getPropertiesForNodeApplication(String customizationId, String id) {
 		return null;
 		
 	}
 	
-	public ArrayList<String> getChildrenOfNode(String node) {
+	public ArrayList<String> getChildrenOfNode(String customizationId, String node) {
 		return null;
 		
 	}
 	
-	public ArrayList<String> getAllChildrenOfNode(String node){
+	public ArrayList<String> getAllChildrenOfNode(String customizationId, String node){
 		return null;
 		
 	}
@@ -143,36 +145,49 @@ public class ToscaService {
 		
 	}
 	
-	public String getServiceName(){
+	public String getServiceName(String customizationId){
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+		DTMNodeList nodes = null;
+
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:ServiceTemplate/@id", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// since there is a single ID we are sure that the array is with a
+		// single element
+		String serviceName = nodes.item(0).getNodeValue();
+		return serviceName;
+	}
+	
+	public ArrayList<String> getExposedPortsOfChildren(String customizationId, String id){
 		return null;
 		
 	}
 	
-	public ArrayList<String> getExposedPortsOfChildren(String id){
+	public ArrayList<String> getContainerLinks(String customizationId, String id) {
 		return null;
 		
 	}
 	
-	public ArrayList<String> getContainerLinks(String id) {
+	public ArrayList<String> getContainerPorts(String customizationId, String id){
 		return null;
 		
 	}
 	
-	public ArrayList<String> getContainerPorts(String id){
+	public ArrayList<String> getHostPorts(String customizationId){
 		return null;
 		
 	}
 	
-	public ArrayList<String> getHostPorts(){
-		return null;
+	public void getDefinitionFile(String customizationId, String path){
 		
 	}
 	
-	public void getDefinitionFile(String path){
-		
-	}
-	
-	public void getPuppetModules(String id){
+	public void getPuppetModules(String customizationId, String id){
 		// here I get the puppet module list and use r10k to download them
 		
 	}
