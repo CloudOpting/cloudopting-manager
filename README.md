@@ -50,9 +50,16 @@ The workflow that a Service Provider has to follow to publish a Service in the p
 in the following picture
 ![Service Publishing Process](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/ServicePublishingProcess.png)
 
+### Deployment Process
+The workflow below explains the deployment process the is run by the Activiti engine
+
+![Service Publishing Process](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/orchestration-process.bpmn20.png)
+
+
 ## Architecture
 The overall architecture of the system is defined in the diagram below
 ![Architectural diagram](https://raw.githubusercontent.com/CloudOpting/cloudopting-manager/master/documentation/architecture.png)
+
 As can be seen there is a core component represente by the CloudOpting manager that is the element implemented in this repository.
 
 ### Technologies used
