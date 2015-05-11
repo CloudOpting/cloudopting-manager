@@ -59,6 +59,12 @@ public class ToscaService {
 	}
 
 	
+	/**
+	 * This method set the XML and creates the structures (DOM and graph) to be used in the next calls to the service 
+	 * 
+	 * @param customizationId the customizationId used to make the tosca service operate on the correct XML in a multi user environment
+	 * @param xml             the XML of the TOSCA customization taken from the DB
+	 */
 	public void setToscaCustomization(String customizationId, String xml){
 		// parse the string
 		InputSource source = new InputSource(new StringReader(xml));
