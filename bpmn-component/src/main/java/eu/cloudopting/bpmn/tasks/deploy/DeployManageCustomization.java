@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.domain.Customizations;
+import eu.cloudopting.domain.Status;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.tosca.ToscaService;
 
@@ -27,6 +28,7 @@ public class DeployManageCustomization implements JavaDelegate {
 		String customizationId = (String) execution.getVariable("customizationId");
 		Customizations theCust = cusomizationS.findOne(Long.parseLong(customizationId));
 		log.info(theCust.toString());
+		theCust.setStatusId(new Status().findStatus((long) 90));
 		toscaService.getNodeType("");
 		
 	}

@@ -75,6 +75,18 @@ public class Customizations implements BaseEntity {
 	@Column(name = "username", length = 15, unique = true)
     @NotNull
     private String username;
+	
+	@Column(name = "process_id", length = 64, unique = true)
+    @NotNull
+    private String processId;
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
+	}
 
 	public Applications getApplicationId() {
         return applicationId;
