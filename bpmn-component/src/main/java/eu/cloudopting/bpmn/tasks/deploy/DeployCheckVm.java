@@ -19,7 +19,8 @@ public class DeployCheckVm implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in DeployCheckVm");
-		toscaService.getNodeType("");
+		String customizationId = (String) execution.getVariable("customizationId");
+		toscaService.getNodeType(customizationId,"");
 		execution.setVariable("vmInstalled", true);
 		
 	}

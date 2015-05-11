@@ -19,7 +19,7 @@ public class DeployDockerBuild implements JavaDelegate {
 	public void execute(DelegateExecution arg0) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in DeployDockerBuild");
-		toscaService.getNodeType("");
+//		toscaService.getNodeType("");
 		
 	}
 

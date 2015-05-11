@@ -16,10 +16,11 @@ public class Deploy implements JavaDelegate {
 	ToscaService toscaService;
 
 	@Override
-	public void execute(DelegateExecution arg0) throws Exception {
+	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in Deploy");
-		toscaService.getNodeType("");
+		String customizationId = (String) execution.getVariable("customizationId");
+		toscaService.getNodeType(customizationId,"");
 		
 	}
 

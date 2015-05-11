@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.domain.Customizations;
+import eu.cloudopting.domain.Status;
+import eu.cloudopting.service.CustomizationService;
+
 
 @Service
 public class BpmnService {
@@ -29,6 +33,9 @@ public class BpmnService {
 
     @Autowired
     protected ProcessEngineConfiguration processEngineConfiguration;
+    
+    @Autowired
+    protected CustomizationService customizationS;
 
 	public String startDeployProcess(String customizationId, String cloudId){
 		log.debug("Before activating process");
@@ -40,6 +47,13 @@ public class BpmnService {
 		// all this need to go in the process so I send the customization ID to the process
 //		log.debug("\ncustomerId:"+customerId);
 //		System.out.println("\ncloudId:"+cloudId);
+		// We recover the Customization and chack if processId is null otherwise we need to throw exception since we cannot execute another deploy for the same Customization
+		Customizations theCust = customizationS.findOne(Long.parseLong(customizationId));
+		if(!theCust.getProcessId().isEmpty()){
+			log.debug("Customization "+customizationId+" has already a deployment process");
+			return theCust.getProcessId();
+		}
+		
 		HashMap<String, Object> v = new HashMap<String, Object>();
 //		v.put("toscaFile", toscaId);
 		v.put("customizationId", customizationId);

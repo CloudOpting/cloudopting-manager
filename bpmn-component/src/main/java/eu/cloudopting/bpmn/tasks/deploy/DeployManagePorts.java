@@ -19,7 +19,7 @@ public class DeployManagePorts implements JavaDelegate {
 	public void execute(DelegateExecution arg0) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in DeployManagePorts");
-		toscaService.getNodeType("");
+//		toscaService.getNodeType("");
 		
 	}
 

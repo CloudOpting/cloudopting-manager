@@ -22,7 +22,7 @@ public class DeploySetup implements JavaDelegate {
 		// TODO Auto-generated method stub
 		log.info("in DeploySetup");
 		System.out.println("in setup");
-		toscaService.getNodeType("");
+//		toscaService.getNodeType("");
 		ArrayList<String> dockerPortsList = new ArrayList<String>();
 		dockerPortsList.add("Port1");
 		execution.setVariable("dockerNodesList", dockerPortsList);

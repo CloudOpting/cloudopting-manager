@@ -24,12 +24,14 @@ public class DeployManageCustomization implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		log.debug("in Deploy");
+		log.debug("in DeployManageCustomization");
 		String customizationId = (String) execution.getVariable("customizationId");
 		Customizations theCust = cusomizationS.findOne(Long.parseLong(customizationId));
 		log.info(theCust.toString());
-		theCust.setStatusId(new Status().findStatus((long) 90));
-		toscaService.getNodeType("");
+		theCust.setProcessId(execution.getProcessInstanceId());
+        theCust.setStatusId(new Status().findStatus((long) 90));
+        theCust.persist();
+		toscaService.setToscaCustomization(customizationId, theCust.getCustomizationToscaFile());
 		
 	}
 
