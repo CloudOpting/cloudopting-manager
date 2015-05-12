@@ -8,8 +8,10 @@ import org.apache.jackrabbit.ocm.mapper.Mapper;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +23,7 @@ import javax.jcr.SimpleCredentials;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -81,6 +84,19 @@ public class JackrabbitStorageTests {
         ocm.save();
         System.out.println("Removed");
     }
+
+
+    @Test
+   public void testSavecontent(){
+       File f = new File();
+        f.setPath("/filetest");
+        f.setContent("ddddd".getBytes());
+        f.setId("myid");
+        f.setName("myname");
+        ocm.insert(f);
+        ocm.save();
+        System.out.println("end");
+   }
 
     @Node(jcrMixinTypes = "mix:versionable")
     public class File extends Content {

@@ -2,6 +2,8 @@ package eu.cloudopting.web.rest;
 
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.service.ApplicationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api")
 public class ApplicationResource extends AbstractController<Applications> {
 
+    private final Logger log = LoggerFactory.getLogger(ApplicationResource.class);
+
     @Autowired
     ApplicationService applicationService;
 
@@ -40,6 +44,14 @@ public class ApplicationResource extends AbstractController<Applications> {
     @Override
     protected BaseService<Applications> getService() {
         return applicationService;
+    }
+
+    @RequestMapping("/log")
+    @ResponseBody
+    public final String testLog(){
+        final Logger log = LoggerFactory.getLogger(ApplicationResource.class);
+        log.debug("ApplicationResourceLog");
+        return "testlog";
     }
 
     /**
