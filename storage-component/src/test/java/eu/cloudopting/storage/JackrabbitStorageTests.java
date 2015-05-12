@@ -10,6 +10,8 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.activation.MimeTypeParameterList;
 import javax.jcr.Repository;
@@ -65,6 +67,11 @@ public class JackrabbitStorageTests {
         JackRabbitStoreRequest request = (JackRabbitStoreRequest) ocm.getObject("/mycontent");
         assertTrue(request != null);
         System.out.println(request);
+    }
+    private final Logger log = LoggerFactory.getLogger(JackrabbitStorageTests.class);
+    @Test
+    public void testLogDebug(){
+        log.debug("my debug");
     }
 
     @Test
