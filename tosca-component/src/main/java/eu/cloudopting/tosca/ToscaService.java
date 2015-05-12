@@ -114,13 +114,23 @@ public class ToscaService {
 	 * @param provider
 	 */
 	public void manageToscaCsar(String customizationId, String service, String serviceHome, String provider){
-		
+/*		
 		try {
 			toscaUtils.unzip(service+".czar", serviceHome+"/tosca");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	*/	
+	}
+	
+	public HashMap<String, String> getCloudData(String customizationId){
+		HashMap<String, String> retData = new HashMap<String, String>();
+		retData.put("cpu", "1");
+		retData.put("mamory", "1");
+		retData.put("disk", "1");
+		
+		return retData;
 		
 	}
 	
