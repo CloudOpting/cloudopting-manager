@@ -6,6 +6,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.test.ActivitiRule;
 import org.activiti.engine.test.Deployment;
@@ -33,6 +34,8 @@ public class MySimpleProcessTest {
 		
 		//String taskId = task.getId();
 		//taskService.complete(taskId);
-		Assert.assertEquals(0, runtimeService.createProcessInstanceQuery().count());
+		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
+		long count = piq.count();
+		Assert.assertEquals(1, count);
 	}
 }
