@@ -19,21 +19,23 @@ public class DeployManageCustomization implements JavaDelegate {
 	ToscaService toscaService;
 	
 	@Autowired
-	CustomizationService cusomizationS;
+	CustomizationService customizationS;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		log.debug("in DeployManageCustomization");
+		log.info("in DeployManageCustomization");
 		String customizationId = (String) execution.getVariable("customizationId");
-		Customizations theCust = cusomizationS.findOne(Long.parseLong(customizationId));
-		Status myStatus = theCust.getStatusId();
-		myStatus.setId((long) 90);
+		Customizations theCust = customizationS.findOne(Long.parseLong(customizationId));
+//		Status myStatus = theCust.getStatusId();
+//		myStatus.setId((long) 90);
 		log.info(theCust.toString());
 		theCust.setProcessId(execution.getProcessInstanceId());
-        theCust.setStatusId(myStatus);
-        theCust.persist();
+ //       theCust.setStatusId(myStatus);
+		// @TODO will have to remove the comment in production, but now for developing setting the ID is a pain 
+//		customizationS.update(theCust);
 		toscaService.setToscaCustomization(customizationId, theCust.getCustomizationToscaFile());
+		execution.setVariable("organizationId", theCust.getUsername());
 		
 	}
 
