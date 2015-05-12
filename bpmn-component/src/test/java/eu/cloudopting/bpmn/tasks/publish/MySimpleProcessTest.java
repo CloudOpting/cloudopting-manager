@@ -15,14 +15,16 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class MySimpleProcessTest {
-	@Rule
-	public ActivitiRule activitiRule = new ActivitiRule("eu/cloudopting/bpmn/tasks/publish/activiti.cfg.xml");
 	
 	@Inject
 	private ProcessEngine engine;
 	
+	@Rule
+	public ActivitiRule activitiRule = new ActivitiRule();
+	
+	
 	@Test
-	@Deployment(resources={"eu/cloudopting/bpmn/tasks/publish/MySimpleProcess.bpmn20.xml"})
+	@Deployment(resources={"MySimpleProcess.bpmn20.xml"})
 	public void ruleUsageExample() {
 		
 		RuntimeService runtimeService = activitiRule.getRuntimeService();
