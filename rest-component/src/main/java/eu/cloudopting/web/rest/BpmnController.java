@@ -1,12 +1,14 @@
 package eu.cloudopting.web.rest;
 
+import java.util.List;
+
 import javax.annotation.security.RolesAllowed;
 
+import org.activiti.engine.repository.ProcessDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.security.AuthoritiesConstants;
-import eu.cloudopting.tosca.ToscaService;
 
 /**
  * REST controller for managing tosca
@@ -46,5 +47,22 @@ public class BpmnController {
 		System.out.println("returning pid: " + pid);
 		return pid;
 	}
+	
+	@RequestMapping(value = "/bpmn/startProcess/{id}",
+            method = RequestMethod.POST)
+    @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
+    @ResponseBody String startProcessById(@PathVariable String id) {
+        log.info("REST request to start process with id : {}", id);
+        return bpmn.startGenericProcess(id, null);
+    }
+	
+	@RequestMapping(value = "/bpmn/availableProcessDefinitions",
+            method = RequestMethod.GET)
+    @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
+    @ResponseBody List<ProcessDefinition> getAvailableProcessDefinitions() {
+        log.info("REST request to get processdefinitions");
+        return bpmn.getAvailableProcessDefinitions();
+    }
+
 
 }

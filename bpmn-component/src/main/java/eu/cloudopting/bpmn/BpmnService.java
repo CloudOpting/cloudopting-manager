@@ -1,11 +1,18 @@
 package eu.cloudopting.bpmn;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.domain.Customizations;
-import eu.cloudopting.domain.Status;
 import eu.cloudopting.service.CustomizationService;
 
 
@@ -69,6 +75,35 @@ public class BpmnService {
         System.out.println("ProcessID:"+pi.getProcessInstanceId());
         return pi.getProcessInstanceId();
 
+	}
+	
+	/**
+	 * Starts the process with the provided id and the provided initial input parameters.
+	 * <strong>For testing purposes, might be removed at any time</strong>.
+	 * @param processId the Identifier of the process (not null)
+	 * @param startParams the input variables (might be null)
+	 * @return the process instance id
+	 */
+	public String startGenericProcess(String processId, Map<String, Object> startParams){
+		log.debug("Starting Process with id:'"+processId+"'");
+		// TODO the process string has to go in a constant
+        ProcessInstance pi = runtimeService.startProcessInstanceByKey(processId, startParams);
+        System.out.println("ProcessID:"+pi.getProcessInstanceId());
+        return pi.getProcessInstanceId();
+
+	}
+	
+	/**
+	 * Gets the list of active Process Definitions
+	 * For testing purposes, <strong>might be removed at any time</strong>.
+	 * @param processId the Identifier of the process (not null)
+	 * @param startParams the input variables (might be null)
+	 * @return
+	 */
+	public List<ProcessDefinition> getAvailableProcessDefinitions(){
+		log.debug("Retrieving available process definitions");
+		RepositoryService rs = processEngine.getRepositoryService();
+        return rs.createProcessDefinitionQuery().active().list();
 	}
 	
 	public String startTestDeployProcess(){
