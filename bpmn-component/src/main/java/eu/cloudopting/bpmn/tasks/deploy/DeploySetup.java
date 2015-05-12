@@ -1,5 +1,6 @@
 package eu.cloudopting.bpmn.tasks.deploy;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.activiti.engine.delegate.DelegateExecution;
@@ -22,20 +23,44 @@ public class DeploySetup implements JavaDelegate {
 		// TODO Auto-generated method stub
 		log.info("in DeploySetup");
 		String customizationId = (String) execution.getVariable("customizationId");
-		System.out.println("in setup");
+		String organizationName = (String) execution.getVariable("organizationName");
 		String service = toscaService.getServiceName(customizationId);
-		log.info("service: "+service);
-		ArrayList<String> dockerPortsList = new ArrayList<String>();
+		log.debug("service: "+service);
+		String coRoot = new String("/cloudOptingData");
+		String serviceHome = new String(coRoot+organizationName+"-"+service);
+		log.debug("serviceHome: "+serviceHome);
+		
+		boolean success = false;
+		File directory = new File(serviceHome);
+		if (directory.exists()) {
+			System.out.println("Directory already exists ...");
+
+		} else {
+			System.out.println("Directory not exists, creating now");
+
+			success = directory.mkdir();
+			if (success) {
+				System.out.printf("Successfully created new directory : %s%n",
+						serviceHome);
+			} else {
+				System.out.printf("Failed to create new directory: %s%n", serviceHome);
+			}
+		}
+		
+		ArrayList<String> dockerPortsList = toscaService.getHostPorts(customizationId);
 		dockerPortsList.add("Port1");
-		execution.setVariable("dockerNodesList", dockerPortsList);
+		
+		ArrayList<String> dockerNodesList = toscaService.getArrNodesByType(customizationId, "DockerContainer");
+		log.debug(dockerNodesList.toString());
+		execution.setVariable("dockerNodesList", dockerNodesList);
 		execution.setVariable("vmPortsList", dockerPortsList);
 		
 		
 		// setting the variables for the rest of the tasks
-		execution.setVariable("creationPath", null);
-		execution.setVariable("dockerContextPath", null);
-		execution.setVariable("service", null);
-		execution.setVariable("servicePath", null);
+		execution.setVariable("customizationName", organizationName+"-"+service);
+		execution.setVariable("coRoot", coRoot);
+		execution.setVariable("service", service);
+		execution.setVariable("serviceHome", serviceHome);
 
 		
 	}

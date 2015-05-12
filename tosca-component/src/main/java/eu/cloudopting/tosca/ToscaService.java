@@ -99,6 +99,16 @@ public class ToscaService {
 		
 	}
 	
+	public ArrayList<String> getArrNodesByType(String customizationId, String type) {
+		DTMNodeList nodes = getNodesByType(customizationId,type);
+		ArrayList<String> retList = new ArrayList<String>();
+		System.out.println("before cycle");
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			retList.add(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
+		}
+		return retList;		
+	}
+
 	public void getRootNode(String customizationId ) {
 //		getNodesByType("VMhost");
 		return;
@@ -153,8 +163,6 @@ public class ToscaService {
 	
 	public String getServiceName(String customizationId){
 		log.info("in getServiceName");
-		log.info(this.xdocHash.toString());
-		log.info(this.xdocHash.get(customizationId).toString());
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
