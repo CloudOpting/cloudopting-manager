@@ -13,7 +13,7 @@ public class SimpleServiceTask implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		log.debug("I'm executing the Simple Service Task! YEAH!");
-		//execution.setVariable("simpleServiceTaskExecuted", true);
+		execution.setVariable("simpleServiceTaskExecuted", true);
 	}
 
 }
