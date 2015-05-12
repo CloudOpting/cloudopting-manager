@@ -71,7 +71,7 @@ public class ToscaService {
 
 		try {
 			DocumentImpl document = (DocumentImpl) this.db.parse(source);
-			xdocHash.put(customizationId, document);
+			this.xdocHash.put(customizationId, document);
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -80,11 +80,11 @@ public class ToscaService {
 			e1.printStackTrace();
 		}
 		// TODO add the graph part
-		
+		log.info(this.xdocHash.toString());
 	}
 	
 	public byte[] getToscaGraph(String customizationId){
-		log.info("in the swervice");
+		log.info("in the service");
 		return null;
 		
 	}
@@ -146,12 +146,15 @@ public class ToscaService {
 	
 	public String getNodeType(String customizationId, String id) {
 		log.debug("in getNodeType");
-		log.info(xdocHash.get(customizationId).toString());
+		log.info(this.xdocHash.get(customizationId).toString());
 		return null;
 		
 	}
 	
 	public String getServiceName(String customizationId){
+		log.info("in getServiceName");
+		log.info(this.xdocHash.toString());
+		log.info(this.xdocHash.get(customizationId).toString());
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
