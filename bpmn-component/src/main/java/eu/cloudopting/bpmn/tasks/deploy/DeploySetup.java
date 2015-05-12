@@ -47,6 +47,8 @@ public class DeploySetup implements JavaDelegate {
 			}
 		}
 		
+		toscaService.generatePuppetfile(customizationId, serviceHome);
+		
 		ArrayList<String> dockerPortsList = toscaService.getHostPorts(customizationId);
 		dockerPortsList.add("Port1");
 		

@@ -20,9 +20,12 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import eu.cloudopting.tosca.utils.ToscaUtils;
 
 
 
@@ -39,6 +42,9 @@ public class ToscaService {
 	private DocumentBuilderImpl db; 
 	
 	private HashMap<String, DocumentImpl> xdocHash = new HashMap<String, DocumentImpl>();
+	
+	@Autowired
+	private ToscaUtils toscaUtils;
 
 	public ToscaService() {
 		super();
@@ -96,6 +102,49 @@ public class ToscaService {
 	
 	public DTMNodeList getNodesByType(String customizationId, String type) {
 		return null;
+		
+	}
+	
+	public void generatePuppetfile(String customizationId,String serviceHome){
+		ArrayList<String> modules = getPuppetModules(customizationId);
+		ArrayList<HashMap<String, String>> modData = new ArrayList<HashMap<String, String>>();
+		for (String mod : modules) {
+			modData.add(getPuppetModulesProperties(customizationId, mod));
+			log.debug(mod);
+		}
+		log.debug(modData.toString());
+		
+		HashMap<String, Object> templData = new HashMap<String, Object>();
+		templData.put("modData", modData);
+		toscaUtils.generatePuppetfile(templData,serviceHome);
+	}
+	
+	/**
+	 * This method retrieve the tosca csar from the storage component and unzip it in the proper folder
+	 * 
+	 * @param customizationId
+	 * @param service
+	 * @param serviceHome
+	 * @param provider
+	 */
+	public void manageToscaCsar(String customizationId, String service, String serviceHome, String provider){
+/*		
+		try {
+			toscaUtils.unzip(service+".czar", serviceHome+"/tosca");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	*/	
+	}
+	
+	public HashMap<String, String> getCloudData(String customizationId){
+		HashMap<String, String> retData = new HashMap<String, String>();
+		retData.put("cpu", "1");
+		retData.put("mamory", "1");
+		retData.put("disk", "1");
+		
+		return retData;
 		
 	}
 	

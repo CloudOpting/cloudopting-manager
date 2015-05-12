@@ -12,7 +12,7 @@ import eu.cloudopting.tosca.ToscaService;
 @Service
 public class PublishValidateToscaPackage implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(PublishValidateToscaPackage.class);
-	@Autowired
+	@Autowired(required=false)
 	ToscaService toscaService;
 
 	@Override
