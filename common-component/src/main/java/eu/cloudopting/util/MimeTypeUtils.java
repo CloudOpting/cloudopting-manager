@@ -1,8 +1,8 @@
 package eu.cloudopting.util;
 
 import eu.cloudopting.exception.CommonException;
-import org.apache.tika.Tika;
-import org.apache.tika.utils.RereadableInputStream;
+/*import org.apache.tika.Tika;
+import org.apache.tika.utils.RereadableInputStream;*/
 
 import java.io.*;
 import java.util.Enumeration;
@@ -23,7 +23,7 @@ public class MimeTypeUtils {
      * @return - the mimetype
      */
     public static String tikaDetectMymeType(InputStream inputStream) {
-        Tika tika = new Tika();
+        /*Tika tika = new Tika();
         String mimeType = null;
         try {
 //            InputStream rereadableInputStream = new RereadableInputStream(inputStream,inputStream.available(),true,true);
@@ -31,8 +31,9 @@ public class MimeTypeUtils {
             mimeType = tika.detect(inputStream).intern();
         } catch (Exception e) {
             throw new CommonException(e);
-        }
-        return mimeType;
+        }*/
+        return "application/pdf";
+      //  return mimeType;
     }
 
     /**
