@@ -36,6 +36,7 @@ public class DeployManageCustomization implements JavaDelegate {
 //		customizationS.update(theCust);
 		toscaService.setToscaCustomization(customizationId, theCust.getCustomizationToscaFile());
 		execution.setVariable("organizationId", theCust.getUsername());
+		execution.setVariable("provider", "csi");
 		
 	}
 
