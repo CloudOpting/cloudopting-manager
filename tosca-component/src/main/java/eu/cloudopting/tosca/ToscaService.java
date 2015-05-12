@@ -105,6 +105,20 @@ public class ToscaService {
 		
 	}
 	
+	public void generatePuppetfile(String customizationId,String serviceHome){
+		ArrayList<String> modules = getPuppetModules(customizationId);
+		ArrayList<HashMap<String, String>> modData = new ArrayList<HashMap<String, String>>();
+		for (String mod : modules) {
+			modData.add(getPuppetModulesProperties(customizationId, mod));
+			log.debug(mod);
+		}
+		log.debug(modData.toString());
+		
+		HashMap<String, Object> templData = new HashMap<String, Object>();
+		templData.put("modData", modData);
+		toscaUtils.generatePuppetfile(templData,serviceHome);
+	}
+	
 	/**
 	 * This method retrieve the tosca csar from the storage component and unzip it in the proper folder
 	 * 

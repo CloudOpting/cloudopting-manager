@@ -16,9 +16,10 @@ public class DeployGeneratePuppet implements JavaDelegate {
 	ToscaService toscaService;
 
 	@Override
-	public void execute(DelegateExecution arg0) throws Exception {
+	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		log.debug("in DeploySetup");
+		log.debug("in DeployGeneratePuppet");
+		String customizationId = (String) execution.getVariable("customizationId");
 //		toscaService.getNodeType("");
 		
 	}

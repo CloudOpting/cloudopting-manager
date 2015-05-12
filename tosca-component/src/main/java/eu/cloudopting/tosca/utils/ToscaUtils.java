@@ -3,16 +3,73 @@ package eu.cloudopting.tosca.utils;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.springframework.stereotype.Service;
 
+import freemarker.core.ParseException;
+import freemarker.template.Configuration;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
+
 @Service
 public class ToscaUtils {
 	private static final int BUFFER_SIZE = 4096;
+	
+	public void generatePuppetfile(HashMap<String, Object> templData, String serviceHome){
+		// write the "Puppetfile" file
+		Configuration cfg = new Configuration();
+		Template tpl = null;
+		try {
+			tpl = cfg.getTemplate("Puppetfile.ftl");
+		} catch (TemplateNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedTemplateNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		OutputStreamWriter outputTempl = new OutputStreamWriter(System.out);
+		PrintWriter outFile = null;
+		String puppetFile = new String("Puppetfile");
+		try {
+			outFile = new PrintWriter(serviceHome+"/"+puppetFile, "UTF-8");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			//tpl.process(nodeData, outputTempl);
+			tpl.process(templData, outFile);
+		} catch (TemplateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	
 	public void unzip(String zipFilePath, String destDirectory) throws IOException {
         File destDir = new File(destDirectory);
