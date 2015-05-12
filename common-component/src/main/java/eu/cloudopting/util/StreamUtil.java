@@ -1,6 +1,7 @@
 package eu.cloudopting.util;
 
 import eu.cloudopting.exception.CommonException;
+import eu.medsea.mimeutil.MimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,4 +51,5 @@ public class StreamUtil {
         }
         return bytes;
     }
+
 }

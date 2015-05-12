@@ -47,9 +47,9 @@ public class JackrabbitStorageTests {
     @Test
     public void testStoreFile() throws FileNotFoundException, RepositoryException {
         InputStream stream = new BufferedInputStream(new FileInputStream(file));
-        String mimeType = MimeTypeUtils.tikaDetectMymeType(stream);
+        String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
         Node folder = session.getRootNode();
-        Node file = folder.addNode(String.valueOf(new Date().getTime()), "nt:file");
+        Node file = folder.addNode(String.valueOf(new Date().getTime())+".pdf", "nt:file");
         Node content = file.addNode("jcr:content", "nt:resource");
         Binary binary = session.getValueFactory().createBinary(stream);
         content.setProperty("jcr:data", binary);
@@ -64,7 +64,7 @@ public class JackrabbitStorageTests {
         Node file = session.getRootNode().getNode("1431431601575/jcr:content");
         final Binary in = file.getProperty("jcr:data").getBinary();
         InputStream stream = in.getStream();
-        String mimeGuess = MimeTypeUtils.tikaDetectMymeType(stream);
+        String mimeGuess = MimeTypeUtils.mimeUtilDetectMimeType(stream);
         System.out.println(mimeGuess);
     }
 

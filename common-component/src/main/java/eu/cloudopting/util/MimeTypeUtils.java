@@ -1,10 +1,12 @@
 package eu.cloudopting.util;
 
 import eu.cloudopting.exception.CommonException;
+import eu.medsea.mimeutil.MimeUtil;
 /*import org.apache.tika.Tika;
 import org.apache.tika.utils.RereadableInputStream;*/
 
 import java.io.*;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -22,7 +24,8 @@ public class MimeTypeUtils {
      * @param inputStream - input stream to detect mimetype from
      * @return - the mimetype
      */
-    public static String tikaDetectMymeType(InputStream inputStream) {
+    public static String mimeUtilDetectMimeType(InputStream inputStream) {
+        Collection mimeTypes = MimeUtil.getMimeTypes(inputStream);
         /*Tika tika = new Tika();
         String mimeType = null;
         try {
@@ -32,9 +35,11 @@ public class MimeTypeUtils {
         } catch (Exception e) {
             throw new CommonException(e);
         }*/
-        return "application/pdf";
+        return String.valueOf(mimeTypes.toArray()[0]);
       //  return mimeType;
     }
+
+
 
     /**
      * We create a copy of the input stream with witch we work.
