@@ -27,9 +27,11 @@ public class DeployManageCustomization implements JavaDelegate {
 		log.debug("in DeployManageCustomization");
 		String customizationId = (String) execution.getVariable("customizationId");
 		Customizations theCust = cusomizationS.findOne(Long.parseLong(customizationId));
+		Status myStatus = theCust.getStatusId();
+		myStatus.setId((long) 90);
 		log.info(theCust.toString());
 		theCust.setProcessId(execution.getProcessInstanceId());
-        theCust.setStatusId(new Status().findStatus((long) 90));
+        theCust.setStatusId(myStatus);
         theCust.persist();
 		toscaService.setToscaCustomization(customizationId, theCust.getCustomizationToscaFile());
 		
