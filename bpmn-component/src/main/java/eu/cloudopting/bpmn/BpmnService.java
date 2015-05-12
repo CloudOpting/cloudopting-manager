@@ -38,7 +38,11 @@ public class BpmnService {
     protected CustomizationService customizationS;
 
 	public String startDeployProcess(String customizationId, String cloudId){
-		log.debug("Before activating process");
+		log.info("Before activating process");
+		log.info("customizationId: "+customizationId);
+		log.info("cloudId: "+cloudId);
+		
+		
 		// the UI will pass the customization ID and the cloud ID since is in that page
 		// will need to retrieve the:
 		// TOSCA csar to unzip it
@@ -49,7 +53,9 @@ public class BpmnService {
 //		System.out.println("\ncloudId:"+cloudId);
 		// We recover the Customization and chack if processId is null otherwise we need to throw exception since we cannot execute another deploy for the same Customization
 		Customizations theCust = customizationS.findOne(Long.parseLong(customizationId));
-		if(!theCust.getProcessId().isEmpty()){
+		log.info("theCust: "+theCust.toString());
+
+		if(theCust.getProcessId()!= null){
 			log.debug("Customization "+customizationId+" has already a deployment process");
 			return theCust.getProcessId();
 		}
