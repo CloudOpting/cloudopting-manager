@@ -15,6 +15,7 @@ import java.util.zip.ZipInputStream;
 
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.tosca.ToscaService;
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.MalformedTemplateNameException;
@@ -29,6 +30,8 @@ public class ToscaUtils {
 	public void generatePuppetfile(HashMap<String, Object> templData, String serviceHome){
 		// write the "Puppetfile" file
 		Configuration cfg = new Configuration();
+		cfg.setClassForTemplateLoading(ToscaService.class, "/templates");
+
 		Template tpl = null;
 		try {
 			tpl = cfg.getTemplate("Puppetfile.ftl");

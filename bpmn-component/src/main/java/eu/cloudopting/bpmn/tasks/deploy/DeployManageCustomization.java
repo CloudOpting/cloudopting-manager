@@ -30,7 +30,7 @@ public class DeployManageCustomization implements JavaDelegate {
 //		Status myStatus = theCust.getStatusId();
 //		myStatus.setId((long) 90);
 		log.info(theCust.toString());
-		theCust.setProcessId(execution.getProcessInstanceId());
+//		theCust.setProcessId(execution.getProcessInstanceId());
  //       theCust.setStatusId(myStatus);
 		// @TODO will have to remove the comment in production, but now for developing setting the ID is a pain 
 //		customizationS.update(theCust);

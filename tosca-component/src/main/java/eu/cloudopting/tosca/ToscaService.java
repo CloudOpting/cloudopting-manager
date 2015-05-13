@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.xalan.extensions.XPathFunctionResolverImpl;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -86,7 +88,7 @@ public class ToscaService {
 			e1.printStackTrace();
 		}
 		// TODO add the graph part
-		log.info(this.xdocHash.toString());
+		//log.info(this.xdocHash.toString());
 	}
 	
 	public byte[] getToscaGraph(String customizationId){
@@ -193,8 +195,35 @@ public class ToscaService {
 	}
 	
 	public HashMap<String, String> getPuppetModulesProperties(String customizationId, String module) {
-		return null;
-		
+		log.info("in getPuppetModulesProperties");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+		DTMNodeList nodes = null;
+//		System.out.println("//ArtifactTemplate[@id='" + module + "']/Properties/*");
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:ArtifactTemplate[@id='"
+					+ module + "']/ns:Properties/*", theDoc,
+					XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HashMap<String, String> propHash = new HashMap<String, String>();
+		NodeList props = nodes.item(0).getChildNodes();
+		for (int i = 0; i < props.getLength(); ++i) {
+			// values.add(nodes.item(i).getFirstChild().getNodeValue());
+			// System.out.println(nodes.item(i).getFirstChild().getNodeValue());
+
+//			System.out.println("property val:" + props.item(i).getTextContent());
+			String[] keys = props.item(i).getNodeName().split(":");
+			if (keys.length > 1) {
+				String key = keys[1];
+//				System.out.println("property:" + key);
+				propHash.put(key, props.item(i).getTextContent());
+			}
+		}
+		return propHash;
 	}
 	
 	public ArrayList<String> getOrderedContainers() {
@@ -224,7 +253,7 @@ public class ToscaService {
 	
 	public String getNodeType(String customizationId, String id) {
 		log.debug("in getNodeType");
-		log.info(this.xdocHash.get(customizationId).toString());
+		//log.info(this.xdocHash.get(customizationId).toString());
 		return null;
 		
 	}
@@ -264,8 +293,33 @@ public class ToscaService {
 	}
 	
 	public ArrayList<String> getHostPorts(String customizationId){
-		return null;
+		log.info("in getServiceName");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+		ArrayList<String> ports = new ArrayList<String>();
 		
+		String xPathExpr = new String("//ns:NodeTemplate[@type='DockerContainer']/ns:Capabilities/ns:Capability/ns:Properties/co:ports"); 
+//		System.out.println("xpath :" + xPathExpr);
+		
+		DTMNodeList nodes = null;
+		try {
+			XPathExpression expr = this.xpath.compile(xPathExpr);
+			
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc, XPathConstants.NODESET);
+			nodes = (DTMNodeList) expr.evaluate(theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("nodes :" + nodes.getLength());
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			String portInfo = nodes.item(i).getAttributes().getNamedItem("host").getNodeValue();
+			ports.add(portInfo);
+	//		System.out.println("portInfo :" + portInfo);
+		}
+		return ports;
 	}
 	
 	public void getDefinitionFile(String customizationId, String path){

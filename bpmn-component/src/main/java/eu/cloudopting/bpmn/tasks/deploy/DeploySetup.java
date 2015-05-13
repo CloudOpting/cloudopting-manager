@@ -27,7 +27,7 @@ public class DeploySetup implements JavaDelegate {
 		String service = toscaService.getServiceName(customizationId);
 		log.debug("service: "+service);
 		String coRoot = new String("/cloudOptingData");
-		String serviceHome = new String(coRoot+organizationName+"-"+service);
+		String serviceHome = new String(coRoot+"/"+organizationName+"-"+service);
 		log.debug("serviceHome: "+serviceHome);
 		
 		boolean success = false;

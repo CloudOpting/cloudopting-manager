@@ -49,6 +49,7 @@
     <logger name="org.springframework.security" level="WARN"/>
     <logger name="org.springframework.cache" level="WARN"/>
     <logger name="org.thymeleaf" level="WARN"/>
+    <logger name="org.activiti" level="WARN"/>
     <logger name="org.xnio" level="WARN"/>
     <logger name="com.mangofactory.swagger" level="WARN"/>
     <logger name="com.wordnik.swagger" level="warn"/>
