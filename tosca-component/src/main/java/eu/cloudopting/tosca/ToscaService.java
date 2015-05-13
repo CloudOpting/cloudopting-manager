@@ -107,6 +107,7 @@ public class ToscaService {
 	
 	public void generatePuppetfile(String customizationId,String serviceHome){
 		ArrayList<String> modules = getPuppetModules(customizationId);
+		log.debug(modules.toString());
 		ArrayList<HashMap<String, String>> modData = new ArrayList<HashMap<String, String>>();
 		for (String mod : modules) {
 			modData.add(getPuppetModulesProperties(customizationId, mod));
@@ -169,8 +170,26 @@ public class ToscaService {
 	}
 	
 	public ArrayList<String> getPuppetModules(String customizationId ) {
-		return null;
+		log.info("in getServiceName");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+		DTMNodeList modules = null;
+
+		try {
+			modules = (DTMNodeList) this.xpath.evaluate("//ns:NodeTypeImplementation/ns:ImplementationArtifacts/ns:ImplementationArtifact[@artifactType='PuppetModule']/@artifactRef", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<String> modulesList = new ArrayList<String>();
 		
+		for (int i = 0; i < modules.getLength(); ++i) {
+			String module = modules.item(i).getNodeValue();
+			modulesList.add(module);
+		}
+		
+		return modulesList;
 	}
 	
 	public HashMap<String, String> getPuppetModulesProperties(String customizationId, String module) {
