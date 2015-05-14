@@ -15,10 +15,10 @@ import eu.cloudopting.docker.restclient.CraneRestClient;
 public class DockerBuilder {
 	
 	private ArrayList<DockerImage> imageList;
-	private CraneRestClient clientHandler;
+	private CraneRestClient craneHandler;
 
-	public DockerBuilder(CraneRestClient clientHandler) {
-		this.clientHandler = clientHandler;
+	public DockerBuilder(CraneRestClient craneHandler) {
+		this.craneHandler = craneHandler;
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public class DockerBuilder {
 	 * @param puppetManifest Puppet recipe for the image.
 	 */
 	public void addImage(String name, File sourceDockerfile, File puppetManifest){
-		imageList.add(new DockerImage(this.clientHandler, name, sourceDockerfile, puppetManifest));
+		imageList.add(new DockerImage(this.craneHandler, name, sourceDockerfile, puppetManifest));
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class DockerBuilder {
 	 * @param puppetManifest Puppet recipe for the image.
 	 */
 	public void addImage(String name, String sourceDockerBaseImage, File puppetManifest){
-		imageList.add(new DockerImage(this.clientHandler, name, sourceDockerBaseImage, puppetManifest));
+		imageList.add(new DockerImage(this.craneHandler, name, sourceDockerBaseImage, puppetManifest));
 	}
 
 
