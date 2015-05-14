@@ -10,7 +10,7 @@ import eu.cloudopting.docker.DockerError;
 
 /**
  *
- * TODO: Handles the composing and deploy process.
+ * Handles the composing and deploy process.
  *
  */
 public class DockerComposer {
@@ -28,7 +28,6 @@ public class DockerComposer {
 	private File sourceDockerComposeYml;
 	private String deployOperationToken;
 	private Status status;
-	private String errorLog;
 	
 	public DockerComposer(CraneRestClient craneHandler) {
 		this.craneHandler = craneHandler;
@@ -53,7 +52,7 @@ public class DockerComposer {
 	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
 	public boolean isFinished() throws DockerError{
-		// TODO: retrieve the status, parse response and save error in log (if any error)
+		// TODO: retrieve the status, parse response.
 		this.status=this.status.FINISHED;
 		return true;
 	}
@@ -64,7 +63,7 @@ public class DockerComposer {
 	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
 	public boolean isFinishedSuccessfully() throws DockerError{
-		// TODO: retrieve the status, parse response and save error in log (if any error)
+		// TODO: retrieve the status, parse response.
 		this.status=this.status.FINISHED;
 		return true;
 	}
