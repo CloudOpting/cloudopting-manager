@@ -1,60 +1,93 @@
 package eu.cloudopting.docker.images;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import eu.cloudopting.docker.DockerError;
 import eu.cloudopting.docker.restclient.CraneRestClient;
 
 /**
  *
- * TODO: javadoc
+ * Handles the creation of images.
  *
  */
 public class DockerBuilder {
+	
+	private ArrayList<DockerImage> imageList;
+	private CraneRestClient clientHandler;
 
-	public DockerBuilder(CraneRestClient restClient) {
-		// TODO
+	public DockerBuilder(CraneRestClient clientHandler) {
+		this.clientHandler = clientHandler;
+	}
+	
+	/**
+	 * Adds a image (base from Dockerfile) to be built to the list.
+	 * @param name Desired Name for the image.
+	 * @param sourceDockerfile Base Dockerfile.
+	 * @param puppetManifest Puppet recipe for the image.
+	 */
+	public void addImage(String name, File sourceDockerfile, File puppetManifest){
+		imageList.add(new DockerImage(this.clientHandler, name, sourceDockerfile, puppetManifest));
+	}
+	
+	/**
+	 * Adds a image (base from image name) to be built to the list.
+	 * @param name Desired Name for the image.
+	 * @param sourceDockerBaseImage Name of the base docker image 
+	 * @param puppetManifest Puppet recipe for the image.
+	 */
+	public void addImage(String name, String sourceDockerBaseImage, File puppetManifest){
+		imageList.add(new DockerImage(this.clientHandler, name, sourceDockerBaseImage, puppetManifest));
 	}
 
-	/* Methods */
-	/**
-	 * TODO: start the building process for one docker image
-	 */
-	public String start(String pathToDockerfile, String pathToPuppetManifest, String imageName) throws DockerError {
-		// TODO
-		String token = "52d6NR1U1X";
-		return token;
-	}
 
 	/**
-	 * TODO: start the building process for several docker images
+	 * Start the build process for the images in the list.
+	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
-	public String start(ArrayList<String> pathsToDockerfiles, ArrayList<String> pathsToPuppetManifests, ArrayList<String> imageNames)  throws DockerError {
-		// TODO
-		String token = "vJQ22H4P8f";
-		return token;
-	}
-
-	/**
-	 * TODO: retrieve info about the building process
-	 */
-	public String getInfo(String token)  throws DockerError {
-		// TODO
-		String result;
-		if(token.equals("vJQ22H4P8f")){
-			result = "{\"statusCode\":\"1\" ,\"statusDescription\": \"building\" }";
-		}else if(token.equals("52d6NR1U1X")){
-			result = "{\"statusCode\":\"0\" ,\"statusDescription\": \"completed\" }";
-		}else{
-			result = "{\"statusCode\":\"2\" ,\"statusDescription\":\"build error\", \"additonalInfo\":\"INFO[0004] Error: image library/imagename:latest not found\"}";
+	public void start() throws DockerError {
+		Iterator<DockerImage> iterator = imageList.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().launchCreationRequest();
 		}
-		return result;
+	}
+	
+	/**
+	 * Checks if the build process has finished for all images.
+	 * @return True if all the images are built or an an error occurred. False in other case.
+	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 */
+	public boolean isFinished() throws DockerError{
+		Iterator<DockerImage> iterator = imageList.iterator();
+		while (iterator.hasNext()) {
+			if(!iterator.next().isFinished())
+				return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks if the build process has finished and the images has been created correctly.
+	 * @return True if all the images are built correctly. False in other case.
+	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 */
+	public boolean isFinishedSuccessfully() throws DockerError{
+		Iterator<DockerImage> iterator = imageList.iterator();
+		while (iterator.hasNext()) {
+			if(!iterator.next().isCreated())
+				return false;
+		}
+		return true;
 	}
 
+
 	/**
-	 * TODO: retrieve info about the building process
+	 * Ask Docker Crane to stop the build process of the images in the list and destroy them.
+	 * @param token
+	 * @throws DockerError
 	 */
-	public void stopBuild(String token)  throws DockerError {
+	public void stop()  throws DockerError {
 		// TODO
 	}
 
