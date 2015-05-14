@@ -26,4 +26,9 @@ public class CraneRestClient {
 		return null;
 	}
 
+	public String newComposition(File sourceDockerComposeYml) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
