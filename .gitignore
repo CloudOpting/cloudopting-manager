@@ -16,3 +16,4 @@ build
 *.bak
 bpmn-component/.bpmn/
 bpmn-component/.xml/
+.metadata/
