@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
  * TODO: javadoc
  *
  */
-@Service
 public class DockerCluster {
 	private final Logger log = LoggerFactory.getLogger(DockerCluster.class);
 

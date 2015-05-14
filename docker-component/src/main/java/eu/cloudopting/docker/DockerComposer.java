@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import eu.cloudopting.docker.CraneRestClient;
+import eu.cloudopting.docker.DockerError;
 
 /**
  * 
  * TODO: javadoc
  *
  */
-@Service
 public class DockerComposer {
 	private final Logger log = LoggerFactory.getLogger(DockerComposer.class);
 

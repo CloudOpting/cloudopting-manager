@@ -4,15 +4,16 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import eu.cloudopting.docker.CraneRestClient;
+import eu.cloudopting.docker.DockerError;
 
 /**
  * 
  * TODO: javadoc
  *
  */
-@Service
 public class DockerBuilder {
 	private final Logger log = LoggerFactory.getLogger(DockerBuilder.class);
 
@@ -20,8 +21,7 @@ public class DockerBuilder {
 		// TODO
 	}
 	
-	/* Methods */
-	
+	/* Methods */	
 	/**
 	 * TODO: start the building process for one docker image
 	 */
