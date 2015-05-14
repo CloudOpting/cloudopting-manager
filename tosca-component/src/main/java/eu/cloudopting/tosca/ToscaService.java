@@ -1,15 +1,25 @@
 package eu.cloudopting.tosca;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.xalan.extensions.XPathFunctionResolverImpl;
 import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
@@ -17,8 +27,10 @@ import org.apache.xerces.jaxp.DocumentBuilderImpl;
 import org.apache.xml.dtm.ref.DTMNodeList;
 import org.apache.xpath.jaxp.XPathFactoryImpl;
 import org.apache.xpath.jaxp.XPathImpl;
+import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +88,9 @@ public class ToscaService {
 	public void setToscaCustomization(String customizationId, String xml){
 		// parse the string
 		InputSource source = new InputSource(new StringReader(xml));
-
+		DocumentImpl document = null;
 		try {
-			DocumentImpl document = (DocumentImpl) this.db.parse(source);
+			document = (DocumentImpl) this.db.parse(source);
 			this.xdocHash.put(customizationId, document);
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
@@ -89,22 +101,115 @@ public class ToscaService {
 		}
 		// TODO add the graph part
 		//log.info(this.xdocHash.toString());
+		// Get the NodeTemplates
+		DTMNodeList nodes = null;
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate",
+					document, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Get the RelationshipTemplate
+		DTMNodeList relations = null;
+		try {
+			relations = (DTMNodeList) this.xpath.evaluate(
+					"//ns:RelationshipTemplate[@type='hostedOn']", document,
+					XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Now we create the Graph structure so we know the correct traversal
+		// ordering
+		ArrayList<String> values = new ArrayList<String>();
+		DefaultDirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			// values.add(nodes.item(i).getFirstChild().getNodeValue());
+			// System.out.println(nodes.item(i).getFirstChild().getNodeValue());
+//			System.out.println(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
+			g.addVertex(nodes.item(i).getAttributes().getNamedItem("id")
+					.getNodeValue());
+		}
+
+		for (int i = 0; i < relations.getLength(); ++i) {
+			// values.add(nodes.item(i).getFirstChild().getNodeValue());
+			// System.out.println(nodes.item(i).getFirstChild().getNodeValue());
+			NodeList nl = relations.item(i).getChildNodes();
+//			System.out.println(nl.item(0).getNodeValue());
+//			System.out.println(nl.item(1).getNodeValue());
+
+//			System.out.println("relation s:"+ nl.item(1).getAttributes().getNamedItem("ref").getNodeValue());
+//			System.out.println("relation t:"+ nl.item(3).getAttributes().getNamedItem("ref").getNodeValue());
+			// System.out.println(relations.item(i).getFirstChild()
+			// .getAttributes().getNamedItem("ref").getNodeValue());
+			// System.out.println(relations.item(i).getAttributes()
+			// .getNamedItem("id").getNodeValue());
+			// this.g.addVertex(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
+			g.addEdge(nl.item(1).getAttributes().getNamedItem("ref")
+					.getNodeValue(),
+					nl.item(3).getAttributes().getNamedItem("ref")
+							.getNodeValue());
+		}
+		this.graphHash.put(customizationId, g);
+		String v;
+		TopologicalOrderIterator<String, DefaultEdge> orderIterator;
+
+		orderIterator = new TopologicalOrderIterator<String, DefaultEdge>(
+				g);
+//		System.out.println("\nOrdering:");
+		while (orderIterator.hasNext()) {
+			v = orderIterator.next();
+//			System.out.println(v);
+		}
+
 	}
 	
 	public byte[] getToscaGraph(String customizationId){
-		log.info("in the service");
+		log.debug("in getHostPorts");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
 		return null;
 		
 	}
 	
 	public String getOperationForNode(String customizationId, String id,String interfaceType) {
-		return null;
+		log.debug("in getOperationForNode");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
 		
+		DTMNodeList nodes = null;
+//		System.out.println("//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id + "']/@type)]/ns:Interfaces/ns:Interface[@name='" + interfaceType + "']/ns:Operation/@name");
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id + "']/@type)]/ns:Interfaces/ns:Interface[@name='" + interfaceType + "']/ns:Operation/@name", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// since there is a single ID we are sure that the array is with a single element
+		String template = nodes.item(0).getNodeValue();
+		return template;
 	}
 	
 	public DTMNodeList getNodesByType(String customizationId, String type) {
-		return null;
-		
+		log.debug("in getNodesByType");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		DTMNodeList nodes = null;
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@type='"
+					+ type + "']", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return nodes;
 	}
 	
 	public void generatePuppetfile(String customizationId,String serviceHome){
@@ -167,12 +272,27 @@ public class ToscaService {
 	}
 	
 	public String getTemplateForNode(String customizationId, String id,String templateType) {
-		return templateType;
+		log.debug("in getTemplateForNode");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
 		
+		DTMNodeList nodes = null;
+		log.debug("//ArtifactTemplate[@id=string(//NodeTemplate[@id='" + id + "']/DeploymentArtifacts/DeploymentArtifact[@artifactType='" + templateType + "']/@artifactRef)]/ArtifactReferences/ArtifactReference/@reference");
+		try {
+
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:ArtifactTemplate[@id=string(//ns:NodeTemplate[@id='" + id + "']/ns:DeploymentArtifacts/ns:DeploymentArtifact[@artifactType='" + templateType + "']/@artifactRef)]/ns:ArtifactReferences/ns:ArtifactReference/@reference", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// since there is a single ID we are sure that the array is with a single element
+		String template = nodes.item(0).getNodeValue();
+		return template;
 	}
 	
 	public ArrayList<String> getPuppetModules(String customizationId ) {
-		log.info("in getServiceName");
+		log.info("in getPuppetModules");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
@@ -226,36 +346,122 @@ public class ToscaService {
 		return propHash;
 	}
 	
-	public ArrayList<String> getOrderedContainers() {
-		return null;
-		
+	public ArrayList<String> getOrderedContainers(String customizationId) {
+		log.debug("in getOrderedContainers");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+		ArrayList<String> dockerNodesList = new ArrayList<String>();
+		dockerNodesList.add("ClearoApacheDC");
+		dockerNodesList.add("ClearoMySQLDC");
+		return dockerNodesList;
 	}
 	
 	public HashMap<String, String> getPropertiesForNode(String customizationId, String id) {
-		return null;
+		log.debug("in getPropertiesForNode");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
 		
+		DTMNodeList nodes = null;
+//		System.out.println("//NodeTemplate[@id='" + id + "']/Properties/*");
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@id='"
+					+ id + "']/ns:Properties/*", theDoc,
+					XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HashMap<String, String> myHash = new HashMap<String, String>();
+		NodeList props = nodes.item(0).getChildNodes();
+		for (int i = 0; i < props.getLength(); ++i) {
+			String[] keys = props.item(i).getNodeName().split(":");
+			if (keys.length > 1) {
+				String key = keys[1];
+				myHash.put(key, props.item(i).getTextContent());
+			}
+		}
+		return myHash;
 	}
 	
 	public HashMap getPropertiesForNodeApplication(String customizationId, String id) {
-		return null;
-		
+		log.debug("in getPropertiesForNodeApplication");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		DTMNodeList nodes = null;
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@id='"
+					+ id + "']/ns:Properties/*", theDoc,
+					XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HashMap<String, String> myHash = new HashMap<String, String>();
+		NodeList props = nodes.item(0).getChildNodes();
+		for (int i = 0; i < props.getLength(); ++i) {
+			String key = props.item(i).getAttributes().getNamedItem("name").getNodeValue();
+				myHash.put(key, props.item(i).getTextContent());
+		}
+		return myHash;
 	}
 	
 	public ArrayList<String> getChildrenOfNode(String customizationId, String node) {
-		return null;
+		log.debug("in getChildrenOfNode");
+		DefaultDirectedGraph<String, DefaultEdge> graph = this.graphHash.get(customizationId);
+		if (graph == null)
+			return null;
 		
+		Set edges = graph.outgoingEdgesOf(node);
+		log.debug("Children of:" + node + " are:" + edges.toString());
+		Iterator<DefaultEdge> iterator = edges.iterator();
+		ArrayList<String> children = new ArrayList<String>();
+		while(iterator.hasNext()){
+			String target = graph.getEdgeTarget(iterator.next());
+			children.add(target);
+		}
+		return children;
 	}
 	
 	public ArrayList<String> getAllChildrenOfNode(String customizationId, String node){
-		return null;
+		log.debug("in getAllChildrenOfNode");
+		ArrayList<String> children = new ArrayList<String>();
+		children = getChildrenOfNode(customizationId,node);
+		Iterator<String> child = children.iterator();
+		ArrayList<String> returnChildren = new ArrayList<String>();
+		while(child.hasNext()){
+			String theChild = child.next();
+			returnChildren.addAll(getAllChildrenOfNode(customizationId,theChild));
+			returnChildren.add(theChild);
+		}
 		
+		return returnChildren;
 	}
 	
 	public String getNodeType(String customizationId, String id) {
 		log.debug("in getNodeType");
-		//log.info(this.xdocHash.get(customizationId).toString());
-		return null;
-		
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		DTMNodeList nodes = null;
+
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@id='"
+					+ id + "']", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// since there is a single ID we are sure that the array is with a
+		// single element
+		// We need to get the type
+		String type = nodes.item(0).getAttributes().getNamedItem("type")
+				.getNodeValue();
+		return type;
 	}
 	
 	public String getServiceName(String customizationId){
@@ -278,22 +484,86 @@ public class ToscaService {
 	}
 	
 	public ArrayList<String> getExposedPortsOfChildren(String customizationId, String id){
-		return null;
+		log.debug("in getExposedPortsOfChildren");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		ArrayList<String> exPorts = new ArrayList<String>();
+		ArrayList<String> allChildren = getAllChildrenOfNode(customizationId, id);
+		Iterator<String> aChild = allChildren.iterator();
+		log.debug("all children" + allChildren.toString());
+		ArrayList<String> xPathExprList = new ArrayList<String>();
+		while (aChild.hasNext()){
+			xPathExprList.add("//ns:NodeTemplate[@id='"+aChild.next()+"']/ns:Capabilities/ns:Capability/ns:Properties/*");
+		}
+		String xPathExpr = StringUtils.join(xPathExprList, "|"); 
+		log.debug("xpath :" + xPathExpr);
+		DTMNodeList nodes = null;
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			exPorts.add(nodes.item(i).getTextContent());
+		}
+		return exPorts;
 	}
 	
 	public ArrayList<String> getContainerLinks(String customizationId, String id) {
-		return null;
+		log.debug("in getContainerLinks");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		DTMNodeList links = null;
+		try {
+			links = (DTMNodeList) this.xpath.evaluate("//ns:RelationshipTemplate[@type='containerLink']/ns:SourceElement[@ref='"+id+"']/../ns:TargetElement", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<String> linksList = new ArrayList<String>();
 		
+		for (int i = 0; i < links.getLength(); ++i) {
+			String link = links.item(i).getAttributes().getNamedItem("ref").getNodeValue();
+			linksList.add(link);
+		}
+		
+		return linksList;
 	}
 	
 	public ArrayList<String> getContainerPorts(String customizationId, String id){
-		return null;
+		log.debug("in getContainerPorts");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		ArrayList<String> ports = new ArrayList<String>();
+		String xPathExpr = new String("//ns:NodeTemplate[@id='"+id+"']/ns:Capabilities/ns:Capability/ns:Properties/co:ports"); 
 		
+		DTMNodeList nodes = null;
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("nodes :" + nodes.getLength());
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			String portInfo = nodes.item(i).getAttributes().getNamedItem("host").getNodeValue()+":"+nodes.item(i).getAttributes().getNamedItem("container").getNodeValue();
+			ports.add(portInfo);
+			System.out.println("portInfo :" + portInfo);
+		}
+		return ports;
 	}
 	
 	public ArrayList<String> getHostPorts(String customizationId){
-		log.info("in getServiceName");
+		log.debug("in getHostPorts");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
@@ -323,11 +593,40 @@ public class ToscaService {
 	}
 	
 	public void getDefinitionFile(String customizationId, String path){
-		
+		log.debug("in getDefinitionFile");
+		try {
+			File file = new File(path+"/TOSCA-Metadata/TOSCA.meta");
+			FileInputStream fileInput = new FileInputStream(file);
+			Properties properties = new Properties();
+			properties.load(fileInput);
+			fileInput.close();
+
+			Enumeration enuKeys = properties.keys();
+			while (enuKeys.hasMoreElements()) {
+				String key = (String) enuKeys.nextElement();
+				String value = properties.getProperty(key);
+				System.out.println(key + ": " + value);
+			}
+			
+			String toscaLocation = properties.getProperty("Entry-Definitions");
+			String xml = new String(Files.readAllBytes(Paths.get(path+"/"+toscaLocation)));
+			setToscaCustomization(customizationId, xml);
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
 	}
-	
+	/*
 	public void getPuppetModules(String customizationId, String id){
 		// here I get the puppet module list and use r10k to download them
+		log.debug("in getHostPorts");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
 		
 	}
+	*/
 }
