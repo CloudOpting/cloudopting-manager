@@ -22,7 +22,7 @@ public class DockerBuilder {
 	}
 	
 	/**
-	 * Adds a image (base from Dockerfile) to be built to the list.
+	 * Adds an image (base from Dockerfile) to be built to the list.
 	 * @param name Desired Name for the image.
 	 * @param sourceDockerfile Base Dockerfile.
 	 * @param puppetManifest Puppet recipe for the image.
@@ -32,7 +32,7 @@ public class DockerBuilder {
 	}
 	
 	/**
-	 * Adds a image (base from image name) to be built to the list.
+	 * Adds an image (base from image name) to be built to the list.
 	 * @param name Desired Name for the image.
 	 * @param sourceDockerBaseImage Name of the base docker image 
 	 * @param puppetManifest Puppet recipe for the image.
