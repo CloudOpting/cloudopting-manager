@@ -65,7 +65,7 @@ As can be seen there is a core component represente by the CloudOpting manager t
 ### Technologies used
 This application is coded in java.
 
-The framework used is [Spring](https://spring.io/) and in particular Spinr-boot since is a headless application.
+The framework used is [Spring](https://spring.io/) and in particular Sprint-boot since it is a headless application.
 
 It has a BPMN engine embedded, and the project opted for [Activiti](http://activiti.org/)
 
