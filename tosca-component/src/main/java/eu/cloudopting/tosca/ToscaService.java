@@ -236,14 +236,17 @@ public class ToscaService {
 	 * @param provider
 	 */
 	public void manageToscaCsar(String customizationId, String service, String serviceHome, String provider){
-/*		
+		log.debug("in manageToscaCsar");
+		String fileName = service+".czar";
+		String path = "/cloudOptingData/";
+		
 		try {
-			toscaUtils.unzip(service+".czar", serviceHome+"/tosca");
+			toscaUtils.unzip(path+service+".czar", serviceHome+"/tosca");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	*/	
+		
 	}
 	
 	public HashMap<String, String> getCloudData(String customizationId){

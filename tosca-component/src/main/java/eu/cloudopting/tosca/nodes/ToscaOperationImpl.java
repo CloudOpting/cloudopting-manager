@@ -1,5 +1,6 @@
 package eu.cloudopting.tosca.nodes;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import eu.cloudopting.tosca.ToscaService;
 import eu.cloudopting.tosca.nodes.CloudOptingNodeImpl;
@@ -21,9 +23,13 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
 
+@Service
 public class ToscaOperationImpl {
 	@Autowired
 	ToscaService tfm;
+	
+	@Autowired
+	CloudOptingNodeImpl cloudOptingNodeImpl;
 	
 	public String compilePuppetTemplateHierarchy(HashMap<String, String> data){
 		String id = data.get("id");
@@ -37,12 +43,12 @@ public class ToscaOperationImpl {
 		int i;
 		ArrayList<String> templateChunks = new ArrayList<String>();
 		for (i = 0; i < mychildren.size(); i++) {
-			CloudOptingNodeImpl childInstance = new CloudOptingNodeImpl();
+//			CloudOptingNodeImpl childInstance = new CloudOptingNodeImpl();
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("id", mychildren.get(i));
 			hm.put("customizationId", customizationId);
 			hm.put("toscaPath", toscaPath);
-			templateChunks.add(childInstance.execute(hm));
+			templateChunks.add(cloudOptingNodeImpl.execute(hm));
 		}
 		// I get the puppetFile template name
 		String myTemplate = tfm.getTemplateForNode(customizationId,id, "PuppetTemplate");
@@ -53,7 +59,7 @@ public class ToscaOperationImpl {
 		Map nodeData = tfm.getPropertiesForNode(customizationId,id);
 		// nodeData.put("hostname", id+"."+customer+".local");
 		nodeData.put("childtemplates", templateChunks);
-		return compilePuppetTemplate(null, null , toscaPath+myTemplate, nodeData);
+		return compilePuppetTemplate(null, null , myTemplate, toscaPath, nodeData);
 
 	}
 	
@@ -67,7 +73,7 @@ public class ToscaOperationImpl {
 		System.out.println("I'm in the writePuppetDockerTemplateHierarchy for :" + id);
 		
 		// With my ID I ask to the TFM the array of my sons
-		ArrayList<String> mychildren = this.tfm.getChildrenOfNode(customizationId,id);
+		ArrayList<String> mychildren = tfm.getChildrenOfNode(customizationId,id);
 
 		// I cycle on my sons and instantiate dynamically a class of type son to manage this part
 		// that method will return a string that represent the chunk of template I need to put in the puppet file
@@ -75,11 +81,12 @@ public class ToscaOperationImpl {
 		int i;
 		ArrayList<String> templateChunks = new ArrayList<String>(); 
 		for(i=0;i<mychildren.size();i++){
-			CloudOptingNodeImpl childInstance = new CloudOptingNodeImpl(); 
+//			CloudOptingNodeImpl childInstance = new CloudOptingNodeImpl(); 
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("id", mychildren.get(i));
+			hm.put("customizationId", customizationId);
 			hm.put("toscaPath", toscaPath);
-			templateChunks.add(childInstance.execute(hm));
+			templateChunks.add(cloudOptingNodeImpl.execute(hm));
 		}
 		
 		
@@ -94,7 +101,7 @@ public class ToscaOperationImpl {
 		nodeData.put("childtemplates",templateChunks);
 		
 		String puppetFile = new String(id+".pp");
-		compilePuppetTemplate(puppetFile, creationPath , toscaPath+myTemplate, nodeData);
+		compilePuppetTemplate(puppetFile, servicePath , myTemplate, toscaPath, nodeData);
 		System.out.println("Puppet file created");
 		/// DOCKERFILE PART
 		
@@ -111,17 +118,23 @@ public class ToscaOperationImpl {
 		// I add the data and get the final docker template and write it
 
 		String dockerFile = new String(id+".dockerfile");
-		compilePuppetTemplate(dockerFile, creationPath , toscaPath+myDCTemplate, nodeDataDC);
+		compilePuppetTemplate(dockerFile, servicePath , myDCTemplate, toscaPath, nodeDataDC);
 		System.out.println("Dockerfile created");
 		return id;
 		
 	}
 	
 	public String compilePuppetTemplate(String destinationName,
-			String destinationPath, String template, Map data) {
+			String destinationPath, String template, String templateLocation, Map data) {
 
 
 		Configuration cfg = new Configuration();
+		try {
+			cfg.setDirectoryForTemplateLoading(new File(templateLocation));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Template tpl = null;
 		try {
 			tpl = cfg.getTemplate(template);

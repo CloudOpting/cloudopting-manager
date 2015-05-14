@@ -20,7 +20,7 @@ public class Deploy implements JavaDelegate {
 		// TODO Auto-generated method stub
 		log.debug("in Deploy");
 		String customizationId = (String) execution.getVariable("customizationId");
-		toscaService.getNodeType(customizationId,"");
+//		toscaService.getNodeType(customizationId,"");
 		
 	}
 
