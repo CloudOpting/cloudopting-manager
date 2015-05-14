@@ -1,15 +1,22 @@
 package eu.cloudopting.docker.cluster;
 
+import eu.cloudopting.docker.restclient.CraneRestClient;
+
 
 /**
  *
- * TODO: javadoc
+ * Represents a swarm master
  *
  */
 public class SwarmMaster {
-
-	public SwarmMaster(){
+	// TODO: define statuses, errors, methods...
+	public SwarmMaster(CraneRestClient craneHandler, Machine machine){
 		// TODO
+	}
+
+	public void install() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

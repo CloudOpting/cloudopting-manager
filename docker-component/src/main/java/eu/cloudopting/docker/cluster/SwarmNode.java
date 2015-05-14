@@ -3,11 +3,11 @@ package eu.cloudopting.docker.cluster;
 
 /**
  *
- * TODO: javadoc
+ * Represents a swarm node
  *
  */
 public class SwarmNode {
-
+	// TODO: define statuses, errors, methods...
 	public SwarmNode(){
 		// TODO
 	}

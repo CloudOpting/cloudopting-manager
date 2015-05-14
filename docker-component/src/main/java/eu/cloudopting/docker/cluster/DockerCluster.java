@@ -1,5 +1,6 @@
 package eu.cloudopting.docker.cluster;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import eu.cloudopting.docker.DockerError;
@@ -7,51 +8,78 @@ import eu.cloudopting.docker.restclient.CraneRestClient;
 
 /**
  *
- * TODO: javadoc
+ * Handles the swarm cluster creation
  *
  */
 public class DockerCluster {
 
-	public DockerCluster(CraneRestClient restClient) {
-		// TODO Auto-generated constructor stub
+	private ArrayList<Machine> machineList;
+	private ArrayList<SwarmNode> nodeList;
+	private SwarmMaster master;
+	private CraneRestClient craneHandler;
+	
+	public DockerCluster(CraneRestClient craneHandler) {
+		this.craneHandler = craneHandler;
 	}
 
 
-	/* Methods */
+	public void create(){
+		
+	}
 
+	
 	/**
-	 * TODO: create cluster with one VM
+	 * Adds a machine to the list.
+	 * @param hostname	Machine hostname or IP
+	 * @param port	Machine ssh port
+	 * @param privateKey	File containing the private key for ssh access
+	 * @param passphrase	Passphrase to decrypt the private key
 	 */
-	public String create(String hostname, int port, String privateKeyFilePath, String passphrase) throws DockerError {
+	public void addMachine(String hostname, int port, File privateKey, String passphrase) {
+		machineList.add(new Machine(this.craneHandler, hostname, port, privateKey, passphrase));
+	}
+	
+	/**
+	 * Creates a swarm master in the first machine provided.
+	 * @throws DockerError
+	 */
+	public void createMaster() throws DockerError {
+		this.master = new SwarmMaster(this.craneHandler, this.machineList.iterator().next());
+		this.master.install();
+	}
+	
+	/**
+	 * Checks if the swarm master is running.
+	 * @return true if yes, false if not.
+	 * @throws DockerError if error
+	 */
+	public boolean isMasterRunning() throws DockerError {
+		// TODO: check in is master running
+		return true;
+	}
+	
+	/**
+	 * Ask the swarm agent in the machines to join the swarm cluster.
+	 * @throws DockerError
+	 */
+	public void joinNodes() throws DockerError {
 		// TODO
-		String token = "gDxaX29P8v";
-		return token;
+	}
+	
+	/**
+	 * Checks if the swarm agents have been connected to the master.
+	 * @return true if yes, false if not.
+	 * @throws DockerError if error
+	 */
+	public boolean areNodesConnectedToMaster() throws DockerError {
+		// TODO: check in is master running
+		return true;
 	}
 
-
 	/**
-	 * TODO: retrieve info about the general status of a cluster
+	 * Stops the cluster and unlink the swarm agents
 	 */
-	public String getInfo(String token)  throws DockerError {
-		// TODO
-		String result;
-		if(token.equals("gDxaX29P8v")){
-			result = "{\"statusCode\":\"1\",\"statusDescription\": \"Connecting to machines\", \"detailedStatus\":{} }";
-		}else if(token.equals("45R1NG9E5X")){
-			result = "{\"statusCode\":\"2\" ,\"statusDescription\": \"Connected to machines. Creating swarm master.\" }";
-		}else if(token.equals("45R1NG9E5X")){
-			result = "{\"statusCode\":\"3\" ,\"statusDescription\": \"Creating swarm master\" }";
-		}else{
-			result = "{\"statusCode\":\"2\" ,\"statusDescription\":\"build error\", \"additonalInfo\":\"INFO[0004] Error: image library/imagename:latest not found\"}";
-		}
-		return result;
-	}
-
-
-	/**
-	 * TODO: destroy a cluster
-	 */
-	public void stop(String token)  throws DockerError {
+	public void stop(String token) throws DockerError {
 		// TODO
 	}
 

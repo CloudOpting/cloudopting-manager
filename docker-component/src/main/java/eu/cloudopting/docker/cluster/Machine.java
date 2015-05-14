@@ -1,14 +1,18 @@
 package eu.cloudopting.docker.cluster;
 
+import java.io.File;
+
+import eu.cloudopting.docker.restclient.CraneRestClient;
+
 
 /**
  *
- * TODO: javadoc
+ * Represents a machine
  *
  */
 public class Machine {
-
-	public Machine(){
+	// TODO: define statuses, errors, methods...
+	public Machine(CraneRestClient craneHandler, String hostname, int port, File privateKey, String passphrase){
 		// TODO
 	}
 
