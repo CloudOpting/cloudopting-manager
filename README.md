@@ -15,7 +15,6 @@ The following tables explains the modules and the subdivision
 | [storage-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/storage-component "storage-component") | | This component contains the jackrabbit classes to help manage the storage of files | |
 | [tosca-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/tosca-component "tosca-component") | | This component contains the TOSCA parser thsat manages all the interactions with the TOSCA world | |
 | [wordpress-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/wordpress-component "wordpress-component") | | This component contains the code necessary to interact through API with wordpress for the public view of the catalogue | |
-| [webui-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/webui-component "webui-component") | | This component contains the web interface of the project | |
 
 ## Development environment configuration
 The following description helps setting up a CentOS 7 development environment.
