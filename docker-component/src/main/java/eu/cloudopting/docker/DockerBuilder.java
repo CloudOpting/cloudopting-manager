@@ -10,7 +10,7 @@ import eu.cloudopting.docker.CraneRestClient;
 import eu.cloudopting.docker.DockerError;
 
 /**
- * 
+ *
  * TODO: javadoc
  *
  */
@@ -20,23 +20,23 @@ public class DockerBuilder {
 	public DockerBuilder(CraneRestClient restClient) {
 		// TODO
 	}
-	
-	/* Methods */	
+
+	/* Methods */
 	/**
 	 * TODO: start the building process for one docker image
 	 */
 	public String start(String pathToDockerfile, String pathToPuppetManifest, String imageName) throws DockerError {
 		// TODO
-		String token = null;
+		String token = "52d6NR1U1X";
 		return token;
 	}
-	
+
 	/**
 	 * TODO: start the building process for several docker images
 	 */
 	public String start(ArrayList<String> pathsToDockerfiles, ArrayList<String> pathsToPuppetManifests, ArrayList<String> imageNames)  throws DockerError {
 		// TODO
-		String token = null;
+		String token = "vJQ22H4P8f";
 		return token;
 	}
 
@@ -45,16 +45,22 @@ public class DockerBuilder {
 	 */
 	public String getInfo(String token)  throws DockerError {
 		// TODO
-		String result = null;
+		String result;
+		if(token.equals("vJQ22H4P8f")){
+			result = "{"status": "building" }";
+		}else if(token.equals("52d6NR1U1X")){
+			result = "{"status": "completed" }";
+		}else  if(token.equals("76c6yU8W1k")){
+			result = "{"status":"build error", "additonalInfo":"INFO[0004] Error: image library/imagename:latest not found"}"
+		}
 		return result;
 	}
-	
+
 	/**
 	 * TODO: retrieve info about the building process
 	 */
 	public void stopBuild(String token)  throws DockerError {
 		// TODO
 	}
-	
-}
 
+}
