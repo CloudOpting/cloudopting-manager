@@ -2,7 +2,7 @@ package eu.cloudopting.docker;
 
 
 /**
- * 
+ *
  * TODO: javadoc
  *
  */
@@ -14,6 +14,3 @@ public class DockerError extends Exception{
     }
 
 }
-
-
-

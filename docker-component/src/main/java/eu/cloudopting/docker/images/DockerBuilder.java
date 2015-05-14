@@ -1,13 +1,9 @@
-package eu.cloudopting.docker;
+package eu.cloudopting.docker.images;
 
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.client.RestTemplate;
-
-import eu.cloudopting.docker.CraneRestClient;
 import eu.cloudopting.docker.DockerError;
+import eu.cloudopting.docker.restclient.CraneRestClient;
 
 /**
  *
@@ -15,7 +11,6 @@ import eu.cloudopting.docker.DockerError;
  *
  */
 public class DockerBuilder {
-	private final Logger log = LoggerFactory.getLogger(DockerBuilder.class);
 
 	public DockerBuilder(CraneRestClient restClient) {
 		// TODO
@@ -47,11 +42,11 @@ public class DockerBuilder {
 		// TODO
 		String result;
 		if(token.equals("vJQ22H4P8f")){
-			result = "{"status": "building" }";
+			result = "{\"statusCode\":\"1\" ,\"statusDescription\": \"building\" }";
 		}else if(token.equals("52d6NR1U1X")){
-			result = "{"status": "completed" }";
-		}else  if(token.equals("76c6yU8W1k")){
-			result = "{"status":"build error", "additonalInfo":"INFO[0004] Error: image library/imagename:latest not found"}"
+			result = "{\"statusCode\":\"0\" ,\"statusDescription\": \"completed\" }";
+		}else{
+			result = "{\"statusCode\":\"2\" ,\"statusDescription\":\"build error\", \"additonalInfo\":\"INFO[0004] Error: image library/imagename:latest not found\"}";
 		}
 		return result;
 	}

@@ -1,30 +1,25 @@
-package eu.cloudopting.docker;
+package eu.cloudopting.docker.composer;
 
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.client.RestTemplate;
-
-import eu.cloudopting.docker.CraneRestClient;
+import eu.cloudopting.docker.restclient.CraneRestClient;
 import eu.cloudopting.docker.DockerError;
 
 /**
- * 
+ *
  * TODO: javadoc
  *
  */
 public class DockerComposer {
-	private final Logger log = LoggerFactory.getLogger(DockerComposer.class);
 
-	
+
 
 	public DockerComposer(CraneRestClient restClient) {
 		// TODO Auto-generated constructor stub
 	}
 
 	/* Methods */
-		
+
 	/**
 	 * TODO: start the deploy of a composition of containers
 	 */
@@ -42,7 +37,7 @@ public class DockerComposer {
 		String result = null;
 		return result;
 	}
-	
+
 	/**
 	 * TODO: destroy stop the deploy process
 	 */
@@ -50,6 +45,3 @@ public class DockerComposer {
 		// TODO
 	}
 }
-
-
-
