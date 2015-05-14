@@ -11,7 +11,33 @@ import eu.cloudopting.docker.composer.DockerComposer;
 
 /**
  *
- * TODO: javadoc
+ * Wraps all the docker related functions (building, clustering and composing).
+ * 
+ * Typically the process will be similar to this (pseudocode):
+ * 
+ * dockerService.builder.addImage(image1, new File("/service1/apache/Dockerfile"), new File ("/service1/apache/Puppetscript.pp"));
+ * dockerService.builder.addImage(image2, new File(/service1/mysql/Dockerfile), new File ("/service1/mysql/Puppetscript.pp"));
+ * dockerService.builder.start();
+ * while(!dockerService.builder.isFinished()){}
+ * if(!dockerService.builder.isFinishedSuccefully()){
+ * 	exit();
+ * }
+ * 
+ * 
+ * 
+ * dockeService.cluster.addMachine("192.168.1.10", "21", new File ("/service1/vms/vm1.key", "passphrase");
+ * dockeService.cluster.addMachine("192.168.1.11", "21", new File ("/service1/vms/vm2.key", "passphrase");
+ * dockeService.cluster.addMachine("192.168.1.12", "21", new File ("/service1/vms/vm3.key", "passphrase");
+ * dockerService.cluster.createMaster();
+ * while(!dockerService.cluster.isMasterRunning()){}
+ * dockerService.cluster.joinNodes();
+ * while(!dockerServcide.cluster.areNodesConnectedToMaster()){}
+ * 
+ * 
+ * 
+ * dockerService.composer.start(new File ("/service1/docker-compose.yml"));
+ * while(!dockerService.composer.isFinished()){}
+ *
  *
  */
 @Service

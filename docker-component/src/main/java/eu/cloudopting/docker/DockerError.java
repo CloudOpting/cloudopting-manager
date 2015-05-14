@@ -3,7 +3,7 @@ package eu.cloudopting.docker;
 
 /**
  *
- * TODO: javadoc
+ * Means that the Docker commander API is reporting an error.
  *
  */
 public class DockerError extends Exception{
