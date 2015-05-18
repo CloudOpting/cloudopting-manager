@@ -44,12 +44,13 @@ import eu.cloudopting.docker.composer.DockerComposer;
 public class DockerService {
 	private final Logger log = LoggerFactory.getLogger(DockerService.class);
 
-	public CraneRestClient restClient;
-	public DockerBuilder builder;
-	public DockerCluster cluster;
-	public DockerComposer composer;
+	private CraneRestClient restClient;
+	private DockerBuilder builder;
+	private DockerCluster cluster;
+	private DockerComposer composer;
 
 	public DockerService (){
+		// @TODO this has to be configured from properties and not hardcoded
 		this("http://localhost:8888");	// By default the cloudopting-crane api end-point will be port 8888 on localhost.
 	}
 
@@ -60,4 +61,9 @@ public class DockerService {
 		this.composer = new DockerComposer(restClient);
 	}
 
+	public String buildDockerImage(String image, String dockerFile, String executionPath){
+		String retToken = "12342";
+		log.debug("in buildDockerImage and calling the API");
+		return retToken;
+	}
 }
