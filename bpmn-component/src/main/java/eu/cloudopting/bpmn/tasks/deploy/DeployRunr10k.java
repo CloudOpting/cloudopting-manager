@@ -16,10 +16,13 @@ public class DeployRunr10k implements JavaDelegate {
 	ToscaService toscaService;
 
 	@Override
-	public void execute(DelegateExecution arg0) throws Exception {
+	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in DeployRunr10k");
-//		toscaService.getNodeType("");
+		String customizationId = (String) execution.getVariable("customizationId");
+		String coRoot = (String) execution.getVariable("coRoot");
+		String serviceHome = (String) execution.getVariable("serviceHome");
+		toscaService.runR10k(customizationId, serviceHome, coRoot);
 		
 	}
 
