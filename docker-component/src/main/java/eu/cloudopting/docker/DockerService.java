@@ -1,5 +1,7 @@
 package eu.cloudopting.docker;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,9 @@ import eu.cloudopting.docker.composer.DockerComposer;
 /**
  *
  * Wraps all the docker related functions (building, clustering and composing).
- * 
+ *
  * Typically the process will be similar to this (pseudocode):
- * 
+ *
  * dockerService.builder.addImage(image1, new File("/service1/apache/Dockerfile"), new File ("/service1/apache/Puppetscript.pp"));
  * dockerService.builder.addImage(image2, new File(/service1/mysql/Dockerfile), new File ("/service1/mysql/Puppetscript.pp"));
  * dockerService.builder.start();
@@ -22,9 +24,9 @@ import eu.cloudopting.docker.composer.DockerComposer;
  * if(!dockerService.builder.isFinishedSuccefully()){
  * 	exit();
  * }
- * 
- * 
- * 
+ *
+ *
+ *
  * dockeService.cluster.addMachine("192.168.1.10", "21", new File ("/service1/vms/vm1.key", "passphrase");
  * dockeService.cluster.addMachine("192.168.1.11", "21", new File ("/service1/vms/vm2.key", "passphrase");
  * dockeService.cluster.addMachine("192.168.1.12", "21", new File ("/service1/vms/vm3.key", "passphrase");
@@ -32,9 +34,9 @@ import eu.cloudopting.docker.composer.DockerComposer;
  * while(!dockerService.cluster.isMasterRunning()){}
  * dockerService.cluster.joinNodes();
  * while(!dockerServcide.cluster.areNodesConnectedToMaster()){}
- * 
- * 
- * 
+ *
+ *
+ *
  * dockerService.composer.start(new File ("/service1/docker-compose.yml"));
  * while(!dockerService.composer.isFinished()){}
  *
@@ -61,9 +63,29 @@ public class DockerService {
 		this.composer = new DockerComposer(restClient);
 	}
 
-	public String buildDockerImage(String image, String dockerFile, String executionPath){
-		String retToken = "12342";
+	/**
+	 * Starts build process for an image.
+	 * @param image Image name
+	 * @param dockerFile Dockerfile path
+	 * @param executionPath Puppet manifests path
+	 * @throws DockerError if API returns error when starting the process.
+	 */
+	public void buildDockerImage(String image, String dockerFile, String executionPath) throws DockerError{
+		this.builder.addImage(image, new File (dockerFile), new File(executionPath));
+		this.builder.start();
 		log.debug("in buildDockerImage and calling the API");
-		return retToken;
 	}
+	
+	/**
+	 * Check if the build is finished.
+	 * @return true if build finished, false if not.
+	 * @throws DockerError if build error
+	 */
+	public boolean isBuilt() throws DockerError{
+		return this.builder.isFinished();
+	}
+	
+	// TODO: add methods for all the operations (cluster and composer)
+	
+	
 }

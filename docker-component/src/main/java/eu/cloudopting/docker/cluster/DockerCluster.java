@@ -17,17 +17,12 @@ public class DockerCluster {
 	private ArrayList<SwarmNode> nodeList;
 	private SwarmMaster master;
 	private CraneRestClient craneHandler;
-	
+
 	public DockerCluster(CraneRestClient craneHandler) {
 		this.craneHandler = craneHandler;
 	}
 
 
-	public void create(){
-		
-	}
-
-	
 	/**
 	 * Adds a machine to the list.
 	 * @param hostname	Machine hostname or IP
@@ -38,7 +33,7 @@ public class DockerCluster {
 	public void addMachine(String hostname, int port, File privateKey, String passphrase) {
 		machineList.add(new Machine(this.craneHandler, hostname, port, privateKey, passphrase));
 	}
-	
+
 	/**
 	 * Creates a swarm master in the first machine provided.
 	 * @throws DockerError
@@ -47,7 +42,7 @@ public class DockerCluster {
 		this.master = new SwarmMaster(this.craneHandler, this.machineList.iterator().next());
 		this.master.install();
 	}
-	
+
 	/**
 	 * Checks if the swarm master is running.
 	 * @return true if yes, false if not.
@@ -57,7 +52,7 @@ public class DockerCluster {
 		// TODO: check in is master running
 		return true;
 	}
-	
+
 	/**
 	 * Ask the swarm agent in the machines to join the swarm cluster.
 	 * @throws DockerError
@@ -65,7 +60,7 @@ public class DockerCluster {
 	public void joinNodes() throws DockerError {
 		// TODO
 	}
-	
+
 	/**
 	 * Checks if the swarm agents have been connected to the master.
 	 * @return true if yes, false if not.

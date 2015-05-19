@@ -87,7 +87,7 @@ public class DockerBuilder {
 	 * @param token
 	 * @throws DockerError
 	 */
-	public void stop()  throws DockerError {
+	public void stop() throws DockerError {
 		// TODO
 	}
 
