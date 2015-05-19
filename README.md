@@ -69,6 +69,10 @@ The framework used is [Spring](https://spring.io/) and in particular Sprint-boot
 It has a BPMN engine embedded, and the project opted for [Activiti](http://activiti.org/)
 
 Other libraries used are:
- * [Freemarker]()
- * [JGraphT]()
- * [JClouds]()
+ * [Freemarker](http://freemarker.org/)
+ * [JGraphT](http://jgrapht.org/)
+ * [JClouds](https://jclouds.apache.org/)
+
+
+## Activity
+[![Throughput Graph](https://graphs.waffle.io/CloudOpting/cloudopting-manager/throughput.svg)](https://waffle.io/CloudOpting/cloudopting-manager/metrics) 
