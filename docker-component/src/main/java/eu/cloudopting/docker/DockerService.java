@@ -70,10 +70,14 @@ public class DockerService {
 	 * @param executionPath Puppet manifests path
 	 * @throws DockerError if API returns error when starting the process.
 	 */
-	public void buildDockerImage(String image, String dockerFile, String executionPath) throws DockerError{
+	public String buildDockerImage(String image, String dockerFile, String executionPath) throws DockerError{
+		String retToken = "1234";
+		// THIS IS WRONG you do not get the file the file is already in the file system you get the correct path to it
 		this.builder.addImage(image, new File (dockerFile), new File(executionPath));
 		this.builder.start();
 		log.debug("in buildDockerImage and calling the API");
+		log.debug("executing: docker build -t "+ image + " -f " + dockerFile + " " + executionPath);
+		return retToken;
 	}
 	
 	/**
