@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import eu.cloudopting.docker.images.DockerImage;
 import eu.cloudopting.docker.restclient.CraneRestClient;
 import eu.cloudopting.docker.DockerError;
 
@@ -15,67 +14,54 @@ import eu.cloudopting.docker.DockerError;
  */
 public class DockerComposer {
 	
-	/**
-	 * 
-	 * DockerComposer possible statuses.
-	 *
-	 */
-	public enum Status {
-	    NOT_STARTED, STARTED, FINISHED, FAILURE
-	}
 
 	private CraneRestClient craneHandler;
-	private File sourceDockerComposeYml;
-	private String deployOperationToken;
-	private Status status;
 	
 	public DockerComposer(CraneRestClient craneHandler) {
 		this.craneHandler = craneHandler;
-		this.status = this.status.NOT_STARTED;
 	}
 
 
 	/**
-	 * Starts the deploy process.
-	 * @param sourceDockerComposeYml docker-compose.yml to deploy
+	 * Asks the API to starts the deploy process.
+	 * @param sourceDockerComposeYml Path to docker-compose.yml to deploy
+	 * @param clusterToken Token that identifies the cluster. It is given by the createCluster operation.
 	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
-	public void start(File sourceDockerComposeYml) throws DockerError {
-		this.sourceDockerComposeYml = sourceDockerComposeYml;
+	public String startDeployment(String sourceDockerComposeYml, String clusterToken) throws DockerError {
 		// TODO: call the API to start the process
-		this.deployOperationToken = craneHandler.newComposition(this.sourceDockerComposeYml);
+		return "token";
 	}
 	
 	/**
-	 * Checks if the deploy process has finished
-	 * @return True if the process has finished (doesn't care the result) or false.
-	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 * Asks the API if the deploy process has finished
+	 * @return True if the process has finished or false.
+	 * @throws DockerError Throws this when the builder returns any non successful response or if there is any error in the deployment.
 	 */
-	public boolean isFinished() throws DockerError{
+	public boolean isDeployed(String token) throws DockerError{
 		// TODO: retrieve the status, parse response.
-		this.status=this.status.FINISHED;
 		return true;
 	}
 	
 	/**
-	 * Checks if the deploy process has finished
-	 * @return True if the process has finished properly or false if not.
-	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 * Retrieves detailed information about the deployment.
+	 * @param token Operation token
+	 * @return Detailed information about the deployment.
+	 * @throws DockerError Throws this when the builder returns any non successful response or if there is any error in the deployment.
 	 */
-	public boolean isFinishedSuccessfully() throws DockerError{
-		// TODO: retrieve the status, parse response.
-		this.status=this.status.FINISHED;
-		return true;
+	public String getInfo(String token) throws DockerError{
+		// TODO 
+		return "Detailed information about the deployment.";
 	}
-
 
 	/**
 	 * Ask Docker Crane to stop the deploy process and destroy the containers.
-	 * @param token
+	 * @param token Operation token.
 	 * @throws DockerError
 	 */
-	public void stop()  throws DockerError {
+	public void stopComposition(String token)  throws DockerError {
 		// TODO
 	}
+
 
 }

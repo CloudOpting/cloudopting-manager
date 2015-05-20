@@ -1,6 +1,8 @@
 package eu.cloudopting.docker;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import eu.cloudopting.docker.restclient.CraneRestClient;
 import eu.cloudopting.docker.images.DockerBuilder;
 import eu.cloudopting.docker.cluster.DockerCluster;
+import eu.cloudopting.docker.cluster.Machine;
 import eu.cloudopting.docker.composer.DockerComposer;
 
 /**
@@ -62,34 +65,179 @@ public class DockerService {
 		this.cluster = new DockerCluster(restClient);
 		this.composer = new DockerComposer(restClient);
 	}
+	
+	
+	// Building
 
 	/**
 	 * Starts build process for an image.
 	 * @param image Image name
 	 * @param dockerFile Dockerfile path
 	 * @param executionPath Puppet manifests path
-	 * @throws DockerError if API returns error when starting the process.
+	 * @throws DockerError If API returns error when starting the process.
 	 */
 	public String buildDockerImage(String image, String dockerFile, String executionPath) throws DockerError{
-		String retToken = "1234";
-		// THIS IS WRONG you do not get the file the file is already in the file system you get the correct path to it
-		this.builder.addImage(image, new File (dockerFile), new File(executionPath));
-		this.builder.start();
 		log.debug("in buildDockerImage and calling the API");
 		log.debug("executing: docker build -t "+ image + " -f " + dockerFile + " " + executionPath);
-		return retToken;
+		return this.builder.startBuild(image, dockerFile, executionPath);
 	}
 	
 	/**
-	 * Check if the build is finished.
+	 * Checks if the building is finished.
 	 * @return true if build finished, false if not.
-	 * @throws DockerError if build error
+	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
-	public boolean isBuilt() throws DockerError{
-		return this.builder.isFinished();
+	public boolean isBuilt(String token) throws DockerError{
+		log.debug("in isBuilt and calling the API");
+		return this.builder.isFinished(token);
 	}
 	
-	// TODO: add methods for all the operations (cluster and composer)
+	/**
+	 * Retrieves detailed information about the build process.
+	 * @param token Operation token
+	 * @return Build log
+	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 */
+	public String getBuildInfo(String token) throws DockerError{
+		log.debug("in getBuildInfo and calling the API");
+		return this.builder.getInfo(token);
+	}
 	
+	/**
+	 * Tries to stop the build process and destroy the related data (images, temporal containers, etc)
+	 * @param token Operation token
+	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 */
+	public void stop(String token) throws DockerError{
+		log.debug("in stop and calling the API");
+		this.builder.stop(token);
+	}
+	
+	
+	
+	// Clustering
+	
+	/**
+	 * Create a cluster with a unique machine and private key + passphrase credentials.
+	 * @param hostname Machine hostname or IP address
+	 * @param port SSH port
+	 * @param privateKey Private key with SSH privileges 
+	 * @param passphrase Passphrase to decrypt the privateKey. Null if passphrase not needed.
+	 * @return Operation token that also identifies the cluster in the Docker Crane.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String createCluster(String hostname, int port, File privateKey, String passphrase) throws DockerError{
+		log.debug("in createCluster (private key + passphrase credentials) and calling the API");
+		return this.cluster.initCluster(new Machine(hostname, port, privateKey, passphrase));
+	}
+	
+	/**
+	 * Create a cluster with a unique machine and user + password credentials.
+	 * @param hostname Machine hostname or IP address
+	 * @param port SSH port
+	 * @param user User
+	 * @param password Password for user
+	 * @return Operation token that also identifies the cluster in the Docker Crane.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String createCluster(String hostname, int port, String user, String password) throws DockerError{
+		log.debug("in createCluster (user + pass credentials) and calling the API");
+		return this.cluster.initCluster(new Machine(hostname, port, user, password));
+	}
+	
+	/**
+	 * Create a cluster with a list of machines.
+	 * @param machines List of machines that will compose the cluster.
+	 * @return Operation token that also identifies the cluster in the Docker Crane.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String createCluster(ArrayList<Machine> machines) throws DockerError{
+		log.debug("in createCluster (from list of machines) and calling the API");
+		return this.cluster.initCluster(machines);
+	}
+	
+	/**
+	 * Checks if the cluster is ready to deploy containers.
+	 * @return true if it is ready, false if not.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public boolean isClusterReady(String token) throws DockerError{
+		log.debug("in isClusterReady and calling the API");
+		return this.cluster.isReady(token);
+	}
+	
+	/**
+	 * Retrieves detailed information about docker cluster.
+	 * @param token Operation token
+	 * @return Status information about the cluster in a human-readable format.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String getClusterInfo(String token) throws DockerError{
+		log.debug("in getClusterInfo and calling the API");
+		return this.cluster.getInfo(token);
+	}
+	
+	/**
+	 * Tries to stop the cluster (destroy containers, and unlink machines from master)
+	 * @param token Operation token
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public void stopCluster(String token) throws DockerError{
+		log.debug("in stopCluster and calling the API");
+		this.cluster.stop(token);
+	}
+	
+	
+	// Composing
+	
+	/**
+	 * Start the deployment of a docker composition
+	 * @param machines List of machines that will compose the cluster.
+	 * @return Operation token that also identifies the cluster in the Docker Crane.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	
+	/**
+	 * Starts the deployment of a docker composition.
+	 * @param composerFilePath Path to the docker-compose.yml file
+	 * @param clusterToken Token that identifies the cluster. It is given by the createCluster operation.
+	 * @return OperationToken Token that identifies the deployment.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String deployComposition(String composerFilePath, String clusterToken) throws DockerError{
+		log.debug("in deployComposition and calling the API");
+		return this.composer.startDeployment(composerFilePath, clusterToken);
+	}
+	
+	/**
+	 * Checks if the composition has been deployed successfully.
+	 * @return true if it is ready, false if not.
+	 * @throws DockerError Throws this when the API returns a non successful response. If error in occur in the deployment this will be raised.
+	 */
+	public boolean isCompositionDeployed(String token) throws DockerError{
+		log.debug("in isCompositionDeployed and calling the API");
+		return this.composer.isDeployed(token);
+	}
+	
+	/**
+	 * Retrieves detailed information about deployment.
+	 * @param token Operation token
+	 * @return Status information about the deployment in a human-readable format.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String getDeploymentInfo(String token) throws DockerError{
+		log.debug("in getDeploymentInfo and calling the API");
+		return this.composer.getInfo(token);
+	}
+	
+	/**
+	 * Tries to stop the deployment and remove the containers.
+	 * @param token Operation token
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public void stopComposition(String token) throws DockerError{
+		log.debug("in stopComposition and calling the API");
+		this.composer.stopComposition(token);
+	}
 	
 }

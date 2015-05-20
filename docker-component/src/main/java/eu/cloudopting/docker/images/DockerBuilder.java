@@ -14,7 +14,6 @@ import eu.cloudopting.docker.restclient.CraneRestClient;
  */
 public class DockerBuilder {
 	
-	private ArrayList<DockerImage> imageList;
 	private CraneRestClient craneHandler;
 
 	public DockerBuilder(CraneRestClient craneHandler) {
@@ -22,73 +21,43 @@ public class DockerBuilder {
 	}
 	
 	/**
-	 * Adds an image (base from Dockerfile) to be built to the list.
+	 * Asks the API to start a building process.
 	 * @param name Desired Name for the image.
-	 * @param sourceDockerfile Base Dockerfile.
-	 * @param puppetManifest Puppet recipe for the image.
+	 * @param sourceDockerfile Base Dockerfile path.
+	 * @param executionPath Path where the puppet stuff is.
+	 * @return Operation token.
+	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
-	public void addImage(String name, File sourceDockerfile, File puppetManifest){
-		imageList.add(new DockerImage(this.craneHandler, name, sourceDockerfile, puppetManifest));
+	public String startBuild(String name, String sourceDockerfile, String executionPath){
+		return "token";
 	}
 	
 	/**
-	 * Adds an image (base from image name) to be built to the list.
-	 * @param name Desired Name for the image.
-	 * @param sourceDockerBaseImage Name of the base docker image 
-	 * @param puppetManifest Puppet recipe for the image.
+	 * Checks if the building process has finished.
+	 * @return True if the image has been built. False in other case.
+	 * @throws DockerError Throws this when the builder returns any non successful response (also when the building process finished but with errors).
 	 */
-	public void addImage(String name, String sourceDockerBaseImage, File puppetManifest){
-		imageList.add(new DockerImage(this.craneHandler, name, sourceDockerBaseImage, puppetManifest));
-	}
-
-
-	/**
-	 * Start the build process for the images in the list.
-	 * @throws DockerError Throws this when the builder returns any non successful response.
-	 */
-	public void start() throws DockerError {
-		Iterator<DockerImage> iterator = imageList.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().launchCreationRequest();
-		}
-	}
-	
-	/**
-	 * Checks if the build process has finished for all images.
-	 * @return True if all the images are built or an an error occurred. False in other case.
-	 * @throws DockerError Throws this when the builder returns any non successful response.
-	 */
-	public boolean isFinished() throws DockerError{
-		Iterator<DockerImage> iterator = imageList.iterator();
-		while (iterator.hasNext()) {
-			if(!iterator.next().isFinished())
-				return false;
-		}
+	public boolean isFinished(String token) throws DockerError{
 		return true;
 	}
 	
 	/**
-	 * Checks if the build process has finished and the images has been created correctly.
-	 * @return True if all the images are built correctly. False in other case.
-	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 * Asks the API for information about the building process
+	 * @param token Operation token
+	 * @return Build log
+	 * @throws DockerError Throws this when the API returns any non successful response (i.e. can not get log, or something like this).
 	 */
-	public boolean isFinishedSuccessfully() throws DockerError{
-		Iterator<DockerImage> iterator = imageList.iterator();
-		while (iterator.hasNext()) {
-			if(!iterator.next().isCreated())
-				return false;
-		}
-		return true;
+	public String getInfo(String token) throws DockerError{
+		return "This is a log with information about the building process.";
 	}
-
+	
 
 	/**
-	 * Ask Docker Crane to stop the build process of the images in the list and destroy them.
-	 * @param token
-	 * @throws DockerError
+	 * Asks the API to stop the building process and destroy the related temporal data.
+	 * @param token Operation token
+	 * @throws DockerError Throws this when the API returns any non successful response.
 	 */
-	public void stop() throws DockerError {
-		// TODO
+	public void stop(String token) throws DockerError {
 	}
 
 }

@@ -13,69 +13,62 @@ import eu.cloudopting.docker.restclient.CraneRestClient;
  */
 public class DockerCluster {
 
-	private ArrayList<Machine> machineList;
-	private ArrayList<SwarmNode> nodeList;
-	private SwarmMaster master;
 	private CraneRestClient craneHandler;
 
 	public DockerCluster(CraneRestClient craneHandler) {
 		this.craneHandler = craneHandler;
 	}
 
-
 	/**
-	 * Adds a machine to the list.
-	 * @param hostname	Machine hostname or IP
-	 * @param port	Machine ssh port
-	 * @param privateKey	File containing the private key for ssh access
-	 * @param passphrase	Passphrase to decrypt the private key
+	 * Asks the API to initialize a cluster (or simple a docker host) in a machine.
+	 * @param machine Machine in which the docker cluster will be initialized
+	 * @return token Operation token
+	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
-	public void addMachine(String hostname, int port, File privateKey, String passphrase) {
-		machineList.add(new Machine(this.craneHandler, hostname, port, privateKey, passphrase));
-	}
-
-	/**
-	 * Creates a swarm master in the first machine provided.
-	 * @throws DockerError
-	 */
-	public void createMaster() throws DockerError {
-		this.master = new SwarmMaster(this.craneHandler, this.machineList.iterator().next());
-		this.master.install();
-	}
-
-	/**
-	 * Checks if the swarm master is running.
-	 * @return true if yes, false if not.
-	 * @throws DockerError if error
-	 */
-	public boolean isMasterRunning() throws DockerError {
-		// TODO: check in is master running
-		return true;
-	}
-
-	/**
-	 * Ask the swarm agent in the machines to join the swarm cluster.
-	 * @throws DockerError
-	 */
-	public void joinNodes() throws DockerError {
+	public String initCluster(Machine machine) throws DockerError {
 		// TODO
+		return "token";
 	}
 
 	/**
-	 * Checks if the swarm agents have been connected to the master.
-	 * @return true if yes, false if not.
-	 * @throws DockerError if error
+	 * Asks the API to initialize a cluster with several machines.
+	 * @param machines Machine in which the docker cluster will be initialized
+	 * @return token Operation token
+	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
-	public boolean areNodesConnectedToMaster() throws DockerError {
-		// TODO: check in is master running
+	public String initCluster(ArrayList<Machine> machines) throws DockerError {
+		// TODO
+		return "token";
+	}
+
+	/**
+	 * Asks the API if the cluster is ready to deploy containers.
+	 * @param token Operation token
+	 * @return true if it is ready, false if not.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public boolean isReady(String token) throws DockerError{
+		// TODO
 		return true;
+	}
+
+	/**
+	 * Asks the API for detailed information about cluster.
+	 * @param token Operation token
+	 * @return Info about the cluster.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String getInfo(String token) throws DockerError {
+		// TODO
+		return "This is info about the cluster.";
 	}
 
 	/**
 	 * Stops the cluster and unlink the swarm agents
+	 * @param token Operation token
+	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public void stop(String token) throws DockerError {
 		// TODO
 	}
-
 }
