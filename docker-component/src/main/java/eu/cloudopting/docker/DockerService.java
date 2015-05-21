@@ -216,6 +216,11 @@ public class DockerService {
 	 */
 	public String deployComposition(String composerFilePath, String clusterToken) throws DockerError{
 		log.debug("in deployComposition and calling the API");
+		// checkpoint-----------
+		// at the moment we need to do the following call:
+//		"cd "+path+"/"+customer+"-"+service+" && docker-compose up --no-build -d"
+
+		// need to have a description of what the closterTocken is and how is used that information 
 		return this.composer.startDeployment(composerFilePath, clusterToken);
 	}
 	

@@ -7,21 +7,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.docker.DockerService;
 import eu.cloudopting.tosca.ToscaService;
 
 @Service
 public class Deploy implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(Deploy.class);
 	@Autowired
-	ToscaService toscaService;
+	DockerService dockerService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in Deploy");
 		String customizationId = (String) execution.getVariable("customizationId");
+		String serviceHome = (String) execution.getVariable("serviceHome");
 //		toscaService.getNodeType(customizationId,"");
+		String deployToken = dockerService.deployComposition(serviceHome, null);
 		
+//		"cd "+path+"/"+customer+"-"+service+" && docker-compose up --no-build -d"
+		execution.setVariable("deployToken", deployToken);
 	}
 
 }
