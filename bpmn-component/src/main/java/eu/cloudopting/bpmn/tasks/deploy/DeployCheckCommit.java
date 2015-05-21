@@ -29,8 +29,8 @@ public class DeployCheckCommit implements JavaDelegate {
 		String commitToken = (String) execution.getVariable("commitToken");
 		TimeUnit.SECONDS.sleep(4);
 //		toscaService.getNodeType(customizationId,"");
-		boolean check = dockerService.isBuilt(commitToken);
-		execution.setVariable("vmInstalled", check);
+		boolean check = dockerService.isCommitted(commitToken);
+		execution.setVariable("chkCommit", check);
 		
 	}
 

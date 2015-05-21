@@ -38,6 +38,7 @@ public class DeployDockerBuild implements JavaDelegate {
 		//commands.add("docker build -t cloudopting/"+customer+"_"+dockerfile.toLowerCase()+" -f "+path+"/"+customer+"-"+service+"/"+dockerfile+".dockerfile "+path);
 	    
 		execution.setVariable("buildToken", buildToken);
+		execution.setVariable("imageName", imageName);
 	}
 
 }
