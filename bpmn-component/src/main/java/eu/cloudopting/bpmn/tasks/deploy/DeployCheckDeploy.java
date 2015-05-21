@@ -1,5 +1,7 @@
 package eu.cloudopting.bpmn.tasks.deploy;
 
+import java.util.concurrent.TimeUnit;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
@@ -23,9 +25,9 @@ public class DeployCheckDeploy implements JavaDelegate {
 		String customizationId = (String) execution.getVariable("customizationId");
 		String deployToken = (String) execution.getVariable("deployToken");
 //		toscaService.getNodeType(customizationId,"");
-		
-		boolean check = dockerService.isBuilt(deployToken);
-		execution.setVariable("chkBuild", check);
+		TimeUnit.SECONDS.sleep(4);
+		boolean check = dockerService.isCompositionDeployed(deployToken);
+		execution.setVariable("chkDeploy", check);
 	}
 
 }

@@ -179,6 +179,12 @@ public class ToscaService {
 		}
 
 	}
+	
+	public void removeToscaCustomization(String customizationId){
+		this.graphHash.remove(customizationId);
+		this.xdocHash.remove(customizationId);
+		return;
+	}
 
 	public byte[] getToscaGraph(String customizationId) {
 		log.debug("in getHostPorts");

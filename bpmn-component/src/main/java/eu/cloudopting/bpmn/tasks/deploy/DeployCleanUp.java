@@ -22,7 +22,7 @@ public class DeployCleanUp implements JavaDelegate {
 		String customizationId = (String) execution.getVariable("customizationId");
 //		toscaService.getNodeType(customizationId,"");
 		// Remove the tosca customization
-		
+		toscaService.removeToscaCustomization(customizationId);
 		// delete the folder
 		
 		// remove the caches in dockerservice

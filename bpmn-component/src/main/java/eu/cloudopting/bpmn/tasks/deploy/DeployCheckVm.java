@@ -1,5 +1,7 @@
 package eu.cloudopting.bpmn.tasks.deploy;
 
+import java.util.concurrent.TimeUnit;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
@@ -26,7 +28,7 @@ public class DeployCheckVm implements JavaDelegate {
 		String customizationId = (String) execution.getVariable("customizationId");
 		String cloudtask = (String) execution.getVariable("cloudtask");
 		String cloudId = (String) execution.getVariable("cloudId");
-		
+		TimeUnit.SECONDS.sleep(4);
 //		toscaService.getNodeType(customizationId,"");
 		boolean check = cloudService.checkVM(cloudId, cloudtask);
 		execution.setVariable("vmInstalled", check);
