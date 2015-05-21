@@ -108,9 +108,19 @@ public class DockerService {
 	 * @param token Operation token
 	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
-	public void stop(String token) throws DockerError{
+	public void stopBuild(String token) throws DockerError{
 		log.debug("in stop and calling the API");
 		this.builder.stop(token);
+	}
+	
+	public String commitImage(String image){
+		log.debug("Committing the image to the registry");
+		return "1234";
+	}
+	
+	public boolean isCommitted(String tocken){
+		log.debug("check to see if the commit went ok");
+		return true;
 	}
 	
 	
