@@ -1,5 +1,7 @@
 package eu.cloudopting.bpmn.tasks.deploy;
 
+import java.util.ArrayList;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
@@ -16,10 +18,14 @@ public class DeployDockerCompose implements JavaDelegate {
 	ToscaService toscaService;
 
 	@Override
-	public void execute(DelegateExecution arg0) throws Exception {
+	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		log.debug("in DeploySetup");
-//		toscaService.getNodeType("");
+		log.debug("in DeployDockerCompose");
+		String customizationId = (String) execution.getVariable("customizationId");
+		String organizationName = (String) execution.getVariable("organizationName");
+		String serviceHome = (String) execution.getVariable("serviceHome");
+		ArrayList<String> dockerNodesList = (ArrayList<String>) execution.getVariable("dockerNodesList");
+		toscaService.generateDockerCompose(customizationId, organizationName, serviceHome, dockerNodesList);
 		
 	}
 

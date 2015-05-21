@@ -82,6 +82,51 @@ public class ToscaUtils {
 		}
 
 	}
+	
+	public void generateDockerCompose(HashMap<String, Object> templData, String serviceHome){
+		Configuration cfg = new Configuration();
+		cfg.setClassForTemplateLoading(ToscaService.class, "/templates");
+		Template tpl = null;
+		try {
+			tpl = cfg.getTemplate("docker-compose.ftl");
+		} catch (TemplateNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedTemplateNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		OutputStreamWriter outputTempl = new OutputStreamWriter(System.out);
+		// FileOutputStream outFile = new FileOutputStream("the-file-name");
+		PrintWriter outFile = null;
+		String composeFile = new String("docker-compose.yml");
+		try {
+			outFile = new PrintWriter(serviceHome + "/" + composeFile, "UTF-8");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			// tpl.process(nodeData, outputTempl);
+			tpl.process(templData, outFile);
+		} catch (TemplateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void unzip(String zipFilePath, String destDirectory)
 			throws IOException {

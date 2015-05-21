@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -41,6 +44,12 @@ import org.xml.sax.SAXException;
 
 import eu.cloudopting.tosca.utils.R10kResultHandler;
 import eu.cloudopting.tosca.utils.ToscaUtils;
+import freemarker.core.ParseException;
+import freemarker.template.Configuration;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 
 @Service
 public class ToscaService {
@@ -696,26 +705,66 @@ public class ToscaService {
 	 * 
 	 * }
 	 */
-	public void runR10k(String customizationId, String serviceHome, String coRoot) {
+	public void runR10k(String customizationId, String serviceHome,
+			String coRoot) {
 		log.debug("in getDefinitionFile");
 		final long r10kJobTimeout = 95000;
 		final boolean r10kInBackground = true;
-		String puppetFile = serviceHome+"/Puppetfile";
-		String puppetDir = coRoot+"/puppet/modules";
-		log.debug("puppetFile:"+puppetFile);
-		log.debug("puppetDir:"+puppetDir);
+		String puppetFile = serviceHome + "/Puppetfile";
+		String puppetDir = coRoot + "/puppet/modules";
+		log.debug("puppetFile:" + puppetFile);
+		log.debug("puppetDir:" + puppetDir);
 
 		R10kResultHandler r10kResult = toscaUtils.runR10k(puppetFile,
-				puppetDir, r10kJobTimeout, r10kInBackground,serviceHome);
+				puppetDir, r10kJobTimeout, r10kInBackground, serviceHome);
 
 		try {
 			r10kResult.waitFor();
-			
+
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
 
+	}
+
+	public void generateDockerCompose(String customizationId, String organizationName, String serviceHome, ArrayList<String> dockerNodesList) {
+		ArrayList<HashMap<String, String>> modData = new ArrayList<HashMap<String, String>>();
+		for (String node : dockerNodesList) {
+			HashMap<String, String> containerData = new HashMap<String, String>();
+			String imageName = "cloudopting/"+organizationName+"_"+node.toLowerCase();
+			containerData.put("container", node);
+			containerData.put("image", imageName);
+			// modData.add(toscaFileManager.getPuppetModulesProperties(mod));
+			// get the link information for the node
+
+			ArrayList<String> links = getContainerLinks(customizationId, node);
+			if (links != null && !links.isEmpty()) {
+				containerData.put("links",
+						"   - " + StringUtils.join(links, "\n   - "));
+			}
+			ArrayList<String> exPorts = getExposedPortsOfChildren(customizationId, node);
+			if (exPorts != null && !exPorts.isEmpty()) {
+				containerData.put("exPorts",
+						"   - \"" + StringUtils.join(exPorts, "\"\n   - \"")
+								+ "\"");
+			}
+			ArrayList<String> ports = getContainerPorts(customizationId, node);
+			if (ports != null && !ports.isEmpty()) {
+				containerData.put("ports",
+						"   - \"" + StringUtils.join(ports, "\"\n   - \"")
+								+ "\"");
+			}
+
+			System.out.println(node);
+			modData.add(containerData);
+		}
+		System.out.println(modData.toString());
+
+		HashMap<String, Object> templData = new HashMap<String, Object>();
+		templData.put("dockerContainers", modData);
+		// write the "Puppetfile" file
+		toscaUtils.generateDockerCompose(templData, serviceHome);
 	}
 }
