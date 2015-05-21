@@ -98,12 +98,14 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <serviceTask id="checkDeploy" name="Check Deploy" activiti:delegateExpression="${deployCheckDeploy}"></serviceTask>
     <sequenceFlow id="flow34" sourceRef="exclusivegateway8" targetRef="checkDeploy"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="checkDeploy" targetRef="exclusivegateway9"></sequenceFlow>
-    <sequenceFlow id="flow36" sourceRef="exclusivegateway9" targetRef="theEnd">
+    <sequenceFlow id="flow36" sourceRef="exclusivegateway9" targetRef="cleanup">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkDeploy==true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="exclusivegateway9" targetRef="exclusivegateway8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkDeploy==false}]]></conditionExpression>
     </sequenceFlow>
+    <serviceTask id="cleanup" name="Clean Up" activiti:delegateExpression="${deployCleanUp}"></serviceTask>
+    <sequenceFlow id="flow38" sourceRef="cleanup" targetRef="theEnd"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
     <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">
@@ -114,7 +116,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdc:Bounds height="60.0" width="100.0" x="151.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
-        <omgdc:Bounds height="35.0" width="35.0" x="958.0" y="530.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="958.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="vmInstalledTask" id="BPMNShape_vmInstalledTask">
         <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="83.0"></omgdc:Bounds>
@@ -208,6 +210,9 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkDeploy" id="BPMNShape_checkDeploy">
         <omgdc:Bounds height="55.0" width="105.0" x="920.0" y="380.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="cleanup" id="BPMNShape_cleanup">
+        <omgdc:Bounds height="55.0" width="105.0" x="923.0" y="530.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="-25.0" y="114.0"></omgdi:waypoint>
@@ -358,6 +363,10 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="912.0" y="479.0"></omgdi:waypoint>
         <omgdi:waypoint x="912.0" y="338.0"></omgdi:waypoint>
         <omgdi:waypoint x="955.0" y="338.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="975.0" y="585.0"></omgdi:waypoint>
+        <omgdi:waypoint x="975.0" y="610.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
