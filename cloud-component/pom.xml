@@ -13,5 +13,9 @@
             <groupId>eu.cloudopting</groupId>
             <artifactId>common-component</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.jclouds</groupId>
+            <artifactId>jclouds-all</artifactId>
+        </dependency>
     </dependencies>
 </project>

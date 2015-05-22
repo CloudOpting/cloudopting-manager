@@ -42,10 +42,16 @@
         <spring.version>4.1.6.RELEASE</spring.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
+        <jclouds.version>1.9.0</jclouds.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.jclouds</groupId>
+                <artifactId>jclouds-all</artifactId>
+                <version>${jclouds.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
