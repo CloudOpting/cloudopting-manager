@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.cloudopting.events.api.entity.BaseEntity;
 
 @Entity
-@Table(schema = "public",name = "providers")
+@Table(schema = "public",name = "organization_types")
 @Configurable
-public class Providers implements BaseEntity {
+public class OrganizationTypes implements BaseEntity {
 
 	public String toString() {
         return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationss", "customizationss").toString();
@@ -45,9 +45,9 @@ public class Providers implements BaseEntity {
 	@OneToMany(mappedBy = "statusId")
     private Set<Customizations> customizationss;
 */
-	@Column(name = "provider", length = 20, unique = true)
+	@Column(name = "types", length = 20, unique = true)
     @NotNull
-    private String provider;
+    private String types;
 /*
 	public Set<Applications> getApplicationss() {
         return applicationss;
@@ -65,12 +65,12 @@ public class Providers implements BaseEntity {
         this.customizationss = customizationss;
     }
 */
-	public String getProvider() {
-        return provider;
+	public String getType() {
+        return types;
     }
 
-	public void setProvider(String provider) {
-        this.provider = provider;
+	public void setType(String types) {
+        this.types = types;
     }
 
 	@PersistenceContext
@@ -79,48 +79,48 @@ public class Providers implements BaseEntity {
 	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("");
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new Providers().entityManager;
+        EntityManager em = new OrganizationTypes().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	public static long countProviders() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM providers o", Long.class).getSingleResult();
+	public static long countOrganizationTypes() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM organization_types o", Long.class).getSingleResult();
     }
 
-	public static List<Providers> findAllProviders() {
-        return entityManager().createQuery("SELECT o FROM providers o", Providers.class).getResultList();
+	public static List<OrganizationTypes> findAllOrganizationTypes() {
+        return entityManager().createQuery("SELECT o FROM organization_types o", OrganizationTypes.class).getResultList();
     }
 
-	public static List<Providers> findAllProviders(String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM providers o";
+	public static List<OrganizationTypes> findAllOrganizationTypes(String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM organization_types o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
             if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
                 jpaQuery = jpaQuery + " " + sortOrder;
             }
         }
-        return entityManager().createQuery(jpaQuery, Providers.class).getResultList();
+        return entityManager().createQuery(jpaQuery, OrganizationTypes.class).getResultList();
     }
 
-	public static Providers findProvider(Long id) {
+	public static OrganizationTypes findOrganizationType(Long id) {
         if (id == null) return null;
-        return entityManager().find(Providers.class, id);
+        return entityManager().find(OrganizationTypes.class, id);
     }
 
-	public static List<Providers> findProvidersEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM providers o", Providers.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<OrganizationTypes> findOrganizationTypesEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM organization_types o", OrganizationTypes.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
-	public static List<Providers> findProvidersEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM providers o";
+	public static List<OrganizationTypes> findOrganizationTypesEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM organization_types o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
             if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
                 jpaQuery = jpaQuery + " " + sortOrder;
             }
         }
-        return entityManager().createQuery(jpaQuery, Providers.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+        return entityManager().createQuery(jpaQuery, OrganizationTypes.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
 	@Transactional
@@ -135,7 +135,7 @@ public class Providers implements BaseEntity {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            Providers attached = Providers.findProvider(this.id);
+            OrganizationTypes attached = OrganizationTypes.findOrganizationType(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -153,9 +153,9 @@ public class Providers implements BaseEntity {
     }
 
 	@Transactional
-    public Providers merge() {
+    public OrganizationTypes merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        Providers merged = this.entityManager.merge(this);
+        OrganizationTypes merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }
