@@ -12,6 +12,7 @@ import org.apache.jackrabbit.ocm.mapper.Mapper;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.UrlResource;
 
@@ -34,6 +35,7 @@ public class JcrConfig {
 
 
     @Bean
+    @Lazy
     public Repository repository() {
         Repository repository;
         try {
@@ -55,9 +57,6 @@ public class JcrConfig {
     }
 
 
-    @Bean
-    public ObjectContentManager objectContentManager(Session session, Mapper mapper){
-        return new ObjectContentManagerImpl(session,mapper);
-    }
+
 
 }
