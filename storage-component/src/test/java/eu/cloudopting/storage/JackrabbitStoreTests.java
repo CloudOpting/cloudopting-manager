@@ -58,11 +58,15 @@ public class JackrabbitStoreTests extends GenericStorageTests {
     }
 
     @Test
-    public void testBinaryOcmStore() {
+    public void testBinaryOcmStore() throws IOException {
         JackrabbitStoreRequest req = createRequest();
         JackrabbitStoreResult result = jackrabbitBinaryStore.storeOcmAndBinary(req);
         path = req.getPath();
         System.out.println(">>>> path >>>>> : " + path);
+        JackrabbitStoreResult<InputStream> retrieveBinary = jackrabbitBinaryStore.retrieve("binary/"+req.getPath()+"."+req.getExtension());
+        Assert.assertTrue(retrieveBinary.getStoredContent().available()>0);
+        JackrabbitStoreResult retrieveOcm = jackrabbitOcmStore.retrieve("/ocm_"+req.getPath());
+        Assert.assertTrue(((JackrabbitStoreRequest) retrieveOcm.getStoredContent()).getPath().equals("/ocm_"+req.getPath()));
         Assert.assertTrue(result.isStored());
     }
 

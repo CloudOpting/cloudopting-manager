@@ -5,6 +5,7 @@ import eu.medsea.mimeutil.MimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -50,6 +51,11 @@ public class StreamUtil {
             throw new CommonException(e);
         }
         return bytes;
+    }
+
+    public static InputStream clone(InputStream is){
+        byte[] byteArray = getBytesFromInputStream(is);
+        return new ByteArrayInputStream(byteArray);
     }
 
 }
