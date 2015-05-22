@@ -10,28 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.cloud.CloudService;
+import eu.cloudopting.docker.DockerService;
 import eu.cloudopting.tosca.ToscaService;
 
 @Service
-public class DeployCheckVm implements JavaDelegate {
-	private final Logger log = LoggerFactory.getLogger(DeployCheckVm.class);
+public class DeployCheckBuild implements JavaDelegate {
+	private final Logger log = LoggerFactory.getLogger(DeployCheckBuild.class);
 	@Autowired
 	ToscaService toscaService;
 	
 	@Autowired
-	CloudService cloudService;
+	DockerService dockerService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		log.debug("in DeployCheckVm");
-		String customizationId = (String) execution.getVariable("customizationId");
+		log.debug("in DeployCheckBuild");
+		String buildToken = (String) execution.getVariable("buildToken");
 		String cloudtask = (String) execution.getVariable("cloudtask");
 		String cloudId = (String) execution.getVariable("cloudId");
 		TimeUnit.SECONDS.sleep(4);
 //		toscaService.getNodeType(customizationId,"");
-		boolean check = cloudService.checkVM(cloudId, cloudtask);
-		execution.setVariable("vmInstalled", check);
+		boolean check = dockerService.isBuilt(buildToken);
+		execution.setVariable("chkBuild", check);
 		
 	}
 

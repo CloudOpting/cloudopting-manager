@@ -10,19 +10,22 @@ import org.springframework.stereotype.Service;
 import eu.cloudopting.tosca.ToscaService;
 
 @Service
-public class DeployRunr10k implements JavaDelegate {
-	private final Logger log = LoggerFactory.getLogger(DeployRunr10k.class);
+public class DeployCleanUp implements JavaDelegate {
+	private final Logger log = LoggerFactory.getLogger(DeployCleanUp.class);
 	@Autowired
 	ToscaService toscaService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		log.debug("in DeployRunr10k");
+		log.debug("in DeployCleanUp");
 		String customizationId = (String) execution.getVariable("customizationId");
-		String coRoot = (String) execution.getVariable("coRoot");
-		String serviceHome = (String) execution.getVariable("serviceHome");
-		toscaService.runR10k(customizationId, serviceHome, coRoot);
+//		toscaService.getNodeType(customizationId,"");
+		// Remove the tosca customization
+		toscaService.removeToscaCustomization(customizationId);
+		// delete the folder
+		
+		// remove the caches in dockerservice
 		
 	}
 

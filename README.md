@@ -15,7 +15,6 @@ The following tables explains the modules and the subdivision
 | [storage-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/storage-component "storage-component") | | This component contains the jackrabbit classes to help manage the storage of files | |
 | [tosca-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/tosca-component "tosca-component") | | This component contains the TOSCA parser thsat manages all the interactions with the TOSCA world | |
 | [wordpress-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/wordpress-component "wordpress-component") | | This component contains the code necessary to interact through API with wordpress for the public view of the catalogue | |
-| [webui-component](https://github.com/CloudOpting/cloudopting-manager/tree/master/webui-component "webui-component") | | This component contains the web interface of the project | |
 
 ## Development environment configuration
 The following description helps setting up a CentOS 7 development environment.
@@ -65,11 +64,15 @@ As can be seen there is a core component represente by the CloudOpting manager t
 ### Technologies used
 This application is coded in java.
 
-The framework used is [Spring](https://spring.io/) and in particular Spinr-boot since is a headless application.
+The framework used is [Spring](https://spring.io/) and in particular Sprint-boot since it is a headless application.
 
 It has a BPMN engine embedded, and the project opted for [Activiti](http://activiti.org/)
 
 Other libraries used are:
- * [Freemarker]()
- * [JGraphT]()
- * [JClouds]()
+ * [Freemarker](http://freemarker.org/)
+ * [JGraphT](http://jgrapht.org/)
+ * [JClouds](https://jclouds.apache.org/)
+
+
+## Activity
+[![Throughput Graph](https://graphs.waffle.io/CloudOpting/cloudopting-manager/throughput.svg)](https://waffle.io/CloudOpting/cloudopting-manager/metrics) 
