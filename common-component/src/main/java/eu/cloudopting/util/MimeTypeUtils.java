@@ -62,15 +62,22 @@ public class MimeTypeUtils {
      * @return - the mime type
      */
     public static String detectMymeTypeCustom(InputStream inputStream) {
+        InputStream newInpuStream = null;
+        try {
+            newInpuStream = copyInputStream(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String mimeType = null;
         Properties magicmimes = new Properties();
-        FileInputStream in = null;
-        byte[] b = StreamUtil.getBytesFromInputStream(inputStream);
+        InputStream in = null;
+        byte[] b = StreamUtil.getBytesFromInputStream(newInpuStream);
         byte[] topOfStream = new byte[32];
         System.arraycopy(b, 0, topOfStream, 0, topOfStream.length);
         // Read in the magicmimes.properties file (e.g. of file listed below)
         try {
-            in = new FileInputStream("magicmimes.properties");
+            //in = new FileInputStream("magicmimes.properties");
+            in = MimeTypeUtils.class.getResourceAsStream("../../../magicmimes.properties");
             magicmimes.load(in);
             in.close();
         } catch (IOException e) {

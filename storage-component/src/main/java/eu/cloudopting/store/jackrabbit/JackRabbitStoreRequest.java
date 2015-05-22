@@ -12,7 +12,18 @@ import java.util.Date;
  * @author Daniel P.
  */
 @Node
-public class JackRabbitStoreRequest implements StoreRequest {
+public class JackrabbitStoreRequest implements StoreRequest {
+
+    public JackrabbitStoreRequest() {
+    }
+
+    public JackrabbitStoreRequest(String path, String title, Date pubDate, String extension, InputStream content) {
+        this.path = path;
+        this.title = title;
+        this.pubDate = pubDate;
+        this.extension = extension;
+        this.content = content;
+    }
 
     @Field(path = true)
     String path;
@@ -23,8 +34,15 @@ public class JackRabbitStoreRequest implements StoreRequest {
     @Field
     Date pubDate;
 
+    @Field
+    String extension;
+
     @Field(jcrName = "jcr:data")
     InputStream content;
+
+
+    boolean storeOcm = true;
+    boolean storeBinary = true;
 
     public String getPath() {
         return path;
@@ -56,5 +74,29 @@ public class JackRabbitStoreRequest implements StoreRequest {
 
     public void setContent(InputStream content) {
         this.content = content;
+    }
+
+    public boolean isStoreOcm() {
+        return storeOcm;
+    }
+
+    public void setStoreOcm(boolean storeOcm) {
+        this.storeOcm = storeOcm;
+    }
+
+    public boolean isStoreBinary() {
+        return storeBinary;
+    }
+
+    public void setStoreBinary(boolean storeBinary) {
+        this.storeBinary = storeBinary;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 }

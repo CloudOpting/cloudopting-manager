@@ -8,4 +8,6 @@ public interface StorageComponent<Resp extends StoreResult, Req extends StoreReq
 
     public Resp store(Req context);
 
+    public  Resp retrieve(String path);
+
 }
