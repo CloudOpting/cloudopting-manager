@@ -28,12 +28,12 @@
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
-            <artifactId>tosca-component</artifactId>
+            <artifactId>docker-component</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
-            <artifactId>docker-component</artifactId>
+            <artifactId>tosca-component</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
