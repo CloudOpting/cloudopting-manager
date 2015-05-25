@@ -2,13 +2,14 @@ package eu.cloudopting.docker;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.json.BasicJsonParser;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import eu.cloudopting.docker.restclient.CraneRestClient;
 import eu.cloudopting.docker.images.DockerBuilder;
 import eu.cloudopting.docker.cluster.DockerCluster;
 import eu.cloudopting.docker.cluster.Machine;
@@ -23,10 +24,11 @@ import eu.cloudopting.docker.composer.DockerComposer;
 public class DockerService {
 	private final Logger log = LoggerFactory.getLogger(DockerService.class);
 
-	private CraneRestClient restClient;
 	private DockerBuilder builder;
 	private DockerCluster cluster;
 	private DockerComposer composer;
+	
+	private BasicJsonParser parser;
 
 	public DockerService (){
 		// @TODO this has to be configured from properties and not hardcoded
@@ -34,15 +36,88 @@ public class DockerService {
 	}
 
 	public DockerService(String uri){
-		this.restClient = new CraneRestClient(uri);
-		this.builder = new DockerBuilder(restClient);
-		this.cluster = new DockerCluster(restClient);
-		this.composer = new DockerComposer(restClient);
+		this.builder = new DockerBuilder(uri);
+		this.cluster = new DockerCluster(uri);
+		this.composer = new DockerComposer(uri);
 	}
-	
+
 	
 	// Building
 
+
+	/**
+	 * Create a new context
+	 * @param name Desired name to the context (it helps in debug, but it does not have a function)
+	 * @param pathToPuppetfile Path to the source puppetfile where the needed modules are listed
+	 * @return Token that references the context
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public String newContext(String name, String pathToPuppetfile) throws DockerError{
+		ResponseEntity<String> response = builder.newContext(name, pathToPuppetfile);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
+		return (String) map.get("token");
+	}
+	
+
+	/**
+	 * Create a new context (with no name)
+	 * @param pathToPuppetfile Path to the source puppetfile where the needed modules are listed
+	 * @return Token that references the context
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public String newContext(String pathToPuppetfile) throws DockerError{
+		return newContext("", pathToPuppetfile);
+	}
+	
+	
+	/**
+	 * Checks if a context is ready to start to build images.
+	 * @param token Token that identifies the context
+	 * @return true if yes, false if no
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public boolean isContextReady(String token)  throws DockerError{
+		ResponseEntity<String> response = builder.getContextInfo(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
+		if((String) map.get("status") == "ready")
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * Retrieves information about the context creation.
+	 * @param token Token that identifies the context
+	 * @return Response from API in JSON format.
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public String getContextInfo(String token) throws DockerError{
+		ResponseEntity<String> response = builder.getContextInfo(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
+		
+		return response.getBody();
+	}
+	
+	
+	/**
+	 * Sends the order to remove a context and the related data.
+	 * @param token Token that identifies the context
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public void removeContext(String token) throws DockerError {
+		ResponseEntity<String> response = builder.removeContext(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
+	}
+	
+	
 	/**
 	 * Starts build process for an image.
 	 * @param image Image name
@@ -50,10 +125,15 @@ public class DockerService {
 	 * @param executionPath Puppet manifests path
 	 * @throws DockerError If API returns error when starting the process.
 	 */
-	public String buildDockerImage(String image, String dockerFile, String executionPath) throws DockerError{
+	public String buildDockerImage(String image, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
 		log.debug("in buildDockerImage and calling the API");
-		log.debug("executing: docker build -t "+ image + " -f " + dockerFile + " " + executionPath);
-		return this.builder.startBuild(image, dockerFile, executionPath);
+		log.debug("executing: docker build -t "+ image + " -f " + dockerFilePath );
+		ResponseEntity<String> response = builder.newImage(image, dockerFilePath, puppetManifestPath, contextReference);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
+		
+		return (String) map.get("token");
 	}
 	
 	/**
@@ -63,18 +143,33 @@ public class DockerService {
 	 */
 	public boolean isBuilt(String token) throws DockerError{
 		log.debug("in isBuilt and calling the API");
-		return this.builder.isFinished(token);
+		
+		ResponseEntity<String> response = builder.getImageInfo(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
+		
+		if((String) map.get("status") == "ready")
+			return true;
+		else
+			return false;
 	}
 	
 	/**
 	 * Retrieves detailed information about the build process.
 	 * @param token Operation token
-	 * @return Build log
+	 * @return Response from API in JSON format.
 	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
 	public String getBuildInfo(String token) throws DockerError{
 		log.debug("in getBuildInfo and calling the API");
-		return this.builder.getInfo(token);
+		
+		ResponseEntity<String> response = builder.getImageInfo(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
+		
+		return response.getBody();
 	}
 	
 	/**
@@ -84,7 +179,10 @@ public class DockerService {
 	 */
 	public void stopBuild(String token) throws DockerError{
 		log.debug("in stop and calling the API");
-		this.builder.stop(token);
+		ResponseEntity<String> response = builder.removeImage(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError((String) map.get("description"));
 	}
 	
 	public String commitImage(String image){

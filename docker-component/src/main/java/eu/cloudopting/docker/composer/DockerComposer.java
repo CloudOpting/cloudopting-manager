@@ -1,10 +1,5 @@
 package eu.cloudopting.docker.composer;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import eu.cloudopting.docker.restclient.CraneRestClient;
 import eu.cloudopting.docker.DockerError;
 
 /**
@@ -14,11 +9,10 @@ import eu.cloudopting.docker.DockerError;
  */
 public class DockerComposer {
 	
-
-	private CraneRestClient craneHandler;
+	private String endPoint;
 	
-	public DockerComposer(CraneRestClient craneHandler) {
-		this.craneHandler = craneHandler;
+	public DockerComposer(String endPoint) {
+		this.endPoint = endPoint;
 	}
 
 
