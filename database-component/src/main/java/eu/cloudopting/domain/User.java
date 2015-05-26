@@ -58,6 +58,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "activation_key", length = 20)
     private String activationKey;
 
+    @ManyToOne
+    @JoinColumn(name = "organization_id", referencedColumnName = "id")
+    private Organizations organizationId;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -156,6 +160,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setPersistentTokens(Set<PersistentToken> persistentTokens) {
         this.persistentTokens = persistentTokens;
+    }
+
+    public Organizations getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Organizations organizationId) {
+        this.organizationId = organizationId;
     }
 
     @Override

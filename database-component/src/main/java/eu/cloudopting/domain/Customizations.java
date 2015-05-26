@@ -1,54 +1,30 @@
 package eu.cloudopting.domain;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import eu.cloudopting.events.api.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
-import eu.cloudopting.events.api.entity.BaseEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 
 @Configurable
 @Entity
 @Table(schema = "public",name = "customizations")
+
 public class Customizations implements BaseEntity {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-
-	public Long getId() {
-        return this.id;
-    }
-
-	public void setId(Long id) {
-        this.id = id;
-    }
-
 	@ManyToOne
-    @JoinColumn(name = "application_id", referencedColumnName = "id", nullable = false)
-    @JsonBackReference
-    private Applications applicationId;
+    @JoinColumn(name = "customer_organization_id", referencedColumnName = "id")
+    private Organizations customerOrganizationId;
 
-	@ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
-    private Status statusId;
+	@Column(name = "application_id")
+    @NotNull
+    private Long applicationId;
 
 	@Column(name = "customization_tosca_file")
     @NotNull
@@ -72,36 +48,27 @@ public class Customizations implements BaseEntity {
     @DateTimeFormat(style = "M-")
     private Date customizationDecommission;
 
-	@Column(name = "username", length = 15, unique = true)
+	@Column(name = "status_id")
     @NotNull
-    private String username;
-	
-	@Column(name = "process_id", length = 64, unique = true)
-    @NotNull
+    private Long statusId;
+
+	@Column(name = "process_id", length = 64)
     private String processId;
 
-	public String getProcessId() {
-		return processId;
-	}
+	public Organizations getCustomerOrganizationId() {
+        return customerOrganizationId;
+    }
 
-	public void setProcessId(String processId) {
-		this.processId = processId;
-	}
+	public void setCustomerOrganizationId(Organizations customerOrganizationId) {
+        this.customerOrganizationId = customerOrganizationId;
+    }
 
-	public Applications getApplicationId() {
+	public Long getApplicationId() {
         return applicationId;
     }
 
-	public void setApplicationId(Applications applicationId) {
+	public void setApplicationId(Long applicationId) {
         this.applicationId = applicationId;
-    }
-
-	public Status getStatusId() {
-        return statusId;
-    }
-
-	public void setStatusId(Status statusId) {
-        this.statusId = statusId;
     }
 
 	public String getCustomizationToscaFile() {
@@ -136,16 +103,37 @@ public class Customizations implements BaseEntity {
         this.customizationDecommission = customizationDecommission;
     }
 
-	public String getUsername() {
-        return username;
+	public Long getStatusId() {
+        return statusId;
     }
 
-	public void setUsername(String username) {
-        this.username = username;
+	public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
+
+	public String getProcessId() {
+        return processId;
+    }
+
+	public void setProcessId(String processId) {
+        this.processId = processId;
     }
 
 	public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationId", "statusId").toString();
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationId", "statusId", "customerOrganizationId").toString();
+    }
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
+	public Long getId() {
+        return this.id;
+    }
+
+	public void setId(Long id) {
+        this.id = id;
     }
 
 	@PersistenceContext
