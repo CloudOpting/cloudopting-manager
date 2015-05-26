@@ -1,11 +1,13 @@
 package eu.cloudopting.docker.images;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import eu.cloudopting.docker.DockerError;
-import eu.cloudopting.docker.restclient.CraneRestClient;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -14,50 +16,133 @@ import eu.cloudopting.docker.restclient.CraneRestClient;
  */
 public class DockerBuilder {
 	
-	private CraneRestClient craneHandler;
-
-	public DockerBuilder(CraneRestClient craneHandler) {
-		this.craneHandler = craneHandler;
+	private String endPoint;
+	private HttpHeaders genericHeaders;
+	private RestTemplate rest;
+	
+	public DockerBuilder(String endPoint) {
+		this.endPoint = endPoint;
+		this.genericHeaders = new HttpHeaders();
+		this.genericHeaders.add("Content-Type", "application/json");
+		this.genericHeaders.add("Accept", "*/*");
+		this.rest = new RestTemplate();
+	}
+	
+	
+	/**
+	 * Requests the list of contexts.
+	 * @return API response
+	 */
+	public ResponseEntity<String> getListOfContexts(){
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts", HttpMethod.GET, requestEntity, String.class);
+		return responseEntity;
 	}
 	
 	/**
-	 * Asks the API to start a building process.
-	 * @param name Desired Name for the image.
-	 * @param sourceDockerfile Base Dockerfile path.
-	 * @param executionPath Path where the puppet stuff is.
-	 * @return Operation token.
-	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 * Requests the creation of new context.
+	 * @param name Name of the context
+	 * @param pathToPuppetfile Path to the puppetfile where the needed modules are listed
+	 * @return API response
 	 */
-	public String startBuild(String name, String sourceDockerfile, String executionPath){
-		return "token";
+	public ResponseEntity<String> newContext(String name, String pathToPuppetfile){
+		// Prepare files
+		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+		map.add("puppetfile", new ClassPathResource(pathToPuppetfile));
+		map.add("contextName", new String(name));
+		
+		// Request
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<LinkedMultiValueMap<String, Object>>(map, headers);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts", HttpMethod.POST, requestEntity, String.class);
+		return responseEntity;
 	}
 	
 	/**
-	 * Checks if the building process has finished.
-	 * @return True if the image has been built. False in other case.
-	 * @throws DockerError Throws this when the builder returns any non successful response (also when the building process finished but with errors).
+	 * Request to remove a context and the related data.
+	 * @param token Token that identifies the context
+	 * @return API response
 	 */
-	public boolean isFinished(String token) throws DockerError{
-		return true;
+	public ResponseEntity<String> removeContext(String token){
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts/" + token, HttpMethod.DELETE, requestEntity, String.class);
+		return responseEntity;
 	}
 	
 	/**
-	 * Asks the API for information about the building process
-	 * @param token Operation token
-	 * @return Build log
-	 * @throws DockerError Throws this when the API returns any non successful response (i.e. can not get log, or something like this).
+	 * Requests information about a context.
+	 * @param token Token that identifies the context
+	 * @return API response
 	 */
-	public String getInfo(String token) throws DockerError{
-		return "This is a log with information about the building process.";
+	public ResponseEntity<String> getContextInfo(String token){
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts/" + token, HttpMethod.GET, requestEntity, String.class);
+		return responseEntity;
 	}
 	
-
 	/**
-	 * Asks the API to stop the building process and destroy the related temporal data.
-	 * @param token Operation token
-	 * @throws DockerError Throws this when the API returns any non successful response.
+	 * Requests a list with the images under creation or created.
+	 * @return API response
 	 */
-	public void stop(String token) throws DockerError {
+	public ResponseEntity<String> getListOfImages(){
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images/", HttpMethod.GET, requestEntity, String.class);
+		return responseEntity;
+	}
+	
+	
+	/**
+	 * Requests the creation of a new image.
+	 * @param name Desired name
+	 * @param pathToDockerfile Path where the base dockerfile is located
+	 * @param pathToPuppetManifest Path where the puppet manifest that defines the service in the container are located
+	 * @param contextToken Token that identifies the context where the image will be built.
+	 * @return API response
+	 */
+	public ResponseEntity<String> newImage(String name, String pathToDockerfile, String pathToPuppetManifest, String contextToken){
+		// Prepare files
+		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+		map.add("puppetmanifest", new ClassPathResource(pathToPuppetManifest));
+		map.add("dockerfile", new ClassPathResource(pathToDockerfile));
+		map.add("imageName", new String(name));
+		map.add("contextReference", new String(name));
+		
+		// Request
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<LinkedMultiValueMap<String, Object>>(map, headers);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images", HttpMethod.POST, requestEntity, String.class);
+		return responseEntity;
+	}
+	
+	
+	/**
+	 * Requests to remove an image and the related data.
+	 * @param token Token that identifies the image
+	 * @return API response
+	 */
+	public ResponseEntity<String> removeImage(String token){
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images/" + token, HttpMethod.DELETE, requestEntity, String.class);
+		return responseEntity;
+	}
+	
+	/**
+	 * Requests information about an image.
+	 * @param token Token that identifies the image
+	 * @return API response
+	 */
+	public ResponseEntity<String> getImageInfo(String token){
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
+		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images/" + token, HttpMethod.GET, requestEntity, String.class);
+		return responseEntity;
 	}
 
 }

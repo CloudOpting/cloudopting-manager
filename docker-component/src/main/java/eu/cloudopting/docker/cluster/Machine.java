@@ -2,8 +2,6 @@ package eu.cloudopting.docker.cluster;
 
 import java.io.File;
 
-import eu.cloudopting.docker.restclient.CraneRestClient;
-
 
 /**
  *

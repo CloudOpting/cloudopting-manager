@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import eu.cloudopting.docker.DockerError;
-import eu.cloudopting.docker.restclient.CraneRestClient;
 
 /**
  *
@@ -12,11 +11,9 @@ import eu.cloudopting.docker.restclient.CraneRestClient;
  *
  */
 public class DockerCluster {
-
-	private CraneRestClient craneHandler;
-
-	public DockerCluster(CraneRestClient craneHandler) {
-		this.craneHandler = craneHandler;
+	private String endPoint;
+	public DockerCluster(String endPoint) {
+		this.endPoint = endPoint;
 	}
 
 	/**
