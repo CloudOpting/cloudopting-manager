@@ -1,27 +1,35 @@
 package eu.cloudopting.domain;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import eu.cloudopting.events.api.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-import eu.cloudopting.events.api.entity.BaseEntity;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Configurable
 @Entity
 @Table(schema = "public",name = "application_media")
 public class ApplicationMedia implements BaseEntity {
+
+	public String toString() {
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationId").toString();
+    }
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
+	public Long getId() {
+        return this.id;
+    }
+
+	public void setId(Long id) {
+        this.id = id;
+    }
 
 	@PersistenceContext
     transient EntityManager entityManager;
@@ -110,13 +118,8 @@ public class ApplicationMedia implements BaseEntity {
         return merged;
     }
 
-	public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationId").toString();
-    }
-
 	@ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "id")
-    @JsonBackReference
     private Applications applicationId;
 
 	@Column(name = "media_content")
@@ -136,18 +139,5 @@ public class ApplicationMedia implements BaseEntity {
 
 	public void setMediaContent(byte[] mediaContent) {
         this.mediaContent = mediaContent;
-    }
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-
-	public Long getId() {
-        return this.id;
-    }
-
-	public void setId(Long id) {
-        this.id = id;
     }
 }

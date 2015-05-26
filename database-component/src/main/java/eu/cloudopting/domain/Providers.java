@@ -1,76 +1,23 @@
 package eu.cloudopting.domain;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import eu.cloudopting.events.api.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-import eu.cloudopting.events.api.entity.BaseEntity;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
+
+@Configurable
 @Entity
 @Table(schema = "public",name = "providers")
-@Configurable
 public class Providers implements BaseEntity {
 
 	public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationss", "customizationss").toString();
-    }
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-
-	public Long getId() {
-        return this.id;
-    }
-
-	public void setId(Long id) {
-        this.id = id;
-    }
-/*
-	@OneToMany(mappedBy = "statusId")
-    private Set<Applications> applicationss;
-
-	@OneToMany(mappedBy = "statusId")
-    private Set<Customizations> customizationss;
-*/
-	@Column(name = "provider", length = 20, unique = true)
-    @NotNull
-    private String provider;
-/*
-	public Set<Applications> getApplicationss() {
-        return applicationss;
-    }
-
-	public void setApplicationss(Set<Applications> applicationss) {
-        this.applicationss = applicationss;
-    }
-
-	public Set<Customizations> getCustomizationss() {
-        return customizationss;
-    }
-
-	public void setCustomizationss(Set<Customizations> customizationss) {
-        this.customizationss = customizationss;
-    }
-*/
-	public String getProvider() {
-        return provider;
-    }
-
-	public void setProvider(String provider) {
-        this.provider = provider;
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("cloudAccountss").toString();
     }
 
 	@PersistenceContext
@@ -84,16 +31,16 @@ public class Providers implements BaseEntity {
         return em;
     }
 
-	public static long countProviders() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM providers o", Long.class).getSingleResult();
+	public static long countProviderses() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM Providers o", Long.class).getSingleResult();
     }
 
-	public static List<Providers> findAllProviders() {
-        return entityManager().createQuery("SELECT o FROM providers o", Providers.class).getResultList();
+	public static List<Providers> findAllProviderses() {
+        return entityManager().createQuery("SELECT o FROM Providers o", Providers.class).getResultList();
     }
 
-	public static List<Providers> findAllProviders(String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM providers o";
+	public static List<Providers> findAllProviderses(String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM Providers o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
             if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
@@ -103,17 +50,17 @@ public class Providers implements BaseEntity {
         return entityManager().createQuery(jpaQuery, Providers.class).getResultList();
     }
 
-	public static Providers findProvider(Long id) {
+	public static Providers findProviders(Long id) {
         if (id == null) return null;
         return entityManager().find(Providers.class, id);
     }
 
 	public static List<Providers> findProvidersEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM providers o", Providers.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+        return entityManager().createQuery("SELECT o FROM Providers o", Providers.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
 	public static List<Providers> findProvidersEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM providers o";
+        String jpaQuery = "SELECT o FROM Providers o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
             if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
@@ -135,7 +82,7 @@ public class Providers implements BaseEntity {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            Providers attached = Providers.findProvider(this.id);
+            Providers attached = Providers.findProviders(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -158,5 +105,41 @@ public class Providers implements BaseEntity {
         Providers merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
+    }
+
+	@OneToMany(mappedBy = "providerId")
+    private Set<CloudAccounts> cloudAccountss;
+
+	@Column(name = "provider", length = 20, unique = true)
+    @NotNull
+    private String provider;
+
+	public Set<CloudAccounts> getCloudAccountss() {
+        return cloudAccountss;
+    }
+
+	public void setCloudAccountss(Set<CloudAccounts> cloudAccountss) {
+        this.cloudAccountss = cloudAccountss;
+    }
+
+	public String getProvider() {
+        return provider;
+    }
+
+	public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
+	public Long getId() {
+        return this.id;
+    }
+
+	public void setId(Long id) {
+        this.id = id;
     }
 }

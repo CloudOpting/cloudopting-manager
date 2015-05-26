@@ -1,19 +1,19 @@
 package eu.cloudopting.domain;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import eu.cloudopting.events.api.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-import eu.cloudopting.events.api.entity.BaseEntity;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
+
+@Configurable
 @Entity
 @Table(schema = "public",name = "applications")
-@Configurable
 public class Applications implements BaseEntity {
 
 	@Id
@@ -27,106 +27,6 @@ public class Applications implements BaseEntity {
 
 	public void setId(Long id) {
         this.id = id;
-    }
-
-	@OneToMany(mappedBy = "applicationId", fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private Set<ApplicationMedia> applicationMedias;
-
-	@OneToMany(mappedBy = "applicationId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<Customizations> customizationss;
-
-	@ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
-    private Status statusId;
-
-	@ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User userId;
-
-	@Column(name = "application_name", length = 50)
-    @NotNull
-    private String applicationName;
-
-	@Column(name = "application_description")
-    @NotNull
-    private String applicationDescription;
-
-	@Column(name = "application_tosca_template")
-    @NotNull
-    private String applicationToscaTemplate;
-
-	@Column(name = "application_version", length = 10)
-    @NotNull
-    private String applicationVersion;
-
-	public Set<ApplicationMedia> getApplicationMedias() {
-        return applicationMedias;
-    }
-
-	public void setApplicationMedias(Set<ApplicationMedia> applicationMedias) {
-        this.applicationMedias = applicationMedias;
-    }
-
-	public Set<Customizations> getCustomizationss() {
-        return customizationss;
-    }
-
-	public void setCustomizationss(Set<Customizations> customizationss) {
-        this.customizationss = customizationss;
-    }
-
-	public Status getStatusId() {
-        return statusId;
-    }
-
-	public void setStatusId(Status statusId) {
-        this.statusId = statusId;
-    }
-
-	public User getUserId() {
-        return userId;
-    }
-
-	public void setUserId(User userId) {
-        this.userId = userId;
-    }
-
-	public String getApplicationName() {
-        return applicationName;
-    }
-
-	public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
-    }
-
-	public String getApplicationDescription() {
-        return applicationDescription;
-    }
-
-	public void setApplicationDescription(String applicationDescription) {
-        this.applicationDescription = applicationDescription;
-    }
-
-	public String getApplicationToscaTemplate() {
-        return applicationToscaTemplate;
-    }
-
-	public void setApplicationToscaTemplate(String applicationToscaTemplate) {
-        this.applicationToscaTemplate = applicationToscaTemplate;
-    }
-
-	public String getApplicationVersion() {
-        return applicationVersion;
-    }
-
-	public void setApplicationVersion(String applicationVersion) {
-        this.applicationVersion = applicationVersion;
-    }
-
-	public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationMedias", "customizationss", "statusId", "userId").toString();
     }
 
 	@PersistenceContext
@@ -214,5 +114,92 @@ public class Applications implements BaseEntity {
         Applications merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
+    }
+
+	@OneToMany(mappedBy = "applicationId")
+    private Set<ApplicationMedia> applicationMedias;
+
+	@ManyToOne
+    @JoinColumn(name = "organization_id", referencedColumnName = "id")
+    private Organizations organizationId;
+
+	@ManyToOne
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
+    private Status statusId;
+
+	@Column(name = "application_name", length = 50)
+    @NotNull
+    private String applicationName;
+
+	@Column(name = "application_description")
+    @NotNull
+    private String applicationDescription;
+
+	@Column(name = "application_tosca_template")
+    @NotNull
+    private String applicationToscaTemplate;
+
+	@Column(name = "application_version", length = 10)
+    @NotNull
+    private String applicationVersion;
+
+	public Set<ApplicationMedia> getApplicationMedias() {
+        return applicationMedias;
+    }
+
+	public void setApplicationMedias(Set<ApplicationMedia> applicationMedias) {
+        this.applicationMedias = applicationMedias;
+    }
+
+	public Organizations getOrganizationId() {
+        return organizationId;
+    }
+
+	public void setOrganizationId(Organizations organizationId) {
+        this.organizationId = organizationId;
+    }
+
+	public Status getStatusId() {
+        return statusId;
+    }
+
+	public void setStatusId(Status statusId) {
+        this.statusId = statusId;
+    }
+
+	public String getApplicationName() {
+        return applicationName;
+    }
+
+	public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+	public String getApplicationDescription() {
+        return applicationDescription;
+    }
+
+	public void setApplicationDescription(String applicationDescription) {
+        this.applicationDescription = applicationDescription;
+    }
+
+	public String getApplicationToscaTemplate() {
+        return applicationToscaTemplate;
+    }
+
+	public void setApplicationToscaTemplate(String applicationToscaTemplate) {
+        this.applicationToscaTemplate = applicationToscaTemplate;
+    }
+
+	public String getApplicationVersion() {
+        return applicationVersion;
+    }
+
+	public void setApplicationVersion(String applicationVersion) {
+        this.applicationVersion = applicationVersion;
+    }
+
+	public String toString() {
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationMedias", "customizationss", "statusId", "userId", "organizationId").toString();
     }
 }

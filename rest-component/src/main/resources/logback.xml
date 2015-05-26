@@ -27,7 +27,7 @@
     </appender>
 -->
 
-    <logger name="eu.cloud.cloudopting" level="DEBUG"/>
+    <logger name="eu.cloud.cloudopting" level="TRACE"/>
 
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
