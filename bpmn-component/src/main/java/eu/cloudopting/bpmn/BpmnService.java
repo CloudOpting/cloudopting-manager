@@ -11,8 +11,8 @@ import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,6 +104,28 @@ public class BpmnService {
 		log.debug("Retrieving available process definitions");
 		RepositoryService rs = processEngine.getRepositoryService();
         return rs.createProcessDefinitionQuery().active().list();
+	}
+	
+	/**
+	 * Unlocks the process instance with the provided instance id, waiting on the message event with the provided name.
+	 * <strong>For testing purposes, might be removed at any time</strong>.
+	 * @param processInstanceId The id of the instance of the target process
+	 * @param messageName The name of the intermediate message the instance is waiting for
+	 * @return A set containing the execution ids of unlocked process instances
+	 */
+	public Set<String> unlockProcess(String processInstanceId, String messageName){
+		Set<String> exIds = new HashSet<String>();
+		log.debug("Unlocking Process with processInstanceId:'"+processInstanceId+"'");
+		List<Execution> executions = runtimeService.createExecutionQuery()
+			      .messageEventSubscriptionName(messageName).processInstanceId(processInstanceId)
+			      .list();
+			      
+		for (Execution execution2 : executions) {
+			String curExId = execution2.getId();
+			exIds.add(curExId);
+			runtimeService.messageEventReceived(messageName, curExId);
+		}
+		return exIds;
 	}
 	
 	public String startTestDeployProcess(){

@@ -7,16 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PublishStoreToscaPackage implements JavaDelegate {
-	private final Logger log = LoggerFactory.getLogger(PublishStoreToscaPackage.class);
+public class PublishToscaValidationTask implements JavaDelegate {
+	private final Logger log = LoggerFactory.getLogger(PublishToscaValidationTask.class);
+//  TODO Find the Jackrabbit Wrapper Service
 //	@Autowired
 //	ToscaService toscaService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		log.info("Storing the validated Tosca Package");
+		log.info("Publish - Tosca Archive Validation");
 		
-		//execution.setVariable("isToscaPackageValid", isValid);
 	}
 
 }
