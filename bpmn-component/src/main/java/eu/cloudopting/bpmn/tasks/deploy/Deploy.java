@@ -22,8 +22,9 @@ public class Deploy implements JavaDelegate {
 		log.debug("in Deploy");
 		String customizationId = (String) execution.getVariable("customizationId");
 		String serviceHome = (String) execution.getVariable("serviceHome");
+		String composerFile = serviceHome + "/docker-compose.yml";
 //		toscaService.getNodeType(customizationId,"");
-		String deployToken = dockerService.deployComposition(serviceHome, null);
+		String deployToken = dockerService.deployComposition(composerFile, null);
 		
 //		"cd "+path+"/"+customer+"-"+service+" && docker-compose up --no-build -d"
 		execution.setVariable("deployToken", deployToken);

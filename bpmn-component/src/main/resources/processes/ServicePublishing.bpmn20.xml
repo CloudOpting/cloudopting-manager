@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <message id="msgToscaFileUpload" name="msgToscaFileUpload"></message>
+  <message id="metadataRetrievalEvent" name="metadataRetrievalEvent"></message>
+  <message id="toscaUploadEvent" name="toscaUploadEvent"></message>
+  <message id="artifactsUploadEvent" name="artifactsUploadEvent"></message>
+  <message id="publishEvent" name="publishEvent"></message>
+  <process id="myProcess" name="AddService" isExecutable="true">
+    <documentation>Aggiunta servizio a catalogo da parte del service provider.
+
+Duale: remove, verifica istanze attive, ecc.</documentation>
+    <startEvent id="startevent" name="Start"></startEvent>
+    <eventBasedGateway id="eventgateway2" name="Event Gateway"></eventBasedGateway>
+    <sequenceFlow id="flow27" sourceRef="startevent" targetRef="publishContextSetupTask"></sequenceFlow>
+    <intermediateCatchEvent id="metadataRetrievalEvent" name="MetadataRetrievalEvent">
+      <messageEventDefinition messageRef="metadataRetrievalEvent"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <serviceTask id="publishMetadataTask" name="Metadata Retrieval" activiti:delegateExpression="${publishMetadataTask}"></serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow29" sourceRef="eventgateway2" targetRef="metadataRetrievalEvent"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="metadataRetrievalEvent" targetRef="publishMetadataTask"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="publishMetadataTask" targetRef="eventgateway2"></sequenceFlow>
+    <intermediateCatchEvent id="toscaUploadEvent" name="ToscaUploadEvent">
+      <messageEventDefinition messageRef="toscaUploadEvent"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <serviceTask id="publishPublishTask" name="Publish" activiti:delegateExpression="${publishPublishTask}"></serviceTask>
+    <subProcess id="toscaSubprocess" name="Tosca Management">
+      <startEvent id="startevent4" name="Start"></startEvent>
+      <serviceTask id="publishToscaUploadTask" name="Tosca Upload" activiti:delegateExpression="${publishToscaUploadTask}"></serviceTask>
+      <serviceTask id="publishToscaValidationTask" name="Tosca Validation" activiti:delegateExpression="${publishToscaValidationTask}"></serviceTask>
+      <sequenceFlow id="flow51" sourceRef="startevent4" targetRef="publishToscaUploadTask"></sequenceFlow>
+      <sequenceFlow id="flow52" sourceRef="publishToscaUploadTask" targetRef="publishToscaValidationTask"></sequenceFlow>
+      <endEvent id="endevent4" name="End"></endEvent>
+      <sequenceFlow id="flow53" sourceRef="publishToscaValidationTask" targetRef="endevent4"></sequenceFlow>
+    </subProcess>
+    <sequenceFlow id="flow32" sourceRef="eventgateway2" targetRef="toscaUploadEvent"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="toscaUploadEvent" targetRef="exclusivegateway4"></sequenceFlow>
+    <subProcess id="artifactsSubprocess" name="Artifacts Management">
+      <startEvent id="startevent3" name="Start"></startEvent>
+      <serviceTask id="publishArtifactStorageTask" name="Artifacts Storage" activiti:delegateExpression="${publishArtifactStorageTask}"></serviceTask>
+      <endEvent id="endevent3" name="End"></endEvent>
+      <sequenceFlow id="flow48" sourceRef="startevent3" targetRef="publishArtifactStorageTask"></sequenceFlow>
+      <sequenceFlow id="flow49" sourceRef="publishArtifactStorageTask" targetRef="endevent3"></sequenceFlow>
+    </subProcess>
+    <intermediateCatchEvent id="artifactsUploadEvent" name="ArtifactsUploadEvent">
+      <messageEventDefinition messageRef="artifactsUploadEvent"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow34" sourceRef="eventgateway2" targetRef="artifactsUploadEvent"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="artifactsUploadEvent" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="toscaSubprocess" targetRef="eventgateway2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="artifactsSubprocess" targetRef="eventgateway2"></sequenceFlow>
+    <intermediateCatchEvent id="publishevent" name="PublishEvent">
+      <messageEventDefinition messageRef="publishEvent"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow38" sourceRef="publishevent" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow39" name="Mandatory Data Missing" sourceRef="exclusivegateway3" targetRef="eventgateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==false}||${chkPublishToscaAvailable==false}||${chkPublishArtifactsAvailable==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow40" name="Metadata, Tosca and Artifacts uploaded" sourceRef="exclusivegateway3" targetRef="publishPublishTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==true}&&${chkPublishToscaAvailable==true}&&${chkPublishArtifactsAvailable==true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="eventgateway2" targetRef="publishevent"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="publishPublishTask" targetRef="publishWpUpdateTask"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow43" name="Metadata Available" sourceRef="exclusivegateway4" targetRef="toscaSubprocess">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow44" name="No Metatadata Available" sourceRef="exclusivegateway4" targetRef="eventgateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==false}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow45" name="Metadata Available" sourceRef="exclusivegateway5" targetRef="artifactsSubprocess">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow46" name="No Metadata Available" sourceRef="exclusivegateway5" targetRef="eventgateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==false}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="publishWpUpdateTask" name="WordPress Update" activiti:delegateExpression="${publishWpUpdateTask}"></serviceTask>
+    <sequenceFlow id="flow47" sourceRef="publishWpUpdateTask" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="publishContextSetupTask" name="Context Setup" activiti:delegateExpression="${publishContextSetupTask}"></serviceTask>
+    <sequenceFlow id="flow50" sourceRef="publishContextSetupTask" targetRef="eventgateway2"></sequenceFlow>
+    <textAnnotation id="textannotation1">
+      <text>Service Publishing Process</text>
+    </textAnnotation>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
+    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+      <bpmndi:BPMNShape bpmnElement="startevent" id="BPMNShape_startevent">
+        <omgdc:Bounds height="35.0" width="35.0" x="68.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="eventgateway2" id="BPMNShape_eventgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="207.0" y="340.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="metadataRetrievalEvent" id="BPMNShape_metadataRetrievalEvent">
+        <omgdc:Bounds height="35.0" width="35.0" x="289.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishMetadataTask" id="BPMNShape_publishMetadataTask">
+        <omgdc:Bounds height="55.0" width="265.0" x="389.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1010.0" y="606.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="toscaUploadEvent" id="BPMNShape_toscaUploadEvent">
+        <omgdc:Bounds height="35.0" width="35.0" x="289.0" y="189.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishPublishTask" id="BPMNShape_publishPublishTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="649.0" y="596.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="toscaSubprocess" id="BPMNShape_toscaSubprocess">
+        <omgdc:Bounds height="133.0" width="561.0" x="517.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent4" id="BPMNShape_startevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="547.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishToscaUploadTask" id="BPMNShape_publishToscaUploadTask">
+        <omgdc:Bounds height="55.0" width="141.0" x="607.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishToscaValidationTask" id="BPMNShape_publishToscaValidationTask">
+        <omgdc:Bounds height="55.0" width="151.0" x="807.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="1003.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="artifactsSubprocess" id="BPMNShape_artifactsSubprocess">
+        <omgdc:Bounds height="126.0" width="561.0" x="517.0" y="388.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent3" id="BPMNShape_startevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="557.0" y="438.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishArtifactStorageTask" id="BPMNShape_publishArtifactStorageTask">
+        <omgdc:Bounds height="55.0" width="271.0" x="617.0" y="428.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="1000.0" y="438.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="artifactsUploadEvent" id="BPMNShape_artifactsUploadEvent">
+        <omgdc:Bounds height="35.0" width="35.0" x="294.0" y="433.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishevent" id="BPMNShape_publishevent">
+        <omgdc:Bounds height="35.0" width="35.0" x="294.0" y="606.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="367.0" y="603.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="362.0" y="186.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="367.0" y="430.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishWpUpdateTask" id="BPMNShape_publishWpUpdateTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="820.0" y="596.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishContextSetupTask" id="BPMNShape_publishContextSetupTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="33.0" y="243.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="50.0" width="173.0" x="9.0" y="53.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="85.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="85.0" y="243.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="227.0" y="340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="226.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="289.0" y="37.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="324.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="389.0" y="37.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="389.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="582.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="607.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="748.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="807.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="958.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1003.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="227.0" y="340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="306.0" y="224.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="324.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="206.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="592.0" y="455.0"></omgdi:waypoint>
+        <omgdi:waypoint x="617.0" y="455.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="888.0" y="455.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1000.0" y="455.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="227.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="433.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="329.0" y="450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="367.0" y="450.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="1078.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="274.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="311.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="797.0" y="388.0"></omgdi:waypoint>
+        <omgdi:waypoint x="779.0" y="359.0"></omgdi:waypoint>
+        <omgdi:waypoint x="247.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="329.0" y="623.0"></omgdi:waypoint>
+        <omgdi:waypoint x="367.0" y="623.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="387.0" y="603.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="586.0"></omgdi:waypoint>
+        <omgdi:waypoint x="262.0" y="586.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="380.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="36.0" width="100.0" x="281.0" y="551.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="407.0" y="623.0"></omgdi:waypoint>
+        <omgdi:waypoint x="649.0" y="623.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="36.0" width="100.0" x="459.0" y="576.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="227.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="623.0"></omgdi:waypoint>
+        <omgdi:waypoint x="294.0" y="623.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="754.0" y="623.0"></omgdi:waypoint>
+        <omgdi:waypoint x="820.0" y="623.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="402.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="517.0" y="206.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="12.0" width="91.0" x="417.0" y="189.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="382.0" y="226.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="340.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="36.0" width="100.0" x="350.0" y="256.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="407.0" y="450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="517.0" y="451.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="12.0" width="91.0" x="417.0" y="433.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="387.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="380.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="36.0" width="100.0" x="359.0" y="387.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="925.0" y="623.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1010.0" y="623.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="85.0" y="298.0"></omgdi:waypoint>
+        <omgdi:waypoint x="85.0" y="359.0"></omgdi:waypoint>
+        <omgdi:waypoint x="207.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -7,13 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SimpleServiceTask implements JavaDelegate {
-	private final Logger log = LoggerFactory.getLogger(SimpleServiceTask.class);
+public class PublishWpUpdateTask implements JavaDelegate {
+	private final Logger log = LoggerFactory.getLogger(PublishWpUpdateTask.class);
+//  TODO Find the Jackrabbit Wrapper Service
+//	@Autowired
+//	ToscaService toscaService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		log.debug("I'm executing the Simple Service Task! YEAH!");
-		execution.setVariable("simpleServiceTaskExecuted", true);
+		log.info("Publish - Wordpress Update Task");
+		
 	}
 
 }
