@@ -35,8 +35,7 @@ public class JackrabbitStorageTests {
     Repository repository;
     @Inject
     Session session;
-    @Inject
-    ObjectContentManager ocm;
+
 
     /*@Inject
     StorageComponent<JackrabbitStoreResult,JackrabbitStoreRequest> jackrabbitManager;*/
@@ -93,28 +92,28 @@ public class JackrabbitStorageTests {
         assertTrue(f.exists());
     }
 
-    @Test
-    public void testStore() throws FileNotFoundException {
-        JackrabbitStoreRequest request = new JackrabbitStoreRequest();
-        request.setContent(new FileInputStream("d:/tmp/test.pdf"));
-        request.setPath("/mycontent");
-        request.setPubDate(new Date());
-        request.setTitle("My Title Document");
-        ocm.insert(request);
-        ocm.save();
+//    @Test
+//    public void testStore() throws FileNotFoundException {
+//        JackrabbitStoreRequest request = new JackrabbitStoreRequest();
+//        request.setContent(new FileInputStream("d:/tmp/test.pdf"));
+//        request.setPath("/mycontent");
+//        request.setPubDate(new Date());
+//        request.setTitle("My Title Document");
+//        ocm.insert(request);
+//        ocm.save();
+//
+//           /* Node node = session.getRootNode();
+//            Node result = JcrUtils.putFile(node.addNode("default"), "My test document", "pdf", new FileInputStream("d:/tmp/test.pdf"));
+//            System.out.println(result.getName());*/
+//        System.out.println("saved");
+//    }
 
-           /* Node node = session.getRootNode();
-            Node result = JcrUtils.putFile(node.addNode("default"), "My test document", "pdf", new FileInputStream("d:/tmp/test.pdf"));
-            System.out.println(result.getName());*/
-        System.out.println("saved");
-    }
-
-    @Test
+    /*@Test
     public void testRetrieveDocument() {
         JackrabbitStoreRequest request = (JackrabbitStoreRequest) ocm.getObject("/mycontent");
         assertTrue(request != null);
         System.out.println(request);
-    }
+    }*/
 
     private final Logger log = LoggerFactory.getLogger(JackrabbitStorageTests.class);
 
@@ -123,13 +122,13 @@ public class JackrabbitStorageTests {
         log.debug("my debug");
     }
 
-    @Test
+    /*@Test
     public void testDeleteObject() {
         JackrabbitStoreRequest request = (JackrabbitStoreRequest) ocm.getObject("/mycontent");
         ocm.remove(request);
         ocm.save();
         System.out.println("Removed");
-    }
+    }*/
 
     /*@Test
     public void testJackrabbitManager() throws FileNotFoundException {
