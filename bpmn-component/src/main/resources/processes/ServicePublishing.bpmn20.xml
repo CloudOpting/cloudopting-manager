@@ -12,7 +12,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
     <startEvent id="startevent" name="Start"></startEvent>
     <eventBasedGateway id="eventgateway2" name="Event Gateway"></eventBasedGateway>
     <sequenceFlow id="flow27" sourceRef="startevent" targetRef="publishContextSetupTask"></sequenceFlow>
-    <intermediateCatchEvent id="metadataRetrievalEvent" name="MetadataRetrievalEvent">
+    <intermediateCatchEvent id="metadataRetrievalIntermediateEvent" name="MetadataRetrievalEvent">
       <messageEventDefinition messageRef="metadataRetrievalEvent"></messageEventDefinition>
     </intermediateCatchEvent>
     <serviceTask id="publishMetadataTask" name="Metadata Retrieval" activiti:delegateExpression="${publishMetadataTask}"></serviceTask>
@@ -20,7 +20,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
     <sequenceFlow id="flow29" sourceRef="eventgateway2" targetRef="metadataRetrievalEvent"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="metadataRetrievalEvent" targetRef="publishMetadataTask"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="publishMetadataTask" targetRef="eventgateway2"></sequenceFlow>
-    <intermediateCatchEvent id="toscaUploadEvent" name="ToscaUploadEvent">
+    <intermediateCatchEvent id="toscaUploadIntermediateEvent" name="ToscaUploadEvent">
       <messageEventDefinition messageRef="toscaUploadEvent"></messageEventDefinition>
     </intermediateCatchEvent>
     <serviceTask id="publishPublishTask" name="Publish" activiti:delegateExpression="${publishPublishTask}"></serviceTask>
@@ -42,7 +42,7 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
       <sequenceFlow id="flow48" sourceRef="startevent3" targetRef="publishArtifactStorageTask"></sequenceFlow>
       <sequenceFlow id="flow49" sourceRef="publishArtifactStorageTask" targetRef="endevent3"></sequenceFlow>
     </subProcess>
-    <intermediateCatchEvent id="artifactsUploadEvent" name="ArtifactsUploadEvent">
+    <intermediateCatchEvent id="artifactsUploadIntermediateEvent" name="ArtifactsUploadEvent">
       <messageEventDefinition messageRef="artifactsUploadEvent"></messageEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow34" sourceRef="eventgateway2" targetRef="artifactsUploadEvent"></sequenceFlow>
