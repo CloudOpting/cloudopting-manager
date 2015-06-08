@@ -9,14 +9,15 @@ import eu.cloudopting.provision.cloudstack.CloudstackRequest;
 import eu.cloudopting.provision.cloudstack.CloudstackResult;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 
 /**
  * Config for provision bean
  */
 @Configuration
-/*@PropertySource("classpath:application_cloud.properties")
-@ConfigurationProperties(prefix="azure")*/
+@PropertySource("classpath:./application_cloud.properties")
+/*@ConfigurationProperties(prefix="azure")*/
 public class ProvisionConfig {
 
     //@Value("${test.prop}")
