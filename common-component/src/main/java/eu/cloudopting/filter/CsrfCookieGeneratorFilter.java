@@ -1,4 +1,4 @@
-package eu.cloudopting.web.filter;
+package eu.cloudopting.filter;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.filter.OncePerRequestFilter;
