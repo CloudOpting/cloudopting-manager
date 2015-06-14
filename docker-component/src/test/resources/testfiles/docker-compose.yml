@@ -1,0 +1,4 @@
+web:
+  image: instance/apache12
+  ports:
+   - "8000:80"
