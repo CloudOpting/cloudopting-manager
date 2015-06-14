@@ -1,6 +1,7 @@
 package eu.cloudopting.docker.images;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -49,7 +50,7 @@ public class DockerBuilder {
 	public ResponseEntity<String> newContext(String name, String pathToPuppetfile){
 		// Prepare files
 		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-		map.add("puppetfile", new ClassPathResource(pathToPuppetfile));
+		map.add("puppetfile", new FileSystemResource(pathToPuppetfile));
 		map.add("contextName", new String(name));
 		
 		// Request

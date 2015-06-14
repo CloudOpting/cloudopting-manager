@@ -14,6 +14,7 @@ import eu.cloudopting.docker.images.DockerBuilder;
 import eu.cloudopting.docker.cluster.DockerCluster;
 import eu.cloudopting.docker.cluster.Machine;
 import eu.cloudopting.docker.composer.DockerComposer;
+import eu.cloudopting.docker.extra.DockerExtra;
 
 /**
  *
@@ -24,6 +25,7 @@ import eu.cloudopting.docker.composer.DockerComposer;
 public class DockerService {
 	private final Logger log = LoggerFactory.getLogger(DockerService.class);
 
+	private DockerExtra extra;
 	private DockerBuilder builder;
 	private DockerCluster cluster;
 	private DockerComposer composer;
@@ -35,10 +37,26 @@ public class DockerService {
 		this("http://localhost:8888");	// By default the cloudopting-crane api end-point will be port 8888 on localhost.
 	}
 
-	public DockerService(String uri){
-		this.builder = new DockerBuilder(uri);
-		this.cluster = new DockerCluster(uri);
-		this.composer = new DockerComposer(uri);
+	public DockerService(String endpoint){
+		this.extra = new DockerExtra(endpoint);
+		this.builder = new DockerBuilder(endpoint);
+		this.cluster = new DockerCluster(endpoint);
+		this.composer = new DockerComposer(endpoint);
+	
+		this.parser = new BasicJsonParser();
+	}
+	
+	// Extra
+	
+	/**
+	 * Check if Crane is up and answering the API.
+	 * @return true if yes, false if no.
+	 */
+	public boolean isCraneAlive(){
+		ResponseEntity<String> response = extra.isCraneAlive();
+		if(!response.getStatusCode().is2xxSuccessful())
+			return false;
+		return true;
 	}
 
 	
@@ -57,7 +75,7 @@ public class DockerService {
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError((String) map.get("description"));
-		return (String) map.get("token");
+		return map.get("token").toString();
 	}
 	
 
