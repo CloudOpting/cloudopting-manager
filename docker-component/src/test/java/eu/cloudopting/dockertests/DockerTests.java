@@ -2,10 +2,13 @@ package eu.cloudopting.dockertests;
 
 import static org.junit.Assert.*;
 
+import java.util.Map;
+
 import org.apache.log4j.spi.LoggerFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,41 +34,108 @@ public class DockerTests {
         assertTrue("Crane is not alive or it is not responding as expected.", dockerService.isCraneAlive());
     }
     
-    // Building related test
+    // Building related tests
 	
     @Test
     public void testNewContext() {
     	boolean correct = false;
     	String token = "";
+    	
     	try {
 			token = dockerService.newContext("src/test/resources/testfiles/Puppetfile");
 		} catch (DockerError e) {
 		}
     	
-    	if(token=="exists")
+    	if(token!=null && token!="")
     		correct = true;
     	
-        assertTrue("token:."+token, correct);
+        assertTrue("Can't obtain a valid context token from Crane.", correct);
     }
     
     @Test
     public void testCheckContext() {   
-        assertNotNull("Not yet.", null);
+       	boolean correct = false;
+    	
+    	try {
+    		String token = dockerService.newContext("src/test/resources/testfiles/Puppetfile");
+			dockerService.isContextReady(token);
+			correct = true;
+		} catch (DockerError e) {
+		}
+    	
+        assertTrue("Error while consulting context build status.", correct);
     }
     
     @Test
     public void testGetContextInfo() {   
-    	assertNotNull("Not yet.", null);
+       	boolean correct = false;
+    	
+    	try {
+    		String token = dockerService.newContext("src/test/resources/testfiles/Puppetfile");
+			String response = dockerService.getContextInfo(token);
+			
+			BasicJsonParser parser = new BasicJsonParser();
+			Map<String, Object> map = parser.parseMap(response);
+			
+			if(map.get("status").toString() != null && map.get("description").toString() != null){
+				correct = true;
+			}
+			
+		} catch (DockerError e) {
+		}
+    	
+        assertTrue("Error while consulting context build status.", correct);
     }
     
     @Test
     public void testRemoveContext() {   
-    	assertNotNull("Not yet.", null);
+       	boolean correct = false;
+    	String token;
+    	
+    	try {
+    		token = dockerService.newContext("src/test/resources/testfiles/Puppetfile");
+			dockerService.removeContext(token);
+			
+			try{
+				dockerService.isContextReady(token);
+			}catch (DockerError e){
+				correct = true;
+			}
+			
+		} catch (DockerError e) {
+		}
+    	
+        assertTrue("Error while removing context.", correct);
     }
     
     @Test
     public void testBuildImage() {   
-    	assertNotNull("Not yet.", null);
+       	boolean correct = false;
+    	
+    	try {
+    		// Prepare context
+    		String contextToken = dockerService.newContext("src/test/resources/testfiles/Puppetfile");
+			
+    		while(dockerService.isContextReady(contextToken)!=true)
+    			Thread.sleep(1000);
+
+			// Launch image builder
+    		String response = dockerService.buildDockerImage("apache12", "src/test/resources/testfiles/Dockerfile", "src/test/resources/testfiles/lamp.pp", contextToken);
+    		
+    		// Check response
+			BasicJsonParser parser = new BasicJsonParser();
+			Map<String, Object> map = parser.parseMap(response);
+			
+			if(map.get("status").toString() == "building" || map.get("status").toString() != "finished"){
+				correct = true;
+			}
+			
+		} catch (DockerError e) {
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+    	
+        assertTrue("Error while building image.", correct);
     }
     
     @Test
