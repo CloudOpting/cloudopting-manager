@@ -74,7 +74,7 @@ public class DockerService {
 		ResponseEntity<String> response = builder.newContext(name, pathToPuppetfile);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
+			throw new DockerError(map.get("description").toString());
 		return map.get("token").toString();
 	}
 	
@@ -94,15 +94,18 @@ public class DockerService {
 	 * Checks if a context is ready to start to build images.
 	 * @param token Token that identifies the context
 	 * @return true if yes, false if no
-	 * @throws DockerError If API returns error when starting the process.
+	 * @throws DockerError If API returns error or if errors while building the context.
 	 */
 	public boolean isContextReady(String token)  throws DockerError{
 		ResponseEntity<String> response = builder.getContextInfo(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
-		if((String) map.get("status") == "ready")
+			throw new DockerError(map.get("description").toString());
+		String aux = map.get("status").toString();
+		if(aux == "finished")
 			return true;
+		else if(map.get("status").toString() == "error")
+			throw new DockerError(map.get("description").toString() + "\n" + map.get("log").toString());
 		else
 			return false;
 	}
@@ -117,7 +120,7 @@ public class DockerService {
 		ResponseEntity<String> response = builder.getContextInfo(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
+			throw new DockerError(map.get("description").toString());
 		
 		return response.getBody();
 	}
@@ -132,7 +135,7 @@ public class DockerService {
 		ResponseEntity<String> response = builder.removeContext(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
+			throw new DockerError(map.get("description").toString());
 	}
 	
 	
@@ -149,9 +152,9 @@ public class DockerService {
 		ResponseEntity<String> response = builder.newImage(image, dockerFilePath, puppetManifestPath, contextReference);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
+			throw new DockerError(map.get("description").toString());
 		
-		return (String) map.get("token");
+		return map.get("token").toString();
 	}
 	
 	/**
@@ -165,9 +168,9 @@ public class DockerService {
 		ResponseEntity<String> response = builder.getImageInfo(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
+			throw new DockerError(map.get("description").toString());
 		
-		if((String) map.get("status") == "ready")
+		if(map.get("status").toString() == "ready")
 			return true;
 		else
 			return false;
@@ -185,7 +188,7 @@ public class DockerService {
 		ResponseEntity<String> response = builder.getImageInfo(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
+			throw new DockerError(map.get("description").toString());
 		
 		return response.getBody();
 	}
@@ -200,7 +203,7 @@ public class DockerService {
 		ResponseEntity<String> response = builder.removeImage(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
-			throw new DockerError((String) map.get("description"));
+			throw new DockerError(map.get("description").toString());
 	}
 	
 	public String commitImage(String image){
