@@ -2,6 +2,7 @@ package eu.cloudopting.provision.cloudstack;
 
 import eu.cloudopting.provision.ProvisionRequest;
 import eu.cloudopting.provision.azure.AzureProvision;
+import org.jclouds.compute.domain.OsFamily;
 
 import java.util.Random;
 
@@ -11,32 +12,58 @@ import java.util.Random;
  */
 public class CloudstackRequest implements ProvisionRequest {
 
-    static int RAND = new Random().nextInt(999);
+    String defaultTemplate = "7135ff27-09f1-11e5-b2dc-080027f4dca6";
+    String identity="ViYyhNulKV9XikY6NgD_bHicFYWBUjDKYwut2ei5C3JtLEz0QphurUsVqc_olCHxg4bkuW-_BRBN5IftgiIXoA";
+    String credential = "RWRh3OO07QOaSKTi4IOlDvH6S6t0bJRTD6mqJSRgueGsaVIxVO7gDkavQ77oLNdIaFzrkNxic70Q-6CSvzNncg";
+    String endpoint="http://192.168.56.10:8096/client/api";
+    OsFamily osFamily = OsFamily.CENTOS;
+    Integer minRam=128;
 
-    /**
-     * An unique cloud service name or an existing one
-     */
-    private String cloudService = String.format("%s%d-%s",
-            System.getProperty("user.name"), RAND, AzureProvision.class.getSimpleName()).toLowerCase();
-
-    /**
-     * Where the virtual machine will be located, in witch geographical area
-     */
-    private String location = "West Europe";
-
-    public String getCloudService() {
-        return cloudService;
+    public Integer getMinRam() {
+        return minRam;
     }
 
-    public void setCloudService(String cloudService) {
-        this.cloudService = cloudService;
+    public void setMinRam(Integer minRam) {
+        this.minRam = minRam;
     }
 
-    public String getLocation() {
-        return location;
+    public String getIdentity() {
+        return identity;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    public String getCredential() {
+        return credential;
+    }
+
+    public void setCredential(String credential) {
+        this.credential = credential;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    public String getDefaultTemplate() {
+        return defaultTemplate;
+    }
+
+    public void setDefaultTemplate(String defaultTemplate) {
+        this.defaultTemplate = defaultTemplate;
+    }
+
+    public OsFamily getOsFamily() {
+        return osFamily;
+    }
+
+    public void setOsFamily(OsFamily osFamily) {
+        this.osFamily = osFamily;
     }
 }

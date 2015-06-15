@@ -12,6 +12,7 @@ import com.google.common.io.ByteSource;
 import com.google.common.net.HostAndPort;
 import com.google.common.net.HostSpecifier;
 import com.google.inject.Module;
+import eu.cloudopting.provision.AbstractProvision;
 import eu.cloudopting.provision.ProvisionComponent;
 import org.jclouds.Constants;
 import org.jclouds.ContextBuilder;
@@ -50,13 +51,15 @@ import static org.jclouds.util.Predicates2.retry;
 /**
  * Main class to provision on cloudstack.
  */
-public class CloudstackProvision implements ProvisionComponent<CloudstackResult, CloudstackRequest> {
+public class CloudstackProvision extends AbstractProvision<CloudstackResult, CloudstackRequest> {
 
 
     @Autowired
     Environment env;
 
     protected org.jclouds.compute.domain.Template template;
+
+    protected TemplateBuilderSpec templateSpec;
 
     protected Module credentialStoreModule = new CredentialStoreModule(
             new ConcurrentHashMap<String, ByteSource>());
@@ -66,63 +69,43 @@ public class CloudstackProvision implements ProvisionComponent<CloudstackResult,
     protected CloudStackApi client;
     private VirtualMachine vm = null;
     protected LoginCredentials loginCredentials = LoginCredentials.builder().user("admin").password("password").build();
+    CloudstackRequest request;
 
 
     /*String cloudstackEndpoint;*/
 
     Properties overrides = new Properties();
-    @PostConstruct
+    /*@PostConstruct
     private void init(){
-        setupProperties();
-        setupContext();
-        setupClient();
-        setupCompute();
-        setupTemplate();
-        jobComplete = retry(new JobComplete(client), 1200, 1, 5, SECONDS);
-        virtualMachineRunning = retry(new VirtualMachineRunning(client), 600, 5, 5, SECONDS);
-    }
+
+    }*/
 
 
     protected void setupProperties() {
         overrides.setProperty(Constants.PROPERTY_TRUST_ALL_CERTS, "true");
         overrides.setProperty(Constants.PROPERTY_RELAX_HOSTNAME, "true");
-        identity = env.getProperty("cloudstack.identity");
-        credential = env.getProperty("cloudstack.credential");
-        endpoint = env.getProperty("cloudstack.endpoint");
+        identity = request.getIdentity();
+        credential = request.getCredential();
+        endpoint = request.getEndpoint();
         apiVersion = env.getProperty("cloudstack.api-version");
 
 
-
-        /*String spec = env.getProperty("cloudstack.template");
-        if (spec != null) {
-            template = TemplateBuilderSpec.parse(spec);
-            if (template.getLoginUser() != null) {
-                Iterable<String> userPass = Splitter.on(':').split(template.getLoginUser());
-                LoginCredentials.Builder loginCredentialsBuilder = LoginCredentials.builder();
-                loginCredentialsBuilder.user(Iterables.get(userPass, 0));
-                if (Iterables.size(userPass) == 2)
-                    loginCredentialsBuilder.password(Iterables.get(userPass, 1));
-                if (template.getAuthenticateSudo() != null)
-                    loginCredentialsBuilder.authenticateSudo(template.getAuthenticateSudo());
-                loginCredentials = loginCredentialsBuilder.build();
-            }
-        }*/
-       /* TemplateBuilder templateBuilder = client.getVirtualMachineApi().;
-        Template template = templateBuilder
-                .locationId(this.location)
-                .os64Bit(true)
-                .osDescriptionMatches(os)
-                .osVersionMatches(osVersion)
-                .minRam(ram)
-                .build();*/
     }
 
 
     @Override
     public CloudstackResult provision(CloudstackRequest request) {
-//        setupProperties();
-        String defaultTemplate = "7135ff27-09f1-11e5-b2dc-080027f4dca6";
-        vm = createVirtualMachine(client, defaultTemplate, jobComplete, virtualMachineRunning);
+        this.request = request;
+        setupProperties();
+        setupContext();
+        setupClient();
+        setupCompute();
+        setupTemplate();
+
+        jobComplete = retry(new JobComplete(client), 1200, 1, 5, SECONDS);
+        virtualMachineRunning = retry(new VirtualMachineRunning(client), 600, 5, 5, SECONDS);
+
+        vm = createVirtualMachine(client, request.getDefaultTemplate(), jobComplete, virtualMachineRunning);
         if (vm.getPassword() != null) {
             conditionallyCheckSSH();
         }
@@ -172,15 +155,6 @@ public class CloudstackProvision implements ProvisionComponent<CloudstackResult,
     protected String provider = "cloudstack";
 
 
-
-    protected String setIfTestSystemPropertyPresent(Properties overrides, String key) {
-        if (System.getProperties().containsKey("test." + key)) {
-            String val = System.getProperty("test." + key);
-            overrides.setProperty(key, val);
-            return val;
-        }
-        return null;
-    }
 
     public static VirtualMachine createVirtualMachine(CloudStackApi client, String defaultTemplate,
                                                       Predicate<String> jobComplete, Predicate<VirtualMachine> virtualMachineRunning) {
@@ -361,7 +335,7 @@ public class CloudstackProvision implements ProvisionComponent<CloudstackResult,
     private void setupTemplate(){
         TemplateBuilder templateBuilder = compute.templateBuilder();
         org.jclouds.compute.domain.Template template = templateBuilder
-                .osFamily(OsFamily.CENTOS)
+                .osFamily(request.getOsFamily()).minRam(request.getMinRam())
                 .build();
         this.template = template;
     }

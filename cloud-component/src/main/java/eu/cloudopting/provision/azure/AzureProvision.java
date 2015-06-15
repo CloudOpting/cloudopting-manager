@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.inject.Module;
+import eu.cloudopting.provision.AbstractProvision;
 import eu.cloudopting.provision.ProvisionComponent;
 import org.jclouds.ContextBuilder;
 import org.jclouds.azurecompute.AzureComputeApi;
@@ -29,7 +30,7 @@ import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorS
 /**
  * Main class used to provision on azure.
  */
-public class AzureProvision implements ProvisionComponent<AzureResult, AzureRequest> {
+public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest> {
 
     private NetworkConfiguration.VirtualNetworkSite virtualNetworkSite;
     private final Set<Module> modules = ImmutableSet.<Module>of(new ExecutorServiceModule(newDirectExecutorService()));
