@@ -109,24 +109,36 @@ public class DockerTests {
     }
     
     @Test
-    public void testBuildImage() {   
+    public void testBuildAndCheckImage() {   
        	boolean correct = false;
-    	
+       	
     	try {
     		// Prepare context
     		String contextToken = dockerService.newContext("src/test/resources/testfiles/Puppetfile");
 			
+    		Thread.sleep(1500);
     		while(dockerService.isContextReady(contextToken)!=true)
-    			Thread.sleep(1000);
+    			Thread.sleep(2000);
 
 			// Launch image builder
-    		String response = dockerService.buildDockerImage("apache12", "src/test/resources/testfiles/Dockerfile", "src/test/resources/testfiles/lamp.pp", contextToken);
+    		String imageToken = dockerService.buildDockerImage("directory", "src/test/resources/testfiles/Dockerfile", "src/test/resources/testfiles/directorymanifest.pp", contextToken);
+    		
+    		assertNotNull("No token returned by image builder.", imageToken);
+    		
+    		// Wait for image
+    		Thread.sleep(1500);
+    		while(dockerService.isBuilt(imageToken)!=true)
+    			Thread.sleep(2000);
+    		
+    		String response = dockerService.getBuildInfo(imageToken);
+    		
+    		assertNotNull("No response returned when asking information about the process.", response);
     		
     		// Check response
 			BasicJsonParser parser = new BasicJsonParser();
 			Map<String, Object> map = parser.parseMap(response);
 			
-			if(map.get("status").toString() == "building" || map.get("status").toString() != "finished"){
+			if(map.get("status").toString().equals("finished")){
 				correct = true;
 			}
 			
