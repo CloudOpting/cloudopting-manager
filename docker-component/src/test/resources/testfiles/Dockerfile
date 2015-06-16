@@ -8,6 +8,6 @@ VOLUME containerLogs /tmp/logs
 
 ADD manifest.pp /tmp/manifest.pp
 
-ADD puppet apply -l /tmp/logs/puppet.log /tmp/manifest.pp
+RUN puppet apply /tmp/manifest.pp
 
 
