@@ -102,9 +102,9 @@ public class DockerService {
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
 		String aux = map.get("status").toString();
-		if(aux == "finished")
+		if(aux.equals("finished"))
 			return true;
-		else if(map.get("status").toString() == "error")
+		else if(aux.equals("error"))
 			throw new DockerError(map.get("description").toString() + "\n" + map.get("log").toString());
 		else
 			return false;
@@ -154,11 +154,12 @@ public class DockerService {
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
 		
-		return map.get("token").toString();
+		String aux = map.get("token").toString(); 
+		return aux;
 	}
 	
 	/**
-	 * Checks if the building is finished.
+	 * Checks if the build process for an image is finished.
 	 * @return true if build finished, false if not.
 	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
@@ -167,17 +168,18 @@ public class DockerService {
 		
 		ResponseEntity<String> response = builder.getImageInfo(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
-		if(!response.getStatusCode().is2xxSuccessful())
+		String status = map.get("status").toString();
+		if(!response.getStatusCode().is2xxSuccessful() || status.equals("error"))
 			throw new DockerError(map.get("description").toString());
 		
-		if(map.get("status").toString() == "ready")
+		if(status.equals("finished"))
 			return true;
 		else
 			return false;
 	}
 	
 	/**
-	 * Retrieves detailed information about the build process.
+	 * Retrieves detailed information about the build process of an image.
 	 * @param token Operation token
 	 * @return Response from API in JSON format.
 	 * @throws DockerError Throws this when the builder returns any non successful response.
