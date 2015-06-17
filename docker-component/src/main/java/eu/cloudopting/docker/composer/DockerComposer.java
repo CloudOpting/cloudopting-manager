@@ -1,5 +1,16 @@
 package eu.cloudopting.docker.composer;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+
 import eu.cloudopting.docker.DockerError;
 
 /**
@@ -10,9 +21,15 @@ import eu.cloudopting.docker.DockerError;
 public class DockerComposer {
 	
 	private String endPoint;
+	private HttpHeaders genericHeaders;
+	private RestTemplate rest;
 	
 	public DockerComposer(String endPoint) {
 		this.endPoint = endPoint;
+		this.genericHeaders = new HttpHeaders();
+		this.genericHeaders.add("Content-Type", "application/json");
+		this.genericHeaders.add("Accept", "*/*");
+		this.rest = new RestTemplate();
 	}
 
 
@@ -22,9 +39,29 @@ public class DockerComposer {
 	 * @param clusterToken Token that identifies the cluster. It is given by the createCluster operation.
 	 * @throws DockerError Throws this when the builder returns any non successful response.
 	 */
-	public String startDeployment(String sourceDockerComposeYml, String clusterToken) throws DockerError {
-		// TODO: call the API to start the process
-		return "token";
+	public ResponseEntity<String> startDeployment(String sourceDockerComposeYml, String clusterToken) throws DockerError {
+		// Prepare files
+		if(clusterToken == null)
+			clusterToken = "";
+		
+		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+		map.add("composefile", new FileSystemResource(sourceDockerComposeYml));
+		map.add("contextToken", new String(clusterToken));
+		
+		// Request
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<LinkedMultiValueMap<String, Object>>(map, headers);
+		
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/composer", HttpMethod.POST, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+		
+		return responseEntity;
 	}
 	
 	/**
