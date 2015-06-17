@@ -1,12 +1,16 @@
 package eu.cloudopting.docker.images;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -36,7 +40,14 @@ public class DockerBuilder {
 	public ResponseEntity<String> getListOfContexts(){
 		// Request
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts", HttpMethod.GET, requestEntity, String.class);
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/contexts", HttpMethod.GET, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+		
 		return responseEntity;
 	}
 	
@@ -56,7 +67,15 @@ public class DockerBuilder {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 		HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<LinkedMultiValueMap<String, Object>>(map, headers);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts", HttpMethod.POST, requestEntity, String.class);
+		
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/contexts", HttpMethod.POST, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+				
 		return responseEntity;
 	}
 	
@@ -68,7 +87,15 @@ public class DockerBuilder {
 	public ResponseEntity<String> removeContext(String token){
 		// Request
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts/" + token, HttpMethod.DELETE, requestEntity, String.class);
+
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/contexts/" + token, HttpMethod.DELETE, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+		
 		return responseEntity;
 	}
 	
@@ -80,7 +107,14 @@ public class DockerBuilder {
 	public ResponseEntity<String> getContextInfo(String token){
 		// Request
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/contexts/" + token, HttpMethod.GET, requestEntity, String.class);
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/contexts/" + token, HttpMethod.GET, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+		
 		return responseEntity;
 	}
 	
@@ -91,7 +125,15 @@ public class DockerBuilder {
 	public ResponseEntity<String> getListOfImages(){
 		// Request
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images/", HttpMethod.GET, requestEntity, String.class);
+		
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/images/", HttpMethod.GET, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+
 		return responseEntity;
 	}
 	
@@ -116,7 +158,15 @@ public class DockerBuilder {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 		HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<LinkedMultiValueMap<String, Object>>(map, headers);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images", HttpMethod.POST, requestEntity, String.class);
+
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/images", HttpMethod.POST, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+
 		return responseEntity;
 	}
 	
@@ -129,7 +179,15 @@ public class DockerBuilder {
 	public ResponseEntity<String> removeImage(String token){
 		// Request
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images/" + token, HttpMethod.DELETE, requestEntity, String.class);
+
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/images/" + token, HttpMethod.DELETE, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+		
 		return responseEntity;
 	}
 	
@@ -141,7 +199,15 @@ public class DockerBuilder {
 	public ResponseEntity<String> getImageInfo(String token){
 		// Request
 		HttpEntity<String> requestEntity = new HttpEntity<String>("", genericHeaders);
-		ResponseEntity<String> responseEntity = rest.exchange(endPoint + "/builder/images/" + token, HttpMethod.GET, requestEntity, String.class);
+
+		ResponseEntity<String> responseEntity = null;
+		try{
+			responseEntity = rest.exchange(endPoint + "/builder/images/" + token, HttpMethod.GET, requestEntity, String.class);
+		}catch(HttpClientErrorException e){
+			if(e.getStatusCode()==HttpStatus.NOT_FOUND)
+			responseEntity = new ResponseEntity<String>(e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+		
 		return responseEntity;
 	}
 

@@ -149,32 +149,79 @@ public class DockerTests {
     	
         assertTrue("Error while building image.", correct);
     }
-    
-    @Test
-    public void testCheckImage() {   
-    	assertNotNull("Not yet.", null);
-    }
-    
-    @Test
-    public void testGetImageInfo() {   
-    	assertNotNull("Not yet.", null);
-    }
-    
+        
     @Test
     public void testStopBuild() {   
-    	assertNotNull("Not yet.", null);
+    	assertNotNull("Not implemented yet.", null);
     }
     
     @Test
     public void testCommitImage() {   
-    	assertNotNull("Not yet.", null);
+    	assertNotNull("Not implemented yet.", null);
     }
     
     @Test
     public void testCheckCommitImage() {   
-    	assertNotNull("Not yet.", null);
+    	assertNotNull("Not implemented yet.", null);
     }
     
+    // Compose related tests
+    
+    @Test
+    public void testDeployCompositionLocally(){
+	boolean correct = false;
+       	
+    	try {
+    		// Prepare context
+    		String contextToken = dockerService.newContext("src/test/resources/testfiles/Puppetfile");
+			
+    		Thread.sleep(1500);
+    		while(dockerService.isContextReady(contextToken)!=true)
+    			Thread.sleep(2000);
 
+			// Launch image builder
+    		String imageToken = dockerService.buildDockerImage("apache", "src/test/resources/testfiles/Dockerfile", "src/test/resources/testfiles/apache.pp", contextToken);
+    		
+    		assertNotNull("No token returned by image builder.", imageToken);
+    		
+    		// Wait for image
+    		Thread.sleep(1500);
+    		while(dockerService.isBuilt(imageToken)!=true)
+    			Thread.sleep(2000);
+    		
+    		String response = dockerService.getBuildInfo(imageToken);
+    		
+    		assertNotNull("No response returned when asking information about the process.", response);
+    		
+    		// Check response
+			BasicJsonParser parser = new BasicJsonParser();
+			Map<String, Object> map = parser.parseMap(response);
+			
+			assertTrue("Can't build image", map.get("status").toString().equals("finished"));
+			
+			// Launch composition
+			String compositionToken = dockerService.deployComposition("src/test/resources/testfiles/docker-compose.yml");
+			
+			if(compositionToken.equals(""))
+				compositionToken = null;
+			
+			assertNotNull("Erroneous response for deploy composition.", compositionToken);
+			
+		} catch (DockerError e) {
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+    	
+    	correct = true;
+    	
+        assertTrue("Error while building image.", correct);
+    }
+
+    @Test
+    public void testStopLocalComposition(){
+    	assertNotNull("Not implemented yet.", null);
+    }
+    
+    
 
 }
