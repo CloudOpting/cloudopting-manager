@@ -15,7 +15,8 @@ angular.module('cloudoptingApp')
             }).then(function () {
                 $scope.authenticationError = false;
                 if ($rootScope.previousStateName === 'register') {
-                    $state.go('home');
+                    //$state.go('home');
+                    $state.go('catalog');
                 } else {
                     $rootScope.back();
                 }

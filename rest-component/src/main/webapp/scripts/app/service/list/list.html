@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading" translate="list.title">Services List</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary pull-right" type="button" ng-click="goToPublish()" translate="list.button.addservice">+ Add New Service</button>
+                        </span>
+                    </div><!-- /.col-lg-12 -->
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{{'list.search.placeholder' | translate}}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info" type="button" translate="list.button.search">Search Service</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-12 -->
+                </div>
+                <br />
+
+                <table cellspacing="1" cellpadding="1" class="table-responsive" style="width: 100%;">
+                    <tr>
+                        <th translate="list.col.name">Service Name</th>
+                        <th translate="list.col.status">Status</th>
+                        <th translate="list.col.edit">Edit Service</th>
+                    </tr>
+                    <tr ng-repeat="app in applicationList">
+                        <td>{{app.Application.name}}</td>
+                        <td>{{app.Application.status}}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default" ng-click="goToEdit(app.Application.id)" translate="list.button.edit">Edit</button>
+                                <button type="button" class="btn btn-default" ng-click="goToInstanceList(app.Application.id)" translate="list.button.listinstances">List instances</button>
+                                <button type="button" class="btn btn-default" ng-click="goToDelete(app.Application.id)" translate="list.button.delete">Delete</button>
+                                <button type="button" class="btn btn-default" ng-click="goToCreateInstance(app.Application.id)" translate="list.button.createinstance">Create Instance</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

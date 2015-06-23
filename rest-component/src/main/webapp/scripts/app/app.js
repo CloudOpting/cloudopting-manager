@@ -26,9 +26,10 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
         });
 
         $rootScope.back = function() {
-            // If previous state is 'activate' or do not exist go to 'home'
+            // If previous state is 'activate' or do not exist go to 'catalog'
             if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
-                $state.go('home');
+                //$state.go('home');
+                $state.go('catalog');
             } else {
                 $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
             }
@@ -44,7 +45,7 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
         //Cache everything except rest api requests
         httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/catalog');
         $stateProvider.state('site', {
             'abstract': true,
             views: {
