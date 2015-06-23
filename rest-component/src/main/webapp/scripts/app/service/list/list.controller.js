@@ -13,7 +13,7 @@ angular.module('cloudoptingApp')
         //Function to get to publish a new service
         $scope.goToPublish = function () {
             //Redirect to publication
-            $state.path('publish');
+            $state.go('publish');
         };
 
         //Function to go to the instances detail.
@@ -22,7 +22,7 @@ angular.module('cloudoptingApp')
 
 
             //Redirect to instances
-            //$state.path('edit');
+            //$state.go('edit');
         };
 
         //Function to go to the instances detail.
@@ -31,7 +31,7 @@ angular.module('cloudoptingApp')
 
 
             //Redirect to instances
-            $state.path('instances');
+            $state.go('instances');
         };
 
         //Function to go to the instances detail.
@@ -40,7 +40,7 @@ angular.module('cloudoptingApp')
 
 
             //Redirect to instances
-            //$state.path('delete');
+            //$state.go('delete');
         };
 
         //Function to go to the instances detail.
@@ -49,6 +49,7 @@ angular.module('cloudoptingApp')
 
 
             //Redirect to instances
-            //$state.path('createinstance');
+            //$state.go('createinstance');
         };
-    });
+    }
+);
