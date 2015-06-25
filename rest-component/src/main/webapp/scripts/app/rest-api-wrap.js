@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .factory('RestApi', function ($http, $log) {
+    .factory('RestApi', function ($http, $log, Upload) {
         //, Upload
 
         var restBaseURI = "http://localhost:8080/api";
@@ -155,7 +155,7 @@ angular.module('cloudoptingApp')
             return instanceList;
         };
 
-/*
+
         restAPI.createApplication = function(name, description, files, callback) {
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
@@ -220,7 +220,7 @@ angular.module('cloudoptingApp')
                 $log.debug('file ' + config.file.name + 'uploaded. Response: ' + data);
             });
         };
- */
+
         restAPI.requestPublication = function (idApplication) {
             return $http({
                 method: 'POST',
