@@ -52,6 +52,10 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
                 'navbar@': {
                     templateUrl: 'scripts/components/navbar/navbar.html',
                     controller: 'NavbarController'
+                },
+                'menu@': {
+                    templateUrl: 'scripts/app/menu/menu.html',
+                    controller: 'MenuController'
                 }
             },
             resolve: {

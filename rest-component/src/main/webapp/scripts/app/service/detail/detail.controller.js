@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('DetailController', function($translate, $scope, $log, $state, RestApi, localStorageService, Principal) {
+    .controller('DetailController', function(SERVICE, $translate, $scope, $log, $state, RestApi, localStorageService, Principal) {
 
         //$scope.appDetail = ApplicationService.currentApplication;
-        $scope.appDetail = localStorageService.get("currentApplication");
+        $scope.appDetail = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
         $scope.showButton = true;
 
         //IF the status of the services is "UNFINISHED" we have to set the button "GO TO EDIT" if it is the Publisher
 
-        if(Principal.isInRole("ROLE_PUBLISHER")){
+        if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
             //TODO: Define all status possible for an APPLICATION.
-            if(appDetail.status === "UNFINISHED"){
+            if(appDetail.status === SERVICE.STATUS.UNFINISHED){
                 $scope.detail_function = function() {
                     $state.go('publish');
                     //TODO: Set the current application to the application service?
@@ -25,14 +25,14 @@ angular.module('cloudoptingApp')
                 $scope.buttonValue = $translate.instant('detail.button.instances');
             }
         }
-        if(Principal.isInAnyRole(["ROLE_ADMIN", "ROLE_OPERATOR"]))
+        if(Principal.isInAnyRole([SERVICE.ROLE.ADMIN, SERVICE.ROLE.OPERATOR]))
         {
             $scope.detail_function = function() {
                 $state.go('instances');
             };
             $scope.buttonValue = $translate.instant('detail.button.instances');
         }
-        else if(Principal.isInRole("ROLE_SUBSCRIBER"))
+        else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER))
         {
             $scope.detail_function = function() {
                 $state.go('taylor');
