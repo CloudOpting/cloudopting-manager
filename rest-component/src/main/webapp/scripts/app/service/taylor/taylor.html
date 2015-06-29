@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading" translate="taylor.title">Taylor Service</div>
+            <div class="panel-body">
+
+                <div class="col-md-12 serviceParametersPanel">
+                    <span class="mo_text" translate="taylor.params.title">Service Parameters</span>
+                    <div class="col-md-offset-1 col-md-4">
+                        <div class="form-group row">
+                            <label translate="taylor.cloudnode">Cloud Node:</label>
+                            <select class="form-control">
+                                <option ng-repeat="cn in cloudNodeList" value="{{cn.name}}">{{cn.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="form-group row">
+                            <label translate="taylor.urldomain">URL/Domain:</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 serviceFlavour">
+                        <span class="mo_text" translate="taylor.flavour">Service Flavour</span>
+
+                        <div class="col-md-offset-1 col-md-4">
+                            <div class="form-group row">
+                                <label translate="taylor.os">Operating System:</label>
+                                <select class="form-control">
+                                    <option ng-repeat="os in osList" value="{{os.name}}">{{os.name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group row">
+                                <label translate="taylor.sla">SLAs:</label>
+                                <select class="form-control"></select>
+
+                            </div>
+                            <div class="form-group row">
+                                <label translate="taylor.bandwidth">Bandwidth:</label>
+                                <input type="text" class="form-control" disabled="">
+                            </div>
+                            <div class="form-group row">
+                                <label translate="taylor.ram">Memory RAM:</label>
+                                <input type="text" class="form-control" disabled="">
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-md-4">
+                            <div class="form-group row">
+                                <label translate="taylor.cssskin">CSS Skin:</label>
+                                <select class="form-control">
+                                    <option ng-repeat="skin in skinList" value="{{skin.name}}">{{skin.name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group row">
+                                <label translate="taylor.numcpu">Number CPU's:</label>
+                                <input type="text" class="form-control" disabled="">
+                            </div>
+                            <div class="form-group row">
+                                <label translate="taylor.disk">Disk Space:</label>
+                                <input type="text" class="form-control" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="button" class="btn" translate="taylor.button.subscribe">Subscribe Service</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

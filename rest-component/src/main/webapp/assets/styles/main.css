@@ -140,3 +140,41 @@ ul#strength {
     width:20px;
 }
 /* end Password strength bar style */
+
+
+/* INIT WEB UI STYLES */
+.serviceParametersPanel { /*,.serviceDeploy,.serviceParameters */
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    /*width: 850px;*/
+    border: 1px solid #E0E0E0;
+}
+
+.serviceFlavour {
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    /*width: 800px;*/
+    border: 1px solid #E0E0E0;
+}
+
+.serviceParametersPanel .mo_text, .serviceFlavour .mo_text
+/* .serviceDeploy .mo_text, .serviceParameters .mo_text, .serviceFlavour .mo_text, */
+{
+    text-align: center;
+    margin-top: -35px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 15px;
+    color: #1c5994;
+    background-color: white;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: absolute;
+    font-weight: bold;
+}
+
+/* END WEB UI STYLES */
