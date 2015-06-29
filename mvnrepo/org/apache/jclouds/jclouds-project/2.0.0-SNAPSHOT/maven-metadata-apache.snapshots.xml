@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.apache.jclouds</groupId>
+  <artifactId>jclouds-project</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20150625.204758</timestamp>
+      <buildNumber>462</buildNumber>
+    </snapshot>
+    <lastUpdated>20150625204758</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0.0-20150625.204758-462</value>
+        <updated>20150625204758</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>tests</classifier>
+        <extension>jar</extension>
+        <value>2.0.0-20150625.204758-462</value>
+        <updated>20150625204758</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
