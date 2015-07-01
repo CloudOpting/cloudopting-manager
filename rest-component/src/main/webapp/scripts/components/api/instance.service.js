@@ -45,6 +45,9 @@ angular.module('cloudoptingApp')
                     .success(function (instance) {
                         inst = instance;
                     });
+            },
+            create: function(service) {
+                //TODO: Implement the creation of a instance.
             }
         };
     }

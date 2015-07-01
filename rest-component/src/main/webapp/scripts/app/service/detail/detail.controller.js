@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('DetailController', function(SERVICE, $translate, $scope, $log, $state, RestApi, localStorageService, Principal) {
+    .controller('DetailController', function(SERVICE, $translate, $scope, $log, $state, localStorageService, Principal) {
 
         //$scope.appDetail = ApplicationService.currentApplication;
         $scope.appDetail = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);

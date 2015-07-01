@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('PublishController', function ($scope, $state, $log, RestApi) {
+    .controller('PublishController', function ($scope, $state, $log, ApplicationService) {
 
         /*
          * WIZARD - SCREEN ONE
@@ -17,7 +17,7 @@ angular.module('cloudoptingApp')
             };
 
             //Create
-            RestApi.createApplication($scope.name, $scope.description, $scope.files, updateApplicationId);
+            ApplicationService.create($scope.name, $scope.description, $scope.files, updateApplicationId);
             //$log.info("Name: " + $scope.name);
             //$log.info("Description: " + $scope.description);
             //if($scope.files) $log.info("Filename: " + $scope.files[0].name);
@@ -61,7 +61,7 @@ angular.module('cloudoptingApp')
 
             };
             //Add content libraries
-            RestApi.addContentLibrary($scope.libraryList, $scope.idApplication, $scope.libraryName, updateLibraryId);
+            ApplicationService.addContentLibrary($scope.libraryList, $scope.idApplication, $scope.libraryName, updateLibraryId);
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
@@ -87,7 +87,7 @@ angular.module('cloudoptingApp')
                 $scope.libraryList.splice(index, 1);
             }
             //Send a REST call if it is already persisted in database.
-            RestApi.deleteContentLibrary($scope.idApplication, file);
+            ApplicationService.deleteContentLibrary($scope.idApplication, file);
         };
 
         /*
@@ -102,7 +102,7 @@ angular.module('cloudoptingApp')
             //Send the tosca file
 
             //FIXME: Not yet implemented.
-            //RestApi.addToscaFile($scope.toscaFiles[0], $scope.idApplication);
+            //ApplicationService.addToscaFile($scope.toscaFiles[0], $scope.idApplication);
         };
 
         /**
@@ -112,7 +112,7 @@ angular.module('cloudoptingApp')
             console.log($scope.contentLib);
 
             //Request publication
-            RestApi.requestPublication($scope.idApplication);
+            ApplicationService.requestPublication($scope.idApplication);
         };
     }
 );

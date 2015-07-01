@@ -1,17 +1,21 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('AddDeployController', function ($scope, $log, RestApi, ApplicationService) {
-        //Get information about the specific Service
-        //RestApi.
-        //Call to the middleware to get the roles
+    .controller('AddDeployController', function (SERVICE, $scope, $log, localStorageService, ApplicationService, InstanceService) {
+        $scope.cloudNodeList = null;
+        $scope.osList = null;
+        $scope.skinList = null;
 
-        if(ApplicationService.currentApplication !== undefined && ApplicationService.currentApplication !== null)
+        var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+        if(currentApp !== undefined && currentApp !== null)
         {
-            var screen = RestApi.inputParameters(ApplicationService.currentApplication.id);
-            $scope.cloudNodeList = screen.cloudNodeList;
-            $scope.osList = screen.osList;
-            $scope.skinList = screen.skinList;
+            ApplicationService.inputParameters(currentApp.id)
+                .success(function(screen){
+                    $scope.cloudNodeList = screen.cloudNodeList;
+                    $scope.osList = screen.osList;
+                    $scope.skinList = screen.skinList;
+                });
+
         }
         else
         {
@@ -27,7 +31,7 @@ angular.module('cloudoptingApp')
 
         $scope.uploadTemplate = function(service) {
             //Save the template temporarily
-            //RestApi.customizationCreate(service);
+            //InstanceService.create(service);
             //$scope.message = "Service send successfully!";
         };
     }

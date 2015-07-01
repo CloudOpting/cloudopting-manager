@@ -1,15 +1,22 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('TaylorController', function (SERVICE, $scope, $log, RestApi, localStorageService) {
+    .controller('TaylorController', function (SERVICE, $scope, $log, ApplicationService, localStorageService) {
+
+        $scope.cloudNodeList = null;
+        $scope.osList = null;
+        $scope.skinList = null;
 
         var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
         if(currentApp !== undefined && currentApp !== null)
         {
-            var screen = RestApi.inputParameters(currentApp.id);
-            $scope.cloudNodeList = screen.cloudNodeList;
-            $scope.osList = screen.osList;
-            $scope.skinList = screen.skinList;
+            ApplicationService.inputParameters(currentApp.id)
+                .success(function(screen){
+                    $scope.cloudNodeList = screen.cloudNodeList;
+                    $scope.osList = screen.osList;
+                    $scope.skinList = screen.skinList;
+                });
+
         }
         else
         {
@@ -20,7 +27,7 @@ angular.module('cloudoptingApp')
 
         $scope.requestSubscription = function(){
             //Request Subscription?
-            //RestApi.requestSubscription($scope.application);
+            //ApplicationService.requestSubscription($scope.application);
         };
     }
 );
