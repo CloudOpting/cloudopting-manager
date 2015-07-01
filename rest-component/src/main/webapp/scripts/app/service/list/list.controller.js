@@ -1,10 +1,16 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ListController', function ($rootScope, $scope, $state, $timeout, Auth, RestApi) {
-        //function ($scope, $log, $location, RestApi, ApplicationService) {
+    .controller('ListController', function ($rootScope, $scope, $state, $timeout, Auth, ApplicationService) {
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
-        $scope.applicationList = RestApi.applicationListUnpaginated();
+        $scope.applicationList = null;
+
+        ApplicationService.findAllUnpaginated()
+            .success(function(applications) {
+                $scope.applicationList = applications;
+            }
+        );
+
 
         //TODO: Implement button "Search Service" functionality.
 

@@ -1,9 +1,15 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function ($scope, $log, $location, RestApi) {
+    .controller('InstancesController', function ($scope, $log, $location, InstanceService) {
         //TODO: Change instancesList to applicationList once it is developed properly?
-        $scope.instancesList = RestApi.instancesList();
+        $scope.instancesList = null;
+
+        InstanceService.findAllUnpaginated()
+            .success(function(instances){
+                $scope.instancesList = instances;
+            }
+        );
 
         //TODO: Implement button "Search Service" functionality.
 
