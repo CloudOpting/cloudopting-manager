@@ -110,6 +110,12 @@
 
     <repositories>
         <repository>
+            <id>local-project-libraries</id>
+            <name>Local project libraries</name>
+            <url>file://${project.basedir}/mvnrepo</url>
+        </repository>
+
+        <repository>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
