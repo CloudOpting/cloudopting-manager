@@ -87,7 +87,7 @@ angular.module('cloudoptingApp')
                 $scope.libraryList.splice(index, 1);
             }
             //Send a REST call if it is already persisted in database.
-            ApplicationService.deleteContentLibrary($scope.idApplication, file);
+            ApplicationService.deleteAppFile($scope.idApplication, file);
         };
 
         /*

@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .factory('ApplicationService', function ($http, Upload) {
+    .factory('ApplicationService', function (SERVICE, $http, Upload) {
         var apps = null;
         var app = null;
         //TODO: Is the BASE URI needed for the Upload component?
@@ -17,7 +17,7 @@ angular.module('cloudoptingApp')
              */
             findAll: function (page, size, sortBy, sortOrder, filter) {
                 //TODO: This endpoint should be "/api/application" to be RESTFul.
-                var endpoint = '/api/application/list' +
+                var endpoint = '/api/application' +
                     '?page='+ page +
                     '&size=' + size +
                     '&sortBy=' + sortBy +
@@ -47,14 +47,22 @@ angular.module('cloudoptingApp')
                     });
             },
             create: function(name, description, files, callback) {
+                return $http({
+                    method: 'POST',
+                    headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
+                    url: restBaseURI + '/application',
+                    fields: { 'name': name, 'description': description }
+                });
+            },
+            addPromotionalImage: function(idApplication, name, description, files, callback) {
                 if (files && files.length) {
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i];
                         Upload.upload({
                             method: 'POST',
                             headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                            url: restBaseURI + '/application',
-                            fields: {'name': name, 'description': description},
+                            url: restBaseURI + '/application/'+idApplication+'/file',
+                            fields: { 'name': "promoImage", 'type' : SERVICE.FILE_TYPE.PROMO_IMAGE },
                             file: file
                         }).progress(function (evt) {
                             var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -73,8 +81,8 @@ angular.module('cloudoptingApp')
                         Upload.upload({
                             method: 'POST',
                             headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                            url: restBaseURI + '/application/'+idApplication+'/contentlibrary',
-                            fields: { 'name' : libraryName},
+                            url: restBaseURI + '/application/'+idApplication+'/file',
+                            fields: { 'name' : libraryName, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY },
                             file: file
                         }).progress(function (evt) {
                             var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -86,14 +94,15 @@ angular.module('cloudoptingApp')
                     }
                 }
             },
-            deleteContentLibrary: function (idApplication, fileId) {
-                return $http.delete('api/application/'+idApplication+'/contentlibrary/'+fileId);
+            deleteAppFile: function (idApplication, fileId) {
+                return $http.delete('api/application/'+idApplication+'/file/'+fileId);
             },
             addToscaFile: function (toscaFile, idApplication) {
                 Upload.upload({
                     method: 'POST',
                     headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                    url: restBaseURI + '/application/'+idApplication+'/tosca',
+                    url: restBaseURI + '/application/'+idApplication+'/file',
+                    fields: { 'name' : "toscaArchive", 'type' : SERVICE.FILE_TYPE.TOSCA_ARCHIVE },
                     file: toscaFile
                 }).progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -101,13 +110,6 @@ angular.module('cloudoptingApp')
                 }).success(function (data, status, headers, config) {
                     $log.debug('file ' + config.file.name + 'uploaded. Response: ' + data);
                 });
-            },
-            inputParameters: function (id) {
-                //return $http.get('/api/application/'+id+'inputparameters')
-                return $http.get('mocks/inputParameters.js')
-                    .success(function(applications){
-                        apps = applications;
-                    });
             },
             /**
              * Method to get the application parameters to be customized.
