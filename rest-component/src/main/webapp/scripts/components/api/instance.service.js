@@ -17,7 +17,7 @@ angular.module('cloudoptingApp')
 
             findAll: function (page, size, sortBy, sortOrder, filter) {
                 //TODO: This endpoint should be "/api/customization" to be RESTFul.
-                var endpoint = '/api/customization/list' +
+                var endpoint = '/api/customization' +
                     '?page='+ page +
                     '&size=' + size +
                     '&sortBy=' + sortBy +
@@ -40,15 +40,54 @@ angular.module('cloudoptingApp')
                         insts = instances;
                     });
             },
+            /**
+             * FIXME: DELETE THIS METHOD
+             * Method to get the instances list without pagination
+             * @returns {*}
+             */
+            findAllUnpaginatedSubscriber: function () {
+                //return $http.get('/api/customization/listunpaginated')
+                return $http.get('mocks/instancesSubscriber.js')
+                    .success(function(instances){
+                        insts = instances;
+                    });
+            },
             findById: function (id) {
                 return $http.get('/api/customization/' + id)
                     .success(function (instance) {
                         inst = instance;
                     });
             },
-            create: function(service) {
-                //TODO: Implement the creation of a instance.
-            }
+            create: function(instance) {
+                return $http.post('/api/customization', angular.toJson(instance))
+                    .success(function (data) {
+                        //TODO: Do something if all went ok.
+                    });
+            },
+            start: function(instance) {
+                instance.status = "start";
+                return $http.put('/api/customization', angular.toJson(instance))
+                    .success(function (data) {
+                        //TODO: Do something if all went ok.
+                    });
+            },
+            stop: function(instance) {
+                instance.status = "stop";
+                return $http.put('/api/customization', angular.toJson(instance))
+                    .success(function (data) {
+                        //TODO: Do something if all went ok.
+                    });
+            },
+            deploy: function(instance) {
+                instance.status = "deploy";
+                return $http.put('/api/customization', angular.toJson(instance))
+                    .success(function (data) {
+                        //TODO: Do something if all went ok.
+                    });
+            },
+            delete: function(instance) {
+                return $http.delete('/api/customization/' + instance.id);
+            },
         };
     }
 );
