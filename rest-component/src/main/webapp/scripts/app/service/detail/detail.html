@@ -5,11 +5,11 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2 translate="detail.service" translate-values="{service_name: '{{appDetail.name}}'}">"Clearo" Service</h2>
-                        <h3 translate="detail.status" translate-values="{service_status: '{{appDetail.status}}'}">Status: Published</h3>
+                        <h2 translate="detail.service" translate-values="{service_name: '{{currentApp.name}}'}">"Clearo" Service</h2>
+                        <h3 translate="detail.status" translate-values="{service_status: '{{currentApp.status}}'}">Status: Published</h3>
                         <img src="http://placehold.it/200x180">
                         <div class="caption">
-                            <p>{{appDetail.description}}</p>
+                            <p>{{currentApp.description}}</p>
                             <div>
                                 <input type="button" ng-show="showButton" ng-click="detail_function()" value="{{buttonValue}}" />
                             </div>
