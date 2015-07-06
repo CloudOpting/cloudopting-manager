@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('AddDeployController', function (SERVICE, $scope, $log, localStorageService, ApplicationService, InstanceService) {
+    .controller('AddDeployController', function (SERVICE, $scope, $state, $log, localStorageService, ApplicationService, InstanceService) {
         $scope.cloudNodeList = null;
         $scope.osList = null;
         $scope.skinList = null;
@@ -9,19 +9,14 @@ angular.module('cloudoptingApp')
         var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
         if(currentApp !== undefined && currentApp !== null)
         {
-            ApplicationService.inputParameters(currentApp.id)
-                .success(function(screen){
-                    $scope.cloudNodeList = screen.cloudNodeList;
-                    $scope.osList = screen.osList;
-                    $scope.skinList = screen.skinList;
-                });
-
+            $scope.cloudNodeList = currentApp.cloudNodeList;
+            $scope.osList = currentApp.osList;
+            $scope.skinList = currentApp.skinList;
         }
         else
         {
-            //Show some error or tell user to go and select a Service.
-            //throw Exception!!
-            //throw new WebUIException("Application not present.");
+            //If not application go to catalog.
+            $state.go('catalog');
         }
 
         $scope.saveTemplate = function(service) {

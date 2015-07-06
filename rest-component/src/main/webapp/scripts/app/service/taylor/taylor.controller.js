@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('TaylorController', function (SERVICE, $scope, $log, ApplicationService, localStorageService) {
+    .controller('TaylorController', function (SERVICE, $scope, $state, $log, ApplicationService, localStorageService) {
 
         $scope.cloudNodeList = null;
         $scope.osList = null;
@@ -10,19 +10,14 @@ angular.module('cloudoptingApp')
         var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
         if(currentApp !== undefined && currentApp !== null)
         {
-            ApplicationService.inputParameters(currentApp.id)
-                .success(function(screen){
-                    $scope.cloudNodeList = screen.cloudNodeList;
-                    $scope.osList = screen.osList;
-                    $scope.skinList = screen.skinList;
-                });
-
+            $scope.cloudNodeList = currentApp.inputParameters.cloudNodeList;
+            $scope.osList = currentApp.inputParameters.osList;
+            $scope.skinList = currentApp.inputParameters.skinList;
         }
         else
         {
-            //Show some error or tell user to go and select a Service.
-            //throw Exception!!
-            //throw new WebUIException("Application not present.");
+            //If not application go to catalog.
+            $state.go('catalog');
         }
 
         $scope.requestSubscription = function(){
