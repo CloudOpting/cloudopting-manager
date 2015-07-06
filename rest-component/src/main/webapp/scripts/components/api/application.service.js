@@ -7,8 +7,8 @@ angular.module('cloudoptingApp')
     .factory('ApplicationService', function (SERVICE, $http, Upload) {
         var apps = null;
         var app = null;
-        //TODO: Is the BASE URI needed for the Upload component?
-        var restBaseURI = "";
+        //TODO: Should the base uri be a full URI for the Upload component?
+        var baseURI = '/api/application';
 
         return {
             /**
@@ -16,8 +16,7 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             findAll: function (page, size, sortBy, sortOrder, filter) {
-                //TODO: This endpoint should be "/api/application" to be RESTFul.
-                var endpoint = '/api/application' +
+                var endpoint = baseURI +
                     '?page='+ page +
                     '&size=' + size +
                     '&sortBy=' + sortBy +
@@ -41,18 +40,16 @@ angular.module('cloudoptingApp')
                     });
             },
             findById: function (id) {
-                return $http.get('/api/application/' + id)
+                return $http.get(baseURI + SERVICE.SEPARATOR + id)
                     .success(function (application) {
                         app = application;
                     });
             },
-            create: function(name, description, files, callback) {
-                return $http({
-                    method: 'POST',
-                    headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                    url: restBaseURI + '/application',
-                    fields: { 'name': name, 'description': description }
-                });
+            create: function(application, files, callback) {
+                return $http.post(baseURI + SERVICE.SEPARATOR + application.id, angular.toJson(application))
+                    .success(function(data) {
+                        //TODO: Do something if all went ok.
+                    });
             },
             addPromotionalImage: function(idApplication, name, description, files, callback) {
                 if (files && files.length) {
@@ -61,7 +58,7 @@ angular.module('cloudoptingApp')
                         Upload.upload({
                             method: 'POST',
                             headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                            url: restBaseURI + '/application/'+idApplication+'/file',
+                            url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file',
                             fields: { 'name': "promoImage", 'type' : SERVICE.FILE_TYPE.PROMO_IMAGE },
                             file: file
                         }).progress(function (evt) {
@@ -69,7 +66,7 @@ angular.module('cloudoptingApp')
                             $log.debug('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                         }).success(function (data, status, headers, config) {
                             callback(data);
-                            $log.debug('Application ID:  ' + data);
+                            $log.debug('Application ID: ' + data);
                         });
                     }
                 }
@@ -81,7 +78,7 @@ angular.module('cloudoptingApp')
                         Upload.upload({
                             method: 'POST',
                             headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                            url: restBaseURI + '/application/'+idApplication+'/file',
+                            url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file',
                             fields: { 'name' : libraryName, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY },
                             file: file
                         }).progress(function (evt) {
@@ -94,14 +91,11 @@ angular.module('cloudoptingApp')
                     }
                 }
             },
-            deleteAppFile: function (idApplication, fileId) {
-                return $http.delete('api/application/'+idApplication+'/file/'+fileId);
-            },
-            addToscaFile: function (toscaFile, idApplication) {
+            addToscaArchive: function (toscaFile, idApplication) {
                 Upload.upload({
                     method: 'POST',
                     headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                    url: restBaseURI + '/application/'+idApplication+'/file',
+                    url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file',
                     fields: { 'name' : "toscaArchive", 'type' : SERVICE.FILE_TYPE.TOSCA_ARCHIVE },
                     file: toscaFile
                 }).progress(function (evt) {
@@ -111,17 +105,20 @@ angular.module('cloudoptingApp')
                     $log.debug('file ' + config.file.name + 'uploaded. Response: ' + data);
                 });
             },
+            deleteAppFile: function (idApplication, fileId) {
+                return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId);
+            },
             /**
              * Method to get the application parameters to be customized.
              *
              * @returns {*}
              */
-            requestPublication: function (idApplication) {
-                return $http({
-                    method: 'POST',
-                    headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                    url: restBaseURI + '/application/'+idApplication+'/publish'
-                });
+            requestPublication: function (application) {
+                application.status = "Published";
+                return $http.put(baseURI + SERVICE.SEPARATOR + application.id, angular.toJson(application))
+                    .success(function(data) {
+                        //TODO: Do something if all went ok.
+                    });
             }
         };
     }

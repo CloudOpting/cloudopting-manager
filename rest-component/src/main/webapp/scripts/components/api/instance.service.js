@@ -4,7 +4,8 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .factory('InstanceService', function ($http) {
+    .factory('InstanceService', function (SERVICE, $http) {
+        var baseURI = '/api/customization';
         var insts = null;
         var inst = null;
 
@@ -15,14 +16,15 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
 
-            findAll: function (page, size, sortBy, sortOrder, filter) {
+            findAll: function (page, size, sortBy, sortOrder, filter, owner) {
                 //TODO: This endpoint should be "/api/customization" to be RESTFul.
-                var endpoint = '/api/customization' +
+                var endpoint = baseURI +
                     '?page='+ page +
                     '&size=' + size +
                     '&sortBy=' + sortBy +
                     '&sortOrder=' + sortOrder +
-                    '&filter=' + filter;
+                    '&filter=' + filter +
+                    '&owner=' + owner;
                 return $http.get(endpoint)
                     .success(function(instances) {
                         insts = instances;
@@ -34,7 +36,7 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             findAllUnpaginated: function () {
-                //return $http.get('/api/customization/listunpaginated')
+                //return $http.get(baseURI+'/listunpaginated')
                 return $http.get('mocks/instances.js')
                     .success(function(instances){
                         insts = instances;
@@ -43,50 +45,51 @@ angular.module('cloudoptingApp')
             /**
              * FIXME: DELETE THIS METHOD
              * Method to get the instances list without pagination
+             * This method should be replaced by findAll with the owner filter.
              * @returns {*}
              */
             findAllUnpaginatedSubscriber: function () {
-                //return $http.get('/api/customization/listunpaginated')
+                //return $http.get(baseURI+'/listunpaginated')
                 return $http.get('mocks/instancesSubscriber.js')
                     .success(function(instances){
                         insts = instances;
                     });
             },
             findById: function (id) {
-                return $http.get('/api/customization/' + id)
+                return $http.get(baseURI + SERVICE.SEPARATOR + id)
                     .success(function (instance) {
                         inst = instance;
                     });
             },
             create: function(instance) {
-                return $http.post('/api/customization', angular.toJson(instance))
+                return $http.post(baseURI, angular.toJson(instance))
                     .success(function (data) {
                         //TODO: Do something if all went ok.
                     });
             },
             start: function(instance) {
                 instance.status = "start";
-                return $http.put('/api/customization', angular.toJson(instance))
+                return $http.put(baseURI, angular.toJson(instance))
                     .success(function (data) {
                         //TODO: Do something if all went ok.
                     });
             },
             stop: function(instance) {
                 instance.status = "stop";
-                return $http.put('/api/customization', angular.toJson(instance))
+                return $http.put(baseURI, angular.toJson(instance))
                     .success(function (data) {
                         //TODO: Do something if all went ok.
                     });
             },
             deploy: function(instance) {
                 instance.status = "deploy";
-                return $http.put('/api/customization', angular.toJson(instance))
+                return $http.put(baseURI, angular.toJson(instance))
                     .success(function (data) {
                         //TODO: Do something if all went ok.
                     });
             },
             delete: function(instance) {
-                return $http.delete('/api/customization/' + instance.id);
+                return $http.delete(baseURI + SERVICE.SEPARATOR + instance.id);
             },
         };
     }
