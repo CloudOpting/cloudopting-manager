@@ -1,0 +1,29 @@
+{
+  "instances": {
+    "title": "Instances Service Catalog",
+    "placeholder" : "Search for...",
+    "col" : {
+      "instanceof": "Instance of",
+      "author": "Author",
+      "date": "Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status" : {
+      "requested": "Requested",
+      "deleted": "Deleted",
+      "running": "Running",
+      "todelete": "To Delete",
+      "stopped": "Stopped"
+    },
+    "button" : {
+      "search" : "Search Service",
+      "go": "GO",
+      "monitor": "Monitoring",
+      "deploy": "Deploy",
+      "stop": "Stop",
+      "start": "Start",
+      "delete": "Delete"
+    }
+  }
+}

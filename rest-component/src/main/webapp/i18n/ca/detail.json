@@ -1,0 +1,12 @@
+{
+  "detail": {
+    "title": "Service Detail",
+    "service": "\"{{service_name}}\" Service",
+    "status": "Status: {{service_status}}",
+    "button" : {
+      "subscribe": "SUBSCRIBE",
+      "instances": "SEE INSTANCES",
+      "completepublish": "COMPLETE PUBLISH"
+    }
+  }
+}

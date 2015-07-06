@@ -1,0 +1,25 @@
+{
+  "addDeploy": {
+    "title": "Service Add Deploy Form",
+    "titles" : {
+      "deploy": "Service Deploy",
+      "params": "Service Parameters"
+    },
+    "button" : {
+      "deploy": "Deploy Service",
+      "test": "Test Service",
+      "save": "Save Template",
+      "upload": "Upload Template"
+    },
+    "cloudnode": "Cloud Node:",
+    "os": "Operating System:",
+    "numcpu": "Number CPU's:",
+    "disk": "Disk Space:",
+    "ram": "Memory RAM:",
+    "bandwidth": "Bandwidth:",
+    "urldomain": "URL/Domain:",
+    "cssskin": "CSS Skin:"
+  }
+}
+
+

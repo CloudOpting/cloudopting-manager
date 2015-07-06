@@ -27,7 +27,7 @@ angular.module('cloudoptingApp')
  They are written in English to avoid character encoding issues (not a perfect solution)
  */
     .constant('LANGUAGES', [
-        'en', 'fr', 'ro'
+        'en', 'fr', 'ro', 'ca', 'it'
         //add new languages here
     ]
 );

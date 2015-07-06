@@ -1,0 +1,21 @@
+{
+  "subscriber": {
+    "title": "Service Subscriber",
+    "titles": {
+      "manage" : "Manage {{service_name}}",
+      "operations": "Manage {{service_name}} Operations",
+      "follow": "Follow {{service_name}} KPI's"
+    },
+    "handle": "Handle resource request:",
+    "decommission": "Decommission {{service_name}} Instance:",
+    "button" : {
+      "update": "Update {{service_name}}",
+      "decommission": "Decommission"
+    },
+    "cpu": "CPU Usage:",
+    "disk": "Disk Space Usage:",
+    "ram": "RAM Memory Usage:",
+    "bandwidth": "Bandwidth Usage:",
+    "terms": "Check your Terms and Conditions"
+  }
+}

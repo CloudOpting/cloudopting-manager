@@ -1,0 +1,20 @@
+{
+  "taylor": {
+    "title": "Taylor Service",
+    "params.title": "Service Parameters",
+    "cloudnode": "Cloud Node:",
+    "os": "Operating System:",
+    "urldomain": "URL/Domain:",
+    "cssskin": "CSS Skin:",
+    "flavour": "Service Flavour",
+    "sla": "SLAs:",
+    "numcpu": "Number CPU's:",
+    "bandwidth": "Bandwidth",
+    "disk": "Disk Space",
+    "ram": "Memory RAM:",
+    "disk": "Disk Space:",
+    "ram": "Memory RAM:",
+    "bandwidth": "Bandwidth:",
+    "button.subscribe": "Subscribe Service"
+  }
+}
