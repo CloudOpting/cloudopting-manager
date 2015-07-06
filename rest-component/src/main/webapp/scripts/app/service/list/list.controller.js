@@ -1,15 +1,25 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ListController', function ($rootScope, $scope, $state, $timeout, Auth, ApplicationService) {
+    .controller('ListController', function (SERVICE, $rootScope, $scope, $state, $timeout, localStorageService, Principal, Auth, ApplicationService) {
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
         $scope.applicationList = null;
 
-        ApplicationService.findAllUnpaginated()
-            .success(function(applications) {
-                $scope.applicationList = applications;
-            }
-        );
+        //TODO: Depending on the role, give the user a different list
+        if(Principal.isInRole(SERVICE.ROLE.ADMIN)) {
+            ApplicationService.findAllUnpaginated()
+                .success(function (applications) {
+                    $scope.applicationList = applications;
+                }
+            );
+        }
+        else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)) {
+            ApplicationService.findAllUnpaginated()
+                .success(function (applications) {
+                    $scope.applicationList = applications;
+                }
+            );
+        }
 
 
         //TODO: Implement button "Search Service" functionality.
@@ -24,7 +34,9 @@ angular.module('cloudoptingApp')
 
         //Function to go to the instances detail.
         $scope.goToEdit = function (appId) {
-            //TODO: Save the ID on a place where edit can get it.
+            //Save the ID on a place where edit can get it.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
+
 
 
             //Redirect to instances
@@ -33,7 +45,8 @@ angular.module('cloudoptingApp')
 
         //Function to go to the instances detail.
         $scope.goToInstanceList = function (appId) {
-            //TODO: Save the ID on a place where instances can get it.
+            //Save the ID on a place where instances can get it.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
 
 
             //Redirect to instances
@@ -42,7 +55,8 @@ angular.module('cloudoptingApp')
 
         //Function to go to the instances detail.
         $scope.goToDelete = function (appId) {
-            //TODO: Save the ID on a place where delete can get it.
+            //Save the ID on a place where delete can get it.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
 
 
             //Redirect to instances
@@ -51,7 +65,8 @@ angular.module('cloudoptingApp')
 
         //Function to go to the instances detail.
         $scope.goToCreateInstance = function (appId) {
-            //TODO: Save the ID on a place where createinstance can get it.
+            //Save the ID on a place where createinstance can get it.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
 
 
             //Redirect to instances
