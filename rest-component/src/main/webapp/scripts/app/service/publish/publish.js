@@ -7,7 +7,7 @@ angular.module('cloudoptingApp')
                 parent: 'service',
                 url: '/publish',
                 data: {
-                    roles: ['ROLE_ADMIN']
+                    roles: ['ROLE_ADMIN', 'ROLE_PUBLISHER']
                 },
                 views: {
                     'content@': {
