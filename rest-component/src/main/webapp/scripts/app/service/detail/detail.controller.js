@@ -1,13 +1,19 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('DetailController', function(SERVICE, $translate, $scope, $log, $state, localStorageService, Principal) {
+    .controller('DetailController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Principal) {
 
         //$scope.appDetail = ApplicationService.currentApplication;
         $scope.appDetail = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
         $scope.showButton = true;
 
         //IF the status of the services is "UNFINISHED" we have to set the button "GO TO EDIT" if it is the Publisher
+
+
+        //If not application go to catalog.
+        if($scope.appDetail == 'undefined' || $scope.appDetail == null ){
+            $state.go('catalog');
+        }
 
         if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
             //TODO: Define all status possible for an APPLICATION.
