@@ -124,23 +124,19 @@ public class Applications implements BaseEntity {
     private Organizations organizationId;
 
 	@ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status statusId;
 
 	@Column(name = "application_name", length = 50)
-    @NotNull
     private String applicationName;
 
 	@Column(name = "application_description")
-    @NotNull
     private String applicationDescription;
 
 	@Column(name = "application_tosca_template")
-    @NotNull
     private String applicationToscaTemplate;
 
 	@Column(name = "application_version", length = 10)
-    @NotNull
     private String applicationVersion;
 
 	public Set<ApplicationMedia> getApplicationMedias() {

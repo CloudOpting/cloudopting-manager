@@ -15,9 +15,11 @@ angular.module('cloudoptingApp')
             var updateApplicationId = function(applicationId){
                 $scope.idApplication = applicationId;
             };
-
+            var application = {};
+            application.applicationName = $scope.name;
+            application.applicationDescription=$scope.description;
             //Create
-            ApplicationService.create($scope.name, $scope.description, $scope.files, updateApplicationId);
+            ApplicationService.create(application, $scope.files, updateApplicationId);
             //$log.info("Name: " + $scope.name);
             //$log.info("Description: " + $scope.description);
             //if($scope.files) $log.info("Filename: " + $scope.files[0].name);
