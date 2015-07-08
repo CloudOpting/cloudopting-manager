@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading" translate="management.title">Service Management</div>
+            <div class="panel-body">
+
+                <div class="col-md-12 webuiPanel">
+                    <span class="mo_text" translate="management.titles.operations">Operations</span>
+                    <div class="row">
+                        <div class="btn-toolbar">
+                            <button type="button" class="btn" ng-click="startService()" translate="management.button.start">Start Service</button>
+
+                            <button type="button" class="btn" ng-click="stopService()" translate="management.button.stop">Stop Service</button>
+
+                            <button type="button" class="btn" ng-click="decommissionService()" translate="management.button.decommission">Decommission Service</button>
+
+                            <button type="button" class="btn" ng-click="redeployService()" translate="management.button.redeploy">Redeploy Service</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active"><a href="#" translate="management.tab.params">Params</a></li>
+                            <li role="presentation"><a href="#" translate="management.tab.monitor">Monitor</a></li>
+                            <li role="presentation"><a href="#" translate="management.tab.logging">Logging</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

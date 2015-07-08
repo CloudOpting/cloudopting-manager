@@ -1,0 +1,21 @@
+{
+  "management": {
+    "title": "Service Management",
+    "titles" : {
+      "operations": "Operations"
+    },
+    "button" : {
+      "start": "Start Service",
+      "stop": "Stop Service",
+      "decommission": "Decommission Service",
+      "redeploy": "Redeploy Service"
+    },
+    "tab" : {
+      "params": "Params",
+      "monitor": "Monitor",
+      "logging": "Logging"
+    }
+  }
+}
+
+

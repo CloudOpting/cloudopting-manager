@@ -168,4 +168,7 @@ ul#strength {
     font-weight: bold;
 }
 
+.btn-toolbar{
+    text-align: center;
+}
 /* END WEB UI STYLES */
