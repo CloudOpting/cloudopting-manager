@@ -30,10 +30,15 @@ public class DeployDockerBuild implements JavaDelegate {
 		String coRoot = (String) execution.getVariable("coRoot");
 		String dockerContext = (String) execution.getVariable("dockerContext");
 				
+		log.debug("dockerContext: "+dockerContext);
 		
-		String imageName = "cloudopting/"+organizationName+"_"+dockerNode.toLowerCase();
+		String imageName = organizationName+"_"+dockerNode.toLowerCase();
 		String dockerFile = serviceHome + "/" + dockerNode + ".dockerfile";
 		String puppetManifest = serviceHome + "/" + dockerNode + ".pp";
+		log.debug("imageName: "+imageName);
+		log.debug("dockerFile: "+dockerFile);
+		log.debug("puppetManifest: "+puppetManifest);
+
 		String buildToken = dockerService.buildDockerImage(imageName, dockerFile, puppetManifest, dockerContext);
 //		toscaService.getNodeType("");
 		//buildDockerImage(String customer, String service, String dockerfile,String path){

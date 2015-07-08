@@ -28,6 +28,8 @@ public class DeployRunr10k implements JavaDelegate {
 		String serviceHome = (String) execution.getVariable("serviceHome");
 		toscaService.runR10k(customizationId, serviceHome, coRoot);
 		String dockerContext = dockerService.newContext(serviceHome + "/Puppetfile");
+//		dockerService.isContextReady(dockerContext);
+		log.debug("dockerContext: "+dockerContext);
 		execution.setVariable("dockerContext", dockerContext);
 	}
 
