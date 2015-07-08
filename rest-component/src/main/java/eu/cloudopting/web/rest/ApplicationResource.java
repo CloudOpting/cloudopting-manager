@@ -4,7 +4,6 @@ import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Status;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
-import eu.cloudopting.service.TestManager;
 import eu.cloudopting.service.util.StatusConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
