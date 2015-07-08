@@ -81,7 +81,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <sequenceFlow id="toCheckBuild" sourceRef="exclusivegateway5" targetRef="checkBuild"></sequenceFlow>
     </subProcess>
     <serviceTask id="r10kTask" name="run R10K" activiti:delegateExpression="${deployRunr10k}"></serviceTask>
-    <sequenceFlow id="toSubBuild" sourceRef="r10kTask" targetRef="subDockerBuild"></sequenceFlow>
+    <sequenceFlow id="toSubBuild" sourceRef="r10kTask" targetRef="exclusivegateway10"></sequenceFlow>
     <sequenceFlow id="toCompose" sourceRef="subDockerBuild" targetRef="taskDockerComposeFile"></sequenceFlow>
     <serviceTask id="taskDockerComposeFile" name="Prepare Docker Compose file" activiti:delegateExpression="${deployDockerCompose}"></serviceTask>
     <sequenceFlow id="toDeploy" sourceRef="taskDockerComposeFile" targetRef="deployOnDockerTask"></sequenceFlow>
@@ -104,6 +104,17 @@ This task will probably be transformed into a subprocess, but at the moment we n
     </sequenceFlow>
     <serviceTask id="cleanup" name="Clean Up" activiti:delegateExpression="${deployCleanUp}"></serviceTask>
     <sequenceFlow id="toEnd" sourceRef="cleanup" targetRef="theEnd"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway10" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="chkcontext" name="Check context" activiti:delegateExpression="${deployCheckContext}"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="exclusivegateway10" targetRef="chkcontext"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="chkcontext" targetRef="exclusivegateway11"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway11" targetRef="exclusivegateway10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkContext==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway11" targetRef="subDockerBuild">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkContext==true}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
     <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">
@@ -208,6 +219,15 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="cleanup" id="BPMNShape_cleanup">
         <omgdc:Bounds height="55.0" width="105.0" x="923.0" y="530.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway10" id="BPMNShape_exclusivegateway10">
+        <omgdc:Bounds height="40.0" width="40.0" x="592.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
+        <omgdc:Bounds height="40.0" width="40.0" x="778.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="chkcontext" id="BPMNShape_chkcontext">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fromStart" id="BPMNEdge_fromStart">
         <omgdi:waypoint x="-25.0" y="114.0"></omgdi:waypoint>
@@ -318,8 +338,8 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="310.0" y="512.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSubBuild" id="BPMNEdge_toSubBuild">
-        <omgdi:waypoint x="550.0" y="338.0"></omgdi:waypoint>
-        <omgdi:waypoint x="466.0" y="436.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="283.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCompose" id="BPMNEdge_toCompose">
         <omgdi:waypoint x="466.0" y="436.0"></omgdi:waypoint>
@@ -362,6 +382,23 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNEdge bpmnElement="toEnd" id="BPMNEdge_toEnd">
         <omgdi:waypoint x="975.0" y="585.0"></omgdi:waypoint>
         <omgdi:waypoint x="975.0" y="610.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="632.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="755.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="778.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="798.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="151.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="798.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="466.0" y="436.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
