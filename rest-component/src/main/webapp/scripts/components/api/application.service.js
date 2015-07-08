@@ -46,7 +46,7 @@ angular.module('cloudoptingApp')
                     });
             },
             create: function(application, files, callback) {
-                return $http.post(baseURI + SERVICE.SEPARATOR + application.id, angular.toJson(application))
+                return $http.post(baseURI + SERVICE.SEPARATOR, application)
                     .success(function(data) {
                         //TODO: Do something if all went ok.
                     });
