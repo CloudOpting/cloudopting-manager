@@ -69,6 +69,7 @@ public class ToscaOperationImpl {
 		String toscaPath = data.get("toscaPath");
 		String creationPath = data.get("creationPath");
 		String servicePath = data.get("servicePath");
+		String imageName = data.get("imageName");
 		String customer = data.get("customer");
 		System.out.println("I'm in the writePuppetDockerTemplateHierarchy for :" + id);
 		
@@ -111,7 +112,7 @@ public class ToscaOperationImpl {
 		// I get the Dockerfile template name
 		Map nodeDataDC = tfm.getPropertiesForNode(customizationId, id);
 		nodeDataDC.put("puppetFile",puppetFile);
-		nodeDataDC.put("servicePath",servicePath);
+		nodeDataDC.put("imageName",imageName);
 		nodeDataDC.put("exposedPorts",exPorts);
 		String myDCTemplate = tfm.getTemplateForNode(customizationId, id,"DockerfileTemplate");
 		System.out.println("The Dockerfile template for this DockerContainer is :"+myDCTemplate);

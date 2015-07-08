@@ -1,4 +1,4 @@
-moduledir '../puppet/modules'
+moduledir './puppet/modules'
 
 <#list modData as module>
 mod '<#if module['module']?has_content>${module['module']}</#if>',

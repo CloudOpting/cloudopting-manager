@@ -30,6 +30,8 @@ public class DeployGenerateDocker implements JavaDelegate {
 		String coRoot = (String) execution.getVariable("coRoot");
 		String serviceHome = (String) execution.getVariable("serviceHome");
 		String organizationName = (String) execution.getVariable("organizationName");
+		String imageName = organizationName+"_"+dockerNode.toLowerCase();
+		
 //		toscaService.getNodeType("");
 //		CloudOptingNodeImpl dc = new CloudOptingNodeImpl();
 		HashMap<String, String> hm = new HashMap<String, String>();
@@ -39,6 +41,7 @@ public class DeployGenerateDocker implements JavaDelegate {
 		hm.put("toscaPath", serviceHome+"/tosca/");
 		hm.put("customer", organizationName);
 		hm.put("customizationId", customizationId);
+		hm.put("imageName", imageName);
 		cloudOptingNodeImpl.execute(hm);
 		
 	}
