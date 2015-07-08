@@ -2,6 +2,7 @@ package eu.cloudopting.bpmn;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class BpmnService {
 
     @Autowired
     private ProcessEngine processEngine;
-
+    
     @Autowired
     protected ProcessEngineConfiguration processEngineConfiguration;
     
@@ -100,10 +101,20 @@ public class BpmnService {
 	 * @param startParams the input variables (might be null)
 	 * @return
 	 */
-	public List<ProcessDefinition> getAvailableProcessDefinitions(){
+	public List<String> getAvailableProcessDefinitions(){
 		log.debug("Retrieving available process definitions");
 		RepositoryService rs = processEngine.getRepositoryService();
-        return rs.createProcessDefinitionQuery().active().list();
+		List<String> result = new LinkedList<String>();
+		for (ProcessDefinition currentDefinition : rs.createProcessDefinitionQuery().active().list()) {
+			result.add(currentDefinition.getId()+" - "+currentDefinition.getName()+" - DeploymentId: "+currentDefinition.getDeploymentId());
+		}
+        return result;
+	}
+	
+	public void deleteDeploymentById(String deploymentId){
+		log.debug("Deleting Process Deployment with id:"+ deploymentId);
+		RepositoryService rs = processEngine.getRepositoryService();
+		rs.deleteDeployment(deploymentId, true);
 	}
 	
 	/**

@@ -59,9 +59,17 @@ public class BpmnController {
 	@RequestMapping(value = "/bpmn/availableProcessDefinitions",
             method = RequestMethod.GET)
     @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
-    @ResponseBody List<ProcessDefinition> getAvailableProcessDefinitions() {
+    @ResponseBody List<String> getAvailableProcessDefinitions() {
         log.info("REST request to get processdefinitions");
         return bpmn.getAvailableProcessDefinitions();
+    }
+	
+	@RequestMapping(value = "/bpmn/deleteProcessDeployment",
+            method = RequestMethod.GET)
+    @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
+    @ResponseBody void deleteProcessDeployment(@RequestParam(value = "deploymentId", required = true) String deploymentId) {
+        log.info("REST request to delete deployment by id");
+        bpmn.deleteDeploymentById(deploymentId);;
     }
 
 
