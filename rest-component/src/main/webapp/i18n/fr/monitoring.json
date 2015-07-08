@@ -1,0 +1,14 @@
+{
+  "monitoring": {
+    "title": "Service Monitoring",
+    "titles" : {
+      "monitor": "Service Monitor",
+      "alerts": "Service Alerts"
+    },
+    "cpu": "CPU Usage:",
+    "disk": "Disk Usage:",
+    "ram": "RAM Usage:"
+  }
+}
+
+
