@@ -48,13 +48,13 @@ angular.module('cloudoptingApp')
             create: function(application, callback) {
                 return $http.post(baseURI + SERVICE.SEPARATOR, application)
                     .success(function(data, status, headers, config) {
-                        callback.call(data);
+                        callback(data);
                     });
             },
             update: function(processId, application, callback) {
                 return $http.put("/bpmn/publish/updateMetadata" + SERVICE.SEPARATOR + processId, application)
-                    .success(function(applicationId) {
-                        callback.call(applicationId);
+                    .success(function(data, status, headers, config) {
+                        callback(data);
                     });
             },
             addPromotionalImage: function(idApplication, name, description, files, callback) {
@@ -77,14 +77,14 @@ angular.module('cloudoptingApp')
                     }
                 }
             },
-            addContentLibrary: function (idApplication, libraryList, libraryName, callback) {
+            addContentLibrary: function (processID, idApplication, libraryList, libraryName, callback) {
                 if (libraryList && libraryList.length) {
                     for (var i = 0; i < libraryList.length; i++) {
                         var file = libraryList[i];
                         Upload.upload({
                             method: 'POST',
                             headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                            url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file',
+                            url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processID + SERVICE.SEPARATOR + 'file',
                             fields: { 'name' : libraryName, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY },
                             file: file
                         }).progress(function (evt) {
