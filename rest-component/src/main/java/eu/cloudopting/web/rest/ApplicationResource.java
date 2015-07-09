@@ -1,10 +1,10 @@
 package eu.cloudopting.web.rest;
 
+import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
-import eu.cloudopting.domain.Status;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
-import eu.cloudopting.service.util.StatusConstants;
+import eu.cloudopting.dto.ApplicationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -39,6 +39,9 @@ public class ApplicationResource extends AbstractController<Applications> {
     @Inject
     private StatusService statusService;
 
+    @Inject
+    private BpmnService bpmnService;
+
 
 
     /**
@@ -56,6 +59,9 @@ public class ApplicationResource extends AbstractController<Applications> {
     }
 
 
+    public BpmnService getBpmnService() {
+        return bpmnService;
+    }
 
     @Override
     protected BaseService<Applications> getService() {
@@ -139,16 +145,17 @@ public class ApplicationResource extends AbstractController<Applications> {
     @RequestMapping(value="/application",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final void create(@RequestBody Applications application, final UriComponentsBuilder uriBuilder,
+    public final void create(@RequestBody ApplicationDTO application, final UriComponentsBuilder uriBuilder,
                              final HttpServletResponse response, final HttpServletRequest request) {
        /* String xmlTosca = (String) request.getAttribute("xmlTosca");
         if(xmlTosca!=null && !xmlTosca.equals("")){
             applications.setApplicationToscaTemplate(xmlTosca);
         }*/
-        Status status = getStatusService().findOne(StatusConstants.DRAFT);
-        application.setStatusId(status);
-        application.setApplicationVersion(String.valueOf(1));
-        createInternal(application, uriBuilder, response);
+
+
+//        createInternal(application, uriBuilder, response);
+
+        getBpmnService().startPublish(application);
     }
 
 }

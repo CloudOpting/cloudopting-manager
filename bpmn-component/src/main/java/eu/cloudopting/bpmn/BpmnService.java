@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import eu.cloudopting.domain.Applications;
+import eu.cloudopting.domain.Status;
+import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.service.ApplicationService;
+import eu.cloudopting.service.StatusService;
+import eu.cloudopting.service.util.StatusConstants;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
@@ -23,8 +29,12 @@ import org.springframework.stereotype.Service;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.service.CustomizationService;
 
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+
 
 @Service
+@Transactional
 public class BpmnService {
 	private final Logger log = LoggerFactory.getLogger(BpmnService.class);
 
@@ -43,6 +53,12 @@ public class BpmnService {
     
     @Autowired
     protected CustomizationService customizationS;
+
+	@Inject
+	private StatusService statusService;
+
+	@Inject
+	private ApplicationService applicationService;
 
 	public String startDeployProcess(String customizationId, String cloudId){
 		log.info("Before activating process");
@@ -154,4 +170,10 @@ public class BpmnService {
 	
 	}
 
+	public String startPublish(ApplicationDTO application) {
+	    HashMap<String, Object> v = new HashMap<>();
+		v.put("application",application);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("myProcess",v);
+		return pi.getProcessInstanceId();
+	}
 }
