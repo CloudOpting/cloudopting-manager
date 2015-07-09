@@ -93,12 +93,13 @@ public class BpmnController {
     }
 	
 	@RequestMapping(value = "/bpmn/publish/updateMetadata/{processInstanceId}",
-            method = RequestMethod.POST)
+            method = RequestMethod.PUT)
     @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
     @ResponseBody Set<String> updateMetadata(@PathVariable String processInstanceId, @RequestBody ApplicationDTO application) {
         log.info("REST request to update metadata for process instance with id: {}, application {}", processInstanceId, application);
         Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
         params.put("application", application);
+        //Return the updated value of the model
         return bpmn.unlockProcess(processInstanceId, "MetadataRetrievalEventRef", params);
     }
 

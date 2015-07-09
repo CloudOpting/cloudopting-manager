@@ -56,8 +56,10 @@ angular.module('cloudoptingApp')
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
+            //TODO: Fix a bit
             //Create
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            application.id=activiti.applicationId; 
             ApplicationService.update(activiti.processInstanceId, activiti.applicationId, application, callback);
         };
 

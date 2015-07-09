@@ -51,8 +51,8 @@ angular.module('cloudoptingApp')
                         callback(data);
                     });
             },
-            update: function(processId, application, callback) {
-                return $http.put("/bpmn/publish/updateMetadata" + SERVICE.SEPARATOR + processId, application)
+            update: function(processId, applicationId, application, callback) {
+                return $http.put("/api/bpmn/publish/updateMetadata" + SERVICE.SEPARATOR + processId, application)
                     .success(function(data, status, headers, config) {
                         callback(data);
                     });
