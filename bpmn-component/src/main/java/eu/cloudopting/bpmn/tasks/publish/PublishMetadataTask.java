@@ -16,6 +16,8 @@ public class PublishMetadataTask implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		log.info("Publish - Metadata Retrieval");
+//		String customizationId = (String) execution.getVariable("customizationId");
+//		String serviceHome = (String) execution.getVariable("serviceHome");
 		
 	}
 

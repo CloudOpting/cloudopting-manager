@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.service.CustomizationService;
 
@@ -117,12 +118,19 @@ public class BpmnService {
 	 * @param startParams the input variables (might be null)
 	 * @return
 	 */
-	public List<String> getAvailableProcessDefinitions(){
+	public List<BasicProcessInfo> getAvailableProcessDefinitions(){
 		log.debug("Retrieving available process definitions");
 		RepositoryService rs = processEngine.getRepositoryService();
-		List<String> result = new LinkedList<String>();
+		List<BasicProcessInfo> result = new LinkedList<BasicProcessInfo>();
 		for (ProcessDefinition currentDefinition : rs.createProcessDefinitionQuery().active().list()) {
-			result.add(currentDefinition.getId()+" - "+currentDefinition.getName()+" - DeploymentId: "+currentDefinition.getDeploymentId());
+			BasicProcessInfo bpi = new BasicProcessInfo(
+						currentDefinition.getId(), 
+						currentDefinition.getName(), 
+						currentDefinition.getKey(), 
+						currentDefinition.getVersion(), 
+						currentDefinition.getDeploymentId()
+			);
+			result.add(bpi);
 		}
         return result;
 	}

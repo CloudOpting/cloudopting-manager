@@ -9,9 +9,7 @@
   <message id="MetadataRetrievalEventRef" name="MetadataRetrievalEventRef"></message>
   <message id="ToscaUploadEventRef" name="ToscaUploadEventRef"></message>
   <message id="ArtifactsUploadEventRef" name="ArtifactsUploadEventRef"></message>
-  <process id="myProcess" name="AddService" isExecutable="true">
-    <documentation>Aggiunta servizio a catalogo da parte del service provider.
-Duale: remove, verifica istanze attive, ecc.</documentation>
+  <process id="ServicePublishingProcess" name="Service Publishing" isExecutable="true">
     <startEvent id="startevent" name="Start"></startEvent>
     <eventBasedGateway id="eventgateway2" name="Event Gateway"></eventBasedGateway>
     <sequenceFlow id="flow27" sourceRef="startevent" targetRef="publishContextSetupTask"></sequenceFlow>
@@ -87,8 +85,8 @@ Duale: remove, verifica istanze attive, ecc.</documentation>
       <text>Service Publishing Process</text>
     </textAnnotation>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_ServicePublishingProcess">
+    <bpmndi:BPMNPlane bpmnElement="ServicePublishingProcess" id="BPMNPlane_ServicePublishingProcess">
       <bpmndi:BPMNShape bpmnElement="startevent" id="BPMNShape_startevent">
         <omgdc:Bounds height="35.0" width="35.0" x="68.0" y="170.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
