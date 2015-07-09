@@ -45,10 +45,10 @@ angular.module('cloudoptingApp')
                         app = application;
                     });
             },
-            create: function(application, files, callback) {
+            create: function(application, callback) {
                 return $http.post(baseURI + SERVICE.SEPARATOR, application)
-                    .success(function(data) {
-                        //TODO: Do something if all went ok.
+                    .success(function(applicationId) {
+                        callback.call(applicationId);
                     });
             },
             addPromotionalImage: function(idApplication, name, description, files, callback) {

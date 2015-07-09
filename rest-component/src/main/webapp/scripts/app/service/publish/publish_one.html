@@ -15,7 +15,7 @@
                     <div class="form-group row">
                         <label translate="publish.service.image">Service Image</label>
                         <!--ngf-multiple="multiple"-->
-                        <div class="btn btn-info" ngf-select ng-model="files" translate="publish.select.file">Select File</div>
+                        <div class="btn btn-info" ngf-select ngf-change="newPromoImage($files)" translate="publish.select.file">Select File</div>
                     </div>
                     <div class="form-group row" ng-show="files">
                         <label translate="publish.selectedfile">Selected File</label>

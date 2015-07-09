@@ -5,7 +5,7 @@
             <div class="panel-body">
                 <form novalidate class="">
                     <div class="form-group row">
-                        <div class="btn btn-info" ngf-select ng-model="contentLib" translate="publish.button.add">+ Add Item in Library</div>
+                        <div class="btn btn-info" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
                     </div>
                     <div class="form-group row" ng-show="isLibraryEmpty()">
                         <label translate="publish.content.library">Content Library</label>

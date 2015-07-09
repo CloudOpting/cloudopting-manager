@@ -1,11 +1,19 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('PublishController', function ($scope, $state, $log, ApplicationService) {
+    .controller('PublishController', ['$scope', '$state', '$log', 'ApplicationService', function ($scope, $state, $log, ApplicationService) {
 
         /*
          * WIZARD - SCREEN ONE
          */
+
+        /**
+         * Function to save the promotional image.
+         * @param images
+         */
+        $scope.newPromoImage = function(images){
+            $scope.files = images;
+        };
         /**
          * Function to create an application with a 'name', 'description' and 'promoImage'
          * with status 'Draft'
@@ -14,12 +22,13 @@ angular.module('cloudoptingApp')
 
             var updateApplicationId = function(applicationId){
                 $scope.idApplication = applicationId;
+                ApplicationService.addPromotionalImage(applicationId, "promoImage", "descriptionImage", $scope.files);
             };
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
             //Create
-            ApplicationService.create(application, $scope.files, updateApplicationId);
+            ApplicationService.create(application, updateApplicationId);
             //$log.info("Name: " + $scope.name);
             //$log.info("Description: " + $scope.description);
             //if($scope.files) $log.info("Filename: " + $scope.files[0].name);
@@ -41,25 +50,32 @@ angular.module('cloudoptingApp')
         /**
          * Watch the contentLib to refresh the internal list of files that the user wants to upload.
          */
-        $scope.$watch(
-            function() {
-                return $scope.contentLib;
-            },
-            function(newVal, oldVal)
-            {
+        /*
+        $scope.$watch(function(){
+            return $scope.contentLib;
+        }, function() {
                 if($scope.contentLib) {
                     $scope.libraryList.push.apply($scope.libraryList, $scope.contentLib);
                 }
-            },
-            true
-        );
+            }
+        );*/
+
+        /**
+         * Function to save the content libraries into an array.
+         * @param contentLib
+         */
+        $scope.newContentLib = function(contentLib){
+            if(contentLib) {
+                $scope.libraryList.push.apply($scope.libraryList, contentLib);
+            }
+        };
 
         /**
          * Function to save the content files added by the user
          */
         $scope.saveConfigurationWizardTwo = function () {
             var updateLibraryId = function(data) {
-                //TODO: Update the corresponding file with the correspongind id to keep track.
+                //TODO: Update the corresponding file with the corresponding id to keep track.
 
             };
             //Add content libraries
@@ -116,5 +132,6 @@ angular.module('cloudoptingApp')
             //Request publication
             ApplicationService.requestPublication($scope.idApplication);
         };
-    }
+
+    }]
 );
