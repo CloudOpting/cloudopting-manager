@@ -1,6 +1,9 @@
 package eu.cloudopting.web.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.domain.User;
+import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.security.AuthoritiesConstants;
 import eu.cloudopting.service.UserService;
 
@@ -85,6 +90,16 @@ public class BpmnController {
     @ResponseBody void deleteProcessDeployment(@RequestParam(value = "deploymentId", required = true) String deploymentId) {
         log.info("REST request to delete deployment by id");
         bpmn.deleteDeploymentById(deploymentId);;
+    }
+	
+	@RequestMapping(value = "/bpmn/publish/updateMetadata/{processInstanceId}",
+            method = RequestMethod.POST)
+    @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
+    @ResponseBody Set<String> updateMetadata(@PathVariable String processInstanceId, @RequestBody ApplicationDTO application) {
+        log.info("REST request to update metadata for process instance with id: {}, application {}", processInstanceId, application);
+        Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
+        params.put("application", application);
+        return bpmn.unlockProcess(processInstanceId, "MetadataRetrievalEventRef", params);
     }
 
 

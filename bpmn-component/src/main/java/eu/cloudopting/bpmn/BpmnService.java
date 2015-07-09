@@ -7,13 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import eu.cloudopting.domain.Applications;
-import eu.cloudopting.domain.Status;
-import eu.cloudopting.dto.ActivitiDTO;
-import eu.cloudopting.dto.ApplicationDTO;
-import eu.cloudopting.service.ApplicationService;
-import eu.cloudopting.service.StatusService;
-import eu.cloudopting.service.util.StatusConstants;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
@@ -29,12 +25,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import scala.annotation.meta.setter;
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.domain.Customizations;
+import eu.cloudopting.dto.ActivitiDTO;
+import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CustomizationService;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+import eu.cloudopting.service.StatusService;
 
 
 @Service
@@ -151,7 +149,7 @@ public class BpmnService {
 	 * @param messageName The name of the intermediate message the instance is waiting for
 	 * @return A set containing the execution ids of unlocked process instances
 	 */
-	public Set<String> unlockProcess(String processInstanceId, String messageName){
+	public Set<String> unlockProcess(String processInstanceId, String messageName, Map<String, ? extends Object> variables){
 		Set<String> exIds = new HashSet<String>();
 		log.debug("Unlocking Process with processInstanceId:'"+processInstanceId+"'");
 		List<Execution> executions = runtimeService.createExecutionQuery()
@@ -161,6 +159,7 @@ public class BpmnService {
 		for (Execution execution2 : executions) {
 			String curExId = execution2.getId();
 			exIds.add(curExId);
+			runtimeService.setVariables(curExId, variables);
 			runtimeService.messageEventReceived(messageName, curExId);
 		}
 		return exIds;
