@@ -1,14 +1,21 @@
 package eu.cloudopting.web.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.Option;
 
+import eu.cloudopting.domain.User;
+import eu.cloudopting.service.UserService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +34,15 @@ import eu.cloudopting.security.AuthoritiesConstants;
 public class BpmnController {
 	private final Logger log = LoggerFactory.getLogger(BpmnController.class);
 
-	@Autowired
+    @Inject
+    UserService userService;
+
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    @Autowired
 	private BpmnService bpmn;
 	
     @RequestMapping(value = "/bpmn/imageStatus/{id}",
@@ -42,7 +57,9 @@ public class BpmnController {
 	@RequestMapping(value = "/process", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	public @ResponseBody String startProcessInstance(
 			@RequestParam(value = "customizationId", required = false) String customizationId,
-			@RequestParam(value = "cloudId", required = false) String cloudId) {
+			@RequestParam(value = "cloudId", required = false) String cloudId, HttpServletRequest request) {
+
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
 		String pid = bpmn.startDeployProcess(customizationId, cloudId);
 		System.out.println("returning pid: " + pid);
 		return pid;
