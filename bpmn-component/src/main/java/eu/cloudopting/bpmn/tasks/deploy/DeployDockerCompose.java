@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.docker.DockerService;
 import eu.cloudopting.tosca.ToscaService;
 
 @Service
@@ -16,6 +17,10 @@ public class DeployDockerCompose implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeployDockerCompose.class);
 	@Autowired
 	ToscaService toscaService;
+	
+	@Autowired
+	DockerService dockerService;
+
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -26,7 +31,7 @@ public class DeployDockerCompose implements JavaDelegate {
 		String serviceHome = (String) execution.getVariable("serviceHome");
 		ArrayList<String> dockerNodesList = (ArrayList<String>) execution.getVariable("dockerNodesList");
 		toscaService.generateDockerCompose(customizationId, organizationName, serviceHome, dockerNodesList);
-		
+		dockerService.deployComposition(serviceHome+"docker-compose.yml");
 	}
 
 }
