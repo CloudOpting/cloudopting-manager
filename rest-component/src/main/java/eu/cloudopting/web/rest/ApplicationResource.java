@@ -145,7 +145,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     @RequestMapping(value="/application",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final void create(@RequestBody ApplicationDTO application, final UriComponentsBuilder uriBuilder,
+    public final String create(@RequestBody ApplicationDTO application, final UriComponentsBuilder uriBuilder,
                              final HttpServletResponse response, final HttpServletRequest request) {
        /* String xmlTosca = (String) request.getAttribute("xmlTosca");
         if(xmlTosca!=null && !xmlTosca.equals("")){
@@ -155,7 +155,7 @@ public class ApplicationResource extends AbstractController<Applications> {
 
 //        createInternal(application, uriBuilder, response);
 
-        getBpmnService().startPublish(application);
+        return getBpmnService().startPublish(application);
     }
 
 }
