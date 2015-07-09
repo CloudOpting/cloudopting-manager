@@ -5,6 +5,10 @@
             <div class="panel-body">
                 <form novalidate class="">
                     <div class="form-group row">
+                        <label>Process ID:</label>
+                        <input class="form-control" type="text" autocomplete="off" ng-model="processID" disabled/>
+                    </div>
+                    <div class="form-group row">
                         <label translate="publish.service.name">Service Name</label>
                         <input class="form-control" type="text" autocomplete="off" ng-model="name"/>
                     </div>
@@ -21,7 +25,12 @@
                         <label translate="publish.selectedfile">Selected File</label>
                         <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled/>
                     </div>
+                    <!--
                     <button type="button" class="btn btn-primary" ng-click="saveConfigurationWizardOne()" translate="publish.button.save_n_next">Save Configuration & Next</button>
+                    -->
+                    <button type="button" class="btn btn-primary" ng-click="saveWizardOne()">Save</button>
+                    <button type="button" class="btn btn-primary" ng-click="updateWizardOne()">Update</button>
+                    <button type="button" class="btn btn-primary" ng-click="nextWizardOne()">Next</button>
                 </form>
             </div>
         </div>
