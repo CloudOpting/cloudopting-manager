@@ -37,6 +37,32 @@ angular.module('cloudoptingApp')
             $state.go('publish2');
         };
 
+        $scope.saveWizardOne = function() {
+            var updateApplicationId = function(processId){
+                $scope.processID = processId;
+            };
+            var application = {};
+            application.applicationName = $scope.name;
+            application.applicationDescription=$scope.description;
+            //Create
+            ApplicationService.create(application, updateApplicationId);
+        };
+
+        $scope.updateWizardOne = function() {
+            var updateApplicationId = function(processId){
+                $scope.processID = processId;
+            };
+            var application = {};
+            application.applicationName = $scope.name;
+            application.applicationDescription=$scope.description;
+            //Create
+            ApplicationService.update($scope.processID, application, updateApplicationId);
+        };
+
+        $scope.nextWizardOne = function() {
+            $state.go('publish2');
+        };
+
         /*
          * WIZARD - SCREEN TWO
          */
