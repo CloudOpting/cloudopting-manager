@@ -39,7 +39,8 @@ public class PublishContextSetupTask implements JavaDelegate {
         Status status = statusService.findOne(StatusConstants.DRAFT);
         application.setStatusId(status);
         application.setApplicationVersion(String.valueOf(1));
-        applicationService.create(application);
+        Applications savedApplication = applicationService.create(application);
+        execution.setVariable("applicationId", savedApplication.getId());
     }
 
 }

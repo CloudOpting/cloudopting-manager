@@ -105,7 +105,7 @@ angular.module('cloudoptingApp')
 
             };
             //Add content libraries
-            ApplicationService.addContentLibrary($scope.libraryList, $scope.idApplication, $scope.libraryName, updateLibraryId);
+            ApplicationService.addContentLibrary($scope.idApplication,$scope.libraryList, $scope.libraryName, updateLibraryId);
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
