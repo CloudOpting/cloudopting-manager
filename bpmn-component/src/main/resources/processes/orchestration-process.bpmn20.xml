@@ -11,18 +11,18 @@ In this task we can also process the array of ports that we need to open.
 For cleanness we could in the end split this task into a task for analyzing the tosca file and one to create the VM</documentation>
     </serviceTask>
     <endEvent id="theEnd"></endEvent>
-    <sequenceFlow id="toJoinVm" sourceRef="vmTask" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="toJoinVm" sourceRef="vmTask" targetRef="join1"></sequenceFlow>
     <serviceTask id="vmInstalledTask" name="Check VM installed" activiti:delegateExpression="${deployCheckVm}">
       <documentation>Here we check the cloud to have confirmation of the VM creation and getting IP information in return since we will have to open ports and add to Docker Swarm</documentation>
     </serviceTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="toForkVM" sourceRef="vmInstalledTask" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="vmNotInstalled" name="Vm not yet installed" sourceRef="exclusivegateway1" targetRef="exclusivegateway2">
+    <exclusiveGateway id="split1" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="join1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="toForkVM" sourceRef="vmInstalledTask" targetRef="split1"></sequenceFlow>
+    <sequenceFlow id="vmNotInstalled" name="Vm not yet installed" sourceRef="split1" targetRef="join1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vmInstalled== false}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="toCheckVM" sourceRef="exclusivegateway2" targetRef="vmInstalledTask"></sequenceFlow>
-    <sequenceFlow id="vmInstalled" name="VM installed" sourceRef="exclusivegateway1" targetRef="vmPortsTask">
+    <sequenceFlow id="toCheckVM" sourceRef="join1" targetRef="vmInstalledTask"></sequenceFlow>
+    <sequenceFlow id="vmInstalled" name="VM installed" sourceRef="split1" targetRef="vmPortsTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vmInstalled== true}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="vmPortsTask" name="Open ports on VM" activiti:delegateExpression="${deployManagePorts}">
@@ -51,24 +51,24 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <subProcess id="subDockerBuild" name="Build Docker Containers">
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="dockerNodesList" activiti:elementVariable="dockerNode"></multiInstanceLoopCharacteristics>
       <serviceTask id="buildTask" name="build the Docker image" activiti:delegateExpression="${deployDockerBuild}"></serviceTask>
-      <sequenceFlow id="toJoinBuild" sourceRef="buildTask" targetRef="exclusivegateway5"></sequenceFlow>
-      <startEvent id="startevent2" name="Start"></startEvent>
-      <sequenceFlow id="toBuild" sourceRef="startevent2" targetRef="buildTask"></sequenceFlow>
-      <endEvent id="endevent2" name="End"></endEvent>
-      <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+      <sequenceFlow id="toJoinBuild" sourceRef="buildTask" targetRef="join3"></sequenceFlow>
+      <startEvent id="startBuildSub" name="Start"></startEvent>
+      <sequenceFlow id="toBuild" sourceRef="startBuildSub" targetRef="buildTask"></sequenceFlow>
+      <endEvent id="endBuildSub" name="End"></endEvent>
+      <exclusiveGateway id="fork3" name="Exclusive Gateway"></exclusiveGateway>
       <serviceTask id="checkBuild" name="Check build result" activiti:delegateExpression="${deployCheckBuild}"></serviceTask>
-      <sequenceFlow id="toForkBuild" sourceRef="checkBuild" targetRef="exclusivegateway4"></sequenceFlow>
-      <sequenceFlow id="noBuild" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
+      <sequenceFlow id="toForkBuild" sourceRef="checkBuild" targetRef="fork3"></sequenceFlow>
+      <sequenceFlow id="noBuild" sourceRef="fork3" targetRef="join3">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkBuild==false}]]></conditionExpression>
       </sequenceFlow>
-      <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-      <sequenceFlow id="toCheckBuild" sourceRef="exclusivegateway5" targetRef="checkBuild"></sequenceFlow>
-      <sequenceFlow id="flow5" sourceRef="exclusivegateway4" targetRef="endevent2">
+      <exclusiveGateway id="join3" name="Exclusive Gateway"></exclusiveGateway>
+      <sequenceFlow id="toCheckBuild" sourceRef="join3" targetRef="checkBuild"></sequenceFlow>
+      <sequenceFlow id="buildOk" sourceRef="fork3" targetRef="endBuildSub">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkBuild==true}]]></conditionExpression>
       </sequenceFlow>
     </subProcess>
     <serviceTask id="r10kTask" name="run R10K" activiti:delegateExpression="${deployRunr10k}"></serviceTask>
-    <sequenceFlow id="toSubBuild" sourceRef="r10kTask" targetRef="exclusivegateway10"></sequenceFlow>
+    <sequenceFlow id="toCheckContext" sourceRef="r10kTask" targetRef="join2"></sequenceFlow>
     <sequenceFlow id="toCompose" sourceRef="subDockerBuild" targetRef="taskDockerComposeFile"></sequenceFlow>
     <serviceTask id="taskDockerComposeFile" name="Prepare Docker Compose file" activiti:delegateExpression="${deployDockerCompose}"></serviceTask>
     <sequenceFlow id="toDeploy" sourceRef="taskDockerComposeFile" targetRef="deployOnDockerTask"></sequenceFlow>
@@ -91,15 +91,15 @@ This task will probably be transformed into a subprocess, but at the moment we n
     </sequenceFlow>
     <serviceTask id="cleanup" name="Clean Up" activiti:delegateExpression="${deployCleanUp}"></serviceTask>
     <sequenceFlow id="toEnd" sourceRef="cleanup" targetRef="theEnd"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway10" name="Exclusive Gateway"></exclusiveGateway>
-    <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="join2" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="split2" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="chkcontext" name="Check context" activiti:delegateExpression="${deployCheckContext}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="exclusivegateway10" targetRef="chkcontext"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="chkcontext" targetRef="exclusivegateway11"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="exclusivegateway11" targetRef="exclusivegateway10">
+    <sequenceFlow id="fromJoinContext" sourceRef="join2" targetRef="chkcontext"></sequenceFlow>
+    <sequenceFlow id="toForkContext" sourceRef="chkcontext" targetRef="split2"></sequenceFlow>
+    <sequenceFlow id="noContext" sourceRef="split2" targetRef="join2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkContext==false}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="exclusivegateway11" targetRef="subDockerBuild">
+    <sequenceFlow id="okContext" sourceRef="split2" targetRef="subDockerBuild">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkContext==true}]]></conditionExpression>
     </sequenceFlow>
   </process>
@@ -117,10 +117,10 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNShape bpmnElement="vmInstalledTask" id="BPMNShape_vmInstalledTask">
         <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="83.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+      <bpmndi:BPMNShape bpmnElement="split1" id="BPMNShape_split1">
         <omgdc:Bounds height="40.0" width="40.0" x="518.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+      <bpmndi:BPMNShape bpmnElement="join1" id="BPMNShape_join1">
         <omgdc:Bounds height="40.0" width="40.0" x="279.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="vmPortsTask" id="BPMNShape_vmPortsTask">
@@ -148,24 +148,24 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdc:Bounds height="55.0" width="105.0" x="148.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="subDockerBuild" id="BPMNShape_subDockerBuild">
-        <omgdc:Bounds height="151.0" width="839.0" x="47.0" y="436.0"></omgdc:Bounds>
+        <omgdc:Bounds height="151.0" width="586.0" x="47.0" y="436.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="buildTask" id="BPMNShape_buildTask">
         <omgdc:Bounds height="63.0" width="105.0" x="117.0" y="481.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
+      <bpmndi:BPMNShape bpmnElement="startBuildSub" id="BPMNShape_startBuildSub">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="495.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="852.0" y="495.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="endBuildSub" id="BPMNShape_endBuildSub">
+        <omgdc:Bounds height="35.0" width="35.0" x="560.0" y="496.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+      <bpmndi:BPMNShape bpmnElement="fork3" id="BPMNShape_fork3">
         <omgdc:Bounds height="40.0" width="40.0" x="430.0" y="492.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkBuild" id="BPMNShape_checkBuild">
         <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="485.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+      <bpmndi:BPMNShape bpmnElement="join3" id="BPMNShape_join3">
         <omgdc:Bounds height="40.0" width="40.0" x="250.0" y="492.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="r10kTask" id="BPMNShape_r10kTask">
@@ -195,10 +195,10 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNShape bpmnElement="cleanup" id="BPMNShape_cleanup">
         <omgdc:Bounds height="55.0" width="105.0" x="923.0" y="530.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway10" id="BPMNShape_exclusivegateway10">
+      <bpmndi:BPMNShape bpmnElement="join2" id="BPMNShape_join2">
         <omgdc:Bounds height="40.0" width="40.0" x="592.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
+      <bpmndi:BPMNShape bpmnElement="split2" id="BPMNShape_split2">
         <omgdc:Bounds height="40.0" width="40.0" x="778.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkcontext" id="BPMNShape_chkcontext">
@@ -222,7 +222,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="299.0" y="202.0"></omgdi:waypoint>
         <omgdi:waypoint x="299.0" y="130.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="12.0" width="94.0" x="481.0" y="149.0"></omgdc:Bounds>
+          <omgdc:Bounds height="9.0" width="65.0" x="481.0" y="149.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckVM" id="BPMNEdge_toCheckVM">
@@ -233,7 +233,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="558.0" y="110.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="110.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="12.0" width="58.0" x="537.0" y="77.0"></omgdc:Bounds>
+          <omgdc:Bounds height="9.0" width="41.0" x="537.0" y="77.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSwarm" id="BPMNEdge_toSwarm">
@@ -286,16 +286,16 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="290.0" y="512.0"></omgdi:waypoint>
         <omgdi:waypoint x="310.0" y="512.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+      <bpmndi:BPMNEdge bpmnElement="buildOk" id="BPMNEdge_buildOk">
         <omgdi:waypoint x="470.0" y="512.0"></omgdi:waypoint>
-        <omgdi:waypoint x="852.0" y="512.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="513.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="toSubBuild" id="BPMNEdge_toSubBuild">
+      <bpmndi:BPMNEdge bpmnElement="toCheckContext" id="BPMNEdge_toCheckContext">
         <omgdi:waypoint x="550.0" y="283.0"></omgdi:waypoint>
         <omgdi:waypoint x="612.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCompose" id="BPMNEdge_toCompose">
-        <omgdi:waypoint x="466.0" y="436.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="436.0"></omgdi:waypoint>
         <omgdi:waypoint x="776.0" y="338.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toDeploy" id="BPMNEdge_toDeploy">
@@ -336,22 +336,22 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="975.0" y="585.0"></omgdi:waypoint>
         <omgdi:waypoint x="975.0" y="610.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+      <bpmndi:BPMNEdge bpmnElement="fromJoinContext" id="BPMNEdge_fromJoinContext">
         <omgdi:waypoint x="632.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="650.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+      <bpmndi:BPMNEdge bpmnElement="toForkContext" id="BPMNEdge_toForkContext">
         <omgdi:waypoint x="755.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="778.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+      <bpmndi:BPMNEdge bpmnElement="noContext" id="BPMNEdge_noContext">
         <omgdi:waypoint x="798.0" y="200.0"></omgdi:waypoint>
         <omgdi:waypoint x="709.0" y="151.0"></omgdi:waypoint>
         <omgdi:waypoint x="612.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+      <bpmndi:BPMNEdge bpmnElement="okContext" id="BPMNEdge_okContext">
         <omgdi:waypoint x="798.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="466.0" y="436.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="436.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

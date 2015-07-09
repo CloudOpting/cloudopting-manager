@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('PublishController', ['$scope', '$state', '$log', 'ApplicationService', function ($scope, $state, $log, ApplicationService) {
+    .controller('PublishController', function (SERVICE, $scope, $state, $log, localStorageService, ApplicationService) {
 
         /*
          * WIZARD - SCREEN ONE
@@ -20,15 +20,15 @@ angular.module('cloudoptingApp')
          */
         $scope.saveConfigurationWizardOne = function () {
 
-            var updateApplicationId = function(applicationId){
-                $scope.idApplication = applicationId;
-                ApplicationService.addPromotionalImage(applicationId, "promoImage", "descriptionImage", $scope.files);
+            var callback = function(activiti){
+                localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
+                ApplicationService.addPromotionalImage(activiti.processInstanceId, activiti.applicationId, "promoImage", "descriptionImage", $scope.files);
             };
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
             //Create
-            ApplicationService.create(application, updateApplicationId);
+            ApplicationService.create(application, callback);
             //$log.info("Name: " + $scope.name);
             //$log.info("Description: " + $scope.description);
             //if($scope.files) $log.info("Filename: " + $scope.files[0].name);
@@ -38,25 +38,27 @@ angular.module('cloudoptingApp')
         };
 
         $scope.saveWizardOne = function() {
-            var updateApplicationId = function(processId){
-                $scope.processID = processId;
+            var callback = function(activiti){
+                localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
+                $scope.processID = activiti.processInstanceId;
             };
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
             //Create
-            ApplicationService.create(application, updateApplicationId);
+            ApplicationService.create(application, callback);
         };
 
         $scope.updateWizardOne = function() {
-            var updateApplicationId = function(processId){
-                $scope.processID = processId;
+            var callback = function(activiti){
+                localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
             };
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
             //Create
-            ApplicationService.update($scope.processID, application, updateApplicationId);
+            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            ApplicationService.update(activiti.processInstanceId, activiti.applicationId, application, callback);
         };
 
         $scope.nextWizardOne = function() {
@@ -100,12 +102,14 @@ angular.module('cloudoptingApp')
          * Function to save the content files added by the user
          */
         $scope.saveConfigurationWizardTwo = function () {
-            var updateLibraryId = function(data) {
+            var callback = function(data) {
                 //TODO: Update the corresponding file with the corresponding id to keep track.
 
             };
+            $scope.libraryName = "hello";
             //Add content libraries
-            ApplicationService.addContentLibrary($scope.idApplication,$scope.libraryList, $scope.libraryName, updateLibraryId);
+            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            ApplicationService.addContentLibrary(activiti.processInstanceId, activiti.applicationId, $scope.libraryList, $scope.libraryName, callback);
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
@@ -131,7 +135,8 @@ angular.module('cloudoptingApp')
                 $scope.libraryList.splice(index, 1);
             }
             //Send a REST call if it is already persisted in database.
-            ApplicationService.deleteAppFile($scope.idApplication, file);
+            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file);
         };
 
         /*
@@ -156,8 +161,8 @@ angular.module('cloudoptingApp')
             console.log($scope.contentLib);
 
             //Request publication
-            ApplicationService.requestPublication($scope.idApplication);
+            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            ApplicationService.requestPublication(activiti.processInstanceId, activiti.applicationId);
         };
-
-    }]
+    }
 );

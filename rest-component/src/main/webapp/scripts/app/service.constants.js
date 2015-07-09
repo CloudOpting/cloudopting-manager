@@ -18,7 +18,8 @@ angular.module('cloudoptingApp')
         },
         "STORAGE" : {
             "CURRENT_APP" : "currentApplication",
-            "CURRENT_INSTANCE_ID" : "currentInstanceId"
+            "CURRENT_INSTANCE_ID" : "currentInstanceId",
+            "ACTIVITI" : "activiti"
         },
         "FILE_TYPE" : {
             "PROMO_IMAGE" : "promoimage",

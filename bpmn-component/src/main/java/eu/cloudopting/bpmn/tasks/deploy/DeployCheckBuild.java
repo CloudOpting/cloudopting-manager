@@ -29,7 +29,10 @@ public class DeployCheckBuild implements JavaDelegate {
 		String buildToken = (String) execution.getVariable("buildToken");
 		String cloudtask = (String) execution.getVariable("cloudtask");
 		String cloudId = (String) execution.getVariable("cloudId");
-		TimeUnit.SECONDS.sleep(4);
+		
+		log.debug("buildToken:"+ buildToken);
+		
+		TimeUnit.SECONDS.sleep(35);
 //		toscaService.getNodeType(customizationId,"");
 		boolean check = dockerService.isBuilt(buildToken);
 		execution.setVariable("chkBuild", check);
