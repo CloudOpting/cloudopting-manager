@@ -147,9 +147,15 @@ public class Organizations implements BaseEntity {
     @NotNull
     private Long statusId;
 
-	@Column(name = "description", length = 15)
+	@Column(name = "description", length = 500)
     @NotNull
     private String description;
+
+    @Column(name = "organization_key", length = 300)
+    private String organizationKey;
+
+    @Column(name = "organization_name", length = 300)
+    private String organizationName;
 
 	public Set<Applications> getApplicationss() {
         return applicationss;
@@ -231,7 +237,24 @@ public class Organizations implements BaseEntity {
         this.description = description;
     }
 
-	@Id
+
+    public String getOrganizationKey() {
+        return organizationKey;
+    }
+
+    public void setOrganizationKey(String organizationKey) {
+        this.organizationKey = organizationKey;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
