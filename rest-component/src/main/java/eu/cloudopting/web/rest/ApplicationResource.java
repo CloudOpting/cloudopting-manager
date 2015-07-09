@@ -2,6 +2,7 @@ package eu.cloudopting.web.rest;
 
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
+import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.dto.ApplicationDTO;
@@ -145,7 +146,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     @RequestMapping(value="/application",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final String create(@RequestBody ApplicationDTO application, final UriComponentsBuilder uriBuilder,
+    public final ActivitiDTO create(@RequestBody ApplicationDTO application, final UriComponentsBuilder uriBuilder,
                              final HttpServletResponse response, final HttpServletRequest request) {
        /* String xmlTosca = (String) request.getAttribute("xmlTosca");
         if(xmlTosca!=null && !xmlTosca.equals("")){

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Status;
+import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
@@ -18,6 +19,8 @@ import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -170,10 +173,14 @@ public class BpmnService {
 	
 	}
 
-	public String startPublish(ApplicationDTO application) {
+	public ActivitiDTO startPublish(ApplicationDTO application) {
 	    HashMap<String, Object> v = new HashMap<>();
 		v.put("application",application);
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("myProcess",v);
-		return pi.getProcessInstanceId();
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
 	}
 }
