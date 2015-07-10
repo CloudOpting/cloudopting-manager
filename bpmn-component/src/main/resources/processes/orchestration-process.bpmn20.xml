@@ -35,14 +35,14 @@ For cleanness we could in the end split this task into a task for analyzing the 
     <subProcess id="subDockerPuppetPrepare" name="Dockerfile and image management">
       <documentation>In the subprocess we manage the creation of the Puppet node manifest, of the Dockerfile and the generation of the docker image</documentation>
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="dockerNodesList" activiti:elementVariable="dockerNode"></multiInstanceLoopCharacteristics>
-      <startEvent id="startevent1" name="Start"></startEvent>
+      <startEvent id="startDockerGenSub" name="Start"></startEvent>
       <serviceTask id="dockerTask" name="generating the Dockerfile" activiti:delegateExpression="${deployGenerateDocker}">
         <documentation>This task is a multi instance that means that the process will instantiate one of this task for all the container nodes it finds in the TOSCA file.
 This task will probably be transformed into a subprocess, but at the moment we needd to start mapping stuff</documentation>
       </serviceTask>
-      <sequenceFlow id="toEndSub" sourceRef="dockerTask" targetRef="endevent1"></sequenceFlow>
-      <endEvent id="endevent1" name="End"></endEvent>
-      <sequenceFlow id="toGenerateDocker" sourceRef="startevent1" targetRef="dockerTask"></sequenceFlow>
+      <sequenceFlow id="toEndSub" sourceRef="dockerTask" targetRef="endDockerGenSub"></sequenceFlow>
+      <endEvent id="endDockerGenSub" name="End"></endEvent>
+      <sequenceFlow id="toGenerateDocker" sourceRef="startDockerGenSub" targetRef="dockerTask"></sequenceFlow>
     </subProcess>
     <sequenceFlow id="toR10k" sourceRef="subDockerPuppetPrepare" targetRef="r10kTask"></sequenceFlow>
     <serviceTask id="servicetask1" name="Add new VM to docker swarm" activiti:delegateExpression="${deployDockerSwarm}"></serviceTask>
@@ -55,14 +55,14 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <startEvent id="startBuildSub" name="Start"></startEvent>
       <sequenceFlow id="toBuild" sourceRef="startBuildSub" targetRef="buildTask"></sequenceFlow>
       <endEvent id="endBuildSub" name="End"></endEvent>
-      <exclusiveGateway id="fork3" name="Exclusive Gateway"></exclusiveGateway>
       <serviceTask id="checkBuild" name="Check build result" activiti:delegateExpression="${deployCheckBuild}"></serviceTask>
       <sequenceFlow id="toForkBuild" sourceRef="checkBuild" targetRef="fork3"></sequenceFlow>
+      <exclusiveGateway id="join3" name="Exclusive Gateway"></exclusiveGateway>
+      <sequenceFlow id="toCheckBuild" sourceRef="join3" targetRef="checkBuild"></sequenceFlow>
+      <exclusiveGateway id="fork3" name="Exclusive Gateway"></exclusiveGateway>
       <sequenceFlow id="noBuild" sourceRef="fork3" targetRef="join3">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkBuild==false}]]></conditionExpression>
       </sequenceFlow>
-      <exclusiveGateway id="join3" name="Exclusive Gateway"></exclusiveGateway>
-      <sequenceFlow id="toCheckBuild" sourceRef="join3" targetRef="checkBuild"></sequenceFlow>
       <sequenceFlow id="buildOk" sourceRef="fork3" targetRef="endBuildSub">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkBuild==true}]]></conditionExpression>
       </sequenceFlow>
@@ -132,13 +132,13 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNShape bpmnElement="subDockerPuppetPrepare" id="BPMNShape_subDockerPuppetPrepare">
         <omgdc:Bounds height="161.0" width="395.0" x="67.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+      <bpmndi:BPMNShape bpmnElement="startDockerGenSub" id="BPMNShape_startDockerGenSub">
         <omgdc:Bounds height="35.0" width="35.0" x="82.0" y="291.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="dockerTask" id="BPMNShape_dockerTask">
         <omgdc:Bounds height="78.0" width="105.0" x="257.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+      <bpmndi:BPMNShape bpmnElement="endDockerGenSub" id="BPMNShape_endDockerGenSub">
         <omgdc:Bounds height="35.0" width="35.0" x="407.0" y="291.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
@@ -157,10 +157,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="495.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endBuildSub" id="BPMNShape_endBuildSub">
-        <omgdc:Bounds height="35.0" width="35.0" x="560.0" y="496.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="fork3" id="BPMNShape_fork3">
-        <omgdc:Bounds height="40.0" width="40.0" x="430.0" y="492.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="540.0" y="496.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkBuild" id="BPMNShape_checkBuild">
         <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="485.0"></omgdc:Bounds>
@@ -168,11 +165,14 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNShape bpmnElement="join3" id="BPMNShape_join3">
         <omgdc:Bounds height="40.0" width="40.0" x="250.0" y="492.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="fork3" id="BPMNShape_fork3">
+        <omgdc:Bounds height="40.0" width="40.0" x="450.0" y="493.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="r10kTask" id="BPMNShape_r10kTask">
         <omgdc:Bounds height="55.0" width="105.0" x="498.0" y="283.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="taskDockerComposeFile" id="BPMNShape_taskDockerComposeFile">
-        <omgdc:Bounds height="55.0" width="105.0" x="724.0" y="283.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="778.0" y="283.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="getCustomization" id="BPMNShape_getCustomization">
         <omgdc:Bounds height="55.0" width="105.0" x="7.0" y="83.0"></omgdc:Bounds>
@@ -222,7 +222,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="299.0" y="202.0"></omgdi:waypoint>
         <omgdi:waypoint x="299.0" y="130.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="9.0" width="65.0" x="481.0" y="149.0"></omgdc:Bounds>
+          <omgdc:Bounds height="36.0" width="65.0" x="481.0" y="149.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckVM" id="BPMNEdge_toCheckVM">
@@ -233,7 +233,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="558.0" y="110.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="110.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="9.0" width="41.0" x="537.0" y="77.0"></omgdc:Bounds>
+          <omgdc:Bounds height="36.0" width="41.0" x="537.0" y="77.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSwarm" id="BPMNEdge_toSwarm">
@@ -274,21 +274,21 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toForkBuild" id="BPMNEdge_toForkBuild">
         <omgdi:waypoint x="415.0" y="512.0"></omgdi:waypoint>
-        <omgdi:waypoint x="430.0" y="512.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="noBuild" id="BPMNEdge_noBuild">
-        <omgdi:waypoint x="450.0" y="532.0"></omgdi:waypoint>
-        <omgdi:waypoint x="457.0" y="564.0"></omgdi:waypoint>
-        <omgdi:waypoint x="266.0" y="564.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="532.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="513.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckBuild" id="BPMNEdge_toCheckBuild">
         <omgdi:waypoint x="290.0" y="512.0"></omgdi:waypoint>
         <omgdi:waypoint x="310.0" y="512.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="noBuild" id="BPMNEdge_noBuild">
+        <omgdi:waypoint x="470.0" y="533.0"></omgdi:waypoint>
+        <omgdi:waypoint x="457.0" y="564.0"></omgdi:waypoint>
+        <omgdi:waypoint x="266.0" y="564.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="532.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="buildOk" id="BPMNEdge_buildOk">
-        <omgdi:waypoint x="470.0" y="512.0"></omgdi:waypoint>
-        <omgdi:waypoint x="560.0" y="513.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="513.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="513.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckContext" id="BPMNEdge_toCheckContext">
         <omgdi:waypoint x="550.0" y="283.0"></omgdi:waypoint>
@@ -296,10 +296,10 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCompose" id="BPMNEdge_toCompose">
         <omgdi:waypoint x="340.0" y="436.0"></omgdi:waypoint>
-        <omgdi:waypoint x="776.0" y="338.0"></omgdi:waypoint>
+        <omgdi:waypoint x="830.0" y="338.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toDeploy" id="BPMNEdge_toDeploy">
-        <omgdi:waypoint x="829.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="883.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="972.0" y="282.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCustomer" id="BPMNEdge_toCustomer">

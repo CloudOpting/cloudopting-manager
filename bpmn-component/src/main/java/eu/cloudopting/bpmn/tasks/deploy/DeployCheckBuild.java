@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.cloud.CloudService;
+import eu.cloudopting.docker.DockerError;
 import eu.cloudopting.docker.DockerService;
 import eu.cloudopting.tosca.ToscaService;
 
@@ -18,7 +19,7 @@ public class DeployCheckBuild implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeployCheckBuild.class);
 	@Autowired
 	ToscaService toscaService;
-	
+
 	@Autowired
 	DockerService dockerService;
 
@@ -29,14 +30,19 @@ public class DeployCheckBuild implements JavaDelegate {
 		String buildToken = (String) execution.getVariable("buildToken");
 		String cloudtask = (String) execution.getVariable("cloudtask");
 		String cloudId = (String) execution.getVariable("cloudId");
-		
-		log.debug("buildToken:"+ buildToken);
-		
-		TimeUnit.SECONDS.sleep(35);
-//		toscaService.getNodeType(customizationId,"");
-		boolean check = dockerService.isBuilt(buildToken);
-		execution.setVariable("chkBuild", check);
-		
-	}
 
+		log.debug("buildToken:" + buildToken);
+
+		TimeUnit.SECONDS.sleep(80);
+		// toscaService.getNodeType(customizationId,"");
+		boolean check = false;
+		try {
+			check = dockerService.isBuilt(buildToken);
+		} catch (DockerError e) {
+			log.debug("error:" + e.toString());
+		}
+		log.debug("End of DeployCheckBuild");
+		execution.setVariable("chkBuild", check);
+
+	}
 }

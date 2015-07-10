@@ -25,11 +25,11 @@ public class DeployCheckContext implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
-		log.debug("in DeployCheckBuild");
+		log.debug("in DeployCheckContext");
 		String dockerContext = (String) execution.getVariable("dockerContext");
 //		String cloudtask = (String) execution.getVariable("cloudtask");
 //		String cloudId = (String) execution.getVariable("cloudId");
-		TimeUnit.SECONDS.sleep(4);
+		TimeUnit.SECONDS.sleep(10);
 //		toscaService.getNodeType(customizationId,"");
 		boolean check = dockerService.isContextReady(dockerContext);
 		execution.setVariable("chkContext", check);
