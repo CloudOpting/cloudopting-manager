@@ -55,7 +55,7 @@ public class CustomizationResource  extends AbstractController<Customizations> {
         return findOneInternal(id);
     }
 
-    @RequestMapping(value = "/customization/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/customization", method = RequestMethod.GET)
     @ResponseBody
     public final List<Customizations> findAll(final UriComponentsBuilder uriBuilder,
                                         final HttpServletResponse response, final HttpServletRequest request) {
