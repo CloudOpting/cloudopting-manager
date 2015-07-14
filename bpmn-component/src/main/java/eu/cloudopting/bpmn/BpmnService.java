@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import eu.cloudopting.dto.UploadDTO;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import scala.annotation.meta.setter;
+
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.dto.ActivitiDTO;
@@ -115,8 +116,6 @@ public class BpmnService {
 	/**
 	 * Gets the list of active Process Definitions
 	 * For testing purposes, <strong>might be removed at any time</strong>.
-	 * @param processId the Identifier of the process (not null)
-	 * @param startParams the input variables (might be null)
 	 * @return
 	 */
 	public List<BasicProcessInfo> getAvailableProcessDefinitions(){
@@ -187,6 +186,17 @@ public class BpmnService {
 		ActivitiDTO activitiDTO = new ActivitiDTO();
 		Map map = ((ExecutionEntity) pi).getVariableInstances();
 		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
+
+	public ActivitiDTO upload(UploadDTO uploadDTO) {
+		HashMap<String, Object> v = new HashMap<>();
+		v.put("uploaddto",uploadDTO);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("uploadProcess",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("uploadid")).getTextValue());
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}

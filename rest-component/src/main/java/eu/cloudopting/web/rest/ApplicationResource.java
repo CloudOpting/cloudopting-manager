@@ -3,6 +3,7 @@ package eu.cloudopting.web.rest;
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.dto.ActivitiDTO;
+import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.dto.ApplicationDTO;
@@ -157,6 +158,16 @@ public class ApplicationResource extends AbstractController<Applications> {
 //        createInternal(application, uriBuilder, response);
 
         return getBpmnService().startPublish(application);
+    }
+
+    @RequestMapping(value="/application/{appId}/{processId}/file",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final ActivitiDTO upload( HttpServletRequest request){
+        UploadDTO dto = new UploadDTO();
+        dto.setName(request.getParameter("name"));
+        dto.setType(request.getParameter("type"));
+        return getBpmnService().upload(dto);
     }
 
 }
