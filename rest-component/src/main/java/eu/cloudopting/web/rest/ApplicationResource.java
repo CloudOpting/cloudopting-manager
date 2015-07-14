@@ -172,4 +172,25 @@ public class ApplicationResource extends AbstractController<Applications> {
         return getBpmnService().upload(dto);
     }
 
+    @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final ActivitiDTO updateFile( HttpServletRequest request,@PathVariable String idApp,@PathVariable String idFile) throws IOException {
+        UploadDTO dto = new UploadDTO();
+        dto.setName(request.getParameter("name"));
+        dto.setFileId(idFile);
+        dto.setIdApp(idApp);
+        return getBpmnService().upload(dto);
+    }
+
+    @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}",method = RequestMethod.DELETE,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final ActivitiDTO deleteFile(@PathVariable String idApp,@PathVariable String idFile, HttpServletRequest request) throws IOException {
+        UploadDTO dto = new UploadDTO();
+        dto.setFileId(idFile);
+        dto.setIdApp(idApp);
+        return getBpmnService().deleteFile(dto);
+    }
+
 }

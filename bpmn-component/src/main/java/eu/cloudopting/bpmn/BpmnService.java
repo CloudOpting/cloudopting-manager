@@ -200,4 +200,15 @@ public class BpmnService {
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}
+
+	public ActivitiDTO deleteFile(UploadDTO uploadDTO) {
+		HashMap<String, Object> v = new HashMap<>();
+		v.put("uploaddto",uploadDTO);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("deleteFile",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("deletedfileid")).getTextValue());
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
 }

@@ -9,6 +9,8 @@ public class UploadDTO {
     String name;
     String type;
     InputStream file;
+    String fileId;
+    String idApp;
 
     public String getName() {
         return name;
@@ -32,5 +34,21 @@ public class UploadDTO {
 
     public void setFile(InputStream file) {
         this.file = file;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getIdApp() {
+        return idApp;
+    }
+
+    public void setIdApp(String idApp) {
+        this.idApp = idApp;
     }
 }
