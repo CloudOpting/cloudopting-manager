@@ -1,5 +1,6 @@
 package eu.cloudopting.web.rest;
 
+import eu.cloudopting.Application;
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.dto.ActivitiDTO;
@@ -198,6 +199,14 @@ public class ApplicationResource extends AbstractController<Applications> {
     @ResponseBody
     public final ActivitiDTO updateApplication(@PathVariable String idApp, HttpServletRequest request, @RequestBody ApplicationDTO application) throws IOException {
        return getBpmnService().updateApplication(application);
+    }
+
+    @RequestMapping(value="/application/{idApp}/{processId}",method = RequestMethod.DELETE,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final ActivitiDTO deleteApplication(@PathVariable String idApp,@PathVariable String processId, HttpServletRequest request,@RequestBody ApplicationDTO application) throws IOException {
+        application.setId(Long.valueOf(idApp));
+        return getBpmnService().deleteApplication(application);
     }
 
 }
