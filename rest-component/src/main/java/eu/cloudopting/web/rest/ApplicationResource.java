@@ -23,6 +23,7 @@ import eu.cloudopting.events.api.service.BaseService;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 /**
@@ -163,10 +164,11 @@ public class ApplicationResource extends AbstractController<Applications> {
     @RequestMapping(value="/application/{appId}/{processId}/file",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO upload( HttpServletRequest request){
+    public final ActivitiDTO upload( HttpServletRequest request) throws IOException {
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setType(request.getParameter("type"));
+        dto.setFile(request.getInputStream());
         return getBpmnService().upload(dto);
     }
 

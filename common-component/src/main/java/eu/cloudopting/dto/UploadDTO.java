@@ -1,12 +1,14 @@
 package eu.cloudopting.dto;
 
+import java.io.InputStream;
+
 /**
  * DTO object for upload
  */
 public class UploadDTO {
     String name;
     String type;
-    byte[] file;
+    InputStream file;
 
     public String getName() {
         return name;
@@ -24,11 +26,11 @@ public class UploadDTO {
         this.type = type;
     }
 
-    public byte[] getFile() {
+    public InputStream getFile() {
         return file;
     }
 
-    public void setFile(byte[] file) {
+    public void setFile(InputStream file) {
         this.file = file;
     }
 }
