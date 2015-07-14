@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import eu.cloudopting.dto.CustomizationDTO;
 import eu.cloudopting.dto.UploadDTO;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
@@ -230,6 +231,39 @@ public class BpmnService {
 		ActivitiDTO activitiDTO = new ActivitiDTO();
 		Map map = ((ExecutionEntity) pi).getVariableInstances();
 		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
+
+	public ActivitiDTO createCustomization(CustomizationDTO customizationDTO) {
+		HashMap<String, Object> v = new HashMap<>();
+		v.put("customization",customizationDTO);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("createCustomization",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
+
+	public ActivitiDTO deleteCustomization(String customizationId) {
+		HashMap<String, Object> v = new HashMap<>();
+		v.put("customizationid",customizationId);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("deleteCustomization",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
+
+	public ActivitiDTO updateCustomization(CustomizationDTO customizationDTO) {
+		HashMap<String, Object> v = new HashMap<>();
+		v.put("customization",customizationDTO);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateCustomization",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}

@@ -1,8 +1,11 @@
 package eu.cloudopting.web.rest;
 
+import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Customizations;
+import eu.cloudopting.dto.CustomizationDTO;
 import eu.cloudopting.service.CustomizationService;
+import eu.cloudopting.service.StatusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +34,14 @@ public class CustomizationResource  extends AbstractController<Customizations> {
         super(Customizations.class);
     }
 
+    @Inject
+    private BpmnService bpmnService;
+
+
+    public BpmnService getBpmnService() {
+        return bpmnService;
+    }
+
 
     @Override
     protected BaseService<Customizations> getService() {
@@ -51,11 +62,28 @@ public class CustomizationResource  extends AbstractController<Customizations> {
         return findAllInternal(request, uriBuilder, response);
     }
 
-    @RequestMapping(value="/customization/create",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/customization",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final void create(@RequestBody Customizations customizations, final UriComponentsBuilder uriBuilder,
+    public final void create(@RequestBody CustomizationDTO customizationDTO, final UriComponentsBuilder uriBuilder,
                              final HttpServletResponse response, final HttpServletRequest request) {
-        createInternal(customizations, uriBuilder, response);
+        getBpmnService().createCustomization(customizationDTO);
+    }
+
+    @RequestMapping(value="/customization/{customizationId}",method = RequestMethod.DELETE,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final void delete(@PathVariable String customizationId, final UriComponentsBuilder uriBuilder,
+                             final HttpServletResponse response, final HttpServletRequest request) {
+        getBpmnService().deleteCustomization(customizationId);
+    }
+
+
+    @RequestMapping(value="/customization/{customizationId}",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final void update(@RequestBody CustomizationDTO customizationDTO,@PathVariable String customizationId, final UriComponentsBuilder uriBuilder,
+                             final HttpServletResponse response, final HttpServletRequest request) {
+        getBpmnService().updateCustomization(customizationDTO);
     }
 }

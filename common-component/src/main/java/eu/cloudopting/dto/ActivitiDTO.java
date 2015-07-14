@@ -6,6 +6,16 @@ package eu.cloudopting.dto;
 public class ActivitiDTO {
     String applicationId;
     String processInstanceId;
+    String customizationId;
+
+
+    public String getCustomizationId() {
+        return customizationId;
+    }
+
+    public void setCustomizationId(String customizationId) {
+        this.customizationId = customizationId;
+    }
 
     public String getApplicationId() {
         return applicationId;
