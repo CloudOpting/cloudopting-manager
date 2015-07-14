@@ -211,4 +211,15 @@ public class BpmnService {
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}
+
+	public ActivitiDTO updateApplication(ApplicationDTO application) {
+		HashMap<String, Object> v = new HashMap<>();
+		v.put("application",application);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateApplication",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
 }

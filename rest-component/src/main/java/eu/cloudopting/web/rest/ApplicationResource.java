@@ -113,7 +113,7 @@ public class ApplicationResource extends AbstractController<Applications> {
      * @param response   HttpServletResponse
      * @return applications list
      */
-    @RequestMapping(value = "/application/listunpaginated",
+    @RequestMapping(value = "/application",
             method = RequestMethod.GET)
     @ResponseBody
     public final Page<Applications> findAllPaginated(
@@ -191,6 +191,13 @@ public class ApplicationResource extends AbstractController<Applications> {
         dto.setFileId(idFile);
         dto.setIdApp(idApp);
         return getBpmnService().deleteFile(dto);
+    }
+
+    @RequestMapping(value="/application/{idApp}",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final ActivitiDTO updateApplication(@PathVariable String idApp, HttpServletRequest request, @RequestBody ApplicationDTO application) throws IOException {
+       return getBpmnService().updateApplication(application);
     }
 
 }

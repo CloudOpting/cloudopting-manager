@@ -11,6 +11,10 @@ public class ApplicationDTO implements Serializable{
     private String applicationName;
     private String applicationDescription;
     private Long id;
+    String status;
+    String type;
+    String name;
+    String value;
 
     public Long getId() {
 		return id;
