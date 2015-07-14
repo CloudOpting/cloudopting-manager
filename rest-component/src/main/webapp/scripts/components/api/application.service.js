@@ -81,7 +81,7 @@ angular.module('cloudoptingApp')
                 if (libraryList && libraryList.length) {
                     for (var i = 0; i < libraryList.length; i++) {
                         var file = libraryList[i];
-                        /*Upload.upload({
+                        Upload.upload({
                             method: 'POST',
                             headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
                             url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processID + SERVICE.SEPARATOR + 'file',
@@ -93,14 +93,14 @@ angular.module('cloudoptingApp')
                         }).success(function (data, status, headers, config) {
                             callback(data);
                             $log.debug('file ' + config.file.name + 'uploaded. Response: ' + data);
-                        });*/
-                        Upload.http({
+                        });
+                        /*Upload.http({
                             url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processID + SERVICE.SEPARATOR + 'file',
                             headers : {
                                 'Content-Type': file.type
                             },
                             data: file
-                        })
+                        })*/
                     }
                 }
             },

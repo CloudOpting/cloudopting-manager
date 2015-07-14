@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import eu.cloudopting.events.api.constants.QueryConstants;
 import eu.cloudopting.events.api.controller.AbstractController;
@@ -165,22 +166,23 @@ public class ApplicationResource extends AbstractController<Applications> {
     @RequestMapping(value="/application/{appId}/{processId}/file",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO upload( HttpServletRequest request) throws IOException {
+    public final ActivitiDTO upload( HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setType(request.getParameter("type"));
-        dto.setFile(request.getInputStream());
+        dto.setFile(file.getInputStream());
         return getBpmnService().upload(dto);
     }
 
     @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO updateFile( HttpServletRequest request,@PathVariable String idApp,@PathVariable String idFile) throws IOException {
+    public final ActivitiDTO updateFile( HttpServletRequest request,@PathVariable String idApp,@PathVariable String idFile, @RequestParam("file") MultipartFile file) throws IOException {
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setFileId(idFile);
         dto.setIdApp(idApp);
+        dto.setFile(file.getInputStream());
         return getBpmnService().upload(dto);
     }
 
