@@ -4,11 +4,32 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .factory('ApplicationService', function (SERVICE, $http, Upload) {
+    .factory('ApplicationService', function (SERVICE, $http, $log, Upload) {
         var apps = null;
         var app = null;
         //TODO: Should the base uri be a full URI for the Upload component?
         var baseURI = '/api/application';
+
+        function upload(idApplication, processID, files, type, callback){
+            //headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
+            if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    Upload.upload({
+                        method: 'POST',
+                        url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processID + SERVICE.SEPARATOR + 'file',
+                        fields: { 'name': file.name, 'type' : type },
+                        file: file
+                    }).progress(function (evt) {
+                        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                        $log.debug('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                    }).success(function (data, status, headers, config) {
+                        callback(data);
+                        $log.debug('Application ID: ' + data);
+                    });
+                }
+            }
+        }
 
         return {
             /**
@@ -33,7 +54,7 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             findAllUnpaginated: function () {
-                //return $http.get('/api/application/listunpaginated')
+                //return $http.get('/api/application/unpaginated')
                 return $http.get('mocks/applications.js')
                     .success(function(applications){
                         apps = applications;
@@ -57,66 +78,14 @@ angular.module('cloudoptingApp')
                         callback(data);
                     });
             },
-            addPromotionalImage: function(idApplication, name, description, files, callback) {
-                if (files && files.length) {
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-                        Upload.upload({
-                            method: 'POST',
-                            headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                            url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file',
-                            fields: { 'name': "promoImage", 'type' : SERVICE.FILE_TYPE.PROMO_IMAGE },
-                            file: file
-                        }).progress(function (evt) {
-                            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                            $log.debug('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-                        }).success(function (data, status, headers, config) {
-                            callback(data);
-                            $log.debug('Application ID: ' + data);
-                        });
-                    }
-                }
+            addPromotionalImage: function(idApplication, processID, files, callback) {
+                upload(idApplication, processID, files, SERVICE.FILE_TYPE.PROMO_IMAGE, callback);
             },
-            addContentLibrary: function (processID, idApplication, libraryList, libraryName, callback) {
-                if (libraryList && libraryList.length) {
-                    for (var i = 0; i < libraryList.length; i++) {
-                        var file = libraryList[i];
-                        Upload.upload({
-                            method: 'POST',
-                            headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                            url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processID + SERVICE.SEPARATOR + 'file',
-                            fields: { 'name' : libraryName, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY },
-                            file: file
-                        }).progress(function (evt) {
-                            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                            $log.debug('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-                        }).success(function (data, status, headers, config) {
-                            callback(data);
-                            $log.debug('file ' + config.file.name + 'uploaded. Response: ' + data);
-                        });
-                        /*Upload.http({
-                            url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processID + SERVICE.SEPARATOR + 'file',
-                            headers : {
-                                'Content-Type': file.type
-                            },
-                            data: file
-                        })*/
-                    }
-                }
+            addContentLibrary: function (idApplication, processID, libraryList, callback) {
+                upload(idApplication, processID, libraryList, SERVICE.FILE_TYPE.CONTENT_LIBRARY, callback);
             },
-            addToscaArchive: function (toscaFile, idApplication) {
-                Upload.upload({
-                    method: 'POST',
-                    headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
-                    url: baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file',
-                    fields: { 'name' : "toscaArchive", 'type' : SERVICE.FILE_TYPE.TOSCA_ARCHIVE },
-                    file: toscaFile
-                }).progress(function (evt) {
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    $log.debug('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-                }).success(function (data, status, headers, config) {
-                    $log.debug('file ' + config.file.name + 'uploaded. Response: ' + data);
-                });
+            addToscaArchive: function (idApplication, processID, toscaFile, callback) {
+                upload(idApplication, processID, toscaFile, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, callback);
             },
             deleteAppFile: function (idApplication, fileId) {
                 return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId);

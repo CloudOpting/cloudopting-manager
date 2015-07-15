@@ -14,24 +14,37 @@ angular.module('cloudoptingApp')
         $scope.newPromoImage = function(images){
             $scope.files = images;
         };
+
+        function savePromotionalImage() {
+            var callback = function(data) {
+                //TODO: Update the corresponding file with the corresponding id to keep track.
+
+            };
+            //Add content libraries
+            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            ApplicationService.addPromotionalImage(
+                activiti.applicationId,
+                activiti.processInstanceId,
+                $scope.files,
+                callback);
+        }
+
         /**
          * Function to create an application with a 'name', 'description' and 'promoImage'
          * with status 'Draft'
+         * FIXME: At the moment it is not used.
          */
         $scope.saveConfigurationWizardOne = function () {
-
             var callback = function(activiti){
                 localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
-                ApplicationService.addPromotionalImage(activiti.processInstanceId, activiti.applicationId, "promoImage", "descriptionImage", $scope.files);
+                savePromotionalImage();
             };
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
-            //Create
+
+            //Create the applicaiton.
             ApplicationService.create(application, callback);
-            //$log.info("Name: " + $scope.name);
-            //$log.info("Description: " + $scope.description);
-            //if($scope.files) $log.info("Filename: " + $scope.files[0].name);
 
             //Move to Step 2 of wizard - Add content library
             $state.go('publish2');
@@ -40,7 +53,9 @@ angular.module('cloudoptingApp')
         $scope.saveWizardOne = function() {
             var callback = function(activiti){
                 localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
+                //FIXME: The processID is only for developmenent.
                 $scope.processID = activiti.processInstanceId;
+                savePromotionalImage();
             };
             var application = {};
             application.applicationName = $scope.name;
@@ -108,10 +123,13 @@ angular.module('cloudoptingApp')
                 //TODO: Update the corresponding file with the corresponding id to keep track.
 
             };
-            $scope.libraryName = "hello";
             //Add content libraries
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            ApplicationService.addContentLibrary(activiti.processInstanceId, activiti.applicationId, $scope.libraryList, $scope.libraryName, callback);
+            ApplicationService.addContentLibrary(
+                activiti.applicationId,
+                activiti.processInstanceId,
+                $scope.libraryList,
+                callback);
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
@@ -146,14 +164,30 @@ angular.module('cloudoptingApp')
          */
         $scope.toscaFiles = [];
 
+        $scope.addToscaArchive = function(toscaArchive) {
+            if(toscaArchive) {
+                $scope.toscaFiles.push.apply($scope.toscaFiles, toscaArchive);
+            }
+        };
+
         /**
          * Function to send the TOSCA Archive to be saved.
          */
         $scope.saveConfiguration = function () {
-            //Send the tosca file
+            var callback = function(data) {
+                //TODO: Show a message of completion.
 
-            //FIXME: Not yet implemented.
-            //ApplicationService.addToscaFile($scope.toscaFiles[0], $scope.idApplication);
+                //TODO: Enable button of publication.
+
+            };
+            //Add content libraries
+            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            //Send the tosca file
+            ApplicationService.addToscaArchive(
+                activiti.applicationId,
+                activiti.processInstanceId,
+                $scope.toscaFiles,
+                callback);
         };
 
         /**
