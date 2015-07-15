@@ -1,13 +1,15 @@
 package eu.cloudopting.web.rest;
 
-import eu.cloudopting.Application;
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.dto.ActivitiDTO;
+import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.UploadDTO;
+import eu.cloudopting.events.api.constants.QueryConstants;
+import eu.cloudopting.events.api.controller.AbstractController;
+import eu.cloudopting.events.api.service.BaseService;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
-import eu.cloudopting.dto.ApplicationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,9 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
-import eu.cloudopting.events.api.constants.QueryConstants;
-import eu.cloudopting.events.api.controller.AbstractController;
-import eu.cloudopting.events.api.service.BaseService;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -47,8 +46,6 @@ public class ApplicationResource extends AbstractController<Applications> {
     @Inject
     private BpmnService bpmnService;
 
-
-
     /**
      * Default contructor.
      *
@@ -57,12 +54,9 @@ public class ApplicationResource extends AbstractController<Applications> {
         super(Applications.class);
     }
 
-
-
     public StatusService getStatusService(){
         return statusService;
     }
-
 
     public BpmnService getBpmnService() {
         return bpmnService;
@@ -93,9 +87,8 @@ public class ApplicationResource extends AbstractController<Applications> {
      * @param response   HttpServletResponse
      * @return applications list
      */
-    @RequestMapping(value = "/application/list", params = {QueryConstants.PAGE, QueryConstants.SIZE,
-            QueryConstants.SORT_BY, QueryConstants.SORT_ORDER},
-            method = RequestMethod.GET)
+    @RequestMapping(value = "/application", params = {QueryConstants.PAGE, QueryConstants.SIZE,
+            QueryConstants.SORT_BY, QueryConstants.SORT_ORDER}, method = RequestMethod.GET)
     @ResponseBody
     public final Page<Applications> findAllPaginatedAndSorted(
             @RequestParam(QueryConstants.PAGE) final int page,
@@ -115,30 +108,13 @@ public class ApplicationResource extends AbstractController<Applications> {
      * @param response   HttpServletResponse
      * @return applications list
      */
-    @RequestMapping(value = "/application",
-            method = RequestMethod.GET)
+    @RequestMapping(value = "/application/unpaginated", method = RequestMethod.GET)
     @ResponseBody
     public final Page<Applications> findAllPaginated(
             final UriComponentsBuilder uriBuilder,
             final HttpServletResponse response, final HttpServletRequest request, final Pageable pageable) {
-        return findAllInternalPageable(request, uriBuilder, response,pageable);
+        return findAllInternalPageable(request, uriBuilder, response, pageable);
     }
-
-    /**
-     * This method returns a single Applications instance.
-     *
-     * @param id         the id to be returned
-     * @param uriBuilder UriComponentsBuilder
-     * @param response   HttpServletResponse
-     * @return applications instance
-     */
-    @RequestMapping(value = "/application/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public final Applications findOne(@PathVariable("id") final Long id, final UriComponentsBuilder uriBuilder,
-                                               final HttpServletResponse response) {
-        return getService().findOne(id);
-    }
-
 
     /**
      * This method creates a new Applications object
@@ -147,11 +123,11 @@ public class ApplicationResource extends AbstractController<Applications> {
      * @param uriBuilder
      * @param response
      */
-    @RequestMapping(value="/application",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/application", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public final ActivitiDTO create(@RequestBody ApplicationDTO application, final UriComponentsBuilder uriBuilder,
-                             final HttpServletResponse response, final HttpServletRequest request) {
+                                    final HttpServletResponse response, final HttpServletRequest request) {
        /* String xmlTosca = (String) request.getAttribute("xmlTosca");
         if(xmlTosca!=null && !xmlTosca.equals("")){
             applications.setApplicationToscaTemplate(xmlTosca);
@@ -163,10 +139,50 @@ public class ApplicationResource extends AbstractController<Applications> {
         return getBpmnService().startPublish(application);
     }
 
-    @RequestMapping(value="/application/{appId}/{processId}/file",method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * This method returns a single Applications instance.
+     *
+     * @param id         the id to be returned
+     * @param uriBuilder UriComponentsBuilder
+     * @param response   HttpServletResponse
+     * @return applications instance
+     */
+    @RequestMapping(value = "/application/{idApp}", method = RequestMethod.GET)
+    @ResponseBody
+    public final Applications findOne(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
+                                               final HttpServletResponse response) {
+        return getService().findOne(idApp);
+    }
+
+    @RequestMapping(value = "/application/{idApp}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO upload( HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+    public final ActivitiDTO updateApplication(@PathVariable Long idApp, HttpServletRequest request,
+                                               @RequestBody ApplicationDTO application) throws IOException {
+        //TODO: If idApp and application.getId() are not equals should we throw an exception?
+        return getBpmnService().updateApplication(application);
+    }
+
+    @RequestMapping(value = "/application/{idApp}/{processId}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final ActivitiDTO deleteApplication(@PathVariable Long idApp, @PathVariable String processId,
+                                               HttpServletRequest request,
+                                               @RequestBody ApplicationDTO application) throws IOException {
+        //TODO: The processId is not passed to the BPMN.
+        application.setId(idApp);
+        return getBpmnService().deleteApplication(application);
+    }
+
+    @RequestMapping(value = "/application/{idApp}/{processId}/file", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public final ActivitiDTO upload( HttpServletRequest request, @PathVariable String idApp,
+                                     @PathVariable String processId,
+                                     @RequestParam("file") MultipartFile file) throws IOException {
+        //TODO: The appId and the processID have to be sended to the BPMN also.
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setType(request.getParameter("type"));
@@ -174,10 +190,14 @@ public class ApplicationResource extends AbstractController<Applications> {
         return getBpmnService().upload(dto);
     }
 
-    @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO updateFile( HttpServletRequest request,@PathVariable String idApp,@PathVariable String idFile, @RequestParam("file") MultipartFile file) throws IOException {
+    public final ActivitiDTO updateFile( HttpServletRequest request, @PathVariable String idApp,
+                                         @PathVariable String processId, @PathVariable String idFile,
+                                         @RequestParam("file") MultipartFile file) throws IOException {
+        //TODO: The processID have to be sended to the BPMN also.
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setFileId(idFile);
@@ -186,29 +206,17 @@ public class ApplicationResource extends AbstractController<Applications> {
         return getBpmnService().upload(dto);
     }
 
-    @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}",method = RequestMethod.DELETE,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}",method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO deleteFile(@PathVariable String idApp,@PathVariable String idFile, HttpServletRequest request) throws IOException {
+    public final ActivitiDTO deleteFile(HttpServletRequest request, @PathVariable Long idApp,
+                                        @PathVariable String processId, @PathVariable String idFile ) throws IOException {
+        //TODO: The processID have to be sended to the BPMN also.
         UploadDTO dto = new UploadDTO();
         dto.setFileId(idFile);
         dto.setIdApp(idApp);
         return getBpmnService().deleteFile(dto);
-    }
-
-    @RequestMapping(value="/application/{idApp}",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public final ActivitiDTO updateApplication(@PathVariable String idApp, HttpServletRequest request, @RequestBody ApplicationDTO application) throws IOException {
-       return getBpmnService().updateApplication(application);
-    }
-
-    @RequestMapping(value="/application/{idApp}/{processId}",method = RequestMethod.DELETE,  produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public final ActivitiDTO deleteApplication(@PathVariable String idApp,@PathVariable String processId, HttpServletRequest request,@RequestBody ApplicationDTO application) throws IOException {
-        application.setId(Long.valueOf(idApp));
-        return getBpmnService().deleteApplication(application);
     }
 
 }
