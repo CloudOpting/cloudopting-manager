@@ -75,7 +75,7 @@ angular.module('cloudoptingApp')
             //Create
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
             application.id=activiti.applicationId; 
-            ApplicationService.update(activiti.processInstanceId, activiti.applicationId, application, callback);
+            ApplicationService.update(activiti.applicationId, activiti.processInstanceId, application, callback);
         };
 
         $scope.nextWizardOne = function() {

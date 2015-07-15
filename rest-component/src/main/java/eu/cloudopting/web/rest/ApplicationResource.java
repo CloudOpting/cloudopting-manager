@@ -154,12 +154,15 @@ public class ApplicationResource extends AbstractController<Applications> {
         return getService().findOne(idApp);
     }
 
-    @RequestMapping(value = "/application/{idApp}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/application/{idApp}/{processId}", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO updateApplication(@PathVariable Long idApp, HttpServletRequest request,
+    public final ActivitiDTO updateApplication(HttpServletRequest request, @PathVariable Long idApp,
+                                               @PathVariable String processId,
                                                @RequestBody ApplicationDTO application) throws IOException {
         //TODO: If idApp and application.getId() are not equals should we throw an exception?
+        //TODO: THe processId should be sended to the BPMN.
         return getBpmnService().updateApplication(application);
     }
 

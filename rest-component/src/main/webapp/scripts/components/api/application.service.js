@@ -67,13 +67,13 @@ angular.module('cloudoptingApp')
                     });
             },
             create: function(application, callback) {
-                return $http.post(baseURI + SERVICE.SEPARATOR, application)
+                return $http.post(baseURI, application)
                     .success(function(data, status, headers, config) {
                         callback(data);
                     });
             },
-            update: function(processId, applicationId, application, callback) {
-                return $http.put("/api/bpmn/publish/updateMetadata" + SERVICE.SEPARATOR + processId, application)
+            update: function(idApplication, processId, application, callback) {
+                return $http.put(baseURI + SERVICE.SEPARATOR +  idApplication + SERVICE.SEPARATOR + processId, application)
                     .success(function(data, status, headers, config) {
                         callback(data);
                     });
