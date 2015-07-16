@@ -213,7 +213,7 @@ public class ApplicationResource extends AbstractController<Applications> {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO deleteFile(HttpServletRequest request, @PathVariable Long idApp,
+    public final ActivitiDTO deleteFile(HttpServletRequest request, @PathVariable String idApp,
                                         @PathVariable String processId, @PathVariable String idFile ) throws IOException {
         //TODO: The processID have to be sended to the BPMN also.
         UploadDTO dto = new UploadDTO();
