@@ -43,7 +43,7 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
 
         //Cache everything except rest api requests
-        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
+        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/]);
 
         $urlRouterProvider.otherwise('/catalog');
         $stateProvider.state('site', {
