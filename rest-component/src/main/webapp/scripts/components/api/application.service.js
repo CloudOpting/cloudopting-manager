@@ -53,11 +53,14 @@ angular.module('cloudoptingApp')
              * Method to get the application list without pagination
              * @returns {*}
              */
-            findAllUnpaginated: function () {
-                //return $http.get('/api/application/unpaginated')
-                return $http.get('mocks/applications.js')
-                    .success(function(applications){
-                        apps = applications;
+            findAllUnpaginated: function (callback) {
+                //return $http.get('mocks/applications.js')
+                return $http.get(baseURI + SERVICE.SEPARATOR + 'unpaginated')
+                    .success(function(data, status, headers, config){
+                        callback(data);
+                    })
+                    .error(function(data, status, headers, config){
+                        $log.error("Something went wrong" + data);
                     });
             },
             findById: function (id) {
@@ -78,17 +81,24 @@ angular.module('cloudoptingApp')
                         callback(data);
                     });
             },
+            delete: function(idApplication, processId) {
+                return $http.delete(baseURI + SERVICE.SEPARATOR +  idApplication + SERVICE.SEPARATOR + processId)
+                    .success(function(data, status, headers, config) {
+                        //callback(data);
+                    });
+            },
             addPromotionalImage: function(idApplication, processID, files, callback) {
-                upload(idApplication, processID, files, SERVICE.FILE_TYPE.PROMO_IMAGE, callback);
+                return upload(idApplication, processID, files, SERVICE.FILE_TYPE.PROMO_IMAGE, callback);
             },
             addContentLibrary: function (idApplication, processID, libraryList, callback) {
-                upload(idApplication, processID, libraryList, SERVICE.FILE_TYPE.CONTENT_LIBRARY, callback);
+                return upload(idApplication, processID, libraryList, SERVICE.FILE_TYPE.CONTENT_LIBRARY, callback);
             },
             addToscaArchive: function (idApplication, processID, toscaFile, callback) {
-                upload(idApplication, processID, toscaFile, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, callback);
+                return upload(idApplication, processID, toscaFile, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, callback);
             },
-            deleteAppFile: function (idApplication, fileId) {
-                return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId);
+            deleteAppFile: function (idApplication, processID, fileId) {
+                return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR
+                    + processID + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId);
             },
             /**
              * Method to get the application parameters to be customized.

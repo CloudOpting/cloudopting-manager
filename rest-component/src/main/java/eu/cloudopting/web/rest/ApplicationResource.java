@@ -171,10 +171,11 @@ public class ApplicationResource extends AbstractController<Applications> {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public final ActivitiDTO deleteApplication(@PathVariable Long idApp, @PathVariable String processId,
-                                               HttpServletRequest request,
-                                               @RequestBody ApplicationDTO application) throws IOException {
+                                               HttpServletRequest request) throws IOException {
         //TODO: The processId is not passed to the BPMN.
+        ApplicationDTO application = new ApplicationDTO();
         application.setId(idApp);
+        //TODO: Maybe only sending the idApp will be enough.
         return getBpmnService().deleteApplication(application);
     }
 

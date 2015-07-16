@@ -6,21 +6,19 @@ angular.module('cloudoptingApp')
         $scope.applicationList = null;
 
         //TODO: Depending on the role, give the user a different list
+
         if(Principal.isInRole(SERVICE.ROLE.ADMIN)) {
-            ApplicationService.findAllUnpaginated()
-                .success(function (applications) {
-                    $scope.applicationList = applications;
-                }
-            );
+            var callback = function (applications) {
+                $scope.applicationList = applications.content;
+            };
+            ApplicationService.findAllUnpaginated(callback);
         }
         else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)) {
-            ApplicationService.findAllUnpaginated()
-                .success(function (applications) {
-                    $scope.applicationList = applications;
-                }
-            );
+            var callback = function (applications) {
+                $scope.applicationList = applications.content;
+            };
+            ApplicationService.findAllUnpaginated(callback);
         }
-
 
         //TODO: Implement button "Search Service" functionality.
 
@@ -35,7 +33,7 @@ angular.module('cloudoptingApp')
         //Function to go to the instances detail.
         $scope.goToEdit = function (appId) {
             //Save the ID on a place where edit can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, appId);
 
 
 
@@ -46,27 +44,29 @@ angular.module('cloudoptingApp')
         //Function to go to the instances detail.
         $scope.goToInstanceList = function (appId) {
             //Save the ID on a place where instances can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, appId);
 
 
             //Redirect to instances
             $state.go('instances');
         };
 
-        //Function to go to the instances detail.
+        //Function to delete a service.
         $scope.goToDelete = function (appId) {
-            //Save the ID on a place where delete can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
+            //Deleting a serive
+            ApplicationService.delete(appId, '123456');
 
+            //Deleteing current service on storage.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
+            //ApplicationService
 
-            //Redirect to instances
             //$state.go('delete');
         };
 
         //Function to go to the instances detail.
         $scope.goToCreateInstance = function (appId) {
             //Save the ID on a place where createinstance can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE_ID, appId);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, appId);
 
 
             //Redirect to instances

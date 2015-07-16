@@ -1,21 +1,20 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('CatalogController', function ($scope, $log, $state, ApplicationService, localStorageService) {
+    .controller('CatalogController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService) {
         //, ApplicationService
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
         $scope.applicationList = null;
-        ApplicationService.findAllUnpaginated()
-            .success(function(applications){
-                $scope.applicationList = applications;
-            });
+
+        var callback = function(applications) {
+            $scope.applicationList = applications.content;
+        };
+        ApplicationService.findAllUnpaginated(callback);
 
         $scope.detail = function(application){
-            //save the current application
-            //ApplicationService.setCurrentApplication(applicaiton);
-            //ApplicationService.currentApplication = applicaiton;
-            localStorageService.set("currentApplication", application);
-            //go to the detail
+            //Save the current application
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
+            //Go to the detail of the applicaiton.
             $state.go('detail');
         };
     }
