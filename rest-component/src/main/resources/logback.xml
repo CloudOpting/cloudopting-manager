@@ -27,8 +27,10 @@
     </appender>
 -->
 
-    <logger name="eu.cloud.cloudopting" level="DEBUG"/>
-
+    <logger name="eu.cloud.cloudopting" level="TRACE"/>
+    <logger name="eu.cloudopting" level="TRACE"/>
+	<logger name="sun.net.www.protocol.http" level="TRACE"/>
+	
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.xml.bind" level="WARN"/>
