@@ -1,5 +1,5 @@
 angular.module('cloudoptingApp')
-    .controller('FormGenerationController', function ($scope) {
+    .controller('FormGenerationController', function ($scope, $log) {
 
         $scope.schema = {
             type: "object",
@@ -22,7 +22,7 @@ angular.module('cloudoptingApp')
 
         $scope.model = {};
 
-/*
+
         $scope.onSubmit = function(form) {
             // First we broadcast an event so all fields validate themselves
             $scope.$broadcast('schemaFormValidate');
@@ -30,9 +30,11 @@ angular.module('cloudoptingApp')
             // Then we check if the form is valid
             if (form.$valid) {
                 // ... do whatever you need to do with your data.
+                $log.info("The form is valid, let's send it: " + form.title.$modelValue + " " +  form.name.$modelValue);
+
             }
         }
-        */
+
 
     }
 );
