@@ -1,7 +1,10 @@
 angular.module('cloudoptingApp')
-    .controller('FormGenerationController', function ($scope, $log) {
+    .controller('FormGenerationController', function ($scope, $log, $http) {
 
-        $scope.schema = {
+    	$http.get("/api/application/1/getCustomizationForm").success(function(res){
+    		console.log(res);
+    		$scope.schema = res;});
+/*        $scope.schema = {
             type: "object",
             properties: {
                 name: { type: "string", minLength: 2, title: "Name", description: "Name or alias" },
@@ -11,7 +14,7 @@ angular.module('cloudoptingApp')
                 }
             }
         };
-
+*/
         $scope.form = [
             "*",
             {
@@ -30,7 +33,7 @@ angular.module('cloudoptingApp')
             // Then we check if the form is valid
             if (form.$valid) {
                 // ... do whatever you need to do with your data.
-                $log.info("The form is valid, let's send it: " + form.title.$modelValue + " " +  form.name.$modelValue);
+                $log.info("The form is valid, let's send it: " + form.node_id.$modelValue + " " +  form.memory.$modelValue);
 
             }
         }
