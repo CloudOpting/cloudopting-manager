@@ -192,7 +192,7 @@ public class ToscaService {
 	}
 
 	public byte[] getToscaGraph(String customizationId) {
-		log.debug("in getHostPorts");
+		log.debug("in getToscaGraph");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
