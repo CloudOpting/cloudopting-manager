@@ -7,7 +7,6 @@ angular.module('cloudoptingApp')
     .factory('ApplicationService', function (SERVICE, $http, $log, Upload) {
         var apps = null;
         var app = null;
-        //TODO: Should the base uri be a full URI for the Upload component?
         var baseURI = '/api/application';
 
         function upload(idApplication, processID, files, type, callback){
