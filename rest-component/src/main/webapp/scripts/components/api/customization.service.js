@@ -44,7 +44,10 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             sendCustomizationForm: function(json, callback) {
-                return $http.post(baseURI + SERVICE.SEPARATOR + 'sendCustomizationForm', {formData: json})
+                var config =  {
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                };
+                return $http.post(baseURI + SERVICE.SEPARATOR + 'sendCustomizationForm', "formData=" + json, config)
                     .success(function(data, status, headers, config) {
                         callback(data);
                     }
