@@ -34,6 +34,7 @@ import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import eu.cloudopting.tosca.utils.CustomizationUtils;
 import eu.cloudopting.tosca.utils.R10kResultHandler;
 import eu.cloudopting.tosca.utils.ToscaUtils;
 import freemarker.core.ParseException;
@@ -66,6 +68,9 @@ public class ToscaService {
 
 	@Autowired
 	private ToscaUtils toscaUtils;
+	
+	@Autowired
+	private CustomizationUtils customizationUtils;
 
 	public ToscaService() {
 		super();
@@ -772,5 +777,11 @@ public class ToscaService {
 		templData.put("dockerContainers", modData);
 		// write the "Puppetfile" file
 		toscaUtils.generateDockerCompose(templData, serviceHome);
+	}
+	
+	public JSONObject getCustomizationFormData(Long idApp){
+		
+		return customizationUtils.getCustomizationFormData(idApp);
+	
 	}
 }
