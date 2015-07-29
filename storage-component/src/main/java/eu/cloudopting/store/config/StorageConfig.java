@@ -23,7 +23,7 @@ public class StorageConfig {
         classes.add(JackrabbitStoreRequest.class);
         return new AnnotationMapperImpl(classes);
     }
-
+/*
 
     @Bean(name = "jackrabbitOcmStore")
     public JackrabbitStore jackrabbitOcmStore(){
@@ -35,5 +35,5 @@ public class StorageConfig {
         return new JackrabbitBinaryStoreImpl();
     }
 
-
+*/
 }

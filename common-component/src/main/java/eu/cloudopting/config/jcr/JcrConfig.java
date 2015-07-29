@@ -34,8 +34,9 @@ import java.util.Map;
 public class JcrConfig {
 
 
+//    @Bean
+//    @Lazy
     @Bean
-    @Lazy
     public Repository repository() {
         Repository repository;
         try {
