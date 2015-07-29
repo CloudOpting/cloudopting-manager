@@ -31,9 +31,9 @@ angular.module('cloudoptingApp')
         };
 
         //Function to go to the instances detail.
-        $scope.goToEdit = function (appId) {
+        $scope.goToEdit = function (app) {
             //Save the ID on a place where edit can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, appId);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
 
 
 
@@ -44,7 +44,7 @@ angular.module('cloudoptingApp')
         //Function to go to the instances detail.
         $scope.goToInstanceList = function (appId) {
             //Save the ID on a place where instances can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, appId);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
 
 
             //Redirect to instances
@@ -52,9 +52,9 @@ angular.module('cloudoptingApp')
         };
 
         //Function to delete a service.
-        $scope.goToDelete = function (appId) {
+        $scope.goToDelete = function (app) {
             //Deleting a serive
-            ApplicationService.delete(appId, '123456');
+            ApplicationService.delete(app, '123456');
 
             //Deleteing current service on storage.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
@@ -64,13 +64,13 @@ angular.module('cloudoptingApp')
         };
 
         //Function to go to the instances detail.
-        $scope.goToCreateInstance = function (appId) {
+        $scope.goToCreateInstance = function (app) {
             //Save the ID on a place where createinstance can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, appId);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
 
 
             //Redirect to instances
-            //$state.go('createinstance');
+            $state.go('form_generation');
         };
     }
 );
