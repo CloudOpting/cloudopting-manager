@@ -40,7 +40,8 @@ angular.module('cloudoptingApp')
         else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER))
         {
             $scope.detail_function = function() {
-                $state.go('taylor');
+                //$state.go('taylor');
+                $state.go('form_generation');
             };
             $scope.buttonValue = $translate.instant('detail.button.subscribe');
         }

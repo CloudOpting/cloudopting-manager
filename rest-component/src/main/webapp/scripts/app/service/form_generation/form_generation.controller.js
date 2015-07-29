@@ -25,7 +25,9 @@ angular.module('cloudoptingApp')
 
         var idApp = currentApp.id;
         //FIXME: Delete hardcoded value.
-        idApp = 1;
+        if(idApp===undefined || idApp === null) {
+            idApp = 1;
+        }
         CustomizationService.getCustomizationForm(idApp, callback);
 
         $scope.form = [
