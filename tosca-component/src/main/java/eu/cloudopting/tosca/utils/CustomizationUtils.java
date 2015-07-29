@@ -41,7 +41,7 @@ public class CustomizationUtils {
 		log.debug("path to csar:"+csarPath);
 		// maybe keeping a hash for it so sequent calls can go faster (there will be the instance generation)
 		
-		csarUtils.getToscaTemplate(csarPath, "/");
+		csarUtils.getToscaTemplate("csisp/Clearo.czar", "/cloudOptingData/");
 		// TODO dummy data return for now
 		try {
 			jret = new JSONObject("{\"type\": \"object\",\"title\": \"Compute\",\"properties\": {\"node_id\":  {\"title\": \"Node ID\",\"type\": \"string\"},\"node_label\":  {\"title\": \"Node Label\",\"type\": \"string\",\"description\": \"Email will be used for evil.\"},\"memory\":  {\"title\": \"Memory\",\"type\": \"string\",\"enum\": [\"512\",\"1024\",\"2048\"]},\"cpu\": {\"title\": \"CPU\",\"type\": \"integer\",\"maxLength\": 20,\"validationMessage\": \"Dont be greedy!\"}},\"required\": [\"node_id\",\"node_label\",\"memory\", \"cpu\"]}");
