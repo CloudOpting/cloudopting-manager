@@ -177,6 +177,7 @@ public class ToscaUtils {
 			zipIn.closeEntry();
 			entry = zipIn.getNextEntry();
 		}
+		zipIn.
 		zipIn.close();
 	}
 

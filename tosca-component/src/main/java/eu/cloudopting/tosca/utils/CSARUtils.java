@@ -1,9 +1,14 @@
 package eu.cloudopting.tosca.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.jcr.Binary;
@@ -25,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 
 import eu.cloudopting.config.jcr.JcrConfig;
+import eu.cloudopting.store.StoreService;
 /*
 import eu.cloudopting.store.config.StorageConfig;
 import eu.cloudopting.store.jackrabbit.JackrabbitStore;
@@ -48,6 +54,9 @@ public class CSARUtils {
     Repository repository;
     @Inject
     Session session;
+    
+    @Autowired
+    StoreService storeService;
 
 	@Autowired
 	private ToscaUtils toscaUtils;
@@ -57,42 +66,50 @@ public class CSARUtils {
 		log.debug(originPath);
 		log.debug("destinationPath: "+destinationPath);
 		log.debug("repository: "+repository.toString());
+		InputStream stream = storeService.getDocumentAsStream(originPath);
+		String content;
 		try {
-			Node file = session.getRootNode().getNode(originPath+"/jcr:content/TOSCA-Metadata/TOSCA.meta/jcr:content");
-			log.debug("file: "+file.toString());
-			PropertyIterator props = file.getProperties();
-			while(props.hasNext()){
-				Property prop = (Property) props.next();
-				log.debug("prop: "+prop.toString());
-				log.debug("prop name: "+prop.getName());
-//				log.debug("prop name: "+prop.get);
-			}
-			final Binary in = file.getProperty("jcr:data").getBinary();
-			InputStream stream = in.getStream();
-			String content = IOUtils.toString(stream);
+			content = IOUtils.toString(stream);
 			log.debug(content);
 //			JcrUtils.
 	        File f = new File(destinationPath+"from.csar");
 	        FileUtils.writeStringToFile(f, content, false);
-//	        Files.copy(content, f.toPath());
-	        
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-/*
-		JackrabbitStoreResult<JackrabbitStoreRequest> retrieve = jackrabbitOcmStore.retrieve(originPath);
-		try {
-			toscaUtils.unzip(retrieve.getStoredContent().getContent(), destinationPath);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-	*/ catch (IOException e) {
-			// TODO Auto-generated catch block
+			
+	}
+
+	
+	public String getDefinitionFile(String originPath) {
+		log.debug("in getDefinitionFile");
+		String toscaDefinitionLocation = null;
+		String toscaDefinitionContent = null;
+
+		try {
+			InputStream streamMeta = storeService.getDocumentAsStream(originPath+"/jcr:content/TOSCA-Metadata/TOSCA.meta/jcr:content");
+			Properties properties = new Properties();
+			properties.load(streamMeta);
+
+			Enumeration enuKeys = properties.keys();
+			while (enuKeys.hasMoreElements()) {
+				String key = (String) enuKeys.nextElement();
+				String value = properties.getProperty(key);
+				log.debug(key + ": " + value);
+			}
+
+			toscaDefinitionLocation = properties.getProperty("Entry-Definitions");
+			log.debug(toscaDefinitionLocation);
+			// with the location of the META I can get the XML stream of the Definition
+			InputStream streamDef = storeService.getDocumentAsStream(originPath+"/"+toscaDefinitionLocation);
+			toscaDefinitionContent = IOUtils.toString(streamDef);
+			log.debug(toscaDefinitionContent);
+		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
+		return toscaDefinitionContent;
 	}
 
 }

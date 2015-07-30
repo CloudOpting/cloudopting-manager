@@ -679,35 +679,7 @@ public class ToscaService {
 		return ports;
 	}
 
-	public void getDefinitionFile(String customizationId, String path) {
-		log.debug("in getDefinitionFile");
-		try {
-			File file = new File(path + "/TOSCA-Metadata/TOSCA.meta");
-			FileInputStream fileInput = new FileInputStream(file);
-			Properties properties = new Properties();
-			properties.load(fileInput);
-			fileInput.close();
-
-			Enumeration enuKeys = properties.keys();
-			while (enuKeys.hasMoreElements()) {
-				String key = (String) enuKeys.nextElement();
-				String value = properties.getProperty(key);
-				System.out.println(key + ": " + value);
-			}
-
-			String toscaLocation = properties.getProperty("Entry-Definitions");
-			String xml = new String(Files.readAllBytes(Paths.get(path + "/"
-					+ toscaLocation)));
-			setToscaCustomization(customizationId, xml);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return;
-	}
-
+	
 	/*
 	 * public void getPuppetModules(String customizationId, String id){ // here
 	 * I get the puppet module list and use r10k to download them
