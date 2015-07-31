@@ -3,6 +3,8 @@ package eu.cloudopting.monitoring.zabbix;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONStringer;
 import org.json.JSONWriter;
 
@@ -23,6 +25,9 @@ public class Request {
 	String auth;
 
 	Integer id;
+	
+	JSONObject jreq;
+	
 
 	public void putParam(String key, Object value) {
 		params.put(key, value);
@@ -76,8 +81,14 @@ public class Request {
 	public String toString() {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e) {
+			jreq = new JSONObject();
+			jreq.put("jsonrpc", this.jsonrpc);
+			jreq.put("method", this.method);
+			jreq.put("auth", this.auth);
+			jreq.put("id", this.id);
+			jreq.put("params", this.params);
+			return jreq.toString();
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.service.common.MonitoringServiceInfo;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.domain.User;
+import eu.cloudopting.monitoring.MonitoringService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.tosca.ToscaService;
-
 import eu.cloudopting.web.rest.dto.Data;
 import eu.cloudopting.web.rest.dto.GraphDTO;
 
@@ -29,6 +30,9 @@ import eu.cloudopting.web.rest.dto.GraphDTO;
 public class MonitoringController {
 	private final Logger log = LoggerFactory.getLogger(MonitoringController.class);
 	
+	@Autowired
+	MonitoringService monitoringService;
+	
 	/**
 	 * The the list of monitored objects
 	 * @param instanceId
@@ -36,6 +40,7 @@ public class MonitoringController {
 	@RequestMapping(value = "/monitoring/{instanceId}", method = RequestMethod.GET)
 	@ResponseBody
 	public String findAllObjectsByInstance(@PathVariable("instanceId") final String instanceId){
+		monitoringService.testZabbix();
 		return "graphs: [" +
 				"{data:{}, xkey: {}, ykey: {}}," +
 				"{data:{}, xkey: {}, ykey: {}}," +
@@ -52,6 +57,7 @@ public class MonitoringController {
 	@RequestMapping(value = "/monitoring/{instanceId}/{objectId}", method = RequestMethod.GET)
 	@ResponseBody
 	public GraphDTO findObject(@PathVariable("instanceId") final String instanceId, @PathVariable("objectId") final String objectId) {
+		monitoringService.testZabbix();
         GraphDTO graph = new GraphDTO();
         graph.setData(
                 new Data[] {

@@ -18,12 +18,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import eu.cloudopting.monitoring.MonitoringService;
 import flexjson.JSONTokener;
 
 
 
 public class DefaultZabbixApi implements ZabbixApi {
-	Logger logger = LoggerFactory.getLogger(DefaultZabbixApi.class);
+	private final Logger log = LoggerFactory.getLogger(DefaultZabbixApi.class);
 
 	CloseableHttpClient httpClient;
 
@@ -66,7 +67,7 @@ public class DefaultZabbixApi implements ZabbixApi {
 			try {
 				httpClient.close();
 			} catch (Exception e) {
-				logger.error("close httpclient error!", e);
+				log.error("close httpclient error!", e);
 			}
 		}
 	}
@@ -75,7 +76,12 @@ public class DefaultZabbixApi implements ZabbixApi {
 	public boolean login(String user, String password) {
 		Request request = RequestBuilder.newBuilder().paramEntry("user", user)
 				.paramEntry("password", password).method("user.login").build();
+		log.debug("user"+user);
+		log.debug("password"+password);
+		log.debug("request in login"+request.toString());
+		
 		JSONObject response = call(request);
+		log.debug("response in login"+response.toString());
 		String auth = null;
 		try {
 			auth = response.getString("result");
@@ -177,7 +183,7 @@ public class DefaultZabbixApi implements ZabbixApi {
 		if (request.getAuth() == null) {
 			request.setAuth(auth);
 		}
-
+		log.debug("request in call"+request.toString());
 		try {
 			HttpUriRequest httpRequest = org.apache.http.client.methods.RequestBuilder
 					.post().setUri(uri)
@@ -185,13 +191,22 @@ public class DefaultZabbixApi implements ZabbixApi {
 					.setEntity(new StringEntity(request.toString()))
 					.build();
 			CloseableHttpResponse response = httpClient.execute(httpRequest);
+			log.debug("response"+response.toString());
 //			HttpEntity entity = response.getEntity();
 //			byte[] data = EntityUtils.toByteArray(entity);
-			JSONTokener tokener = new JSONTokener(IOUtils.toString(response.getEntity().getContent()));
-			return new JSONObject(tokener);
+			String responseContent = IOUtils.toString(response.getEntity().getContent());
+			log.debug("responseContent"+responseContent);
+			JSONObject jresult = new JSONObject(responseContent);
+			log.debug("test"+jresult.toString());
+//			JSONTokener tokener = new JSONTokener(responseContent);
+			return jresult;
 		} catch (IOException e) {
 			throw new RuntimeException("DefaultZabbixApi call exception!", e);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return null;
 	}
 
 }
