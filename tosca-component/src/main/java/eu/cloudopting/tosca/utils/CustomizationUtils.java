@@ -68,27 +68,37 @@ public class CustomizationUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// need to read the Application and get the TOSCA file
-		Applications application = applicationService.findOne(idApp);
-
-		String csarPath = application.getApplicationToscaTemplate();
-		log.debug("path to csar:"+csarPath);
+		DocumentImpl theDoc = this.xToscaHash.get(idApp);
+		if (theDoc == null){
+			// need to read the Application and get the TOSCA file
+			Applications application = applicationService.findOne(idApp);
+			String csarPath = application.getApplicationToscaTemplate();
+			log.debug("path to csar:"+csarPath);
+			// unzip the csar
+			String destinationPath = "/cloudOptingData/"+idApp;
+			csarUtils.unzipToscaCsar(csarPath, destinationPath);
+			// read the definition file
+			String xmlDefinitionContent = csarUtils.getDefinitionFile(destinationPath);
+			InputSource source = new InputSource(new StringReader(xmlDefinitionContent));
+			DocumentImpl document = null;
+			try {
+				document = (DocumentImpl) this.db.parse(source);
+				this.xToscaHash.put(idApp, document);
+			} catch (SAXException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		}else{
+		
+		}
+		
 		// maybe keeping a hash for it so sequent calls can go faster (there will be the instance generation)
 		
 //		csarUtils.getToscaTemplate("csisp/Clearo.czar", "/cloudOptingData/");
-		String xmlDefinitionContent = csarUtils.getDefinitionFile("csisp/Clearo.czar");
-		InputSource source = new InputSource(new StringReader(xmlDefinitionContent));
-		DocumentImpl document = null;
-		try {
-			document = (DocumentImpl) this.db.parse(source);
-			this.xToscaHash.put(idApp, document);
-		} catch (SAXException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		// TODO dummy data return for now
 		try {
 			jret = new JSONObject("{\"type\": \"object\",\"title\": \"Compute\",\"properties\": {\"node_id\":  {\"title\": \"Node ID\",\"type\": \"string\"},\"node_label\":  {\"title\": \"Node Label\",\"type\": \"string\",\"description\": \"Email will be used for evil.\"},\"memory\":  {\"title\": \"Memory\",\"type\": \"string\",\"enum\": [\"512\",\"1024\",\"2048\"]},\"cpu\": {\"title\": \"CPU\",\"type\": \"integer\",\"maxLength\": 20,\"validationMessage\": \"Dont be greedy!\"}},\"required\": [\"node_id\",\"node_label\",\"memory\", \"cpu\"]}");

@@ -1,5 +1,6 @@
 package eu.cloudopting.tosca.utils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,16 +58,23 @@ public class CSARUtils {
     
     @Autowired
     StoreService storeService;
-
+    
 	@Autowired
 	private ToscaUtils toscaUtils;
 	
-	public void getToscaTemplate(String originPath, String destinationPath){
-		log.debug("in getToscaTemplate");
+	public void unzipToscaCsar(String originPath, String destinationPath){
+		log.debug("in unzipToscaCsar");
 		log.debug(originPath);
+//		storeService.storeFile("/cloudOptingData/", "Clearo.czar", "csisp", "Clearo.czar");
 		log.debug("destinationPath: "+destinationPath);
 		log.debug("repository: "+repository.toString());
 		InputStream stream = storeService.getDocumentAsStream(originPath);
+		try {
+			toscaUtils.unzip(stream, destinationPath);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String content;
 		try {
 			content = IOUtils.toString(stream);
@@ -89,7 +97,8 @@ public class CSARUtils {
 		String toscaDefinitionContent = null;
 
 		try {
-			InputStream streamMeta = storeService.getDocumentAsStream(originPath+"/jcr:content/TOSCA-Metadata/TOSCA.meta/jcr:content");
+			InputStream streamMeta = new BufferedInputStream(new FileInputStream(originPath+"/TOSCA-Metadata/TOSCA.meta"));
+//			InputStream streamMeta = storeService.getDocumentAsStream(originPath+"/jcr:content/TOSCA-Metadata/TOSCA.meta/jcr:content");
 			Properties properties = new Properties();
 			properties.load(streamMeta);
 
@@ -103,7 +112,8 @@ public class CSARUtils {
 			toscaDefinitionLocation = properties.getProperty("Entry-Definitions");
 			log.debug(toscaDefinitionLocation);
 			// with the location of the META I can get the XML stream of the Definition
-			InputStream streamDef = storeService.getDocumentAsStream(originPath+"/"+toscaDefinitionLocation);
+	//		InputStream streamDef = storeService.getDocumentAsStream(originPath+"/"+toscaDefinitionLocation);
+			InputStream streamDef = new BufferedInputStream(new FileInputStream(originPath+"/"+toscaDefinitionLocation));
 			toscaDefinitionContent = IOUtils.toString(streamDef);
 			log.debug(toscaDefinitionContent);
 		} catch (IOException e) {
@@ -111,5 +121,7 @@ public class CSARUtils {
 		}
 		return toscaDefinitionContent;
 	}
+	
+//	public void unzipToscaCsar()
 
 }

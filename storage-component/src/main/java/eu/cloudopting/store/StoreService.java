@@ -1,8 +1,13 @@
 package eu.cloudopting.store;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Date;
 
 import javax.inject.Inject;
+import javax.jcr.Binary;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
@@ -14,6 +19,8 @@ import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import eu.cloudopting.util.MimeTypeUtils;
 
 @Service
 public class StoreService {
@@ -62,6 +69,31 @@ public class StoreService {
 		
     	return retStream;
     	
+    }
+    
+    public void storeFile(String filePath, String theFile, String storePath, String storeFile){
+        Node folder;
+        InputStream stream;
+		try {
+	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
+	        String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
+			folder = session.getRootNode().getNode(storePath);
+//			Node file = folder.addNode(theFile, "nt:file");
+//	        Node content = file.addNode("jcr:content", "nt:resource");
+	        JcrUtils.putFile(folder, theFile, mimeType, stream);
+//	        Binary binary = session.getValueFactory().createBinary(stream);
+//	        content.setProperty("jcr:data", binary);
+//	        content.setProperty("jcr:mimeType", mimeType);
+	        session.save();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+
     }
     /*
     public boolean getDocument(String originPath, String destinationPath){
