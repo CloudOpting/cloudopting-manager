@@ -43,6 +43,7 @@ import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
 @Service
 public class CSARUtils {
 	private final Logger log = LoggerFactory.getLogger(CSARUtils.class);
+	
 	/*
 	@Inject
 	private JackrabbitStore jackrabbitOcmStore;

@@ -3,6 +3,15 @@ package eu.cloudopting.monitoring.zabbix;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONStringer;
+import org.json.JSONWriter;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import flexjson.JSON;
+import flexjson.JSONSerializer;
+
 
 
 public class Request {
@@ -56,7 +65,7 @@ public class Request {
 	}
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
@@ -65,6 +74,14 @@ public class Request {
 
 	@Override
 	public String toString() {
-		return JSON.toJSONString(this);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+//		return JSONWriter.toJSONString(this);
 	}
 }

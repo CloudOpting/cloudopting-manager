@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -13,10 +14,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import flexjson.JSONTokener;
+
+
 
 public class DefaultZabbixApi implements ZabbixApi {
 	Logger logger = LoggerFactory.getLogger(DefaultZabbixApi.class);
@@ -72,7 +76,13 @@ public class DefaultZabbixApi implements ZabbixApi {
 		Request request = RequestBuilder.newBuilder().paramEntry("user", user)
 				.paramEntry("password", password).method("user.login").build();
 		JSONObject response = call(request);
-		String auth = response.getString("result");
+		String auth = null;
+		try {
+			auth = response.getString("result");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (auth != null && !auth.isEmpty()) {
 			this.auth = auth;
 			return true;
@@ -85,33 +95,62 @@ public class DefaultZabbixApi implements ZabbixApi {
 		Request request = RequestBuilder.newBuilder().method("apiinfo.version")
 				.build();
 		JSONObject response = call(request);
-		return response.getString("result");
+		try {
+			return response.getString("result");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public boolean hostExists(String name) {
 		Request request = RequestBuilder.newBuilder().method("host.exists")
 				.paramEntry("name", name).build();
 		JSONObject response = call(request);
-		return response.getBooleanValue("result");
+		try {
+			return response.getBoolean("result");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public String hostCreate(String host, String groupId) {
 		JSONArray groups = new JSONArray();
 		JSONObject group = new JSONObject();
-		group.put("groupid", groupId);
-		groups.add(group);
+		try {
+			group.put("groupid", groupId);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		groups.put(group);
 		Request request = RequestBuilder.newBuilder().method("host.create")
 				.paramEntry("host", host).paramEntry("groups", groups).build();
 		JSONObject response = call(request);
-		return response.getJSONObject("result").getJSONArray("hostids")
-				.getString(0);
+		try {
+			return response.getJSONObject("result").getJSONArray("hostids")
+					.getString(0);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public boolean hostgroupExists(String name) {
 		Request request = RequestBuilder.newBuilder()
 				.method("hostgroup.exists").paramEntry("name", name).build();
 		JSONObject response = call(request);
-		return response.getBooleanValue("result");
+		try {
+			return response.getBoolean("result");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -123,8 +162,14 @@ public class DefaultZabbixApi implements ZabbixApi {
 		Request request = RequestBuilder.newBuilder()
 				.method("hostgroup.create").paramEntry("name", name).build();
 		JSONObject response = call(request);
-		return response.getJSONObject("result").getJSONArray("groupids")
-				.getString(0);
+		try {
+			return response.getJSONObject("result").getJSONArray("groupids")
+					.getString(0);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -137,12 +182,13 @@ public class DefaultZabbixApi implements ZabbixApi {
 			HttpUriRequest httpRequest = org.apache.http.client.methods.RequestBuilder
 					.post().setUri(uri)
 					.addHeader("Content-Type", "application/json")
-					.setEntity(new StringEntity(JSON.toJSONString(request)))
+					.setEntity(new StringEntity(request.toString()))
 					.build();
 			CloseableHttpResponse response = httpClient.execute(httpRequest);
-			HttpEntity entity = response.getEntity();
-			byte[] data = EntityUtils.toByteArray(entity);
-			return (JSONObject) JSON.parse(data);
+//			HttpEntity entity = response.getEntity();
+//			byte[] data = EntityUtils.toByteArray(entity);
+			JSONTokener tokener = new JSONTokener(IOUtils.toString(response.getEntity().getContent()));
+			return new JSONObject(tokener);
 		} catch (IOException e) {
 			throw new RuntimeException("DefaultZabbixApi call exception!", e);
 		}

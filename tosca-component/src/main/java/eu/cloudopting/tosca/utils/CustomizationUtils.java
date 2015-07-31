@@ -1,11 +1,13 @@
 package eu.cloudopting.tosca.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.xalan.extensions.XPathFunctionResolverImpl;
 import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
@@ -84,6 +86,7 @@ public class CustomizationUtils {
 			try {
 				document = (DocumentImpl) this.db.parse(source);
 				this.xToscaHash.put(idApp, document);
+				FileUtils.forceDelete(new File(destinationPath));
 			} catch (SAXException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
