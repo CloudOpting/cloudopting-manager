@@ -1,6 +1,5 @@
 package eu.cloudopting.monitoring.zabbix;
 
-import org.json.JSONObject;
 
 
 public interface ZabbixApi {

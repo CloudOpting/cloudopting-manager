@@ -20,6 +20,7 @@
         <module>cloud-component</module>
         <module>database-component</module>
         <module>docker-component</module>
+        <module>monitoring-component</module>
         <module>rest-component</module>
         <module>storage-component</module>
         <module>tosca-component</module>
