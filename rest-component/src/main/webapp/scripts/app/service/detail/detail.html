@@ -1,18 +1,29 @@
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-            <div class="panel-heading" translate="detail.title">Service Detail</div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2 translate="detail.service" translate-values="{service_name: '{{currentApp.applicationName}}'}">"Clearo" Service</h2>
-                        <h3 translate="detail.status" translate-values="{service_status: '{{currentApp.statusId.status}}'}">Status: Published</h3>
-                        <img src="http://placehold.it/200x180">
-                        <div class="caption">
-                            <p>{{currentApp.applicationDescription}}</p>
-                            <div>
-                                <input type="button" ng-show="showButton" ng-click="detail_function()" value="{{buttonValue}}" />
+    <div class="bs-example">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="thumbnail">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="text-uppercase darkgreen">{{currentApp.applicationName}} (Status: {{currentApp.statusId.status}})</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img src="http://placehold.it/200x180" width="100%">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="caption">
+                                <h4 class="darkgreen">{{currentApp.applicationName}}</h4>
+                                <hr>
+                                <p>{{currentApp.applicationDescription}}</p>
                             </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-offset-5">
+                            <input type="button" class="btn btn-success" ng-show="showButton" ng-click="detail_function()" value="{{buttonValue}}" />
                         </div>
                     </div>
                 </div>

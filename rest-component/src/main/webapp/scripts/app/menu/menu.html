@@ -1,40 +1,53 @@
-<!-- MENU FOR DEVELOPMENT -->
-<div class="container" ng-show="logoutButton" ng-controller="MenuController">
-    <div class="masthead">
-        <strong>Development menu</strong>
-        <ul class="nav nav-pills">
-            <li ng-show="showMenu('publish')"><a ui-sref="publish">Publish Service</a></li>
-            <li ng-show="showMenu('catalog')"><a ui-sref="catalog">Service Catalog</a></li>
-            <!--Detail screen shouldn't be on the menu -->
-            <!--<li ng-show="showMenu('detail')"><a ui-sref="detail">Service Detail</a></li>-->
-            <li ng-show="showMenu('subscriber')"><a ui-sref="subscriber">Service Subscriber</a></li>
-            <li ng-show="showMenu('instances')"><a ui-sref="instances">Instances List - Manager</a></li>
-            <li ng-show="showMenu('list')"><a ui-sref="list">Services List - Manager</a></li>
-            <li ng-show="showMenu('taylor')"><a ui-sref="taylor">Taylor Service</a></li>
-            <li ng-show="showMenu('addDeploy')"><a ui-sref="addDeploy">Add/Deploy Service</a></li>
-            <li ng-show="showMenu('management')"><a ui-sref="management">Service Management</a></li>
-            <li ng-show="showMenu('monitoring')"><a ui-sref="monitoring">Service Monitoring</a></li>
-            <li ng-show="showMenu('logs')"><a ui-sref="logs">Service Logs</a></li>
-            <li ng-show="showMenu('button')"><a ui-sref="button">Button Screen</a></li>
-            <li ng-show="showMenu('form_generation')"><a ui-sref="form_generation">Form Generation Screen</a></li>
-        </ul>
+<div class="container" style="height: 88px; line-height: 88px;">
+    <div class="row inner-container">
+        <!-- MENU FOR DEVELOPMENT -->
+        <div class="dropdown" ng-show="logoutButton" ng-controller="MenuController">
+            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Development menu
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li ng-show="showMenu('publish')"><a ui-sref="publish">Publish Service</a></li>
+                <li ng-show="showMenu('catalog')"><a ui-sref="catalog">Service Catalog</a></li>
+                <!--Detail screen shouldn't be on the menu -->
+                <!--<li ng-show="showMenu('detail')"><a ui-sref="detail">Service Detail</a></li>-->
+                <li ng-show="showMenu('subscriber')"><a ui-sref="subscriber">Service Subscriber</a></li>
+                <li ng-show="showMenu('instances')"><a ui-sref="instances">Instances List - Manager</a></li>
+                <li ng-show="showMenu('list')"><a ui-sref="list">Services List - Manager</a></li>
+                <li ng-show="showMenu('taylor')"><a ui-sref="taylor">Taylor Service</a></li>
+                <li ng-show="showMenu('addDeploy')"><a ui-sref="addDeploy">Add/Deploy Service</a></li>
+                <li ng-show="showMenu('management')"><a ui-sref="management">Service Management</a></li>
+                <li ng-show="showMenu('monitoring')"><a ui-sref="monitoring">Service Monitoring</a></li>
+                <li ng-show="showMenu('logs')"><a ui-sref="logs">Service Logs</a></li>
+                <li ng-show="showMenu('button')"><a ui-sref="button">Button Screen</a></li>
+                <li ng-show="showMenu('form_generation')"><a ui-sref="form_generation">Form Generation Screen</a></li>
+            </ul>
+        </div>
+        <!-- MENU FOR DEVELOPMENT -->
     </div>
-    <hr>
 </div>
-<!-- MENU FOR DEVELOPMENT -->
 
+<br/>
 <!-- INIT NAVIGATION -->
 <div class="container" ng-controller="MenuController">
-    <div class="masthead">
-        <strong>cloudopting-manager-webui menu</strong>
-        <ul class="nav nav-pills">
-            <li ng-hide="logoutButton" class="pull-right"><a ui-sref="login">Login</a></li>
-            <li ng-hide="logoutButton" class="pull-right"><a ui-sref="register">Register</a></li>
-            <li ng-show="isPublisher()"><a ui-sref="servicesCatalog">Dashboard</a></li>
-            <span ng-show="logoutButton" class="pull-right"><a href="#" ng-click="logout()">Logout</a></span>
-            <br/>
-            <span ng-show="logoutButton" class="pull-right"><label>Name:</label> {{name}}</span>
-        </ul>
+    <div class="row">
+        <div class="col-md-2">
+            <img src="/assets/images/CloudOpting_vFINAL-v1.0-300x122.png" style="max-height: 60px;">
+        </div>
+        <div class="col-md-10">
+            <div class="masthead">
+                <ul class="nav nav-pills">
+                    <li ng-hide="logoutButton" class="pull-right"><a ui-sref="register">Join</a></li>
+                    <li ng-hide="logoutButton" class="pull-right"><a>|</a></li>
+                    <li ng-hide="logoutButton" class="pull-right"><a ui-sref="login"><strong><u>Sign in</u></strong></a></li>
+                    <li ng-show="isPublisher()"><a ui-sref="servicesCatalog">Dashboard</a></li>
+                    <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="logout()">Sign out</a></li>
+                    <li ng-show="logoutButton" class="pull-right"><a>|</a></li>
+                    <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="void()">Name: {{name}}</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
+<br/>
 <!-- END NAVIGATION -->

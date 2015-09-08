@@ -1,71 +1,68 @@
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-            <div class="panel-heading" translate="addDeploy.title">Service Add Deploy Form</div>
-            <div class="panel-body">
-
-                <div class="col-md-12 webuiPanel">
-                    <span class="mo_text" translate="addDeploy.titles.deploy">Service Deploy</span>
-                    <div class="row">
-                        <div class="col-md-offset-1 col-md-4">
-                            <button type="button" class="btn" translate="addDeploy.button.deploy">Deploy Service</button>
-                        </div>
-                        <div class="col-md-offset-2 col-md-4">
-                            <button type="button" class="btn" translate="addDeploy.button.test">Test Service</button>
-                        </div>
+    <div class="bs-example col-md-offset-1 col-md-10">
+        <div class="panel-heading darkgreen" translate="addDeploy.title">Service Add Deploy Form</div>
+        <div class="panel-body">
+            <div class="col-md-12 webuiPanel">
+                <span class="mo_text darkgreen" translate="addDeploy.titles.deploy">Service Deploy</span>
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-4">
+                        <button type="button" class="btn btn-success" translate="addDeploy.button.deploy">Deploy Service</button>
                     </div>
-
+                    <div class="col-md-offset-2 col-md-4">
+                        <button type="button" class="btn btn-success" translate="addDeploy.button.test">Test Service</button>
+                    </div>
                 </div>
-                <div class="col-md-12 webuiPanel">
-                    <span class="mo_text" translate="addDeploy.titles.params">Service Parameters</span>
-                    <div class="row">
-                        <div class="col-md-offset-1 col-md-4">
-                            <div class="form-group row">
-                                <label translate="addDeploy.cloudnode">Cloud Node:</label>
-                                <select class="form-control" ng-model="service.cloudNode" ng-options="cloud.name for cloud in cloudNodeList"></select>
-                            </div>
-                            <div class="form-group row">
-                                <label translate="addDeploy.numcpu">Number CPU's:</label>
-                                <input type="text" class="form-control" ng-model="service.cpu">
 
-                            </div>
-                            <div class="form-group row">
-                                <label translate="addDeploy.ram">Memory RAM:</label>
-                                <input type="text" class="form-control" ng-model="service.ram">
-                            </div>
-                            <div class="form-group row">
-                                <label translate="addDeploy.urldomain">URL/Domain:</label>
-                                <input type="text" class="form-control" ng-model="service.domain">
-                            </div>
+            </div>
+            <div class="col-md-12 webuiPanel">
+                <span class="mo_text darkgreen" translate="addDeploy.titles.params">Service Parameters</span>
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-4">
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.cloudnode">Cloud Node:</label>
+                            <select class="form-control" ng-model="service.cloudNode" ng-options="cloud.name for cloud in cloudNodeList"></select>
                         </div>
-                        <div class="col-md-offset-2 col-md-4">
-                            <div class="form-group row">
-                                <label translate="addDeploy.os">Operating System:</label>
-                                <select class="form-control" ng-model="service.os" ng-options="os.name for os in osList"></select>
-                            </div>
-                            <div class="form-group row">
-                                <label translate="addDeploy.disk">Disk Space:</label>
-                                <input type="text" class="form-control" ng-model="service.disk">
-                            </div>
-                            <div class="form-group row">
-                                <label translate="addDeploy.bandwidth">Bandwidth:</label>
-                                <input type="text" class="form-control" ng-model="service.bandwidth">
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.numcpu">Number CPU's:</label>
+                            <input type="text" class="form-control" ng-model="service.cpu">
 
-                            </div>
-                            <div class="form-group row">
-                                <label translate="addDeploy.cssskin">CSS Skin:</label>
-                                <select class="form-control" ng-model="service.skin" ng-options="s.name for s in skinList"></select>
-                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.ram">Memory RAM:</label>
+                            <input type="text" class="form-control" ng-model="service.ram">
+                        </div>
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.urldomain">URL/Domain:</label>
+                            <input type="text" class="form-control" ng-model="service.domain">
                         </div>
                     </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-offset-1 col-md-2">
-                            <button type="button" class="btn" ng-click="saveTemplate(service)" translate="addDeploy.button.save">Save Template</button>
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.os">Operating System:</label>
+                            <select class="form-control" ng-model="service.os" ng-options="os.name for os in osList"></select>
                         </div>
-                        <div class="col-md-offset-1 col-md-2">
-                            <button type="button" class="btn" ng-click="uploadTemplate(service)" translate="addDeploy.button.upload">Upload Template</button>
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.disk">Disk Space:</label>
+                            <input type="text" class="form-control" ng-model="service.disk">
                         </div>
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.bandwidth">Bandwidth:</label>
+                            <input type="text" class="form-control" ng-model="service.bandwidth">
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="darkgreen" translate="addDeploy.cssskin">CSS Skin:</label>
+                            <select class="form-control" ng-model="service.skin" ng-options="s.name for s in skinList"></select>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-2">
+                        <button type="button" class="btn btn-success" ng-click="saveTemplate(service)" translate="addDeploy.button.save">Save Template</button>
+                    </div>
+                    <div class="col-md-offset-1 col-md-2">
+                        <button type="button" class="btn btn-success" ng-click="uploadTemplate(service)" translate="addDeploy.button.upload">Upload Template</button>
                     </div>
                 </div>
             </div>

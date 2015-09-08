@@ -1,5 +1,6 @@
 body {
-    background: #fafafa;
+    /*background: #fafafa;*/
+    background: #FFFFFF;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
 }
@@ -149,7 +150,8 @@ ul#strength {
     margin-bottom: 30px;
     position: relative;
     /*width: 850px;*/
-    border: 1px solid #E0E0E0;
+    /*border: 1px solid #E0E0E0;*/
+    border: 1px solid #4A632A;
 }
 
 .webuiPanel .mo_text
@@ -160,7 +162,7 @@ ul#strength {
     height: 20px;
     line-height: 20px;
     font-size: 15px;
-    color: #1c5994;
+    /*color: #1c5994;*/
     background-color: white;
     padding-right: 10px;
     padding-left: 10px;
@@ -171,4 +173,45 @@ ul#strength {
 .btn-toolbar{
     text-align: center;
 }
+
+.inner-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-image: url("/assets/images/image_gallery2.jpg");
+    background-position: 20% 10%;
+}
+
+a {
+    color: #4A632A;
+}
+
+.panel-heading {
+    font-weight: bold;
+}
+
+.btn-success {
+    background-color: #4A632A;
+    color: lightgray;
+    border-color: #4A632A;
+}
+
+.darkgreen {
+    color: #4A632A;
+}
+
+.thumbnail {
+    border: 0px;
+}
+
+.bottomaligned {position:relative; bottom:0;  margin-bottom:1px; left: 0;}
+
+* {
+    border-radius: 0 !important;
+}
+
+.form-control {
+    border: 1px solid #4A632A;
+}
 /* END WEB UI STYLES */
+

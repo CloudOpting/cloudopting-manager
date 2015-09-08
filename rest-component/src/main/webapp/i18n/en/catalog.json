@@ -1,8 +1,8 @@
 {
   "catalog": {
-    "title" : "Services Catalog",
+    "title" : "Services available in CloudOpting",
     "button" : {
-      "choose" : "Choose"
+      "choose" : "Service Info"
     }
   }
 }
