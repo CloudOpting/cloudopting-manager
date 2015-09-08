@@ -1,39 +1,37 @@
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-            <div class="panel-heading" translate="publish.title">Publish Service</div>
-            <div class="panel-body">
-                <form novalidate class="">
-                    <div class="form-group row">
-                        <div class="btn btn-info" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
-                    </div>
-                    <div class="form-group row" ng-show="isLibraryEmpty()">
-                        <label translate="publish.content.library">Content Library</label>
-                        <input class="form-control" type="text" autocomplete="off" value="{{'publish.content.emptylibrary' | translate}}" disabled />
-                    </div>
-                    <div class="form-group row" ng-hide="isLibraryEmpty()">
-                        <label translate="publish.content.library">Content Library</label>
-                        <div  ng-repeat="content in libraryList">
-                            <div class="input-group">
+    <div class="bs-example col-md-offset-1 col-md-10">
+        <div class="panel-heading darkgreen" translate="publish.title">Publish Service</div>
+        <div class="panel-body">
+            <form novalidate class="">
+                <div class="form-group row">
+                    <div class="btn btn-info" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
+                </div>
+                <div class="form-group row" ng-show="isLibraryEmpty()">
+                    <label class="darkgreen" translate="publish.content.library">Content Library</label>
+                    <input class="form-control" type="text" autocomplete="off" value="{{'publish.content.emptylibrary' | translate}}" disabled />
+                </div>
+                <div class="form-group row" ng-hide="isLibraryEmpty()">
+                    <label class="darkgreen" translate="publish.content.library">Content Library</label>
+                    <div  ng-repeat="content in libraryList">
+                        <div class="input-group">
 <!--                                <span class="input-group-addon" translate="publish.content.name">Name</span>
-                                <input class="form-control" type="text" autocomplete="off"/>
-                                -->
-                                <!--<span class="input-group-addon">Description</span>
-                                <input class="form-control" type="text" autocomplete="off"/>
-                            </div>
-                            <div class="input-group">-->
-                                <span class="input-group-addon" translate="publish.content.file">File</span>
-                                <input class="form-control" type="text" autocomplete="off" value="{{content.name}}" disabled/>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-danger" ng-click="deleteLib(content)" translate="publish.button.delete">Delete Item in Librar</button>
-                            </span>
-                            </div>
+                            <input class="form-control" type="text" autocomplete="off"/>
+                            -->
+                            <!--<span class="input-group-addon">Description</span>
+                            <input class="form-control" type="text" autocomplete="off"/>
                         </div>
-
+                        <div class="input-group">-->
+                            <span class="input-group-addon" translate="publish.content.file">File</span>
+                            <input class="form-control" type="text" autocomplete="off" value="{{content.name}}" disabled/>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-danger" ng-click="deleteLib(content)" translate="publish.button.delete">Delete Item in Librar</button>
+                        </span>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-primary" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
-                </form>
-            </div>
+
+                </div>
+                <button type="button" class="btn btn-success" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
+            </form>
         </div>
     </div>
 </div>

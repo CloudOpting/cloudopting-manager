@@ -1,21 +1,30 @@
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-            <div class="panel-heading" translate="catalog.title">Services Catalog</div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-6 col-md-4 " ng-repeat="app in applicationList">
-                        <div class="thumbnail" style="min-height:420px;height:420px;">
-                            <img src="http://placehold.it/200x180" width="100%">
-                            <div class="caption">
-                                <h3>{{app.applicationName}}</h3>
-                                <p>{{app.applicationDescription}}</p>
+    <div class="bs-example col-md-offset-1 col-md-10">
+        <div class="panel-heading darkgreen" translate="catalog.title">Services available in CloudOpting</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6" ng-repeat="app in applicationList">
+                    <div class="thumbnail">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="text-uppercase darkgreen"><strong>{{app.applicationName}}</strong></h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="http://placehold.it/200x180" width="100%">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="caption">
+                                    <p>{{app.applicationDescription}}</p>
+                                </div>
                                 <div>
-                                    <button type="button" class="btn btn-primary" ng-click="detail(app)"
-                                            translate="catalog.button.choose">Choose
+                                    <button type="button" class="col-md-12 btn btn-success" ng-click="detail(app)"
+                                            translate="catalog.button.choose">Service Info
                                     </button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
