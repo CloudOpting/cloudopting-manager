@@ -163,7 +163,7 @@ public class ApplicationResource extends AbstractController<Applications> {
                                                @RequestBody ApplicationDTO application) throws IOException {
         //TODO: If idApp and application.getId() are not equals should we throw an exception?
         //TODO: THe processId should be sended to the BPMN.
-        return getBpmnService().updateApplication(application);
+        return getBpmnService().updateApplication(application, processId);
     }
 
     @RequestMapping(value = "/application/{idApp}/{processId}", method = RequestMethod.DELETE,

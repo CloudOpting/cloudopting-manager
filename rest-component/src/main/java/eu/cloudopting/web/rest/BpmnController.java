@@ -100,7 +100,7 @@ public class BpmnController {
         Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
         params.put("application", application);
         //Return the updated value of the model
-        return bpmn.unlockProcess(processInstanceId, "MetadataRetrievalEventRef", params);
+        return bpmn.unlockProcess(processInstanceId, "MetadataRetrievalEvent", params);
     }
 
 

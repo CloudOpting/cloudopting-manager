@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <message id="msgToscaFileUpload" name="msgToscaFileUpload"></message>
-  <message id="metadataRetrievalEvent" name="metadataRetrievalEvent"></message>
+  <message id="metadataRetrieval" name="metadataRetrievalMsg"></message>
   <message id="toscaUploadEvent" name="toscaUploadEvent"></message>
   <message id="artifactsUploadEvent" name="artifactsUploadEvent"></message>
   <message id="publishEvent" name="publishEvent"></message>
   <message id="PublishEventRef" name="PublishEventRef"></message>
-  <message id="MetadataRetrievalEventRef" name="MetadataRetrievalEventRef"></message>
   <message id="ToscaUploadEventRef" name="ToscaUploadEventRef"></message>
   <message id="ArtifactsUploadEventRef" name="ArtifactsUploadEventRef"></message>
   <process id="ServicePublishingProcess" name="Service Publishing" isExecutable="true">
@@ -66,8 +65,8 @@
     <sequenceFlow id="flow47" sourceRef="publishWpUpdateTask" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="publishContextSetupTask" name="Context Setup" activiti:delegateExpression="${publishContextSetupTask}"></serviceTask>
     <sequenceFlow id="flow50" sourceRef="publishContextSetupTask" targetRef="eventgateway2"></sequenceFlow>
-    <intermediateCatchEvent id="MetadataRetrievalIntermediateCatchEvent" name="MetadataRetrievalEvent">
-      <messageEventDefinition messageRef="MetadataRetrievalEventRef"></messageEventDefinition>
+    <intermediateCatchEvent id="MetadataRetrievalIntermediateCatchEvent" name="metadataRetrievalEvent">
+      <messageEventDefinition messageRef="metadataRetrieval"></messageEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow54" sourceRef="MetadataRetrievalIntermediateCatchEvent" targetRef="publishMetadataTask"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="eventgateway2" targetRef="MetadataRetrievalIntermediateCatchEvent"></sequenceFlow>

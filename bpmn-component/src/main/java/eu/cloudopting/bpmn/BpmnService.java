@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 
 import eu.cloudopting.dto.CustomizationDTO;
 import eu.cloudopting.dto.UploadDTO;
+
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
@@ -21,12 +22,12 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
+import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.domain.Customizations;
@@ -57,7 +58,7 @@ public class BpmnService {
     
     @Autowired
     protected CustomizationService customizationS;
-
+    
 	@Inject
 	private StatusService statusService;
 
@@ -183,7 +184,7 @@ public class BpmnService {
 	public ActivitiDTO startPublish(ApplicationDTO application) {
 	    HashMap<String, Object> v = new HashMap<>();
 		v.put("application",application);
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("myProcess",v);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("ServicePublishingProcess",v);
 		ActivitiDTO activitiDTO = new ActivitiDTO();
 		Map map = ((ExecutionEntity) pi).getVariableInstances();
 		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
@@ -224,14 +225,23 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
-	public ActivitiDTO updateApplication(ApplicationDTO application) {
+	public ActivitiDTO updateApplication(ApplicationDTO application, String processInstanceId) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("application",application);
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateApplication",v);
-		ActivitiDTO activitiDTO = new ActivitiDTO();
-		Map map = ((ExecutionEntity) pi).getVariableInstances();
-		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
-		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		//ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateApplication",v);
+		Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
+        params.put("application", application);
+        //The return value is not used, just for debug purposes
+        Set<String> executionIds = unlockProcess(processInstanceId, "metadataRetrievalMsg", params);
+        //The return value is not used, just for debug purposes
+        ExecutionQuery eq = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).processVariableValueEquals("applicationId", application.getId().toString());
+        List<Execution> executions = eq.list();
+        //Return the updated value of the model
+        ActivitiDTO activitiDTO = new ActivitiDTO();
+//		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
+//		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		activitiDTO.setApplicationId(application.getId().toString());
+		activitiDTO.setProcessInstanceId(processInstanceId);
 		return activitiDTO;
 	}
 

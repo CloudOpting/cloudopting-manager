@@ -33,9 +33,9 @@ public class PublishContextSetupTask implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         log.info("Publish - Context SetUp");
-        ApplicationDTO applications = (ApplicationDTO) execution.getVariable("application");
+        ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = new Applications();
-        BeanUtils.copyProperties(applications,application);
+        BeanUtils.copyProperties(applicationSource,application);
         Status status = statusService.findOne(StatusConstants.DRAFT);
         application.setStatusId(status);
         application.setApplicationVersion(String.valueOf(1));
