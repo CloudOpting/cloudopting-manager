@@ -178,7 +178,7 @@ ul#strength {
     position: relative;
     height: 100%;
     width: 100%;
-    background-image: url("/assets/images/image_gallery2.jpg");
+    background-image: url("../images/image_gallery2.jpg");
     background-position: 20% 10%;
 }
 
