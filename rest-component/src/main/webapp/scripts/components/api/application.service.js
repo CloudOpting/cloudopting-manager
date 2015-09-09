@@ -4,10 +4,10 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .factory('ApplicationService', function (SERVICE, $http, $log, Upload) {
+    .factory('ApplicationService', function (SERVICE, $http, $log, Upload, $location) {
         var apps = null;
         var app = null;
-        var baseURI = '/api/application';
+        var baseURI = 'api/application';
 
         function upload(idApplication, processID, files, type, callback){
             //headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },

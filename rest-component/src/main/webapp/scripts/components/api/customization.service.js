@@ -6,7 +6,7 @@
 angular.module('cloudoptingApp')
     .factory('CustomizationService', function (SERVICE, $http, $log) {
 
-        var baseURI = '/api/application';
+        var baseURI = 'api/application';
 
         return {
             /**

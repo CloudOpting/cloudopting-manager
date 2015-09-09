@@ -8,7 +8,7 @@ angular.module('cloudoptingApp')
         //{ "customizationId" : "1", "cloudId" : "1" }
         return {
             apiProcessOne: function () {
-                return $http.post('/api/process?customizationId=1', { },
+                return $http.post('api/process?customizationId=1', { },
                     {
                         headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
                     })
