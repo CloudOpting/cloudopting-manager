@@ -213,5 +213,17 @@ a {
 .form-control {
     border: 1px solid #4A632A;
 }
+
+.cloudopting_logo {
+    position: relative;
+    height: 61px;
+    top: 0;
+    left: 0;
+    border: 0;
+    background-image: url("../images/CloudOpting_vFINAL-v1.0-300x122.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 150px 61px;
+}
 /* END WEB UI STYLES */
 
