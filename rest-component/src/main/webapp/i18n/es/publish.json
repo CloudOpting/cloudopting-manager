@@ -1,0 +1,31 @@
+{
+  "publish": {
+    "title": "Publish Service",
+    "service" : {
+      "name": "Service Name",
+      "description": "Service Description",
+      "image": "Service Image"
+    },
+    "select" : {
+      "addtosca": "+ Add TOSCA Archive",
+      "tosca": "TOSCA Archive",
+      "toscaempty": "TOSCA Archive not selected",
+      "file": "Select File"
+    },
+    "selectedfile": "Selected File",
+    "content" : {
+      "emptylibrary": "The Library is Empty",
+      "libarary" : "Content Library",
+      "name" : "name",
+      "file" : "file"
+    },
+    "button" : {
+      "save": "Save Configuration",
+      "save_n_next": "Save Configuration & Next",
+      "publish": "Publish Service",
+      "add": "+ Add Item in Library",
+      "delete": "Delete Item in Library"
+    }
+  }
+}
+
