@@ -15,6 +15,7 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import eu.cloudopting.storagecomponent.StorageComponent;
 import eu.cloudopting.storagecomponent.StoreRequest;
 import eu.cloudopting.storagecomponent.StoreResult;
 import eu.cloudopting.store.jackrabbit.JackrabbitStore;
@@ -37,7 +38,9 @@ public class StoreService {
     Session session;
 
 	@Inject
-	JackrabbitStore jackrabbitBinaryStore;
+	StorageComponent<JackrabbitStoreResult,JackrabbitStoreRequest> jackrabbitBinaryStore;
+
+
 
 	//   @Inject
  //   Mapper mapper;
@@ -54,10 +57,15 @@ public class StoreService {
     }
     */
 
-	public JackrabbitStoreResult storeBinaryAndOcm(JackrabbitStoreRequest request){
-		return jackrabbitBinaryStore.storeOcmAndBinary(request);
+	public JackrabbitStoreResult storeBinary(JackrabbitStoreRequest request){
+		return jackrabbitBinaryStore.store(request);
 	}
-        
+
+	public JackrabbitStoreResult<InputStream> retrieve(String s) {
+		JackrabbitStoreResult<InputStream> retrieve = jackrabbitBinaryStore.retrieve(s);
+		return retrieve;
+	}
+
     public InputStream getDocumentAsStream(String originPath){
     	InputStream retStream = null;
     	log.debug("in getDocumentAsStream");
@@ -78,9 +86,9 @@ public class StoreService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
     	return retStream;
-    	
+
     }
     
     public void storeFile(String filePath, String theFile, String storePath, String storeFile){
@@ -107,6 +115,8 @@ public class StoreService {
         
 
     }
+
+
     /*
     public boolean getDocument(String originPath, String destinationPath){
     	log.debug("in getDocument");

@@ -59,7 +59,7 @@ public class JackrabbitBinaryStoreImpl extends AbstractJackrabbitStore implement
         Node file = null;
         InputStream stream;
         try {
-            file = session.getRootNode().getNode(path + "/" + JackrabbitConstants.JCR_CONTENT);
+            file = session.getRootNode().getNode("binary/"+path + "/" + JackrabbitConstants.JCR_CONTENT);
             final Binary in = file.getProperty(JackrabbitConstants.JCR_DATA).getBinary();
             stream = in.getStream();
 //            String mimeGuess = MimeTypeUtils.mimeUtilDetectMimeType(stream);
