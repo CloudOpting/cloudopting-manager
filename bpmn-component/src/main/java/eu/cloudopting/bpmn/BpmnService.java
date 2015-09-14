@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
+import eu.cloudopting.cloud.CloudService;
+import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
@@ -55,6 +57,9 @@ public class BpmnService {
     
     @Autowired
     protected ProcessEngineConfiguration processEngineConfiguration;
+    
+	@Autowired
+	CloudService cloudService;
     
     @Autowired
     protected CustomizationService customizationS;
@@ -82,6 +87,7 @@ public class BpmnService {
 		// We recover the Customization and chack if processId is null otherwise we need to throw exception since we cannot execute another deploy for the same Customization
 		Customizations theCust = customizationS.findOne(Long.parseLong(customizationId));
 		log.info("theCust: "+theCust.toString());
+		CloudAccounts account = theCust.getCloudAccount();
 
 		if(theCust.getProcessId()!= null){
 			log.debug("Customization "+customizationId+" has already a deployment process");
@@ -92,6 +98,15 @@ public class BpmnService {
 //		v.put("toscaFile", toscaId);
 		v.put("customizationId", customizationId);
 		v.put("cloudId", cloudId);
+		v.put("cloudId", account.getProviderId().getProvider());
+		v.put("cloudAccountId", account.getId());
+		cloudService.setUpCloud(account.getApiKey(), account.getSecretKey(), account.getEndpoint(), account.getProviderId().getProvider(), account.getId());
+		
+		log.info("apikey: "+account.getApiKey());
+		log.info("secretkey: "+account.getSecretKey());
+		log.info("cloudEndpoint: "+account.getEndpoint());
+		log.info("account_id: "+account.getId());
+		
 		// TODO the process string has to go in a constant
         ProcessInstance pi = runtimeService.startProcessInstanceByKey("cloudoptingProcess",v);
         System.out.println("ProcessID:"+pi.getProcessInstanceId());

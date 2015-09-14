@@ -27,8 +27,11 @@ public class DeployGenerateVm implements JavaDelegate {
 		log.debug("in DeployGenerateVm");
 		String customizationId = (String) execution.getVariable("customizationId");
 		String cloudId = (String) execution.getVariable("cloudId");
+		String apikey = (String) execution.getVariable("apikey");
+		String secretkey = (String) execution.getVariable("secretkey");
+		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		HashMap<String, String> data = toscaService.getCloudData(customizationId);
-		String cloudtask = cloudService.createVM(cloudId, data.get("cpu"), data.get("memory"), data.get("disk"));
+		String cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"));
 		execution.setVariable("cloudtask", cloudtask);
 		
 		
