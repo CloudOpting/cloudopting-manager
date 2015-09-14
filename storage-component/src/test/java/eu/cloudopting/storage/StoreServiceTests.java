@@ -26,7 +26,7 @@ public class StoreServiceTests extends GenericStorageTests{
     StoreService storeService;
 
     @Test
-    public void testJackrabbitOcmStore() throws Exception {
+    public void testJackrabbitBinaryStore() throws Exception {
         JackrabbitStoreRequest req = createRequest();
         JackrabbitStoreResult res = storeService.storeBinary(req);
         System.out.println(res.toString());

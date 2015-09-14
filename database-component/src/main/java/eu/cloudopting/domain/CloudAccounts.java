@@ -124,7 +124,7 @@ public class CloudAccounts implements BaseEntity {
     @JoinColumn(name = "organization_id", referencedColumnName = "id", nullable = false)
     private Organizations organizationId;
 
-    @OneToMany(mappedBy = "cloudAccountId")
+    @OneToMany(mappedBy = "cloudAccount")
     private Set<Customizations> customizationss;
 
 
