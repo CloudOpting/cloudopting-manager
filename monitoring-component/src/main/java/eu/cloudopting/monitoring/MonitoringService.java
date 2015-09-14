@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.monitoring.zabbix.DefaultZabbixApi;
@@ -15,13 +16,18 @@ import eu.cloudopting.monitoring.zabbix.RequestBuilder;
 public class MonitoringService {
 	private final Logger log = LoggerFactory.getLogger(MonitoringService.class);
 	
+	@Value("${zabbix.user}")
+	private String zabbix_user;
+	
+	@Value("${zabbix.password}")
+	private String zabbix_password;
 
 	public void testZabbix(){
 		String url = "http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php";
         DefaultZabbixApi zabbixApi = new DefaultZabbixApi(url);
         zabbixApi.init();
 
-        boolean login = zabbixApi.login("admin", "admin");
+        boolean login = zabbixApi.login(this.zabbix_user, this.zabbix_password);
         System.err.println("login:" + login);
 
         String host = "tst-zabbix-opendata.odsp.csi.it";
