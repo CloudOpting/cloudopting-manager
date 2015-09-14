@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.domain.Providers;
+import eu.cloudopting.provision.cloudstack.CloudstackRequest;
 
 @Service
 public class CloudService {
@@ -34,7 +35,11 @@ public class CloudService {
 			return null;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
-			
+			CloudstackRequest myRequest = new CloudstackRequest();
+			myRequest.setEndpoint(theAccount.get("endpoint"));
+			myRequest.setIdentity(theAccount.get("apikey"));
+			myRequest.setCredential(theAccount.get("secretkey"));
+			myRequest.setDefaultTemplate(theAccount.get("secretkey"));
 			break;
 		case "azure":
 			
