@@ -22,6 +22,10 @@ public class Customizations implements BaseEntity {
     @JoinColumn(name = "customer_organization_id", referencedColumnName = "id")
     private Organizations customerOrganizationId;
 
+    @ManyToOne
+    @JoinColumn(name = "cloud_account_id", referencedColumnName = "id")
+    private CloudAccounts cloudAccount;
+
 	@Column(name = "application_id")
     @NotNull
     private Long applicationId;
@@ -221,5 +225,13 @@ public class Customizations implements BaseEntity {
         Customizations merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
+    }
+
+    public CloudAccounts getCloudAccount() {
+        return cloudAccount;
+    }
+
+    public void setCloudAccount(CloudAccounts cloudAccount) {
+        this.cloudAccount = cloudAccount;
     }
 }

@@ -24,7 +24,7 @@ public class GenericStorageTests {
         System.out.println(fileName);
         request.setPath(String.valueOf(fileName));
         request.setPubDate(new Date());
-        request.setTitle("My Title Document");
+        request.setTitle("My Title Document 1234");
         request.setExtension("zip");
         return request;
     }

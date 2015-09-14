@@ -21,6 +21,9 @@ public abstract class AbstractJackrabbitStore implements JackrabbitStore {
         getBinaryStore().store(req);
         getOcmStore().store(req);
         wontCloseBufferedInputStream.reallyClose();
+        JackrabbitStoreResult result = new JackrabbitStoreResult();
+        result.setStored(true);
+        result.setSentRequest(req);
         return new JackrabbitStoreResult();
     }
 

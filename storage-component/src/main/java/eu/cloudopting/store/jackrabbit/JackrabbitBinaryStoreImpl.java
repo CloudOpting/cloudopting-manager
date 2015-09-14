@@ -29,6 +29,8 @@ public class JackrabbitBinaryStoreImpl extends AbstractJackrabbitStore implement
         InputStream stream = req.getContent();
         String mimeType = "application/octet-stream";
         Node folder;
+        Node file;
+        JackrabbitStoreResult<JackrabbitStoreRequest> result = new JackrabbitStoreResult<>();
         try {
             folder = session.getRootNode();
             Node binaryFolder;
@@ -37,17 +39,19 @@ public class JackrabbitBinaryStoreImpl extends AbstractJackrabbitStore implement
             }catch (PathNotFoundException pne){
                 binaryFolder=  folder.addNode("binary");
             }
-            Node file = binaryFolder.addNode(req.getPath()+"."+req.getExtension(), JackrabbitConstants.NT_FILE);
+             file = binaryFolder.addNode(req.getPath()+"."+req.getExtension(), JackrabbitConstants.NT_FILE);
             Node content = file.addNode(JackrabbitConstants.JCR_CONTENT, JackrabbitConstants.NT_RESOURCE);
             Binary binary = session.getValueFactory().createBinary(stream);
             content.setProperty(JackrabbitConstants.JCR_DATA, binary);
             content.setProperty(JackrabbitConstants.JCR_MIMETYPE, mimeType);
             session.save();
+            result.setStoredContent(req);
+            result.setBinaryStoredPaht(file.getPath());
         } catch (RepositoryException e) {
             throw new StorageGeneralException(e);
         }
 
-        return new JackrabbitStoreResult();
+        return result;
     }
 
     @Override

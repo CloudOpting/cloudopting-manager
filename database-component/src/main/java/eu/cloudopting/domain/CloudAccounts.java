@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(schema = "public",name = "cloud_accounts")
@@ -123,6 +124,10 @@ public class CloudAccounts implements BaseEntity {
     @JoinColumn(name = "organization_id", referencedColumnName = "id", nullable = false)
     private Organizations organizationId;
 
+    @OneToMany(mappedBy = "cloudAccountId")
+    private Set<Customizations> customizationss;
+
+
 	@ManyToOne
     @JoinColumn(name = "provider_id", referencedColumnName = "id", nullable = false)
     private Providers providerId;
@@ -189,5 +194,13 @@ public class CloudAccounts implements BaseEntity {
 
 	public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
+    }
+
+    public Set<Customizations> getCustomizationss() {
+        return customizationss;
+    }
+
+    public void setCustomizationss(Set<Customizations> customizationss) {
+        this.customizationss = customizationss;
     }
 }

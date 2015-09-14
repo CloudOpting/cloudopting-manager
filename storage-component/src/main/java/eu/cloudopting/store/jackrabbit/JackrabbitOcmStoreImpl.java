@@ -33,7 +33,9 @@ public class JackrabbitOcmStoreImpl extends AbstractJackrabbitStore implements J
         request.setTitle(req.getTitle());
         ocm.insert(request);
         ocm.save();
-        return new JackrabbitStoreResult();
+        JackrabbitStoreResult<JackrabbitStoreRequest> result = new JackrabbitStoreResult<>();
+        result.setStoredContent(req);
+        return result;
     }
 
     @Override

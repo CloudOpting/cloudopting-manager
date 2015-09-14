@@ -15,6 +15,11 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import eu.cloudopting.storagecomponent.StoreRequest;
+import eu.cloudopting.storagecomponent.StoreResult;
+import eu.cloudopting.store.jackrabbit.JackrabbitStore;
+import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
+import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +35,11 @@ public class StoreService {
     Repository repository;
     @Inject
     Session session;
- //   @Inject
+
+	@Inject
+	JackrabbitStore jackrabbitBinaryStore;
+
+	//   @Inject
  //   Mapper mapper;
     
   //  ObjectContentManager ocm;
@@ -44,7 +53,10 @@ public class StoreService {
     //	log.debug("ocm"+this.ocm);
     }
     */
-    
+
+	public JackrabbitStoreResult storeBinaryAndOcm(JackrabbitStoreRequest request){
+		return jackrabbitBinaryStore.storeOcmAndBinary(request);
+	}
         
     public InputStream getDocumentAsStream(String originPath){
     	InputStream retStream = null;
