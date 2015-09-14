@@ -12,6 +12,8 @@ import com.google.common.io.ByteSource;
 import com.google.common.net.HostAndPort;
 import com.google.common.net.HostSpecifier;
 import com.google.inject.Module;
+
+import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.provision.AbstractProvision;
 import eu.cloudopting.provision.ProvisionComponent;
 import org.jclouds.Constants;
@@ -30,6 +32,8 @@ import org.jclouds.domain.LoginCredentials;
 import org.jclouds.rest.config.CredentialStoreModule;
 import org.jclouds.ssh.SshClient;
 import org.jclouds.util.InetAddresses2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -53,6 +57,7 @@ import static org.jclouds.util.Predicates2.retry;
  */
 public class CloudstackProvision extends AbstractProvision<CloudstackResult, CloudstackRequest> {
 
+	private final Logger log = LoggerFactory.getLogger(CloudstackProvision.class);
 
     @Autowired
     Environment env;
@@ -82,13 +87,16 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 
 
     protected void setupProperties() {
-        overrides.setProperty(Constants.PROPERTY_TRUST_ALL_CERTS, "true");
-        overrides.setProperty(Constants.PROPERTY_RELAX_HOSTNAME, "true");
-        identity = request.getIdentity();
-        credential = request.getCredential();
-        endpoint = request.getEndpoint();
-        apiVersion = env.getProperty("cloudstack.api-version");
-
+    	this.overrides.setProperty(Constants.PROPERTY_TRUST_ALL_CERTS, "true");
+    	this.overrides.setProperty(Constants.PROPERTY_RELAX_HOSTNAME, "true");
+        this.identity = request.getIdentity();
+        this.credential = request.getCredential();
+        this.endpoint = request.getEndpoint();
+        this.apiVersion = env.getProperty("cloudstack.api-version");
+log.debug("this.credential:"+this.credential);
+log.debug("this.identity:"+this.identity);
+log.debug("this.endpoint:"+this.endpoint);
+log.debug("this.apiVersion:"+this.apiVersion);
 
     }
 
@@ -101,10 +109,12 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
         setupClient();
         setupCompute();
         setupTemplate();
+        log.debug("after setup");
 
         jobComplete = retry(new JobComplete(client), 1200, 1, 5, SECONDS);
         virtualMachineRunning = retry(new VirtualMachineRunning(client), 600, 5, 5, SECONDS);
 
+        log.debug("before calling create");
         vm = createVirtualMachine(client, request.getDefaultTemplate(), jobComplete, virtualMachineRunning);
         if (vm.getPassword() != null) {
             conditionallyCheckSSH();
@@ -163,7 +173,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
             Network network = get(filter(networks, new Predicate<Network>() {
                 @Override
                 public boolean apply(Network network) {
-                    return network != null && network.getState().equals("Setup");
+                    return network != null && network.getState().equals("Implemented");
                 }
             }), 0);
             return createVirtualMachineInNetwork(network,
@@ -318,7 +328,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 
     private void setupContext(){
         ContextBuilder builder = ContextBuilder.newBuilder(provider)
-                .credentials(identity, credential).endpoint(endpoint);
+                .credentials(this.identity, this.credential).endpoint(this.endpoint);
         this.context = builder.buildView(CloudStackContext.class);
     }
 
