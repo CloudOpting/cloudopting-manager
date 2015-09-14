@@ -39,7 +39,7 @@ public class CloudService {
 			myRequest.setEndpoint(theAccount.get("endpoint"));
 			myRequest.setIdentity(theAccount.get("apikey"));
 			myRequest.setCredential(theAccount.get("secretkey"));
-			myRequest.setDefaultTemplate(theAccount.get("secretkey"));
+			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
 			break;
 		case "azure":
 			
