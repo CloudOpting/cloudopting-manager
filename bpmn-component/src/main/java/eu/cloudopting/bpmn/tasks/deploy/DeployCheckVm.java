@@ -28,9 +28,10 @@ public class DeployCheckVm implements JavaDelegate {
 		String customizationId = (String) execution.getVariable("customizationId");
 		String cloudtask = (String) execution.getVariable("cloudtask");
 		String cloudId = (String) execution.getVariable("cloudId");
+		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		TimeUnit.SECONDS.sleep(4);
 //		toscaService.getNodeType(customizationId,"");
-		boolean check = cloudService.checkVM(cloudId, cloudtask);
+		boolean check = cloudService.checkVM(cloudAccountId, cloudtask);
 		execution.setVariable("vmInstalled", check);
 		
 	}

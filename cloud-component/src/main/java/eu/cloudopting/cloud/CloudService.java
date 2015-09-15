@@ -20,7 +20,7 @@ public class CloudService {
 	private HashMap<Long, HashMap<String, String>> accounts = new HashMap<Long, HashMap<String, String>>();
 
 	@Inject
-    ProvisionComponent<CloudstackResult, CloudstackRequest> cloudStackProvision;
+	ProvisionComponent<CloudstackResult, CloudstackRequest> cloudStackProvision;
 
 	public boolean setUpCloud(String apikey, String secretKey, String endpoint, String provider, Long id) {
 		HashMap<String, String> theAccount = this.accounts.get(id);
@@ -36,11 +36,20 @@ public class CloudService {
 		return true;
 	}
 
+	/**
+	 * This method is the one that create the VM and return a String with the
+	 * JobId so that we can than do the check of the async creation operation If
+	 * there is a problem in the VM creation an error must be raised.
+	 * 
+	 * @param cloudAccountId
+	 * @param cpu
+	 * @param memory
+	 * @param disk
+	 * @return
+	 */
 	public String createVM(Long cloudAccountId, String cpu, String memory, String disk) {
 		log.debug("in createVM");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
-		
-	
 		if (theAccount == null)
 			return null;
 		switch (theAccount.get("provider")) {
@@ -51,12 +60,13 @@ public class CloudService {
 			myRequest.setIdentity(theAccount.get("apikey"));
 			myRequest.setCredential(theAccount.get("secretKey"));
 			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
-			log.debug("the request:"+myRequest.toString());
-			CloudstackResult result = cloudStackProvision.provision(myRequest);
-			log.debug("after creation"+result.toString());
+			log.debug("the request:" + myRequest.toString());
+//			CloudstackResult result = cloudStackProvision.provision(myRequest);
+			String result = cloudStackProvision.provisionVM(myRequest);
+			log.debug("after creation" + result.toString());
 			break;
 		case "azure":
-			
+
 			break;
 
 		default:
@@ -70,8 +80,22 @@ public class CloudService {
 		return id_of_cloud_task;
 	}
 
-	public boolean checkVM(String cloudId, String taskId) {
+	public boolean checkVM(Long cloudAccountId, String taskId) {
 		log.debug("in checkVM");
+		log.debug("in createVM");
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return false;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
 		return true;
 	}
 }
