@@ -11,6 +11,7 @@ public class UploadDTO {
     InputStream file;
     String fileId;
     String idApp;
+    String processId;
 
     public String getName() {
         return name;
@@ -50,5 +51,13 @@ public class UploadDTO {
 
     public void setIdApp(String idApp) {
         this.idApp = idApp;
+    }
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
     }
 }

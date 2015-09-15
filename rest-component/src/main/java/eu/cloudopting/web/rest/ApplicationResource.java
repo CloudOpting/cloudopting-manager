@@ -163,6 +163,7 @@ public class ApplicationResource extends AbstractController<Applications> {
                                                @RequestBody ApplicationDTO application) throws IOException {
         //TODO: If idApp and application.getId() are not equals should we throw an exception?
         //TODO: THe processId should be sended to the BPMN.
+
         return getBpmnService().updateApplication(application, processId);
     }
 
@@ -172,10 +173,9 @@ public class ApplicationResource extends AbstractController<Applications> {
     @ResponseBody
     public final ActivitiDTO deleteApplication(@PathVariable Long idApp, @PathVariable String processId,
                                                HttpServletRequest request) throws IOException {
-        //TODO: The processId is not passed to the BPMN.
         ApplicationDTO application = new ApplicationDTO();
         application.setId(idApp);
-        //TODO: Maybe only sending the idApp will be enough.
+        application.setProcessId(processId);
         return getBpmnService().deleteApplication(application);
     }
 
@@ -186,10 +186,11 @@ public class ApplicationResource extends AbstractController<Applications> {
     public final ActivitiDTO upload( HttpServletRequest request, @PathVariable String idApp,
                                      @PathVariable String processId,
                                      @RequestParam("file") MultipartFile file) throws IOException {
-        //TODO: The appId and the processID have to be sended to the BPMN also.
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setType(request.getParameter("type"));
+        dto.setProcessId(processId);
+        dto.setIdApp(idApp);
         dto.setFile(file.getInputStream());
         return getBpmnService().upload(dto);
     }
@@ -201,12 +202,13 @@ public class ApplicationResource extends AbstractController<Applications> {
     public final ActivitiDTO updateFile( HttpServletRequest request, @PathVariable String idApp,
                                          @PathVariable String processId, @PathVariable String idFile,
                                          @RequestParam("file") MultipartFile file) throws IOException {
-        //TODO: The processID have to be sended to the BPMN also.
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setFileId(idFile);
         dto.setIdApp(idApp);
         dto.setFile(file.getInputStream());
+        dto.setProcessId(processId);
+        dto.setIdApp(idApp);
         return getBpmnService().upload(dto);
     }
 
@@ -216,10 +218,10 @@ public class ApplicationResource extends AbstractController<Applications> {
     @ResponseBody
     public final ActivitiDTO deleteFile(HttpServletRequest request, @PathVariable String idApp,
                                         @PathVariable String processId, @PathVariable String idFile ) throws IOException {
-        //TODO: The processID have to be sended to the BPMN also.
         UploadDTO dto = new UploadDTO();
         dto.setFileId(idFile);
         dto.setIdApp(idApp);
+        dto.setProcessId(processId);
         return getBpmnService().deleteFile(dto);
     }
 
