@@ -25,10 +25,7 @@ For cleanness we could in the end split this task into a task for analyzing the 
     <sequenceFlow id="vmInstalled" name="VM installed" sourceRef="split1" targetRef="acquireIpTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vmInstalled== true}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="vmPortsTask" name="Open ports on VM" activiti:delegateExpression="${deployManagePorts}">
-      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="vmPortsList"></multiInstanceLoopCharacteristics>
-    </serviceTask>
-    <sequenceFlow id="toSwarm" sourceRef="vmPortsTask" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="toSwarm" sourceRef="subPorts" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="toSubprocess" sourceRef="servicetask1" targetRef="subDockerPuppetPrepare"></sequenceFlow>
     <serviceTask id="deployOnDockerTask" name="Deploy on Docker Host" activiti:delegateExpression="${deploy}"></serviceTask>
     <sequenceFlow id="toJoinCheckDeploy" sourceRef="deployOnDockerTask" targetRef="exclusivegateway8"></sequenceFlow>
@@ -112,9 +109,41 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <sequenceFlow id="ipNotAcquired" sourceRef="splitIp" targetRef="joinIp">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkAcquiredIp==false}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="ipAcquired" sourceRef="splitIp" targetRef="vmPortsTask">
+    <sequenceFlow id="ipAcquired" sourceRef="splitIp" targetRef="subPorts">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkAcquiredIp==true}]]></conditionExpression>
     </sequenceFlow>
+    <subProcess id="subPorts" name="manage ports on VM">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="vmPortsList" activiti:elementVariable="vmPort"></multiInstanceLoopCharacteristics>
+      <startEvent id="startPorts" name="Start"></startEvent>
+      <endEvent id="endPorts" name="End"></endEvent>
+      <serviceTask id="forwardTask" name="Port Forward" activiti:delegateExpression="${deployPortForward}"></serviceTask>
+      <serviceTask id="chkForwardTask" name="Check Port Forward" activiti:delegateExpression="${deployCheckPortForward}"></serviceTask>
+      <serviceTask id="chkFirewallTask" name="CheckFirewall Rule" activiti:delegateExpression="${deployCheckFirewall}"></serviceTask>
+      <serviceTask id="firewallTask" name="Firewall Rule" activiti:delegateExpression="${deployFirewall}"></serviceTask>
+      <exclusiveGateway id="joinForward" name="Exclusive Gateway"></exclusiveGateway>
+      <exclusiveGateway id="splitFirewall" name="Exclusive Gateway"></exclusiveGateway>
+      <exclusiveGateway id="splitForward" name="Exclusive Gateway"></exclusiveGateway>
+      <exclusiveGateway id="joinFirewall" name="Exclusive Gateway"></exclusiveGateway>
+      <sequenceFlow id="toForward" sourceRef="startPorts" targetRef="forwardTask"></sequenceFlow>
+      <sequenceFlow id="toJoinForward" sourceRef="forwardTask" targetRef="joinForward"></sequenceFlow>
+      <sequenceFlow id="toChkForward" sourceRef="joinForward" targetRef="chkForwardTask"></sequenceFlow>
+      <sequenceFlow id="flow4" sourceRef="chkForwardTask" targetRef="splitForward"></sequenceFlow>
+      <sequenceFlow id="notForwarded" sourceRef="splitForward" targetRef="joinForward">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkForward==false}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="toFirewall" sourceRef="splitForward" targetRef="firewallTask">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkForward==true}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="toJoinFirewall" sourceRef="firewallTask" targetRef="joinFirewall"></sequenceFlow>
+      <sequenceFlow id="toChkFirewall" sourceRef="joinFirewall" targetRef="chkFirewallTask"></sequenceFlow>
+      <sequenceFlow id="toSlitFirewall" sourceRef="chkFirewallTask" targetRef="splitFirewall"></sequenceFlow>
+      <sequenceFlow id="toEndPorts" sourceRef="splitFirewall" targetRef="endPorts">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkFirewall==true}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="noFirewallRuled" sourceRef="splitFirewall" targetRef="joinFirewall">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkFirewall==false}]]></conditionExpression>
+      </sequenceFlow>
+    </subProcess>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
     <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">
@@ -135,9 +164,6 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="join1" id="BPMNShape_join1">
         <omgdc:Bounds height="40.0" width="40.0" x="340.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="vmPortsTask" id="BPMNShape_vmPortsTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="652.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="deployOnDockerTask" id="BPMNShape_deployOnDockerTask">
         <omgdc:Bounds height="61.0" width="105.0" x="981.0" y="221.0"></omgdc:Bounds>
@@ -229,6 +255,39 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNShape bpmnElement="splitIp" id="BPMNShape_splitIp">
         <omgdc:Bounds height="40.0" width="40.0" x="851.0" y="17.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subPorts" id="BPMNShape_subPorts">
+        <omgdc:Bounds height="205.0" width="501.0" x="960.0" y="8.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startPorts" id="BPMNShape_startPorts">
+        <omgdc:Bounds height="35.0" width="35.0" x="970.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endPorts" id="BPMNShape_endPorts">
+        <omgdc:Bounds height="35.0" width="35.0" x="970.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="forwardTask" id="BPMNShape_forwardTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="1100.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="chkForwardTask" id="BPMNShape_chkForwardTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="1270.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="chkFirewallTask" id="BPMNShape_chkFirewallTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="1100.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="firewallTask" id="BPMNShape_firewallTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="1270.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="joinForward" id="BPMNShape_joinForward">
+        <omgdc:Bounds height="40.0" width="40.0" x="1220.0" y="37.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="splitFirewall" id="BPMNShape_splitFirewall">
+        <omgdc:Bounds height="40.0" width="40.0" x="1040.0" y="157.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="splitForward" id="BPMNShape_splitForward">
+        <omgdc:Bounds height="40.0" width="40.0" x="1400.0" y="37.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="joinFirewall" id="BPMNShape_joinFirewall">
+        <omgdc:Bounds height="40.0" width="40.0" x="1220.0" y="157.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fromStart" id="BPMNEdge_fromStart">
         <omgdi:waypoint x="36.0" y="114.0"></omgdi:waypoint>
         <omgdi:waypoint x="68.0" y="110.0"></omgdi:waypoint>
@@ -262,8 +321,8 @@ This task will probably be transformed into a subprocess, but at the moment we n
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSwarm" id="BPMNEdge_toSwarm">
-        <omgdi:waypoint x="757.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="819.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="960.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="871.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSubprocess" id="BPMNEdge_toSubprocess">
         <omgdi:waypoint x="819.0" y="185.0"></omgdi:waypoint>
@@ -396,8 +455,57 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="661.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="ipAcquired" id="BPMNEdge_ipAcquired">
-        <omgdi:waypoint x="871.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="704.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="891.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="960.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toForward" id="BPMNEdge_toForward">
+        <omgdi:waypoint x="1005.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1100.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toJoinForward" id="BPMNEdge_toJoinForward">
+        <omgdi:waypoint x="1205.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1220.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toChkForward" id="BPMNEdge_toChkForward">
+        <omgdi:waypoint x="1260.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1270.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="1375.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1400.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="notForwarded" id="BPMNEdge_notForwarded">
+        <omgdi:waypoint x="1420.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1361.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1241.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1240.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toFirewall" id="BPMNEdge_toFirewall">
+        <omgdi:waypoint x="1420.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1420.0" y="176.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1375.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toJoinFirewall" id="BPMNEdge_toJoinFirewall">
+        <omgdi:waypoint x="1270.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1260.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toChkFirewall" id="BPMNEdge_toChkFirewall">
+        <omgdi:waypoint x="1220.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1205.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toSlitFirewall" id="BPMNEdge_toSlitFirewall">
+        <omgdi:waypoint x="1100.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1080.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="toEndPorts" id="BPMNEdge_toEndPorts">
+        <omgdi:waypoint x="1040.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1005.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="noFirewallRuled" id="BPMNEdge_noFirewallRuled">
+        <omgdi:waypoint x="1060.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1059.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1238.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1240.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
