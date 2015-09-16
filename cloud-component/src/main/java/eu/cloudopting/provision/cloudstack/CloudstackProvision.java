@@ -53,6 +53,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.jclouds.cloudstack.options.ListNetworksOptions.Builder.isDefault;
 import static org.jclouds.util.Predicates2.retry;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Main class to provision on cloudstack.
  */
@@ -130,12 +133,73 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		Set<Zone> theZones = theClient.getZoneApi().listZones(null);
 		log.debug(theZones.toString());
 		DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
+		options.displayName("testmachine");
+		options.name("test_machine");
 		AsyncCreateResponse job = theClient.getVirtualMachineApi().deployVirtualMachineInZone(
 				theZones.iterator().next().getId(), theOffering.iterator().next().getId(), request.defaultTemplate,
 				options);
 		System.out.println("JOB RESPONSE:" + job.toString());
 
 		return job.getJobId();
+	}
+
+	public boolean checkVMdeployed(CloudstackRequest request, String jobId) {
+		ContextBuilder builder = ContextBuilder.newBuilder(provider)
+				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
+		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
+		CloudStackApi theClient = theContext.getApi();
+		AsyncJob<VirtualMachine> jobWithResult;
+
+		jobWithResult = theClient.getAsyncJobApi().<VirtualMachine> getAsyncJob(jobId);
+		System.out.println("JOB WITH RESULT RESPONSE:" + jobWithResult.toString());
+		if (jobWithResult.getError() != null) {
+			// we have an error to manage
+			log.debug(jobWithResult.getError().toString());
+		}
+
+		boolean theCheck = false;
+		switch (jobWithResult.getStatus()) {
+		case IN_PROGRESS:
+			theCheck = false;
+			break;
+
+		case FAILED:
+
+			break;
+		case SUCCEEDED:
+			theCheck = true;
+			break;
+		default:
+			break;
+		}
+//		VirtualMachine vm = jobWithResult.getResult();
+//		System.out.println("VM:" + vm.toString());
+
+		return true;
+	}
+
+	public JSONObject getVMinfo(CloudstackRequest request, String jobId) {
+		ContextBuilder builder = ContextBuilder.newBuilder(provider)
+				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
+		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
+		CloudStackApi theClient = theContext.getApi();
+		AsyncJob<VirtualMachine> jobWithResult;
+
+		jobWithResult = theClient.getAsyncJobApi().<VirtualMachine> getAsyncJob(jobId);
+		VirtualMachine vm = jobWithResult.getResult();
+		System.out.println("VM:" + vm.toString());
+		
+
+		JSONObject vmData = new JSONObject();
+		try {
+			vmData.put("ipaddress", vm.getIPAddress());
+			vmData.put("vmId", vm.getId());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return vmData;
+
 	}
 
 	@Override

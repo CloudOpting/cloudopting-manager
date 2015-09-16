@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class DeployCheckVm implements JavaDelegate {
 		TimeUnit.SECONDS.sleep(4);
 //		toscaService.getNodeType(customizationId,"");
 		boolean check = cloudService.checkVM(cloudAccountId, cloudtask);
+		if(check){
+			JSONObject vmInfo = cloudService.getVMinfo(cloudAccountId, cloudtask);
+			execution.setVariable("vmIP", vmInfo.get("ipaddress"));
+		}
 		execution.setVariable("vmInstalled", check);
 		
 	}

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,7 @@ public class CloudService {
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
 			return null;
+		String cloudTaskId = null;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
 			log.debug("before creating the cloudstack VM");
@@ -61,9 +63,10 @@ public class CloudService {
 			myRequest.setCredential(theAccount.get("secretKey"));
 			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
 			log.debug("the request:" + myRequest.toString());
-//			CloudstackResult result = cloudStackProvision.provision(myRequest);
-			String result = cloudStackProvision.provisionVM(myRequest);
-			log.debug("after creation" + result.toString());
+			// CloudstackResult result =
+			// cloudStackProvision.provision(myRequest);
+			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
+			log.debug("after creation" + cloudTaskId.toString());
 			break;
 		case "azure":
 
@@ -72,22 +75,31 @@ public class CloudService {
 		default:
 			break;
 		}
-		String id_of_cloud_task = "wrwerwerwrwre";
+		
 		// look in table the match of cpu+memory to get the name of the offering
 		// than get the disk info
 		// get keys from db with cloudId
 		// build the VM
-		return id_of_cloud_task;
+		return cloudTaskId;
 	}
 
 	public boolean checkVM(Long cloudAccountId, String taskId) {
 		log.debug("in checkVM");
-		log.debug("in createVM");
+		// TODO this will have to be set to false in production
+		boolean theCheck = true;
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
 			return false;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
+			log.debug("before creating the cloudstack VM");
+			CloudstackRequest myRequest = new CloudstackRequest();
+			myRequest.setEndpoint(theAccount.get("endpoint"));
+			myRequest.setIdentity(theAccount.get("apikey"));
+			myRequest.setCredential(theAccount.get("secretKey"));
+			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
+			log.debug("the request:" + myRequest.toString());
+			theCheck = cloudStackProvision.checkVMdeployed(myRequest, taskId);
 			break;
 		case "azure":
 
@@ -96,6 +108,36 @@ public class CloudService {
 		default:
 			break;
 		}
-		return true;
+		return theCheck;
 	}
+
+	public JSONObject getVMinfo(Long cloudAccountId, String taskId) {
+		log.debug("in getVMinfo");
+		// TODO this will have to be set to false in production
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		JSONObject vmData = null;
+		if (theAccount == null)
+			return null;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			CloudstackRequest myRequest = new CloudstackRequest();
+			myRequest.setEndpoint(theAccount.get("endpoint"));
+			myRequest.setIdentity(theAccount.get("apikey"));
+			myRequest.setCredential(theAccount.get("secretKey"));
+			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
+			log.debug("the request:" + myRequest.toString());
+			
+			vmData = cloudStackProvision.getVMinfo(myRequest, taskId);
+			log.debug(vmData.toString());
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		return vmData;
+	}
+
 }

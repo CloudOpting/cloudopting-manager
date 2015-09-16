@@ -17,6 +17,7 @@ import org.jclouds.azurecompute.features.VirtualNetworkApi;
 import org.jclouds.azurecompute.util.ConflictManagementPredicate;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.providers.ProviderMetadata;
+import org.json.JSONObject;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -189,6 +190,18 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
 
 	@Override
 	public String provisionVM(AzureRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean checkVMdeployed(AzureRequest myRequest, String taskId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public JSONObject getVMinfo(AzureRequest myRequest, String taskId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
