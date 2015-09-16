@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.tosca.ToscaService;
 
 @Service
 public class DeployAcquireIp implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeployAcquireIp.class);
 	@Autowired
-	ToscaService toscaService;
+	CloudService cloudService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -27,13 +28,9 @@ public class DeployAcquireIp implements JavaDelegate {
 		String vmId = (String) execution.getVariable("vmId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		log.debug(vmId);
-//		
-//		toscaService.getNodeType(customizationId,"");
-		// Remove the tosca customization
-//		toscaService.removeToscaCustomization(customizationId);
-		// delete the folder
-		
-		// remove the caches in dockerservice
+		String acquireJobId = cloudService.acquireIp(cloudAccountId);
+
+		execution.setVariable("acquireJobId", acquireJobId);
 		
 	}
 

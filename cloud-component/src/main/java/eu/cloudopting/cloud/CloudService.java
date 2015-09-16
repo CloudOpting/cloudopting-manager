@@ -140,4 +140,93 @@ public class CloudService {
 		return vmData;
 	}
 
+	public String acquireIp(Long cloudAccountId) {
+		log.debug("in acquireIp");
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return null;
+		String acquireTaskId = null;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before creating the cloudstack VM");
+			CloudstackRequest myRequest = new CloudstackRequest();
+			myRequest.setEndpoint(theAccount.get("endpoint"));
+			myRequest.setIdentity(theAccount.get("apikey"));
+			myRequest.setCredential(theAccount.get("secretKey"));
+			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
+			log.debug("the request:" + myRequest.toString());
+			// CloudstackResult result =
+			// cloudStackProvision.provision(myRequest);
+			acquireTaskId = cloudStackProvision.acquireIp(myRequest);
+			log.debug("after creation" + acquireTaskId.toString());
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		
+		return acquireTaskId;
+	}
+
+	public boolean checkAssociateIp(Long cloudAccountId, String taskId) {
+		log.debug("in checkAssociateIp");
+		// TODO this will have to be set to false in production
+		boolean theCheck = true;
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return false;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before checking the cloudstack VM");
+			CloudstackRequest myRequest = new CloudstackRequest();
+			myRequest.setEndpoint(theAccount.get("endpoint"));
+			myRequest.setIdentity(theAccount.get("apikey"));
+			myRequest.setCredential(theAccount.get("secretKey"));
+			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
+			log.debug("the request:" + myRequest.toString());
+			theCheck = cloudStackProvision.checkIpAcquired(myRequest, taskId);
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		return theCheck;
+	}
+
+	public JSONObject getAssociatedIpinfo(Long cloudAccountId, String taskId) {
+		log.debug("CloudService in getAssociatedIpinfo");
+		// TODO this will have to be set to false in production
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		JSONObject ipData = null;
+		if (theAccount == null)
+			return null;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			CloudstackRequest myRequest = new CloudstackRequest();
+			myRequest.setEndpoint(theAccount.get("endpoint"));
+			myRequest.setIdentity(theAccount.get("apikey"));
+			myRequest.setCredential(theAccount.get("secretKey"));
+			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
+			log.debug("the request:" + myRequest.toString());
+			
+			ipData = cloudStackProvision.getAcquiredIpinfo(myRequest, taskId);
+			log.debug(ipData.toString());
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		return ipData;
+	}
+
+
 }

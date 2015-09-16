@@ -24,6 +24,7 @@ import org.jclouds.cloudstack.compute.strategy.CloudStackComputeServiceAdapter;
 import org.jclouds.cloudstack.domain.*;
 import org.jclouds.cloudstack.domain.AsyncJob.Status;
 import org.jclouds.cloudstack.domain.Template;
+import org.jclouds.cloudstack.options.AssociateIPAddressOptions;
 import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
 import org.jclouds.cloudstack.options.ListTemplatesOptions;
 import org.jclouds.cloudstack.predicates.*;
@@ -172,8 +173,6 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		default:
 			break;
 		}
-//		VirtualMachine vm = jobWithResult.getResult();
-//		System.out.println("VM:" + vm.toString());
 
 		return theCheck;
 	}
@@ -192,13 +191,85 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 
 		JSONObject vmData = new JSONObject();
 		try {
-//			vmData.put("ipaddress", vm.getIPAddress());
+//			vmData.put("vmId", vm.getId());
 			vmData.put("vmId", vm.getId());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return vmData;
+
+	}
+	
+	public String acquireIp(CloudstackRequest request) {
+		ContextBuilder builder = ContextBuilder.newBuilder(provider)
+				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
+		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
+		CloudStackApi theClient = theContext.getApi();
+		Set<Zone> theZones = theClient.getZoneApi().listZones(null);
+		log.debug(theZones.toString());
+		AssociateIPAddressOptions options = new AssociateIPAddressOptions();
+		AsyncCreateResponse job = theClient.getAddressApi().associateIPAddressInZone(theZones.iterator().next().getId(), options);
+		
+		return job.getJobId();
+		
+	}
+
+	public boolean checkIpAcquired(CloudstackRequest request, String jobId) {
+		ContextBuilder builder = ContextBuilder.newBuilder(provider)
+				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
+		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
+		CloudStackApi theClient = theContext.getApi();
+		AsyncJob<PublicIPAddress> jobWithResult;
+
+		jobWithResult = theClient.getAsyncJobApi().<PublicIPAddress> getAsyncJob(jobId);
+		System.out.println("JOB WITH RESULT RESPONSE:" + jobWithResult.toString());
+		if (jobWithResult.getError() != null) {
+			// we have an error to manage
+			log.debug(jobWithResult.getError().toString());
+		}
+
+		boolean theCheck = false;
+		switch (jobWithResult.getStatus()) {
+		case IN_PROGRESS:
+			theCheck = false;
+			break;
+
+		case FAILED:
+
+			break;
+		case SUCCEEDED:
+			theCheck = true;
+			break;
+		default:
+			break;
+		}
+
+		return theCheck;
+	}
+
+	public JSONObject getAcquiredIpinfo(CloudstackRequest request, String jobId) {
+		ContextBuilder builder = ContextBuilder.newBuilder(provider)
+				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
+		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
+		CloudStackApi theClient = theContext.getApi();
+		AsyncJob<PublicIPAddress> jobWithResult;
+
+		jobWithResult = theClient.getAsyncJobApi().<PublicIPAddress> getAsyncJob(jobId);
+		PublicIPAddress pip = jobWithResult.getResult();
+		System.out.println("IP:" + pip.toString());
+		
+
+		JSONObject ipData = new JSONObject();
+		try {
+			ipData.put("ip", pip.getIPAddress());
+			ipData.put("ipId", pip.getId());
+//			ipData.put("ipId", pip.getAssociatedNetworkId());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ipData;
 
 	}
 
