@@ -92,7 +92,7 @@ public class CloudService {
 			return false;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
-			log.debug("before creating the cloudstack VM");
+			log.debug("before checking the cloudstack VM");
 			CloudstackRequest myRequest = new CloudstackRequest();
 			myRequest.setEndpoint(theAccount.get("endpoint"));
 			myRequest.setIdentity(theAccount.get("apikey"));
@@ -112,7 +112,7 @@ public class CloudService {
 	}
 
 	public JSONObject getVMinfo(Long cloudAccountId, String taskId) {
-		log.debug("in getVMinfo");
+		log.debug("CloudService in getVMinfo");
 		// TODO this will have to be set to false in production
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		JSONObject vmData = null;

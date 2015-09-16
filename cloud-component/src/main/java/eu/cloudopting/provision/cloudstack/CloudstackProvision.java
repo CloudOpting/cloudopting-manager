@@ -134,7 +134,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		log.debug(theZones.toString());
 		DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
 		options.displayName("testmachine");
-		options.name("test_machine");
+		options.name("testmachinename");
 		AsyncCreateResponse job = theClient.getVirtualMachineApi().deployVirtualMachineInZone(
 				theZones.iterator().next().getId(), theOffering.iterator().next().getId(), request.defaultTemplate,
 				options);
@@ -175,7 +175,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 //		VirtualMachine vm = jobWithResult.getResult();
 //		System.out.println("VM:" + vm.toString());
 
-		return true;
+		return theCheck;
 	}
 
 	public JSONObject getVMinfo(CloudstackRequest request, String jobId) {
@@ -192,7 +192,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 
 		JSONObject vmData = new JSONObject();
 		try {
-			vmData.put("ipaddress", vm.getIPAddress());
+//			vmData.put("ipaddress", vm.getIPAddress());
 			vmData.put("vmId", vm.getId());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

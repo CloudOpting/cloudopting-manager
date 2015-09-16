@@ -109,8 +109,12 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <sequenceFlow id="toJoinIp" sourceRef="acquireIpTask" targetRef="joinIp"></sequenceFlow>
     <sequenceFlow id="fromJoinIp" sourceRef="joinIp" targetRef="chkAquireIp"></sequenceFlow>
     <sequenceFlow id="toSplitIp" sourceRef="chkAquireIp" targetRef="splitIp"></sequenceFlow>
-    <sequenceFlow id="ipNotAcquired" sourceRef="splitIp" targetRef="joinIp" skipExpression="${chkAcquiredIp==false}"></sequenceFlow>
-    <sequenceFlow id="ipAcquired" sourceRef="splitIp" targetRef="vmPortsTask" skipExpression="${chkAcquiredIp==true}"></sequenceFlow>
+    <sequenceFlow id="ipNotAcquired" sourceRef="splitIp" targetRef="joinIp">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkAcquiredIp==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="ipAcquired" sourceRef="splitIp" targetRef="vmPortsTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkAcquiredIp==true}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
     <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">

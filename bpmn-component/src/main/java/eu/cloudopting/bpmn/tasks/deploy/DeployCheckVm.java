@@ -35,9 +35,11 @@ public class DeployCheckVm implements JavaDelegate {
 		boolean check = cloudService.checkVM(cloudAccountId, cloudtask);
 		if(check){
 			JSONObject vmInfo = cloudService.getVMinfo(cloudAccountId, cloudtask);
-			execution.setVariable("vmIP", vmInfo.get("ipaddress"));
+//			execution.setVariable("vmIP", vmInfo.get("ipaddress"));
+			execution.setVariable("vmId", vmInfo.get("vmId"));
 		}
 		execution.setVariable("vmInstalled", check);
+		
 		
 	}
 
