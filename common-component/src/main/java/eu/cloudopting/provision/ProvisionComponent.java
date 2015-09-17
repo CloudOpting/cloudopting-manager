@@ -3,6 +3,7 @@ package eu.cloudopting.provision;
 import org.json.JSONObject;
 
 
+
 /**
  * Main interface for all provision components.
  */
@@ -20,5 +21,9 @@ public interface ProvisionComponent<Resp extends ProvisionResult,Req extends Pro
 	public boolean checkIpAcquired(Req myRequest, String taskId);
 
 	public JSONObject getAcquiredIpinfo(Req myRequest, String taskId);
+
+	public String portForward(Req myRequest);
+
+	public boolean checkPortForward(Req myRequest, String taskId);
 
 }

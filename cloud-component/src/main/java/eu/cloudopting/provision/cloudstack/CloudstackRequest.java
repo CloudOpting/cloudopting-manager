@@ -2,6 +2,8 @@ package eu.cloudopting.provision.cloudstack;
 
 import eu.cloudopting.provision.ProvisionRequest;
 import eu.cloudopting.provision.azure.AzureProvision;
+
+import org.jclouds.cloudstack.domain.PortForwardingRule.Protocol;
 import org.jclouds.compute.domain.OsFamily;
 
 import java.util.Random;
@@ -18,6 +20,52 @@ public class CloudstackRequest implements ProvisionRequest {
     String endpoint="http://192.168.56.10:8096/client/api";
     OsFamily osFamily = OsFamily.CENTOS;
     Integer minRam=128;
+    String ipaddressId;
+	String virtualMachineId;
+    int publicPort;
+    int privatePort;
+    Protocol protocol = Protocol.TCP;
+    
+    public Protocol getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(Protocol protocol) {
+		this.protocol = protocol;
+	}
+
+	
+    public String getIpaddressId() {
+		return ipaddressId;
+	}
+
+	public void setIpaddressId(String ipaddressId) {
+		this.ipaddressId = ipaddressId;
+	}
+
+	public String getVirtualMachineId() {
+		return virtualMachineId;
+	}
+
+	public void setVirtualMachineId(String virtualMachineId) {
+		this.virtualMachineId = virtualMachineId;
+	}
+
+	public int getPublicPort() {
+		return publicPort;
+	}
+
+	public void setPublicPort(int publicPort) {
+		this.publicPort = publicPort;
+	}
+
+	public int getPrivatePort() {
+		return privatePort;
+	}
+
+	public void setPrivatePort(int privatePort) {
+		this.privatePort = privatePort;
+	}
 
     public Integer getMinRam() {
         return minRam;

@@ -1,8 +1,59 @@
 package eu.cloudopting.provision.cloudstack;
 
+import static com.google.common.base.Predicates.in;
+import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Iterables.get;
+import static com.google.common.collect.Sets.filter;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.jclouds.cloudstack.options.ListNetworksOptions.Builder.isDefault;
+import static org.jclouds.util.Predicates2.retry;
+
+import java.util.NoSuchElementException;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+
+import org.jclouds.Constants;
+import org.jclouds.ContextBuilder;
+import org.jclouds.cloudstack.CloudStackApi;
+import org.jclouds.cloudstack.CloudStackContext;
+import org.jclouds.cloudstack.domain.AsyncCreateResponse;
+import org.jclouds.cloudstack.domain.AsyncJob;
+import org.jclouds.cloudstack.domain.AsyncJob.Status;
+import org.jclouds.cloudstack.domain.NIC;
+import org.jclouds.cloudstack.domain.Network;
+import org.jclouds.cloudstack.domain.PortForwardingRule;
+import org.jclouds.cloudstack.domain.PublicIPAddress;
+import org.jclouds.cloudstack.domain.ServiceOffering;
+import org.jclouds.cloudstack.domain.Template;
+import org.jclouds.cloudstack.domain.VirtualMachine;
+import org.jclouds.cloudstack.domain.Zone;
+import org.jclouds.cloudstack.options.AssociateIPAddressOptions;
+import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
+import org.jclouds.cloudstack.options.ListTemplatesOptions;
+import org.jclouds.cloudstack.predicates.CorrectHypervisorForZone;
+import org.jclouds.cloudstack.predicates.JobComplete;
+import org.jclouds.cloudstack.predicates.OSCategoryIn;
+import org.jclouds.cloudstack.predicates.TemplatePredicates;
+import org.jclouds.cloudstack.predicates.VirtualMachineRunning;
+import org.jclouds.compute.ComputeService;
+import org.jclouds.compute.domain.ExecResponse;
+import org.jclouds.compute.domain.TemplateBuilder;
+import org.jclouds.compute.domain.TemplateBuilderSpec;
+import org.jclouds.domain.LoginCredentials;
+import org.jclouds.rest.config.CredentialStoreModule;
+import org.jclouds.ssh.SshClient;
+import org.jclouds.util.InetAddresses2;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
@@ -13,49 +64,7 @@ import com.google.common.net.HostAndPort;
 import com.google.common.net.HostSpecifier;
 import com.google.inject.Module;
 
-import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.provision.AbstractProvision;
-import eu.cloudopting.provision.ProvisionComponent;
-import org.jclouds.Constants;
-import org.jclouds.ContextBuilder;
-import org.jclouds.cloudstack.CloudStackApi;
-import org.jclouds.cloudstack.CloudStackContext;
-import org.jclouds.cloudstack.compute.strategy.CloudStackComputeServiceAdapter;
-import org.jclouds.cloudstack.domain.*;
-import org.jclouds.cloudstack.domain.AsyncJob.Status;
-import org.jclouds.cloudstack.domain.Template;
-import org.jclouds.cloudstack.options.AssociateIPAddressOptions;
-import org.jclouds.cloudstack.options.DeployVirtualMachineOptions;
-import org.jclouds.cloudstack.options.ListTemplatesOptions;
-import org.jclouds.cloudstack.predicates.*;
-import org.jclouds.compute.ComputeService;
-import org.jclouds.compute.domain.*;
-import org.jclouds.domain.LoginCredentials;
-import org.jclouds.rest.config.CredentialStoreModule;
-import org.jclouds.ssh.SshClient;
-import org.jclouds.util.InetAddresses2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-
-import javax.annotation.PostConstruct;
-import java.util.NoSuchElementException;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-
-import static com.google.common.base.Predicates.in;
-import static com.google.common.collect.Iterables.find;
-import static com.google.common.collect.Iterables.get;
-import static com.google.common.collect.Sets.filter;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.jclouds.cloudstack.options.ListNetworksOptions.Builder.isDefault;
-import static org.jclouds.util.Predicates2.retry;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Main class to provision on cloudstack.
@@ -145,10 +154,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 	}
 
 	public boolean checkVMdeployed(CloudstackRequest request, String jobId) {
-		ContextBuilder builder = ContextBuilder.newBuilder(provider)
-				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
-		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
-		CloudStackApi theClient = theContext.getApi();
+		CloudStackApi theClient = getClient(request);
 		AsyncJob<VirtualMachine> jobWithResult;
 
 		jobWithResult = theClient.getAsyncJobApi().<VirtualMachine> getAsyncJob(jobId);
@@ -177,21 +183,25 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		return theCheck;
 	}
 
-	public JSONObject getVMinfo(CloudstackRequest request, String jobId) {
+	private CloudStackApi getClient(CloudstackRequest request) {
 		ContextBuilder builder = ContextBuilder.newBuilder(provider)
 				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
 		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
 		CloudStackApi theClient = theContext.getApi();
+		return theClient;
+	}
+
+	public JSONObject getVMinfo(CloudstackRequest request, String jobId) {
+		CloudStackApi theClient = getClient(request);
 		AsyncJob<VirtualMachine> jobWithResult;
 
 		jobWithResult = theClient.getAsyncJobApi().<VirtualMachine> getAsyncJob(jobId);
 		VirtualMachine vm = jobWithResult.getResult();
 		System.out.println("VM:" + vm.toString());
-		
 
 		JSONObject vmData = new JSONObject();
 		try {
-//			vmData.put("vmId", vm.getId());
+			// vmData.put("vmId", vm.getId());
 			vmData.put("vmId", vm.getId());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -200,26 +210,20 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		return vmData;
 
 	}
-	
+
 	public String acquireIp(CloudstackRequest request) {
-		ContextBuilder builder = ContextBuilder.newBuilder(provider)
-				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
-		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
-		CloudStackApi theClient = theContext.getApi();
+		CloudStackApi theClient = getClient(request);
 		Set<Zone> theZones = theClient.getZoneApi().listZones(null);
 		log.debug(theZones.toString());
 		AssociateIPAddressOptions options = new AssociateIPAddressOptions();
-		AsyncCreateResponse job = theClient.getAddressApi().associateIPAddressInZone(theZones.iterator().next().getId(), options);
-		
+		AsyncCreateResponse job = theClient.getAddressApi().associateIPAddressInZone(theZones.iterator().next().getId(),
+				options);
+
 		return job.getJobId();
-		
 	}
 
 	public boolean checkIpAcquired(CloudstackRequest request, String jobId) {
-		ContextBuilder builder = ContextBuilder.newBuilder(provider)
-				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
-		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
-		CloudStackApi theClient = theContext.getApi();
+		CloudStackApi theClient = getClient(request);
 		AsyncJob<PublicIPAddress> jobWithResult;
 
 		jobWithResult = theClient.getAsyncJobApi().<PublicIPAddress> getAsyncJob(jobId);
@@ -249,28 +253,64 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 	}
 
 	public JSONObject getAcquiredIpinfo(CloudstackRequest request, String jobId) {
-		ContextBuilder builder = ContextBuilder.newBuilder(provider)
-				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
-		CloudStackContext theContext = builder.buildView(CloudStackContext.class);
-		CloudStackApi theClient = theContext.getApi();
+		CloudStackApi theClient = getClient(request);
 		AsyncJob<PublicIPAddress> jobWithResult;
 
 		jobWithResult = theClient.getAsyncJobApi().<PublicIPAddress> getAsyncJob(jobId);
 		PublicIPAddress pip = jobWithResult.getResult();
 		System.out.println("IP:" + pip.toString());
-		
 
 		JSONObject ipData = new JSONObject();
 		try {
 			ipData.put("ip", pip.getIPAddress());
 			ipData.put("ipId", pip.getId());
-//			ipData.put("ipId", pip.getAssociatedNetworkId());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return ipData;
 
+	}
+
+	public String portForward(CloudstackRequest request) {
+		CloudStackApi theClient = getClient(request);
+		Set<Zone> theZones = theClient.getZoneApi().listZones(null);
+		log.debug(theZones.toString());
+//		AssociateIPAddressOptions options = new AssociateIPAddressOptions();
+		AsyncCreateResponse job = theClient.getFirewallApi().createPortForwardingRuleForVirtualMachine(
+				request.getIpaddressId(), request.getProtocol(), request.getPublicPort(), request.getVirtualMachineId(),
+				request.privatePort);
+
+		return job.getJobId();
+	}
+
+	public boolean checkPortForward(CloudstackRequest request, String jobId) {
+		CloudStackApi theClient = getClient(request);
+		AsyncJob<PortForwardingRule> jobWithResult;
+
+		jobWithResult = theClient.getAsyncJobApi().<PortForwardingRule> getAsyncJob(jobId);
+		System.out.println("JOB WITH RESULT RESPONSE:" + jobWithResult.toString());
+		if (jobWithResult.getError() != null) {
+			// we have an error to manage
+			log.debug(jobWithResult.getError().toString());
+		}
+		boolean theCheck = false;
+		switch (jobWithResult.getStatus()) {
+		case IN_PROGRESS:
+			theCheck = false;
+			break;
+
+		case FAILED:
+
+			break;
+		case SUCCEEDED:
+			theCheck = true;
+			break;
+		default:
+			break;
+		}
+
+		return theCheck;
 	}
 
 	@Override

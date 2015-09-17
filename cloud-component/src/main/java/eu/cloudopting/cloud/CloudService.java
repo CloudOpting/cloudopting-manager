@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.cloudopting.domain.Providers;
 import eu.cloudopting.provision.ProvisionComponent;
 import eu.cloudopting.provision.cloudstack.CloudstackRequest;
 import eu.cloudopting.provision.cloudstack.CloudstackResult;
@@ -37,6 +36,16 @@ public class CloudService {
 		return true;
 	}
 
+	private CloudstackRequest createCloudStackRequest(HashMap<String, String> theAccount) {
+		CloudstackRequest myRequest = new CloudstackRequest();
+		myRequest.setEndpoint(theAccount.get("endpoint"));
+		myRequest.setIdentity(theAccount.get("apikey"));
+		myRequest.setCredential(theAccount.get("secretKey"));
+		myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
+		log.debug("the request:" + myRequest.toString());
+		return myRequest;
+	}
+
 	/**
 	 * This method is the one that create the VM and return a String with the
 	 * JobId so that we can than do the check of the async creation operation If
@@ -57,13 +66,7 @@ public class CloudService {
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
 			log.debug("before creating the cloudstack VM");
-			CloudstackRequest myRequest = new CloudstackRequest();
-			myRequest.setEndpoint(theAccount.get("endpoint"));
-			myRequest.setIdentity(theAccount.get("apikey"));
-			myRequest.setCredential(theAccount.get("secretKey"));
-			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
-			log.debug("the request:" + myRequest.toString());
-			// CloudstackResult result =
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			// cloudStackProvision.provision(myRequest);
 			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
 			log.debug("after creation" + cloudTaskId.toString());
@@ -93,12 +96,7 @@ public class CloudService {
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
 			log.debug("before checking the cloudstack VM");
-			CloudstackRequest myRequest = new CloudstackRequest();
-			myRequest.setEndpoint(theAccount.get("endpoint"));
-			myRequest.setIdentity(theAccount.get("apikey"));
-			myRequest.setCredential(theAccount.get("secretKey"));
-			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
-			log.debug("the request:" + myRequest.toString());
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			theCheck = cloudStackProvision.checkVMdeployed(myRequest, taskId);
 			break;
 		case "azure":
@@ -120,12 +118,7 @@ public class CloudService {
 			return null;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
-			CloudstackRequest myRequest = new CloudstackRequest();
-			myRequest.setEndpoint(theAccount.get("endpoint"));
-			myRequest.setIdentity(theAccount.get("apikey"));
-			myRequest.setCredential(theAccount.get("secretKey"));
-			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
-			log.debug("the request:" + myRequest.toString());
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			
 			vmData = cloudStackProvision.getVMinfo(myRequest, taskId);
 			log.debug(vmData.toString());
@@ -148,13 +141,8 @@ public class CloudService {
 		String acquireTaskId = null;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
-			log.debug("before creating the cloudstack VM");
-			CloudstackRequest myRequest = new CloudstackRequest();
-			myRequest.setEndpoint(theAccount.get("endpoint"));
-			myRequest.setIdentity(theAccount.get("apikey"));
-			myRequest.setCredential(theAccount.get("secretKey"));
-			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
-			log.debug("the request:" + myRequest.toString());
+			log.debug("before acquiring the IP");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			// CloudstackResult result =
 			// cloudStackProvision.provision(myRequest);
 			acquireTaskId = cloudStackProvision.acquireIp(myRequest);
@@ -180,13 +168,8 @@ public class CloudService {
 			return false;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
-			log.debug("before checking the cloudstack VM");
-			CloudstackRequest myRequest = new CloudstackRequest();
-			myRequest.setEndpoint(theAccount.get("endpoint"));
-			myRequest.setIdentity(theAccount.get("apikey"));
-			myRequest.setCredential(theAccount.get("secretKey"));
-			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
-			log.debug("the request:" + myRequest.toString());
+			log.debug("before checking the associated IP");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			theCheck = cloudStackProvision.checkIpAcquired(myRequest, taskId);
 			break;
 		case "azure":
@@ -208,12 +191,7 @@ public class CloudService {
 			return null;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
-			CloudstackRequest myRequest = new CloudstackRequest();
-			myRequest.setEndpoint(theAccount.get("endpoint"));
-			myRequest.setIdentity(theAccount.get("apikey"));
-			myRequest.setCredential(theAccount.get("secretKey"));
-			myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
-			log.debug("the request:" + myRequest.toString());
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			
 			ipData = cloudStackProvision.getAcquiredIpinfo(myRequest, taskId);
 			log.debug(ipData.toString());
@@ -228,5 +206,102 @@ public class CloudService {
 		return ipData;
 	}
 
+	public String createPortForward(Long cloudAccountId, String ipId, String vmId, int privatePort, int publicPort) {
+		log.debug("in createPortForward");
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return null;
+		String portForwardTaskId = null;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before creating the port forward rule");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			myRequest.setPrivatePort(privatePort);
+			myRequest.setPublicPort(publicPort);
+			myRequest.setIpaddressId(ipId);
+			myRequest.setVirtualMachineId(vmId);
+			portForwardTaskId = cloudStackProvision.portForward(myRequest);
+			log.debug("after creation" + portForwardTaskId.toString());
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		
+		return portForwardTaskId;
+	}
+
+	public boolean checkPortForward(Long cloudAccountId, String taskId) {
+		log.debug("in checkPortForward");
+		// TODO this will have to be set to false in production
+		boolean theCheck = true;
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return false;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before checking the PortForward");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			theCheck = cloudStackProvision.checkPortForward(myRequest, taskId);
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		return theCheck;
+	}
+	
+	public String createFirewall(Long cloudAccountId) {
+		log.debug("in createFirewall");
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return null;
+		String firewallTaskId = null;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before creating firewall rule");
+			// On CloudStack the firewall is opened by default after doing port forward
+			firewallTaskId = "dummy";
+			log.debug("after creation" + firewallTaskId.toString());
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		
+		return firewallTaskId;
+	}
+
+	public boolean checkFirewall(Long cloudAccountId, String taskId) {
+		log.debug("in checkFirewall");
+		// TODO this will have to be set to false in production
+		boolean theCheck = true;
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return false;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before checking the PortForward");
+			// since the firewall rule is defaulted we always return true
+			theCheck = true;
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		return theCheck;
+	}
 
 }
