@@ -1,7 +1,33 @@
 package eu.cloudopting.web.rest;
 
+import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
+import eu.cloudopting.domain.Organizations;
+import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.UploadDTO;
@@ -10,21 +36,7 @@ import eu.cloudopting.events.api.controller.AbstractController;
 import eu.cloudopting.events.api.service.BaseService;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import eu.cloudopting.service.UserService;
 
 
 /**
@@ -45,6 +57,9 @@ public class ApplicationResource extends AbstractController<Applications> {
 
     @Inject
     private BpmnService bpmnService;
+    
+    @Inject
+    private UserService userService;
 
     /**
      * Default contructor.
@@ -61,6 +76,10 @@ public class ApplicationResource extends AbstractController<Applications> {
     public BpmnService getBpmnService() {
         return bpmnService;
     }
+    
+    public UserService getUserService() {
+		return userService;
+	}
 
     @Override
     protected BaseService<Applications> getService() {
@@ -186,12 +205,17 @@ public class ApplicationResource extends AbstractController<Applications> {
     public final ActivitiDTO upload( HttpServletRequest request, @PathVariable String idApp,
                                      @PathVariable String processId,
                                      @RequestParam("file") MultipartFile file) throws IOException {
+    	User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+		
         UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setType(request.getParameter("type"));
         dto.setProcessId(processId);
         dto.setIdApp(idApp);
         dto.setFile(file.getInputStream());
+        dto.setOrg(org);
+        dto.setUser(user);
         return getBpmnService().upload(dto);
     }
 
@@ -224,5 +248,4 @@ public class ApplicationResource extends AbstractController<Applications> {
         dto.setProcessId(processId);
         return getBpmnService().deleteFile(dto);
     }
-
 }

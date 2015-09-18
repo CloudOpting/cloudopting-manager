@@ -57,6 +57,9 @@
     <logger name="com.wordnik.swagger" level="warn"/>
     <logger name="liquibase" level="warn"/>
     <logger name="sun.rmi.transport" level="warn"/>
+    <!-- The next two lines are to avoid the hell of output from httpclient -->
+    <logger name="httpclient.wire.content" level="ERROR"/>
+    <logger name="httpclient.wire.header" level="ERROR"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>

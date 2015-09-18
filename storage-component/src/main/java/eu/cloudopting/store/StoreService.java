@@ -4,10 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Date;
 
 import javax.inject.Inject;
-import javax.jcr.Binary;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
@@ -15,17 +13,14 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import eu.cloudopting.storagecomponent.StorageComponent;
-import eu.cloudopting.storagecomponent.StoreRequest;
-import eu.cloudopting.storagecomponent.StoreResult;
-import eu.cloudopting.store.jackrabbit.JackrabbitStore;
-import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
-import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.storagecomponent.StorageComponent;
+import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
+import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
 import eu.cloudopting.util.MimeTypeUtils;
 
 @Service
@@ -57,6 +52,12 @@ public class StoreService {
     }
     */
 	
+	/**
+	 * Gets the path where to save Service Template files
+	 * @param organizationKey The Organization Key
+	 * @param applicationToscaName The Tosca Name of the Template (no spaces and fancy chars)
+	 * @return The path to be passed as first parameter to the JackRabbitStoreRequest constructor.
+	 */
 	public String getTemplatePath (String organizationKey, String applicationToscaName){
 		return organizationKey + "/" + applicationToscaName + "/template";
 		

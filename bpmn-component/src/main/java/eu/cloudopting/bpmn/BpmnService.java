@@ -229,8 +229,17 @@ public class BpmnService {
         params.put("fileId",uploadFileId);
         params.put("appId",uploadIdApp);
         params.put("processId",uploadProcessId);
+        params.put("org",uploadDTO.getOrg());
+        params.put("user",uploadDTO.getUser());
         //The return value is not used, just for debug purposes
-        Set<String> executionIds = unlockProcess(uploadProcessId, "ArtifactsUploadEventRef", params);
+        //ToscaUploadEventRef
+        Set<String> executionIds = null;
+        if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_CONTENT_LIBRARY)){
+        	executionIds = unlockProcess(uploadProcessId, "ArtifactsUploadEventRef", params);
+        }
+        if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_TOSCA_ARCHIVE)){
+        	executionIds = unlockProcess(uploadProcessId, "ToscaUploadEventRef", params);
+        }
       //The return value is not used, just for debug purposes
         ExecutionQuery eq = runtimeService.createExecutionQuery().processInstanceId(uploadProcessId).processVariableValueEquals("applicationId", uploadIdApp);
         List<Execution> executions = eq.list();

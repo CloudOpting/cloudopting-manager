@@ -1,12 +1,12 @@
 package eu.cloudopting.service;
 
-import eu.cloudopting.domain.Authority;
-import eu.cloudopting.domain.User;
-import eu.cloudopting.repository.AuthorityRepository;
-import eu.cloudopting.repository.PersistentTokenRepository;
-import eu.cloudopting.repository.UserRepository;
-import eu.cloudopting.security.SecurityUtils;
-import eu.cloudopting.service.util.RandomUtil;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -16,12 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.swing.text.html.Option;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import eu.cloudopting.domain.Authority;
+import eu.cloudopting.domain.User;
+import eu.cloudopting.repository.AuthorityRepository;
+import eu.cloudopting.repository.PersistentTokenRepository;
+import eu.cloudopting.repository.UserRepository;
+import eu.cloudopting.security.SecurityUtils;
+import eu.cloudopting.service.util.RandomUtil;
 
 /**
  * Service class for managing users.

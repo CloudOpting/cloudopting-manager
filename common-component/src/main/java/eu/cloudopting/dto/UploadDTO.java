@@ -2,6 +2,9 @@ package eu.cloudopting.dto;
 
 import java.io.InputStream;
 
+import eu.cloudopting.domain.Organizations;
+import eu.cloudopting.domain.User;
+
 /**
  * DTO object for upload
  */
@@ -12,6 +15,8 @@ public class UploadDTO {
     String fileId;
     String idApp;
     String processId;
+    Organizations org;
+    User user;
 
     public String getName() {
         return name;
@@ -60,4 +65,20 @@ public class UploadDTO {
     public void setProcessId(String processId) {
         this.processId = processId;
     }
+
+	public Organizations getOrg() {
+		return org;
+	}
+
+	public void setOrg(Organizations org) {
+		this.org = org;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

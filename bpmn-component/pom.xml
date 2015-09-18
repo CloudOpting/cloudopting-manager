@@ -16,11 +16,6 @@
             <artifactId>cloud-component</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>eu.cloudopting</groupId>
-            <artifactId>cloud-component</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!-- project dependencies -->
         <dependency>
             <groupId>eu.cloudopting</groupId>
