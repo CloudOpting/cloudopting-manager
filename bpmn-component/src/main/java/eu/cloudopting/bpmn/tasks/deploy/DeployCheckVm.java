@@ -26,20 +26,16 @@ public class DeployCheckVm implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in DeployCheckVm");
-		String customizationId = (String) execution.getVariable("customizationId");
 		String cloudtask = (String) execution.getVariable("cloudtask");
-		String cloudId = (String) execution.getVariable("cloudId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		TimeUnit.SECONDS.sleep(4);
-//		toscaService.getNodeType(customizationId,"");
+
 		boolean check = cloudService.checkVM(cloudAccountId, cloudtask);
 		if(check){
 			JSONObject vmInfo = cloudService.getVMinfo(cloudAccountId, cloudtask);
-//			execution.setVariable("vmIP", vmInfo.get("ipaddress"));
 			execution.setVariable("vmId", vmInfo.get("vmId"));
 		}
 		execution.setVariable("vmInstalled", check);
-		
 		
 	}
 

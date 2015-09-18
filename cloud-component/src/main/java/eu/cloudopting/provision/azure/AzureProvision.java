@@ -224,5 +224,17 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
 		return null;
 	}
 
+	@Override
+	public String portForward(AzureRequest myRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean checkPortForward(AzureRequest myRequest, String taskId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

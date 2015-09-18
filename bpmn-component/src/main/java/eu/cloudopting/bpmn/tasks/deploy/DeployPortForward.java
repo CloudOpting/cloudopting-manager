@@ -7,25 +7,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.cloudopting.tosca.ToscaService;
+import eu.cloudopting.cloud.CloudService;
 
 @Service
 public class DeployPortForward implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeployPortForward.class);
 	@Autowired
-	ToscaService toscaService;
+	CloudService cloudService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in DeployPortForward");
-		String customizationId = (String) execution.getVariable("customizationId");
-//		toscaService.getNodeType(customizationId,"");
-		// Remove the tosca customization
-		toscaService.removeToscaCustomization(customizationId);
-		// delete the folder
+		String vmId = (String) execution.getVariable("vmId");
+		String ipId = (String) execution.getVariable("ipId");
+		String vmPort = (String) execution.getVariable("vmPort");
+		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
+		log.debug(vmId);
+		String portForwardJobId = cloudService.createPortForward(cloudAccountId, ipId, vmId, Integer.parseInt(vmPort), Integer.parseInt(vmPort));
 		
-		// remove the caches in dockerservice
+		execution.setVariable("portForwardJobId", portForwardJobId);
 		
 	}
 
