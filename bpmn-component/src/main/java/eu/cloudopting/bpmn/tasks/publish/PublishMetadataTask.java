@@ -15,7 +15,6 @@ import eu.cloudopting.service.ApplicationService;
 @Service
 public class PublishMetadataTask implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(PublishMetadataTask.class);
-//  TODO Find the Jackrabbit Wrapper Service
 	@Autowired
 	ApplicationService applicationService;
 
@@ -26,6 +25,7 @@ public class PublishMetadataTask implements JavaDelegate {
 		Applications application = applicationService.findOne(applications.getId());
 		BeanUtils.copyProperties(applications,application);
         applicationService.update(application);
+        execution.setVariable("chkPublishMetadataAvailable", true);
 	}
 
 }

@@ -1,5 +1,7 @@
 package eu.cloudopting.bpmn;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -9,9 +11,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-
-import eu.cloudopting.dto.CustomizationDTO;
-import eu.cloudopting.dto.UploadDTO;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
@@ -24,6 +23,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,8 @@ import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.dto.CustomizationDTO;
+import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
@@ -208,13 +210,41 @@ public class BpmnService {
 	}
 
 	public ActivitiDTO upload(UploadDTO uploadDTO) {
-		HashMap<String, Object> v = new HashMap<>();
-		v.put("uploaddto",uploadDTO);
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("uploadProcess",v);
-		ActivitiDTO activitiDTO = new ActivitiDTO();
-		Map map = ((ExecutionEntity) pi).getVariableInstances();
-		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("uploadid")).getTextValue());
-		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		byte[] uploadFileBytes = null;
+		try {
+			uploadFileBytes = IOUtils.toByteArray(uploadDTO.getFile());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String uploadName = uploadDTO.getName();
+	    String uploadType = uploadDTO.getType();
+	    String uploadFileId = uploadDTO.getFileId();
+	    String uploadIdApp = uploadDTO.getIdApp();
+	    String uploadProcessId = uploadDTO.getProcessId();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("fileBytes",uploadFileBytes);
+        params.put("name",uploadName);
+		params.put("type",uploadType);
+        params.put("fileId",uploadFileId);
+        params.put("appId",uploadIdApp);
+        params.put("processId",uploadProcessId);
+        //The return value is not used, just for debug purposes
+        Set<String> executionIds = unlockProcess(uploadProcessId, "ArtifactsUploadEventRef", params);
+      //The return value is not used, just for debug purposes
+        ExecutionQuery eq = runtimeService.createExecutionQuery().processInstanceId(uploadProcessId).processVariableValueEquals("applicationId", uploadIdApp);
+        List<Execution> executions = eq.list();
+        //Return the updated value of the model
+        ActivitiDTO activitiDTO = new ActivitiDTO();
+//		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
+//		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		activitiDTO.setApplicationId(uploadIdApp);
+		activitiDTO.setProcessInstanceId(uploadProcessId);
+//		ProcessInstance pi = runtimeService.startProcessInstanceByKey("uploadProcess",v);
+//		ActivitiDTO activitiDTO = new ActivitiDTO();
+//		Map map = ((ExecutionEntity) pi).getVariableInstances();
+//		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("uploadid")).getTextValue());
+//		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}
 

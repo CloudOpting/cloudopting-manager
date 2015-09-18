@@ -25,15 +25,8 @@
       <endEvent id="endevent4" name="End"></endEvent>
       <sequenceFlow id="flow53" sourceRef="publishToscaValidationTask" targetRef="endevent4"></sequenceFlow>
     </subProcess>
-    <subProcess id="artifactsSubprocess" name="Artifacts Management">
-      <startEvent id="startevent3" name="Start"></startEvent>
-      <serviceTask id="publishArtifactStorageTask" name="Artifacts Storage" activiti:delegateExpression="${publishArtifactStorageTask}"></serviceTask>
-      <endEvent id="endevent3" name="End"></endEvent>
-      <sequenceFlow id="flow48" sourceRef="startevent3" targetRef="publishArtifactStorageTask"></sequenceFlow>
-      <sequenceFlow id="flow49" sourceRef="publishArtifactStorageTask" targetRef="endevent3"></sequenceFlow>
-    </subProcess>
     <sequenceFlow id="flow36" sourceRef="toscaSubprocess" targetRef="eventgateway2"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="artifactsSubprocess" targetRef="eventgateway2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="publishArtifactStorageTask" targetRef="eventgateway2"></sequenceFlow>
     <intermediateCatchEvent id="PublishIntermediateCatchEvent" name="PublishEvent">
       <messageEventDefinition messageRef="PublishEventRef"></messageEventDefinition>
     </intermediateCatchEvent>
@@ -55,7 +48,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==false}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow45" name="Metadata Available" sourceRef="exclusivegateway5" targetRef="artifactsSubprocess">
+    <sequenceFlow id="flow45" name="Metadata Available" sourceRef="exclusivegateway5" targetRef="publishArtifactStorageTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow46" name="No Metadata Available" sourceRef="exclusivegateway5" targetRef="eventgateway2">
@@ -80,6 +73,7 @@
     </intermediateCatchEvent>
     <sequenceFlow id="flow58" sourceRef="eventgateway2" targetRef="ArtifactsUploadIntermediateCatchEvent"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="ArtifactsUploadIntermediateCatchEvent" targetRef="exclusivegateway5"></sequenceFlow>
+    <serviceTask id="publishArtifactStorageTask" name="Artifacts Storage" activiti:delegateExpression="${publishArtifactStorageTask}"></serviceTask>
     <textAnnotation id="textannotation1">
       <text>Service Publishing Process</text>
     </textAnnotation>
@@ -116,18 +110,6 @@
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="1003.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="artifactsSubprocess" id="BPMNShape_artifactsSubprocess">
-        <omgdc:Bounds height="126.0" width="561.0" x="517.0" y="388.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="startevent3" id="BPMNShape_startevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="557.0" y="438.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="publishArtifactStorageTask" id="BPMNShape_publishArtifactStorageTask">
-        <omgdc:Bounds height="55.0" width="271.0" x="617.0" y="428.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="1000.0" y="438.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="PublishIntermediateCatchEvent" id="BPMNShape_PublishIntermediateCatchEvent">
         <omgdc:Bounds height="35.0" width="35.0" x="294.0" y="606.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -155,6 +137,9 @@
       <bpmndi:BPMNShape bpmnElement="ArtifactsUploadIntermediateCatchEvent" id="BPMNShape_ArtifactsUploadIntermediateCatchEvent">
         <omgdc:Bounds height="35.0" width="35.0" x="280.0" y="446.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishArtifactStorageTask" id="BPMNShape_publishArtifactStorageTask">
+        <omgdc:Bounds height="55.0" width="271.0" x="600.0" y="423.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="50.0" width="173.0" x="9.0" y="53.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -179,14 +164,6 @@
         <omgdi:waypoint x="958.0" y="207.0"></omgdi:waypoint>
         <omgdi:waypoint x="1003.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="592.0" y="455.0"></omgdi:waypoint>
-        <omgdi:waypoint x="617.0" y="455.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="888.0" y="455.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1000.0" y="455.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
         <omgdi:waypoint x="1078.0" y="206.0"></omgdi:waypoint>
         <omgdi:waypoint x="780.0" y="274.0"></omgdi:waypoint>
@@ -194,8 +171,8 @@
         <omgdi:waypoint x="227.0" y="340.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="797.0" y="388.0"></omgdi:waypoint>
-        <omgdi:waypoint x="779.0" y="359.0"></omgdi:waypoint>
+        <omgdi:waypoint x="735.0" y="423.0"></omgdi:waypoint>
+        <omgdi:waypoint x="735.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="247.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -243,7 +220,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="407.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="517.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="450.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="12.0" width="91.0" x="417.0" y="433.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
