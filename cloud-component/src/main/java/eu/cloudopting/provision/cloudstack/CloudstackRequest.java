@@ -25,6 +25,26 @@ public class CloudstackRequest implements ProvisionRequest {
     int publicPort;
     int privatePort;
     Protocol protocol = Protocol.TCP;
+    String cpu;
+    long diskSize;
+    
+    public String getCpu() {
+		return cpu;
+	}
+
+	public void setCpu(String cpu) {
+		this.cpu = cpu;
+	}
+
+	public long getDiskSize() {
+		return diskSize;
+	}
+
+	public void setDiskSize(long diskSize) {
+		this.diskSize = diskSize;
+	}
+
+	
     
     public Protocol getProtocol() {
 		return protocol;

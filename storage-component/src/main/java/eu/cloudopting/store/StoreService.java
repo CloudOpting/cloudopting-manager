@@ -56,6 +56,11 @@ public class StoreService {
     //	log.debug("ocm"+this.ocm);
     }
     */
+	
+	public String getTemplatePath (String organizationKey, String applicationToscaName){
+		return organizationKey + "/" + applicationToscaName + "/template";
+		
+	}
 
 	public JackrabbitStoreResult storeBinary(JackrabbitStoreRequest request){
 		return jackrabbitBinaryStore.store(request);

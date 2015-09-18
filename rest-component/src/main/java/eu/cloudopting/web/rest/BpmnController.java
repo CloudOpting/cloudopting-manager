@@ -63,6 +63,7 @@ public class BpmnController {
 			@RequestParam(value = "cloudId", required = false) String cloudId, HttpServletRequest request) {
 
         User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        user.getOrganizationId().getOrganizationKey();
 		String pid = bpmn.startDeployProcess(customizationId, cloudId);
 		System.out.println("returning pid: " + pid);
 		return pid;

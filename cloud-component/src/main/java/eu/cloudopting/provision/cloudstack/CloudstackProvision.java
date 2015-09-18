@@ -145,6 +145,10 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
 		options.displayName("testmachine");
 		options.name("testmachinename");
+		String unencodedData = "#cloud-config\n"
+				+"touch /root/cloudinitexecuted.txt";
+		options.userData(unencodedData.getBytes());
+//		options.dataDiskSize(request.getDiskSize());
 		AsyncCreateResponse job = theClient.getVirtualMachineApi().deployVirtualMachineInZone(
 				theZones.iterator().next().getId(), theOffering.iterator().next().getId(), request.defaultTemplate,
 				options);
