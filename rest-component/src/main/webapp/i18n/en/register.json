@@ -6,6 +6,12 @@
         },
         "messages": {
             "validate": {
+                "firstName": {
+                    "required": "Your first name is required."
+                },
+                "lastName": {
+                    "required": "Your last name is required."
+                },
                 "login": {
                     "required": "Your login is required.",
                     "minlength": "Your login is required to be at least 1 character",

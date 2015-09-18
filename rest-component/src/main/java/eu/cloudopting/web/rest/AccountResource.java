@@ -53,8 +53,8 @@ public class AccountResource {
      */
     @RequestMapping(value = "/register",
             method = RequestMethod.POST,
-            produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<?> registerAccount(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> registerAccount(@Valid @RequestBody final UserDTO userDTO, HttpServletRequest request) {
         return userRepository.findOneByLogin(userDTO.getLogin())
             .map(user -> new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST))
             .orElseGet(() -> userRepository.findOneByEmail(userDTO.getEmail())

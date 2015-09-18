@@ -33,6 +33,10 @@
         "form": {
             "username": "Login",
             "username.placeholder": "Your login",
+            "firstName": "First Name",
+            "firstName.placeholder": "First Name",
+            "lastName": "Last Name",
+            "lastName.placeholder": "Last Name",
             "newpassword": "New password",
             "newpassword.placeholder": "New password",
             "confirmpassword": "New password confirmation",

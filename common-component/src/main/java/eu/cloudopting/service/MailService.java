@@ -74,11 +74,17 @@ public class MailService {
     public void sendActivationEmail(User user, String baseUrl) {
         log.debug("Sending activation e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
-//        Context context = new Context(locale);
-//        context.setVariable("user", user);
-//        context.setVariable("baseUrl", baseUrl);
-//        String content = templateEngine.process("activationEmail", context);
-        String subject = messageSource.getMessage("email.activation.title", null, locale);
-//        sendEmail(user.getEmail(), subject, content, false, true);
+        //Context context = new Context(locale);
+        //context.setVariable("user", user);
+        //context.setVariable("baseUrl", baseUrl);
+        //String content = templateEngine.process("activationEmail", context);
+        String content = "<html>" +
+                "<body>" +
+                "<p>"+user+"</p>" +
+                "<p>Activation URL: "+baseUrl+"</p>" +
+                "</body>" +
+                "</html>";
+        String subject = "CloudOpting Catalog Activation Link";//messageSource.getMessage("email.activation.title", null, locale);
+        sendEmail(user.getEmail(), subject, content, false, true);
     }
 }
