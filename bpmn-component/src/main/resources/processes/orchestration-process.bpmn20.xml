@@ -155,11 +155,22 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <sequenceFlow id="toChkDown" sourceRef="JoinDown" targetRef="chkDownVmTask"></sequenceFlow>
       <sequenceFlow id="toSplitDown" sourceRef="chkDownVmTask" targetRef="exclusivegateway11"></sequenceFlow>
       <sequenceFlow id="vmNotDown" sourceRef="exclusivegateway11" targetRef="JoinDown">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkDown==false}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIsRunning==true}]]></conditionExpression>
       </sequenceFlow>
       <eventBasedGateway id="eventgateway1" name="Event Gateway"></eventBasedGateway>
-      <sequenceFlow id="flow5" sourceRef="exclusivegateway11" targetRef="eventgateway1"></sequenceFlow>
+      <sequenceFlow id="flow5" sourceRef="exclusivegateway11" targetRef="chkISOTask">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIsRunning==false}]]></conditionExpression>
+      </sequenceFlow>
       <sequenceFlow id="flow8" sourceRef="eventgateway1" targetRef="boundarymessage1"></sequenceFlow>
+      <serviceTask id="chkISOTask" name="Check ISO unmounted" activiti:delegateExpression="${deployCheckIso}"></serviceTask>
+      <exclusiveGateway id="exclusivegateway12" name="Exclusive Gateway"></exclusiveGateway>
+      <sequenceFlow id="flow10" sourceRef="exclusivegateway12" targetRef="eventgateway1">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIso==true}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="flow11" sourceRef="exclusivegateway12" targetRef="exclusivegateway11">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIso==false}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="flow12" sourceRef="chkISOTask" targetRef="exclusivegateway12"></sequenceFlow>
     </subProcess>
     <boundaryEvent id="boundarymessage1" name="Message" attachedToRef="activateVM" cancelActivity="true">
       <messageEventDefinition messageRef="machineInstalledId"></messageEventDefinition>
@@ -311,28 +322,34 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdc:Bounds height="40.0" width="40.0" x="1220.0" y="328.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="activateVM" id="BPMNShape_activateVM">
-        <omgdc:Bounds height="149.0" width="561.0" x="172.0" y="1.0"></omgdc:Bounds>
+        <omgdc:Bounds height="149.0" width="653.0" x="80.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="182.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="90.0" y="59.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="692.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="690.0" y="59.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkDownVmTask" id="BPMNShape_chkDownVmTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="292.0" y="49.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="49.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="JoinDown" id="BPMNShape_JoinDown">
-        <omgdc:Bounds height="40.0" width="40.0" x="232.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="140.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
-        <omgdc:Bounds height="40.0" width="40.0" x="412.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="320.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="eventgateway1" id="BPMNShape_eventgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="472.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="560.0" y="56.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="chkISOTask" id="BPMNShape_chkISOTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="49.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway12" id="BPMNShape_exclusivegateway12">
+        <omgdc:Bounds height="40.0" width="40.0" x="500.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarymessage1" id="BPMNShape_boundarymessage1">
-        <omgdc:Bounds height="30.0" width="30.0" x="565.0" y="62.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="630.0" y="62.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fromStart" id="BPMNEdge_fromStart">
         <omgdi:waypoint x="36.0" y="285.0"></omgdi:waypoint>
@@ -361,7 +378,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="vmInstalled" id="BPMNEdge_vmInstalled">
         <omgdi:waypoint x="552.0" y="261.0"></omgdi:waypoint>
-        <omgdi:waypoint x="452.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="406.0" y="150.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="36.0" width="41.0" x="532.0" y="237.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -554,35 +571,48 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="1240.0" y="328.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinDown" id="BPMNEdge_toJoinDown">
-        <omgdi:waypoint x="217.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="232.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="125.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toChkDown" id="BPMNEdge_toChkDown">
-        <omgdi:waypoint x="272.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="292.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSplitDown" id="BPMNEdge_toSplitDown">
-        <omgdi:waypoint x="397.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="412.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="vmNotDown" id="BPMNEdge_vmNotDown">
-        <omgdi:waypoint x="432.0" y="96.0"></omgdi:waypoint>
-        <omgdi:waypoint x="430.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="252.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="252.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="338.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="452.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="472.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="492.0" y="96.0"></omgdi:waypoint>
-        <omgdi:waypoint x="492.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="580.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="540.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="76.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="520.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="517.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="368.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="96.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="485.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="595.0" y="77.0"></omgdi:waypoint>
-        <omgdi:waypoint x="692.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="733.0" y="75.0"></omgdi:waypoint>

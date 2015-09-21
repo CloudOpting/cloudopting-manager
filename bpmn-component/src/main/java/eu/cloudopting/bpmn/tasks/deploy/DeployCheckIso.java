@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import eu.cloudopting.cloud.CloudService;
 
 @Service
-public class DeployCheckDown implements JavaDelegate {
-	private final Logger log = LoggerFactory.getLogger(DeployCheckDown.class);
+public class DeployCheckIso implements JavaDelegate {
+	private final Logger log = LoggerFactory.getLogger(DeployCheckIso.class);
 	@Autowired
 	CloudService cloudService;
 
@@ -23,22 +23,16 @@ public class DeployCheckDown implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		log.debug("in DeployCheckDown");
-		String vmId = (String) execution.getVariable("vmId");
+		log.debug("in DeployCheckIso");
+		String isoTaskId = (String) execution.getVariable("isoTaskId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		if (this.doDeploy) {
 			TimeUnit.SECONDS.sleep(4);
-			String isoTaskId = "";
-			boolean check = cloudService.isVMrunning(cloudAccountId, vmId);
-			if(check){
-				// now that the Vm is Down we need to remove the ISO
-				isoTaskId = cloudService.removeISO(cloudAccountId, vmId);
-				execution.setVariable("isoTaskId", isoTaskId);
-			}
+			boolean check = cloudService.checkIso(cloudAccountId, isoTaskId);
 
-			execution.setVariable("chkIsRunning", check);
+			execution.setVariable("chkIso", check);
 		} else {
-			execution.setVariable("chkIsRunning", false);
+			execution.setVariable("chkIso", true);
 		}
 
 	}

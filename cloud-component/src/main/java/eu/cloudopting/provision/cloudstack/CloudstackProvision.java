@@ -21,6 +21,7 @@ import org.jclouds.cloudstack.CloudStackContext;
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;
 import org.jclouds.cloudstack.domain.AsyncJob;
 import org.jclouds.cloudstack.domain.AsyncJob.Status;
+import org.jclouds.cloudstack.domain.ISO;
 import org.jclouds.cloudstack.domain.NIC;
 import org.jclouds.cloudstack.domain.Network;
 import org.jclouds.cloudstack.domain.PortForwardingRule;
@@ -322,6 +323,35 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		AsyncJob<PortForwardingRule> jobWithResult;
 
 		jobWithResult = theClient.getAsyncJobApi().<PortForwardingRule> getAsyncJob(jobId);
+		System.out.println("JOB WITH RESULT RESPONSE:" + jobWithResult.toString());
+		if (jobWithResult.getError() != null) {
+			// we have an error to manage
+			log.debug(jobWithResult.getError().toString());
+		}
+		boolean theCheck = false;
+		switch (jobWithResult.getStatus()) {
+		case IN_PROGRESS:
+			theCheck = false;
+			break;
+
+		case FAILED:
+
+			break;
+		case SUCCEEDED:
+			theCheck = true;
+			break;
+		default:
+			break;
+		}
+
+		return theCheck;
+	}
+
+	public boolean checkIso(CloudstackRequest request, String jobId) {
+		CloudStackApi theClient = getClient(request);
+		AsyncJob<ISO> jobWithResult;
+
+		jobWithResult = theClient.getAsyncJobApi().<ISO> getAsyncJob(jobId);
 		System.out.println("JOB WITH RESULT RESPONSE:" + jobWithResult.toString());
 		if (jobWithResult.getError() != null) {
 			// we have an error to manage

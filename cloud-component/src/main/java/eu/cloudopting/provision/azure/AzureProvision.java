@@ -248,5 +248,11 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
 		return null;
 	}
 
+	@Override
+	public boolean checkIso(AzureRequest myRequest, String taskId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

@@ -377,5 +377,27 @@ public class CloudService {
 		
 	}
 	
+	public boolean checkIso(Long cloudAccountId, String taskId) {
+		log.debug("in checkPortForward");
+		// TODO this will have to be set to false in production
+		boolean theCheck = true;
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return false;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before checking the PortForward");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			theCheck = cloudStackProvision.checkIso(myRequest, taskId);
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		return theCheck;
+	}
 	
 }
