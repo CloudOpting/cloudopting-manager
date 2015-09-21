@@ -236,6 +236,14 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 
 	}
 
+	public String removeISO(CloudstackRequest request) {
+		CloudStackApi theClient = getClient(request);
+		AsyncCreateResponse job = theClient.getISOApi().detachISO(request.getVirtualMachineId());
+
+		return job.getJobId();
+	}
+
+	
 	public String acquireIp(CloudstackRequest request) {
 		CloudStackApi theClient = getClient(request);
 		Set<Zone> theZones = theClient.getZoneApi().listZones(null);

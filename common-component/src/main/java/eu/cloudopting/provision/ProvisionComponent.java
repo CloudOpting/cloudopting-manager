@@ -29,4 +29,6 @@ public interface ProvisionComponent<Resp extends ProvisionResult,Req extends Pro
 
 	public JSONObject getVMinfoById(Req myRequest);
 
+	public String removeISO(Req myRequest);
+
 }

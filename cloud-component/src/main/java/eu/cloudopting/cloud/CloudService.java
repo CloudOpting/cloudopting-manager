@@ -345,4 +345,37 @@ public class CloudService {
 		return isRunning;
 	}
 
+	public String removeISO(Long cloudAccountId, String vmId){
+		log.debug("in removeISO");
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return null;
+		String isoTaskId = null;
+		boolean isRunning = true;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before creating the cloudstack VM");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			myRequest.setVirtualMachineId(vmId);
+			// cloudStackProvision.provision(myRequest);
+			isoTaskId = cloudStackProvision.removeISO(myRequest);
+			log.debug(isoTaskId);
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		
+		// look in table the match of cpu+memory to get the name of the offering
+		// than get the disk info
+		// get keys from db with cloudId
+		// build the VM
+		return isoTaskId;
+		
+	}
+	
+	
 }

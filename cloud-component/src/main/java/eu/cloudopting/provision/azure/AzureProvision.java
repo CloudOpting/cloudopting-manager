@@ -236,5 +236,17 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
 		return false;
 	}
 
+	@Override
+	public JSONObject getVMinfoById(AzureRequest myRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String removeISO(AzureRequest myRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
