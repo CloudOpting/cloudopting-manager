@@ -69,6 +69,11 @@ public class BpmnController {
 		return pid;
 	}
 	
+	@RequestMapping(value = "/bpmn/configuredVM/{processInstanceId}", method = RequestMethod.GET)
+	public @ResponseBody void configuredVM(@PathVariable String processInstanceId){
+		bpmn.configuredVM(processInstanceId);
+	}
+	
 	@RequestMapping(value = "/bpmn/startProcess/{id}",
             method = RequestMethod.POST)
     @RolesAllowed(AuthoritiesConstants.ANONYMOUS)

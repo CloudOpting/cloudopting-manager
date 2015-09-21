@@ -40,6 +40,7 @@ import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
+import scala.collection.concurrent.Debug;
 
 
 @Service
@@ -115,6 +116,15 @@ public class BpmnService {
         return pi.getProcessInstanceId();
 
 	}
+
+	public void configuredVM(String processInstanceId){
+		log.info("Before processing message");
+		Map<String, Object> params = new HashMap<String, Object>();
+    	Set<String> executionIds = unlockProcess(processInstanceId, "machineInstalled", params);
+    	Debug.log(executionIds.toString());
+    	
+	}
+
 	
 	/**
 	 * Starts the process with the provided id and the provided initial input parameters.
@@ -197,6 +207,7 @@ public class BpmnService {
 		return null;
 	
 	}
+	
 
 	public ActivitiDTO startPublish(ApplicationDTO application) {
 	    HashMap<String, Object> v = new HashMap<>();
