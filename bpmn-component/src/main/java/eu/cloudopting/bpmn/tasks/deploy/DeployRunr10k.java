@@ -23,12 +23,10 @@ public class DeployRunr10k implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub
 		log.debug("in DeployRunr10k");
-		String customizationId = (String) execution.getVariable("customizationId");
-		String coRoot = (String) execution.getVariable("coRoot");
 		String serviceHome = (String) execution.getVariable("serviceHome");
-//		toscaService.runR10k(customizationId, serviceHome, coRoot);
+
 		String dockerContext = dockerService.newContext(serviceHome + "/Puppetfile");
-//		dockerService.isContextReady(dockerContext);
+
 		log.debug("dockerContext: "+dockerContext);
 		execution.setVariable("dockerContext", dockerContext);
 	}

@@ -65,7 +65,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkBuild==true}]]></conditionExpression>
       </sequenceFlow>
     </subProcess>
-    <serviceTask id="r10kTask" name="run R10K" activiti:delegateExpression="${deployRunr10k}"></serviceTask>
+    <serviceTask id="r10kTask" name="Generate context in Crane" activiti:delegateExpression="${deployRunr10k}"></serviceTask>
     <sequenceFlow id="toCheckContext" sourceRef="r10kTask" targetRef="join2"></sequenceFlow>
     <sequenceFlow id="toCompose" sourceRef="subDockerBuild" targetRef="taskDockerComposeFile"></sequenceFlow>
     <serviceTask id="taskDockerComposeFile" name="Prepare Docker Compose file" activiti:delegateExpression="${deployDockerCompose}"></serviceTask>
