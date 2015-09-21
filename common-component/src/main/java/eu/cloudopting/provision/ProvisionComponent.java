@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 
 
+
 /**
  * Main interface for all provision components.
  */
@@ -25,5 +26,7 @@ public interface ProvisionComponent<Resp extends ProvisionResult,Req extends Pro
 	public String portForward(Req myRequest);
 
 	public boolean checkPortForward(Req myRequest, String taskId);
+
+	public JSONObject getVMinfoById(Req myRequest);
 
 }

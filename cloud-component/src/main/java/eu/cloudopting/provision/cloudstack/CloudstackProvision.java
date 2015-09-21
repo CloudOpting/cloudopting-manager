@@ -215,6 +215,27 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 
 	}
 
+	public JSONObject getVMinfoById(CloudstackRequest request) {
+		CloudStackApi theClient = getClient(request);
+		VirtualMachine theVM;
+
+		theVM = theClient.getVirtualMachineApi().getVirtualMachine(request.getVirtualMachineId());
+		System.out.println("VM:" + theVM.toString());
+
+		JSONObject vmData = new JSONObject();
+		try {
+			// vmData.put("vmId", vm.getId());
+			vmData.put("vmId", theVM.getId());
+			vmData.put("created", theVM.getCreated());
+			vmData.put("state", theVM.getState());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return vmData;
+
+	}
+
 	public String acquireIp(CloudstackRequest request) {
 		CloudStackApi theClient = getClient(request);
 		Set<Zone> theZones = theClient.getZoneApi().listZones(null);

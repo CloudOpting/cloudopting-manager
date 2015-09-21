@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -302,6 +303,46 @@ public class CloudService {
 			break;
 		}
 		return theCheck;
+	}
+
+	public boolean isVMrunning(Long cloudAccountId, String vmId) {
+		log.debug("in isVMrunning");
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return false;
+		String cloudTaskId = null;
+		JSONObject vmData = null;
+		boolean isRunning = true;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before creating the cloudstack VM");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			myRequest.setVirtualMachineId(vmId);
+			// cloudStackProvision.provision(myRequest);
+			vmData = cloudStackProvision.getVMinfoById(myRequest);
+			try {
+				if(vmData.get("state")=="STOPPED"){
+					isRunning = false;
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.debug(vmData.toString());
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		
+		// look in table the match of cpu+memory to get the name of the offering
+		// than get the disk info
+		// get keys from db with cloudId
+		// build the VM
+		return isRunning;
 	}
 
 }
