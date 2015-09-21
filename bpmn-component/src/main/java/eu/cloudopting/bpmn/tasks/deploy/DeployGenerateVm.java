@@ -32,9 +32,10 @@ public class DeployGenerateVm implements JavaDelegate {
 		String customizationId = (String) execution.getVariable("customizationId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		HashMap<String, String> data = toscaService.getCloudData(customizationId);
+		
 		String cloudtask = "";
 		if (this.doDeploy) {
-			cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"));
+			cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"),execution.getProcessInstanceId());
 		}
 
 		execution.setVariable("cloudtask", cloudtask);
