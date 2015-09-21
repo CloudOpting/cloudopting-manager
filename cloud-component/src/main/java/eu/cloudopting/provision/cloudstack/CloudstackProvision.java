@@ -51,6 +51,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 
 import com.google.common.base.Predicate;
@@ -76,6 +77,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 
 	@Autowired
 	Environment env;
+	
 
 	protected org.jclouds.compute.domain.Template template;
 
@@ -146,9 +148,8 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
 		options.displayName("testmachine");
 		options.name("testmachinename");
-		String unencodedData = "#cloud-config\n"
-				+"touch /root/cloudinitexecuted.txt";
-		options.userData(unencodedData.getBytes());
+//		options.userData(unencodedData.getBytes());
+		options.userData(request.getUserData().getBytes());
 //		options.dataDiskSize(request.getDiskSize());
 		AsyncCreateResponse job = theClient.getVirtualMachineApi().deployVirtualMachineInZone(
 				theZones.iterator().next().getId(), theOffering.iterator().next().getId(), request.defaultTemplate,

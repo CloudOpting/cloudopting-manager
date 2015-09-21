@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.provision.ProvisionComponent;
@@ -17,6 +18,10 @@ import eu.cloudopting.provision.cloudstack.CloudstackResult;
 @Service
 public class CloudService {
 	private final Logger log = LoggerFactory.getLogger(CloudService.class);
+	
+	@Value("${cloud.ip}")
+	String myIP = "127.0.0.1";
+
 
 	private HashMap<Long, HashMap<String, String>> accounts = new HashMap<Long, HashMap<String, String>>();
 
@@ -58,7 +63,7 @@ public class CloudService {
 	 * @param disk
 	 * @return
 	 */
-	public String createVM(Long cloudAccountId, String cpu, String memory, String disk) {
+	public String createVM(Long cloudAccountId, String cpu, String memory, String disk, String processInstanceId) {
 		log.debug("in createVM");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
@@ -68,6 +73,13 @@ public class CloudService {
 		case "cloudstack":
 			log.debug("before creating the cloudstack VM");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			String unencodedData = "#cloud-config\n"
+					+"touch /root/cloudinitexecuted.txt"
+					+"phone_home:"
+					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId
+					+"  post: all";
+			
+
 			// cloudStackProvision.provision(myRequest);
 			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
 			log.debug("after creation" + cloudTaskId.toString());

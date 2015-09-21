@@ -27,8 +27,17 @@ public class CloudstackRequest implements ProvisionRequest {
     Protocol protocol = Protocol.TCP;
     String cpu;
     long diskSize;
+    String userData;
     
-    public String getCpu() {
+    public String getUserData() {
+		return userData;
+	}
+
+	public void setUserData(String userData) {
+		this.userData = userData;
+	}
+
+	public String getCpu() {
 		return cpu;
 	}
 
