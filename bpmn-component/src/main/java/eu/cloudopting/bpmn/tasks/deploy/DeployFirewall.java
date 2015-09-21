@@ -5,27 +5,29 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import eu.cloudopting.tosca.ToscaService;
+import eu.cloudopting.cloud.CloudService;
 
 @Service
 public class DeployFirewall implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeployFirewall.class);
 	@Autowired
-	ToscaService toscaService;
+	CloudService cloudService;
+
+	@Value("${cloud.doDeploy}")
+	private boolean doDeploy;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		// TODO Auto-generated method stub
 		log.debug("in DeployFirewall");
-		String customizationId = (String) execution.getVariable("customizationId");
-//		toscaService.getNodeType(customizationId,"");
-		// Remove the tosca customization
-		toscaService.removeToscaCustomization(customizationId);
-		// delete the folder
-		
-		// remove the caches in dockerservice
+		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
+		String firewallJobId = "";
+		if(this.doDeploy){
+			firewallJobId = cloudService.createFirewall(cloudAccountId);
+		}
+		execution.setVariable("firewallJobId", firewallJobId);
 		
 	}
 

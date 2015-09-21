@@ -7,10 +7,10 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.cloud.CloudService;
-import eu.cloudopting.tosca.ToscaService;
 
 @Service
 public class DeployCheckFirewall implements JavaDelegate {
@@ -18,17 +18,23 @@ public class DeployCheckFirewall implements JavaDelegate {
 	@Autowired
 	CloudService cloudService;
 
+	@Value("${cloud.doDeploy}")
+	private boolean doDeploy;
+
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		// TODO Auto-generated method stub
 		log.debug("in DeployCheckFirewall");
-		String portForwardJobId = (String) execution.getVariable("portForwardJobId");
+		String firewallJobId = (String) execution.getVariable("firewallJobId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
-		TimeUnit.SECONDS.sleep(4);
-		boolean check = cloudService.checkFirewall(cloudAccountId, portForwardJobId);
+		if (this.doDeploy) {
+			TimeUnit.SECONDS.sleep(4);
+			boolean check = cloudService.checkFirewall(cloudAccountId, firewallJobId);
 
-		execution.setVariable("chkFirewall", check);
-		
+			execution.setVariable("chkFirewall", check);
+		} else {
+			execution.setVariable("chkFirewall", true);
+		}
+
 	}
 
 }

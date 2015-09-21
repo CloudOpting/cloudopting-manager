@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.cloud.CloudService;
@@ -18,9 +19,12 @@ public class DeployCheckVm implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeployCheckVm.class);
 	@Autowired
 	ToscaService toscaService;
-	
+
 	@Autowired
 	CloudService cloudService;
+
+	@Value("${cloud.doDeploy}")
+	private boolean doDeploy;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -28,15 +32,20 @@ public class DeployCheckVm implements JavaDelegate {
 		log.debug("in DeployCheckVm");
 		String cloudtask = (String) execution.getVariable("cloudtask");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
-		TimeUnit.SECONDS.sleep(4);
+		if (this.doDeploy) {
+			TimeUnit.SECONDS.sleep(4);
 
-		boolean check = cloudService.checkVM(cloudAccountId, cloudtask);
-		if(check){
-			JSONObject vmInfo = cloudService.getVMinfo(cloudAccountId, cloudtask);
-			execution.setVariable("vmId", vmInfo.get("vmId"));
+			boolean check = cloudService.checkVM(cloudAccountId, cloudtask);
+			if (check) {
+				JSONObject vmInfo = cloudService.getVMinfo(cloudAccountId, cloudtask);
+				execution.setVariable("vmId", vmInfo.get("vmId"));
+			}
+			execution.setVariable("vmInstalled", check);
+		} else {
+			execution.setVariable("vmInstalled", true);
+
 		}
-		execution.setVariable("vmInstalled", check);
-		
+
 	}
 
 }

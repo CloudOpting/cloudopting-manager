@@ -51,3 +51,5 @@ zabbix:
     password: admin
     endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
 
+cloud:
+    doDeploy: false
