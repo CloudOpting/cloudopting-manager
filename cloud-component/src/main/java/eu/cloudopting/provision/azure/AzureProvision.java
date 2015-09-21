@@ -47,7 +47,9 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
         DeploymentApi deploymentApi = api().getDeploymentApiForService(cloudService.name());
         final String requestId = deploymentApi.create(deploymentParams());
         assert (operationSucceeded().apply(requestId));
-        return new AzureResult();
+        AzureResult azureResult = new AzureResult();
+        azureResult.setRequestId(requestId);
+        return azureResult;
     }
 
     private DeploymentParams deploymentParams() {
