@@ -369,12 +369,7 @@ public class CloudService {
 			break;
 		}
 		
-		// look in table the match of cpu+memory to get the name of the offering
-		// than get the disk info
-		// get keys from db with cloudId
-		// build the VM
 		return isoTaskId;
-		
 	}
 	
 	public boolean checkIso(Long cloudAccountId, String taskId) {
@@ -399,5 +394,31 @@ public class CloudService {
 		}
 		return theCheck;
 	}
-	
+
+	public String startVM(Long cloudAccountId, String vmId){
+		log.debug("in startVM");
+		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
+		if (theAccount == null)
+			return null;
+		String startTaskId = null;
+		switch (theAccount.get("provider")) {
+		case "cloudstack":
+			log.debug("before restarting the cloudstack VM");
+			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			myRequest.setVirtualMachineId(vmId);
+			// cloudStackProvision.provision(myRequest);
+			startTaskId = cloudStackProvision.startVM(myRequest);
+			log.debug(startTaskId);
+			break;
+		case "azure":
+
+			break;
+
+		default:
+			break;
+		}
+		
+		return startTaskId;
+	}
+
 }

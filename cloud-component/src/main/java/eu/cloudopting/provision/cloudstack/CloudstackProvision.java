@@ -244,6 +244,13 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		return job.getJobId();
 	}
 
+	public String startVM(CloudstackRequest request) {
+		CloudStackApi theClient = getClient(request);
+
+		return theClient.getVirtualMachineApi().startVirtualMachine(request.getVirtualMachineId());
+
+	}
+
 	
 	public String acquireIp(CloudstackRequest request) {
 		CloudStackApi theClient = getClient(request);

@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 
 
+
 /**
  * Main interface for all provision components.
  */
@@ -31,5 +32,7 @@ public interface ProvisionComponent<Resp extends ProvisionResult,Req extends Pro
 	public String removeISO(Req myRequest);
 
 	public boolean checkIso(Req myRequest, String taskId);
+
+	public String startVM(Req myRequest);
 
 }

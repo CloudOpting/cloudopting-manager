@@ -25,11 +25,16 @@ public class DeployCheckIso implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		log.debug("in DeployCheckIso");
 		String isoTaskId = (String) execution.getVariable("isoTaskId");
+		String vmId = (String) execution.getVariable("vmId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		if (this.doDeploy) {
 			TimeUnit.SECONDS.sleep(4);
 			boolean check = cloudService.checkIso(cloudAccountId, isoTaskId);
 
+			if(check){
+				// the iso has been unmounted so we can restart the machine
+				cloudService.startVM(cloudAccountId, vmId);
+			}
 			execution.setVariable("chkIso", check);
 		} else {
 			execution.setVariable("chkIso", true);

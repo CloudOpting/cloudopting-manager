@@ -254,5 +254,11 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
 		return false;
 	}
 
+	@Override
+	public String startVM(AzureRequest myRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
