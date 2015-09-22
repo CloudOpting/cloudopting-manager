@@ -354,4 +354,23 @@ public class DockerService {
 		this.composer.stopComposition(token);
 	}
 	
+	public String sendHostname(String hostname){
+		
+
+		return "token";
+	}
+	
+	public boolean hasCertificateGenerated(String token){
+
+		return true;
+	}
+	
+	public String configureSwarm(String ipAddress){
+		
+		return "token";
+	}
+	
+	public boolean isSwarmConfigured(String token){
+		return true;
+	}
 }
