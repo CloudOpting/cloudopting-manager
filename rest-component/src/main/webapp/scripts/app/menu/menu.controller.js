@@ -16,6 +16,10 @@ angular.module('cloudoptingApp')
             $state.go("login");
         };
 
+        $scope.profile = function(){
+            $state.go("profile");
+        };
+
         $scope.$watch(
             function() {
                 return Principal.isAuthenticated();
