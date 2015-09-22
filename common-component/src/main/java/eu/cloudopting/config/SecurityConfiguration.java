@@ -100,6 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .disable()
             .authorizeRequests()
                 .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/bpmnunlock/**").permitAll()
                 .antMatchers("/api/activate").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/application/unpaginated").permitAll()

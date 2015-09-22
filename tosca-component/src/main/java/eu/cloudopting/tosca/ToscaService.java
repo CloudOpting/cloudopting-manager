@@ -43,6 +43,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import eu.cloudopting.exception.ToscaException;
 import eu.cloudopting.tosca.utils.CustomizationUtils;
 import eu.cloudopting.tosca.utils.R10kResultHandler;
 import eu.cloudopting.tosca.utils.ToscaUtils;
@@ -188,6 +189,13 @@ public class ToscaService {
 	public void removeToscaCustomization(String customizationId){
 		this.graphHash.remove(customizationId);
 		this.xdocHash.remove(customizationId);
+		return;
+	}
+	
+	public void validateToscaCsar(String csarPath) throws ToscaException{
+		if(csarPath.isEmpty()){
+			throw new ToscaException("File not good");
+		}
 		return;
 	}
 
