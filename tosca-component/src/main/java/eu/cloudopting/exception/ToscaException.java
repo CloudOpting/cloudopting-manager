@@ -1,7 +1,14 @@
 package eu.cloudopting.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 public class ToscaException extends RuntimeException {
-	   public ToscaException() {
+	
+	private static final long serialVersionUID = 9144532704007000645L;
+
+	public ToscaException() {
 	        super();
 	    }
 

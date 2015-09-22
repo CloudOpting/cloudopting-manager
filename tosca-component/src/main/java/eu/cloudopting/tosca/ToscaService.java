@@ -1,20 +1,10 @@
 package eu.cloudopting.tosca;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +20,6 @@ import org.apache.xerces.jaxp.DocumentBuilderImpl;
 import org.apache.xml.dtm.ref.DTMNodeList;
 import org.apache.xpath.jaxp.XPathFactoryImpl;
 import org.apache.xpath.jaxp.XPathImpl;
-import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
@@ -47,12 +36,6 @@ import eu.cloudopting.exception.ToscaException;
 import eu.cloudopting.tosca.utils.CustomizationUtils;
 import eu.cloudopting.tosca.utils.R10kResultHandler;
 import eu.cloudopting.tosca.utils.ToscaUtils;
-import freemarker.core.ParseException;
-import freemarker.template.Configuration;
-import freemarker.template.MalformedTemplateNameException;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
 
 @Service
 public class ToscaService {
@@ -192,11 +175,13 @@ public class ToscaService {
 		return;
 	}
 	
-	public void validateToscaCsar(String csarPath) throws ToscaException{
+	public boolean validateToscaCsar(String csarPath) throws ToscaException{
+		boolean isValid = true;
 		if(csarPath.isEmpty()){
 			throw new ToscaException("File not good");
 		}
-		return;
+		//Perform validation here and change the value of isValid accordingly
+		return isValid;
 	}
 
 	public byte[] getToscaGraph(String customizationId) {
