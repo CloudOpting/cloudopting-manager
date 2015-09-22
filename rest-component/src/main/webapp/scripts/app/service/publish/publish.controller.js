@@ -7,6 +7,9 @@ angular.module('cloudoptingApp')
          * WIZARD - SCREEN ONE
          */
 
+        $scope.disableUpdate = true;
+        $scope.disableSave = false;
+
         /**
          * Function to save the promotional image.
          * @param images
@@ -62,6 +65,8 @@ angular.module('cloudoptingApp')
             application.applicationDescription=$scope.description;
             //Create
             ApplicationService.create(application, callback);
+            $scope.disableUpdate = false;
+            $scope.disableSave = true;
         };
 
         $scope.updateWizardOne = function() {

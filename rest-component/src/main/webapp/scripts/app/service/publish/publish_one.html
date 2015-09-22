@@ -27,8 +27,8 @@
                 <!--
                 <button type="button" class="btn btn-primary" ng-click="saveConfigurationWizardOne()" translate="publish.button.save_n_next">Save Configuration & Next</button>
                 -->
-                <button type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
-                <button type="button" class="btn btn-success" ng-click="updateWizardOne()">Update</button>
+                <button ng-disabled="disableSave" type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
+                <button ng-disabled="disableUpdate" type="button" class="btn btn-success" ng-click="updateWizardOne()">Update</button>
                 <button type="button" class="btn btn-success" ng-click="nextWizardOne()">Next</button>
             </form>
         </div>
