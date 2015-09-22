@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
-    'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster', 'ngFileUpload', 'schemaForm'])
+    'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster',
+    'ngFileUpload', 'schemaForm', 'ui.bootstrap'])
 
     .run(function ($rootScope, $location, $http, $state, $translate, Auth, Principal, Language, ENV, VERSION) {
         $rootScope.ENV = ENV;
@@ -43,7 +44,7 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
 
         //Cache everything except rest api requests
-        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/, /.*bootstrap.*/]);
+        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/, /.*bootstrap.*/, , /.*ui-bootstrap-tpls.*/]);
 
         $urlRouterProvider.otherwise('/catalog');
         $stateProvider.state('site', {
