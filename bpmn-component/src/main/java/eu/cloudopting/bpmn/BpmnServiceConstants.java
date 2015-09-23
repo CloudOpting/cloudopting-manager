@@ -1,7 +1,7 @@
 package eu.cloudopting.bpmn;
 
 /**
- * Constants from service.sonstants.js
+ * Constants from service.constants.js
  * @author guido
  *
  */
