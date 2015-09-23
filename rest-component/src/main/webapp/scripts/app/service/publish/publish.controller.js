@@ -46,6 +46,7 @@ angular.module('cloudoptingApp')
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
 
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
             //Create the applicaiton.
             ApplicationService.create(application, callback);
 
@@ -63,6 +64,8 @@ angular.module('cloudoptingApp')
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
+
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
             //Create
             ApplicationService.create(application, callback);
             $scope.disableUpdate = false;
@@ -79,7 +82,9 @@ angular.module('cloudoptingApp')
             //TODO: Fix a bit
             //Create
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            application.id=activiti.applicationId; 
+            application.id=activiti.applicationId;
+
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
             ApplicationService.update(activiti.applicationId, activiti.processInstanceId, application, callback);
         };
 
@@ -200,10 +205,25 @@ angular.module('cloudoptingApp')
          */
         $scope.publishService = function () {
             console.log($scope.contentLib);
+            var callback = function (){
+                alert("Publication Requested!!!");
+            };
 
             //Request publication
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            ApplicationService.requestPublication(activiti.processInstanceId, activiti.applicationId);
+            var application = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            requestPublication(activiti, application, callback);
+        };
+
+        /**
+         * Method to get the application parameters to be customized.
+         *
+         * @returns {*}
+         */
+        var requestPublication = function (activiti, application, callback) {
+            //activiti.processInstanceId, activiti.applicationId
+            application.status = "Published";
+            ApplicationService.update(activiti.applicationId, activiti.processInstanceId, application, callback);
         };
     }
 );

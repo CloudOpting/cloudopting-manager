@@ -98,19 +98,8 @@ angular.module('cloudoptingApp')
             deleteAppFile: function (idApplication, processID, fileId) {
                 return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR
                     + processID + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId);
-            },
-            /**
-             * Method to get the application parameters to be customized.
-             *
-             * @returns {*}
-             */
-            requestPublication: function (application) {
-                application.status = "Published";
-                return $http.put(baseURI + SERVICE.SEPARATOR + application.id, angular.toJson(application))
-                    .success(function(data) {
-                        //TODO: Do something if all went ok.
-                    });
             }
+
         };
     }
 );
