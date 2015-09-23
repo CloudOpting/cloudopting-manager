@@ -1,7 +1,7 @@
 <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="catalog.title">Services available in CloudOpting</div>
-        <div class="panel-body">
+        <div class="panel-body webuiPanel">
             <div class="row">
                 <div class="col-md-6" ng-repeat="app in applicationList | startFrom:currentPage*pageSize | limitTo:pageSize"><!-- -->
                     <div class="thumbnail">
@@ -27,21 +27,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-md-offset-5">
-                    <button class="btn-default small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-                        Previous
-                    </button>
-                    {{currentPage+1}}/{{numberOfPages()}}
-                    <button class="btn-default small" ng-disabled="nextDisable()" ng-click="currentPage=currentPage+1">
-                        Next
-                    </button>
-                </div>
+
 
                 <!--
                 <pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                 -->
 
             </div>
+        </div>
+        <div class="col-md-3 col-md-offset-5">
+            <button class="btn-default small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                Previous
+            </button>
+            {{currentPage+1}}/{{numberOfPages()}}
+            <button class="btn-default small" ng-disabled="nextDisable()" ng-click="currentPage=currentPage+1">
+                Next
+            </button>
         </div>
     </div>
 </div>
