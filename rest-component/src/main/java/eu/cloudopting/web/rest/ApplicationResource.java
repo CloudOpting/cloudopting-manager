@@ -177,7 +177,7 @@ public class ApplicationResource extends AbstractController<Applications> {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO updateApplication(HttpServletRequest request, @PathVariable Long idApp,
+    public final ApplicationDTO updateApplication(HttpServletRequest request, @PathVariable Long idApp,
                                                @PathVariable String processId,
                                                @RequestBody ApplicationDTO application) throws IOException {
         //TODO: If idApp and application.getId() are not equals should we throw an exception?

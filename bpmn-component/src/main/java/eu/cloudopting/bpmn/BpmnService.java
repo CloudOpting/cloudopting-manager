@@ -36,6 +36,7 @@ import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
+import eu.cloudopting.domain.Status;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.CustomizationDTO;
@@ -43,6 +44,7 @@ import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
+import eu.cloudopting.service.util.StatusConstants;
 
 
 @Service
@@ -294,24 +296,44 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
-	public ActivitiDTO updateApplication(ApplicationDTO application, String processInstanceId) {
+	public ApplicationDTO updateApplication(ApplicationDTO application, String processInstanceId) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("application",application);
 		//ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateApplication",v);
-		Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
+		//The return value is not used, just for debug purposes
+        Status statusDraft = statusService.findOne(StatusConstants.DRAFT),
+        		statusRequested = statusService.findOne(StatusConstants.REQUESTED),
+        		statusPublished = statusService.findOne(StatusConstants.PUBLISHED);
+        Set<String> executionIds = new HashSet<String>();
+        if (application.getStatus()==null){
+        	log.warn("Status-less Application! No good.");
+        	application.setStatus(statusDraft.getStatus());
+        }
+        String currentApplicationStatus = application.getStatus();
+        
+        Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
         params.put("application", application);
-        //The return value is not used, just for debug purposes
-        Set<String> executionIds = unlockProcess(processInstanceId, "metadataRetrievalMsg", params);
+        
+        if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusDraft.getStatus())){
+        	executionIds = unlockProcess(processInstanceId, "metadataRetrievalMsg", params);
+        }
+        if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusRequested.getStatus())){
+        	executionIds = unlockProcess(processInstanceId, "PublishEventRef", params);
+        	//TODO Check for the return status from the process, if any
+        	application.setStatus(statusPublished.getStatus());
+        }
+        
         //The return value is not used, just for debug purposes
         ExecutionQuery eq = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).processVariableValueEquals("applicationId", application.getId().toString());
         List<Execution> executions = eq.list();
+        
         //Return the updated value of the model
-        ActivitiDTO activitiDTO = new ActivitiDTO();
+//        ActivitiDTO activitiDTO = new ActivitiDTO();
 //		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
 //		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
-		activitiDTO.setApplicationId(application.getId().toString());
-		activitiDTO.setProcessInstanceId(processInstanceId);
-		return activitiDTO;
+//		activitiDTO.setApplicationId(application.getId().toString());
+//		activitiDTO.setProcessInstanceId(processInstanceId);
+		return application;
 	}
 
 	public ActivitiDTO createCustomization(CustomizationDTO customizationDTO) {

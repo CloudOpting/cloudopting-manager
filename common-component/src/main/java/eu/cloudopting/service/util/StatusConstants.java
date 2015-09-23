@@ -5,4 +5,6 @@ package eu.cloudopting.service.util;
  */
 public interface StatusConstants {
     public static final int DRAFT = 105;
+    public static final int PUBLISHED = 3;
+    public static final int REQUESTED = 100;
 }
