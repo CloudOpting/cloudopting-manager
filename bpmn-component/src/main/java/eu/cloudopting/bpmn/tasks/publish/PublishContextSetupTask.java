@@ -41,6 +41,7 @@ public class PublishContextSetupTask implements JavaDelegate {
         application.setApplicationVersion(String.valueOf(1));
         Applications savedApplication = applicationService.create(application);
         execution.setVariable("applicationId", savedApplication.getId());
+        execution.setVariable("chkPublishMetadataAvailable", true);
     }
 
 }
