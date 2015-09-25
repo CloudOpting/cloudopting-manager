@@ -81,7 +81,7 @@ public class CloudService {
 					+"phone_home:"
 					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId
 					+"  post: all";
-			
+			myRequest.setUserData(unencodedData);
 
 			// cloudStackProvision.provision(myRequest);
 			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
