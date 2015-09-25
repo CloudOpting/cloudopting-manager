@@ -2,6 +2,7 @@
 angular.module('cloudoptingApp').filter('startFrom', function() {
     return function(input, start) {
         start = +start; //parse to int
+        if(input==null) return;
         return input.slice(start);
     }
 });
