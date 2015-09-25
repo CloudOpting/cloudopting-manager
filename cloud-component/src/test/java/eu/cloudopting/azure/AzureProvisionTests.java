@@ -25,7 +25,12 @@ public class AzureProvisionTests extends ProvisionBaseTest {
     @Test
     public void testAzureProvision() {
         AzureRequest request = createAzureRequest();
-        azureProvision.provision(request);
+        String id =  azureProvision.provisionVM(request);
+        azureProvision.checkVMdeployed(request,id);
+        azureProvision.getVMinfo(request, id);
+        azureProvision.acquireIp(request);
+        azureProvision.getAcquiredIpinfo(request,id);
+        azureProvision.portForward(request);
     }
 
 

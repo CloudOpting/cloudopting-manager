@@ -22,6 +22,8 @@ public class CloudService {
 	@Value("${cloud.ip}")
 	String myIP = "127.0.0.1";
 
+	@Value("${cloud.templateId}")
+	String templateId = "88fcdf8f-891a-4d11-b02f-448861216b02";
 
 	private HashMap<Long, HashMap<String, String>> accounts = new HashMap<Long, HashMap<String, String>>();
 
@@ -47,7 +49,8 @@ public class CloudService {
 		myRequest.setEndpoint(theAccount.get("endpoint"));
 		myRequest.setIdentity(theAccount.get("apikey"));
 		myRequest.setCredential(theAccount.get("secretKey"));
-		myRequest.setDefaultTemplate("88fcdf8f-891a-4d11-b02f-448861216b02");
+		//TODO this will have to end up in the cloud account
+		myRequest.setDefaultTemplate(this.templateId);
 		log.debug("the request:" + myRequest.toString());
 		return myRequest;
 	}
@@ -78,7 +81,7 @@ public class CloudService {
 					+"phone_home:"
 					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId
 					+"  post: all";
-			
+			myRequest.setUserData(unencodedData);
 
 			// cloudStackProvision.provision(myRequest);
 			cloudTaskId = cloudStackProvision.provisionVM(myRequest);

@@ -37,6 +37,7 @@ angular.module('cloudoptingApp')
          * with status 'Draft'
          * FIXME: At the moment it is not used.
          */
+        /*
         $scope.saveConfigurationWizardOne = function () {
             var callback = function(activiti){
                 localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
@@ -46,14 +47,20 @@ angular.module('cloudoptingApp')
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
 
+            //Save the current app in order to use it in the future.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
+
             //Create the applicaiton.
             ApplicationService.create(application, callback);
 
             //Move to Step 2 of wizard - Add content library
             $state.go('publish2');
         };
-
+        */
+        /**
+         * Function to create an application with a 'name', 'description' and 'promoImage'
+         * with status 'Draft'
+         */
         $scope.saveWizardOne = function() {
             var callback = function(activiti){
                 localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
@@ -65,7 +72,9 @@ angular.module('cloudoptingApp')
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
 
+            //Save the current app in order to use it in the future.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
+
             //Create
             ApplicationService.create(application, callback);
             $scope.disableUpdate = false;
@@ -84,7 +93,9 @@ angular.module('cloudoptingApp')
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
             application.id=activiti.applicationId;
 
+            //Save the current app in order to use it in the future.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
+
             ApplicationService.update(activiti.applicationId, activiti.processInstanceId, application, callback);
         };
 

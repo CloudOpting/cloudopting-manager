@@ -52,5 +52,7 @@ zabbix:
     endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
 
 cloud:
-    doDeploy: false
+    doDeploy: true
     ip: 127.0.0.1
+    templateId: 1a74adaa-845d-4fec-a12c-cc26026b38b7
+    diskId: ec700372-e694-45a1-b3a8-30a636c5a747

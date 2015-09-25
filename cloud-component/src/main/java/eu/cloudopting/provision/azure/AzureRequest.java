@@ -1,10 +1,13 @@
 package eu.cloudopting.provision.azure;
 
 import eu.cloudopting.provision.ProvisionRequest;
+import org.jclouds.azurecompute.domain.DeploymentParams;
 import org.jclouds.azurecompute.domain.OSImage;
 import org.jclouds.azurecompute.domain.RoleSize;
 import org.jclouds.azurecompute.domain.StorageService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -92,9 +95,37 @@ public class AzureRequest implements ProvisionRequest{
      */
     private OSImage.Type osImageType;
 
+    List<DeploymentParams.ExternalEndpoint> externalEndpoints = new ArrayList<>();
+
+    public void addExternalEnpoint(DeploymentParams.ExternalEndpoint externalEndpoint){
+        externalEndpoints.add(externalEndpoint);
+    }
+
+    public List<DeploymentParams.ExternalEndpoint> getExternalEndpoints() {
+        return externalEndpoints;
+    }
+
+    public void setExternalEndpoints(List<DeploymentParams.ExternalEndpoint> externalEndpoints) {
+        this.externalEndpoints = externalEndpoints;
+    }
+
+    private AzureResult azureResult;
+
+    public AzureResult getAzureResult() {
+        return azureResult;
+    }
+
+    public void setAzureResult(AzureResult azureResult) {
+        this.azureResult = azureResult;
+    }
+
     /**
      * The storage account type from the cloud provider.
      */
+
+
+
+
     StorageService.AccountType storageAccountType;
 
     public String getIdentity() {
