@@ -15,8 +15,10 @@ import org.jclouds.azurecompute.domain.*;
 import org.jclouds.azurecompute.features.DeploymentApi;
 import org.jclouds.azurecompute.features.VirtualNetworkApi;
 import org.jclouds.azurecompute.util.ConflictManagementPredicate;
+import org.jclouds.azurecompute.xml.InputEndpointHandler;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.providers.ProviderMetadata;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -37,6 +39,7 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
     private final Set<Module> modules = ImmutableSet.<Module>of(new ExecutorServiceModule(newDirectExecutorService()));
     AzureRequest request;
     private StorageService storageService;
+    DeploymentApi deploymentApi;
 
     @Override
     public AzureResult provision(AzureRequest request) {
@@ -45,10 +48,14 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
         storageService = getOrCreateStorageService(request.getStorageServiceName(), storageServiceParams());
         virtualNetworkSite = getOrCreateVirtualNetworkSite(request.getVirtualNetworkName(), request.getLocation());
         DeploymentApi deploymentApi = api().getDeploymentApiForService(cloudService.name());
+        this.deploymentApi = deploymentApi;
         final String requestId = deploymentApi.create(deploymentParams());
         assert (operationSucceeded().apply(requestId));
         AzureResult azureResult = new AzureResult();
         azureResult.setRequestId(requestId);
+        azureResult.setDeplymentId(requestId);
+        azureResult.setDeplymentName(request.getDeployment());
+        request.setAzureResult(azureResult);
         return azureResult;
     }
 
@@ -64,6 +71,7 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
                 .subnetName(Iterables.get(virtualNetworkSite.subnets(), 0).name())
                 .virtualNetworkName(virtualNetworkSite.name())
                 .externalEndpoint(DeploymentParams.ExternalEndpoint.inboundTcpToLocalPort(22, 22))
+                .externalEndpoints(request.getExternalEndpoints())
                 .build();
 
     }
@@ -192,38 +200,48 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
 
 	@Override
 	public String provisionVM(AzureRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		return provision(request).getRequestId();
 	}
 
 	@Override
 	public boolean checkVMdeployed(AzureRequest myRequest, String taskId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+        Deployment.Status status = deploymentApi.get(myRequest.getDeployment()).status();
+        return status != null && status.toString().equals("RUNNING");
+    }
 
 	@Override
 	public JSONObject getVMinfo(AzureRequest myRequest, String taskId) {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject jsonObject = new JSONObject();
+//        Deployment deployment = deploymentApi.get(myRequest.getDeployment());
+        try {
+            jsonObject.put("vmId", deploymentApi.get(myRequest.getDeployment()).name());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
 	}
 
 	@Override
 	public String acquireIp(AzureRequest myRequest) {
-		// TODO Auto-generated method stub
-		return null;
+		return myRequest.getDeployment()+".cloudapp.net";
 	}
 
 	@Override
 	public boolean checkIpAcquired(AzureRequest myRequest, String taskId) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public JSONObject getAcquiredIpinfo(AzureRequest myRequest, String taskId) {
-		// TODO Auto-generated method stub
-		return null;
+        JSONObject ipData = new JSONObject();
+        try {
+            ipData.put("ip", myRequest.getDeployment()+".cloudapp.net");
+            ipData.put("ipId", "");
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+        }
+		return ipData;
 	}
 
 	@Override
@@ -240,26 +258,29 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
 
 	@Override
 	public JSONObject getVMinfoById(AzureRequest myRequest) {
-		// TODO Auto-generated method stub
-		return null;
+        JSONObject jsonObject = new JSONObject();
+//        Deployment deployment = deploymentApi.get(myRequest.getDeployment());
+        try {
+            jsonObject.put("vmId", deploymentApi.get(myRequest.getDeployment()).name());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
 	}
 
 	@Override
 	public String removeISO(AzureRequest myRequest) {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public boolean checkIso(AzureRequest myRequest, String taskId) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public String startVM(AzureRequest myRequest) {
-		// TODO Auto-generated method stub
-		return null;
+		return myRequest.getDeployment();
 	}
 
 
