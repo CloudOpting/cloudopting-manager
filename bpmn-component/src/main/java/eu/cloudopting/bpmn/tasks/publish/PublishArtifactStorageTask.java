@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
+import eu.cloudopting.exception.ToscaException;
 import eu.cloudopting.store.StoreService;
 import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
 import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
@@ -40,18 +41,28 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 		log.debug("Artifact UPLOAD Name: "+uploadName);
 		File fileToDelete = FileUtils.getFile(uploadFilePath);
 	    InputStream in = new FileInputStream(fileToDelete);
+	    //TODO Fix this when JackRabbit works
+	    execution.setVariable("chkPublishArtifactsAvailable", true);
 	    try {
 		    in = new java.io.BufferedInputStream(in);
 		    JackrabbitStoreRequest jrReq = 
 		    		new JackrabbitStoreRequest(storeService.getTemplatePath(org.getOrganizationKey(),  uploadIdApp), 
 		    				uploadName, new Date(), uploadName.substring(uploadName.lastIndexOf(".")+1), in);
-			JackrabbitStoreResult res = storeService.storeBinary(jrReq);
-			log.debug("Artifact UPLOAD Successfull? "+res.isStored());
-			in.close();
+		    try {
+				JackrabbitStoreResult res = storeService.storeBinary(jrReq);
+				log.debug("Artifact UPLOAD ok? " + res.isStored());
+			} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
+				// TODO Auto-generated catch block
+				log.error("Error in storing Artifact File");
+				e.printStackTrace();
+			}
+			execution.setVariable("chkPublishArtifactsAvailable", true);
+	    } catch (ToscaException e) {
+			throw e;
+		} finally {
 			FileUtils.deleteQuietly(fileToDelete);
-	    } finally {
-	      IOUtils.closeQuietly(in);
-	    }
+			IOUtils.closeQuietly(in);
+		}
 	}
 
 }

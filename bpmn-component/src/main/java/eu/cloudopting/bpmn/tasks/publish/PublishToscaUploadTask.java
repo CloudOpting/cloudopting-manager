@@ -46,7 +46,8 @@ public class PublishToscaUploadTask implements JavaDelegate {
 
 		File fileToDelete = FileUtils.getFile(uploadFilePath);
 		InputStream in = new FileInputStream(fileToDelete);
-
+		//TODO check the result of upload to JackRabbit
+		execution.setVariable("chkPublishToscaAvailable", true);
 		try {
 			boolean isValidToscaArchive = toscaService.validateToscaCsar(uploadFilePath);
 			if (isValidToscaArchive) {
@@ -59,12 +60,18 @@ public class PublishToscaUploadTask implements JavaDelegate {
 						uploadName.substring(uploadName.lastIndexOf(".") + 1),
 						in
 				);
-				JackrabbitStoreResult res = storeService.storeBinary(jrReq);
-				log.debug("Tosca Archive UPLOAD ok? " + res.isStored());
+				try {
+					JackrabbitStoreResult res = storeService.storeBinary(jrReq);
+					log.debug("Tosca Archive UPLOAD ok? " + res.isStored());
+				} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
+					// TODO Auto-generated catch block
+					log.error("Error in storing Tosca File");
+					e.printStackTrace();
+				}
+				execution.setVariable("chkPublishToscaAvailable", true);
 			} else {
 				log.debug("Invalid Tosca Archive!");
-			}
-			;
+			};
 		} catch (ToscaException e) {
 			throw e;
 		} finally {

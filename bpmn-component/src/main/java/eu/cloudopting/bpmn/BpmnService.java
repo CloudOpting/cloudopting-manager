@@ -197,16 +197,16 @@ public class BpmnService {
 		return exIds;
 	}
 	
-	public String startTestDeployProcess(){
-		return null;
-	
-	}
-	
-	public String startAddApplicationProcess(){
-		return null;
-	
-	}
-	
+//	public String startTestDeployProcess(){
+//		return null;
+//	
+//	}
+//	
+//	public String startAddApplicationProcess(){
+//		return null;
+//	
+//	}
+//	
 	public byte[] getProcessStatusImage(String id){
 		return null;
 	
@@ -259,13 +259,24 @@ public class BpmnService {
         params.put("org",uploadDTO.getOrg());
         params.put("user",uploadDTO.getUser());
         //The return value is not used, just for debug purposes
-        //ToscaUploadEventRef
         Set<String> executionIds = null;
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_CONTENT_LIBRARY.toString())){
         	executionIds = unlockProcess(uploadProcessId, "ArtifactsUploadEventRef", params);
+        	Execution execution = runtimeService.createExecutionQuery()
+        			  .processInstanceId(uploadProcessId)
+        			  .activityId("postArtifactsUploadId")
+        			  .singleResult();
+  	      	//application = (ApplicationDTO) runtimeService.getVariable(uploadProcessId, "application");
+  	      	runtimeService.signal(execution.getId());
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_TOSCA_ARCHIVE.toString())){
         	executionIds = unlockProcess(uploadProcessId, "ToscaUploadEventRef", params);
+        	Execution execution = runtimeService.createExecutionQuery()
+      			  .processInstanceId(uploadProcessId)
+      			  .activityId("postToscaUploadId")
+      			  .singleResult();
+	      	//application = (ApplicationDTO) runtimeService.getVariable(uploadProcessId, "application");
+	      	runtimeService.signal(execution.getId());
         }
         //Return the updated value of the model
         ActivitiDTO activitiDTO = new ActivitiDTO();
@@ -296,12 +307,10 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
-	public ApplicationDTO updateApplication(ApplicationDTO application, String processInstanceId) {
+	public ActivitiDTO updateApplication(ApplicationDTO application, String processInstanceId) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("application",application);
-		//ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateApplication",v);
-		//The return value is not used, just for debug purposes
-        Status statusDraft = statusService.findOne(StatusConstants.DRAFT),
+		Status statusDraft = statusService.findOne(StatusConstants.DRAFT),
         		statusRequested = statusService.findOne(StatusConstants.REQUESTED),
         		statusPublished = statusService.findOne(StatusConstants.PUBLISHED);
         Set<String> executionIds = new HashSet<String>();
@@ -316,26 +325,36 @@ public class BpmnService {
         
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusDraft.getStatus())){
         	executionIds = unlockProcess(processInstanceId, "metadataRetrievalMsg", params);
+        	Execution execution = runtimeService.createExecutionQuery()
+        			  .processInstanceId(processInstanceId)
+        			  .activityId("postMetadataTaskId")
+        			  .singleResult();
+        	application = (ApplicationDTO) runtimeService.getVariable(processInstanceId, "application");
+        	runtimeService.signal(execution.getId());
         }
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusRequested.getStatus())){
         	executionIds = unlockProcess(processInstanceId, "PublishEventRef", params);
         	//TODO Check for the return status from the process, if any
         	application.setStatus(statusPublished.getStatus());
         }
-        
+        ActivitiDTO activitiDTO = new ActivitiDTO();
         //The return value is not used, just for debug purposes
-        ExecutionQuery eq = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).processVariableValueEquals("applicationId", application.getId().toString());
-        List<Execution> executions = eq.list();
+        if (currentApplicationStatus!=null && !currentApplicationStatus.equalsIgnoreCase(statusRequested.getStatus())){
+        	ExecutionQuery eq = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).processVariableValueEquals("applicationId", application.getId().toString());
+            List<Execution> executions = eq.list();
+            //TODO Refactor this and remove all duplications/instantiations
+    		String custId = (String) runtimeService.getVariable(processInstanceId, "customizationId");
+    		activitiDTO.setCustomizationId(custId);
+    		activitiDTO.setProcessInstanceId(processInstanceId);
+    		Long appId = (Long) runtimeService.getVariable(processInstanceId, "applicationId");
+    		activitiDTO.setApplicationId(appId.toString());
+            //Return the updated value of the model
+        }
         
-        //Return the updated value of the model
-//        ActivitiDTO activitiDTO = new ActivitiDTO();
-//		activitiDTO.setApplicationId(((VariableInstanceEntity)map.get("applicationId")).getTextValue());
-//		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
-//		activitiDTO.setApplicationId(application.getId().toString());
-//		activitiDTO.setProcessInstanceId(processInstanceId);
-		return application;
+		return activitiDTO;
 	}
-
+	
+	
 	public ActivitiDTO createCustomization(CustomizationDTO customizationDTO) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("customization",customizationDTO);
@@ -368,4 +387,5 @@ public class BpmnService {
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}
+	
 }

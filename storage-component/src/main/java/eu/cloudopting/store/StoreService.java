@@ -59,6 +59,7 @@ public class StoreService {
 	 * @return The path to be passed as first parameter to the JackRabbitStoreRequest constructor.
 	 */
 	public String getTemplatePath (String organizationKey, String applicationToscaName){
+		//TODO Uncomment once JackRabbit is able to create intermediate paths
 		return organizationKey + "/" + applicationToscaName + "/template";
 		
 	}

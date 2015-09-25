@@ -34,12 +34,17 @@ public class PublishContextSetupTask implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         log.info("Publish - Context SetUp");
         ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
+        Status status = statusService.findOne(StatusConstants.DRAFT);
+        applicationSource.setStatus(status.getStatus());
         Applications application = new Applications();
         BeanUtils.copyProperties(applicationSource,application);
-        Status status = statusService.findOne(StatusConstants.DRAFT);
         application.setStatusId(status);
         application.setApplicationVersion(String.valueOf(1));
         Applications savedApplication = applicationService.create(application);
+        //UPDATE THE PROCESS VARIABLE
+        applicationSource.setId(savedApplication.getId());
+        applicationSource.setProcessId(execution.getProcessInstanceId());
+        execution.setVariable("application", applicationSource);
         execution.setVariable("applicationId", savedApplication.getId());
         execution.setVariable("chkPublishMetadataAvailable", true);
     }

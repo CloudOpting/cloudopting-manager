@@ -223,7 +223,8 @@ angular.module('cloudoptingApp')
         var requestPublication = function (activiti, application, callback) {
             //activiti.processInstanceId, activiti.applicationId
             application.status = "Requested";
-            ApplicationService.update(activiti.applicationId, activiti.processInstanceId, application, callback);
+            console.log("Requesting publication for application:"+angular.toJson(application, true));
+            ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
         };
     }
 );
