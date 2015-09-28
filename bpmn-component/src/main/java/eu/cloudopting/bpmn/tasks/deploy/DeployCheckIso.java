@@ -28,7 +28,7 @@ public class DeployCheckIso implements JavaDelegate {
 		String vmId = (String) execution.getVariable("vmId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		if (this.doDeploy) {
-			TimeUnit.SECONDS.sleep(4);
+			TimeUnit.SECONDS.sleep(25);
 			boolean check = cloudService.checkIso(cloudAccountId, isoTaskId);
 
 			if(check){

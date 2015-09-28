@@ -27,10 +27,10 @@ public class DeployCheckDown implements JavaDelegate {
 		String vmId = (String) execution.getVariable("vmId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		if (this.doDeploy) {
-			TimeUnit.SECONDS.sleep(4);
+			TimeUnit.SECONDS.sleep(120);
 			String isoTaskId = "";
 			boolean check = cloudService.isVMrunning(cloudAccountId, vmId);
-			if(check){
+			if(!check){
 				// now that the Vm is Down we need to remove the ISO
 				isoTaskId = cloudService.removeISO(cloudAccountId, vmId);
 				execution.setVariable("isoTaskId", isoTaskId);

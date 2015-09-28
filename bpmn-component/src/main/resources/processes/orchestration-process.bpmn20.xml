@@ -158,7 +158,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIsRunning==true}]]></conditionExpression>
       </sequenceFlow>
       <eventBasedGateway id="eventgateway1" name="Event Gateway"></eventBasedGateway>
-      <sequenceFlow id="flow5" sourceRef="exclusivegateway11" targetRef="chkISOTask">
+      <sequenceFlow id="flow5" sourceRef="exclusivegateway11" targetRef="exclusivegateway13">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIsRunning==false}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow8" sourceRef="eventgateway1" targetRef="messageintermediatecatchevent1"></sequenceFlow>
@@ -167,7 +167,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <sequenceFlow id="flow10" sourceRef="exclusivegateway12" targetRef="eventgateway1">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIso==true}]]></conditionExpression>
       </sequenceFlow>
-      <sequenceFlow id="flow11" sourceRef="exclusivegateway12" targetRef="exclusivegateway11">
+      <sequenceFlow id="flow11" sourceRef="exclusivegateway12" targetRef="exclusivegateway13">
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkIso==false}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow12" sourceRef="chkISOTask" targetRef="exclusivegateway12"></sequenceFlow>
@@ -175,6 +175,8 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <messageEventDefinition messageRef="machineInstalledId"></messageEventDefinition>
       </intermediateCatchEvent>
       <sequenceFlow id="flow7" sourceRef="messageintermediatecatchevent1" targetRef="endevent1"></sequenceFlow>
+      <exclusiveGateway id="exclusivegateway13" name="Exclusive Gateway"></exclusiveGateway>
+      <sequenceFlow id="flow13" sourceRef="exclusivegateway13" targetRef="chkISOTask"></sequenceFlow>
     </subProcess>
     <sequenceFlow id="flow9" sourceRef="activateVM" targetRef="acquireIpTask"></sequenceFlow>
   </process>
@@ -322,22 +324,22 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdc:Bounds height="40.0" width="40.0" x="1220.0" y="328.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="activateVM" id="BPMNShape_activateVM">
-        <omgdc:Bounds height="149.0" width="653.0" x="80.0" y="1.0"></omgdc:Bounds>
+        <omgdc:Bounds height="149.0" width="683.0" x="50.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="90.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="59.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="690.0" y="59.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkDownVmTask" id="BPMNShape_chkDownVmTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="49.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="49.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="JoinDown" id="BPMNShape_JoinDown">
-        <omgdc:Bounds height="40.0" width="40.0" x="140.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="110.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
-        <omgdc:Bounds height="40.0" width="40.0" x="320.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="280.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="eventgateway1" id="BPMNShape_eventgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="570.0" y="56.0"></omgdc:Bounds>
@@ -350,6 +352,9 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageintermediatecatchevent1" id="BPMNShape_messageintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="630.0" y="59.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway13" id="BPMNShape_exclusivegateway13">
+        <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fromStart" id="BPMNEdge_fromStart">
         <omgdi:waypoint x="36.0" y="285.0"></omgdi:waypoint>
@@ -378,7 +383,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="vmInstalled" id="BPMNEdge_vmInstalled">
         <omgdi:waypoint x="552.0" y="261.0"></omgdi:waypoint>
-        <omgdi:waypoint x="406.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="391.0" y="150.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="36.0" width="41.0" x="532.0" y="237.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -571,26 +576,26 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="1240.0" y="328.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinDown" id="BPMNEdge_toJoinDown">
-        <omgdi:waypoint x="125.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="140.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="95.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toChkDown" id="BPMNEdge_toChkDown">
-        <omgdi:waypoint x="180.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSplitDown" id="BPMNEdge_toSplitDown">
-        <omgdi:waypoint x="305.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="265.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="vmNotDown" id="BPMNEdge_vmNotDown">
-        <omgdi:waypoint x="340.0" y="96.0"></omgdi:waypoint>
-        <omgdi:waypoint x="338.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="308.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="360.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="610.0" y="76.0"></omgdi:waypoint>
@@ -602,9 +607,9 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="520.0" y="96.0"></omgdi:waypoint>
-        <omgdi:waypoint x="517.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="368.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="487.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="338.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="485.0" y="76.0"></omgdi:waypoint>
@@ -613,6 +618,10 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="665.0" y="76.0"></omgdi:waypoint>
         <omgdi:waypoint x="690.0" y="76.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="370.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="733.0" y="75.0"></omgdi:waypoint>

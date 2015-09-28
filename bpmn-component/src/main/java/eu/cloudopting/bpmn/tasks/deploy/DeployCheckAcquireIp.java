@@ -29,7 +29,7 @@ public class DeployCheckAcquireIp implements JavaDelegate {
 		String acquireJobId = (String) execution.getVariable("acquireJobId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		if (this.doDeploy) {
-			TimeUnit.SECONDS.sleep(4);
+			TimeUnit.SECONDS.sleep(20);
 			boolean check = cloudService.checkAssociateIp(cloudAccountId, acquireJobId);
 			if (check) {
 				JSONObject ipInfo = cloudService.getAssociatedIpinfo(cloudAccountId, acquireJobId);

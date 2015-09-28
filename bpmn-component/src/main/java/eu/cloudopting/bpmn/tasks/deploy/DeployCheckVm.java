@@ -33,7 +33,7 @@ public class DeployCheckVm implements JavaDelegate {
 		String cloudtask = (String) execution.getVariable("cloudtask");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		if (this.doDeploy) {
-			TimeUnit.SECONDS.sleep(4);
+			TimeUnit.SECONDS.sleep(25);
 
 			boolean check = cloudService.checkVM(cloudAccountId, cloudtask);
 			if (check) {

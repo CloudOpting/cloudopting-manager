@@ -25,6 +25,9 @@ public class CloudService {
 	@Value("${cloud.templateId}")
 	String templateId = "88fcdf8f-891a-4d11-b02f-448861216b02";
 
+	@Value("${cloud.diskId}")
+	String diskId = "88fcdf8f-891a-4d11-b02f-448861216b02";
+
 	private HashMap<Long, HashMap<String, String>> accounts = new HashMap<Long, HashMap<String, String>>();
 
 	@Inject
@@ -82,6 +85,7 @@ public class CloudService {
 					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId
 					+"  post: all";
 			myRequest.setUserData(unencodedData);
+			myRequest.setDiskId(this.diskId);
 
 			// cloudStackProvision.provision(myRequest);
 			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
@@ -330,7 +334,7 @@ public class CloudService {
 		boolean isRunning = true;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
-			log.debug("before creating the cloudstack VM");
+			log.debug("before checking if Vm is down");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			myRequest.setVirtualMachineId(vmId);
 			// cloudStackProvision.provision(myRequest);

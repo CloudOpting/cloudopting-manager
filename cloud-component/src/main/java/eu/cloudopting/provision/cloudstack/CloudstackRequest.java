@@ -28,8 +28,17 @@ public class CloudstackRequest implements ProvisionRequest {
     String cpu;
     long diskSize;
     String userData;
+    String diskId;
     
-    public String getUserData() {
+    public String getDiskId() {
+		return diskId;
+	}
+
+	public void setDiskId(String diskId) {
+		this.diskId = diskId;
+	}
+
+	public String getUserData() {
 		return userData;
 	}
 

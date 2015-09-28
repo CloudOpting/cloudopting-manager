@@ -104,9 +104,10 @@ public class StoreService {
 		try {
 	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
 	        String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
-			folder = session.getRootNode().getNode(storePath);
+//			folder = session.getRootNode().getNode(storePath);
 //			Node file = folder.addNode(theFile, "nt:file");
 //	        Node content = file.addNode("jcr:content", "nt:resource");
+			folder = JcrUtils.getOrAddFolder(session.getRootNode(), storePath);
 	        JcrUtils.putFile(folder, theFile, mimeType, stream);
 //	        Binary binary = session.getValueFactory().createBinary(stream);
 //	        content.setProperty("jcr:data", binary);
