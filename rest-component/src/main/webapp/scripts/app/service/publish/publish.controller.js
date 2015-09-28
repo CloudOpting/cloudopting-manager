@@ -66,11 +66,15 @@ angular.module('cloudoptingApp')
                 localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
                 //FIXME: The processID is only for developmenent.
                 $scope.processID = activiti.processInstanceId;
+                var app = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+                app.id = activiti.applicationId;
+                localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
                 savePromotionalImage();
             };
             var application = {};
             application.applicationName = $scope.name;
             application.applicationDescription=$scope.description;
+            
 
             //Save the current app in order to use it in the future.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
