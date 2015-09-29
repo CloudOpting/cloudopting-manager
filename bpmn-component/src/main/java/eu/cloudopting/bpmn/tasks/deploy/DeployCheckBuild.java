@@ -33,7 +33,7 @@ public class DeployCheckBuild implements JavaDelegate {
 
 		log.debug("buildToken:" + buildToken);
 
-		TimeUnit.SECONDS.sleep(80);
+		TimeUnit.SECONDS.sleep(120);
 		// toscaService.getNodeType(customizationId,"");
 		boolean check = false;
 		try {

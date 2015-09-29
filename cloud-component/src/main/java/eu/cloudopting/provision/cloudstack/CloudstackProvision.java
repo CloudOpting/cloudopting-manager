@@ -8,6 +8,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.jclouds.cloudstack.options.ListNetworksOptions.Builder.isDefault;
 import static org.jclouds.util.Predicates2.retry;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
@@ -143,18 +144,20 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 				.minRam(request.getMinRam()).build();
 		// theTemplate = template;
 		Set<ServiceOffering> theOffering = theClient.getOfferingApi().listServiceOfferings();
+		Iterator<ServiceOffering> iOffering = theOffering.iterator();
+		iOffering.next();
 		Set<Zone> theZones = theClient.getZoneApi().listZones(null);
 		log.debug(theZones.toString());
 		DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
-		options.displayName("testmachine4");
-		options.name("testmachinename4");
+		options.displayName("testmachine10");
+		options.name("testmachinename10");
 //		options.userData(unencodedData.getBytes());
 		options.userData(request.getUserData().getBytes());
 		options.hypervisor("KVM");
 		options.diskOfferingId(request.getDiskId());
 
 		AsyncCreateResponse job = theClient.getVirtualMachineApi().deployVirtualMachineInZone(
-				theZones.iterator().next().getId(), theOffering.iterator().next().getId(), request.defaultTemplate,
+				theZones.iterator().next().getId(), iOffering.next().getId(), request.defaultTemplate,
 				options);
 		System.out.println("JOB RESPONSE:" + job.toString());
 

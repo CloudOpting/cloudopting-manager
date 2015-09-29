@@ -80,9 +80,9 @@ public class CloudService {
 			log.debug("before creating the cloudstack VM");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			String unencodedData = "#cloud-config\n"
-					+"touch /root/cloudinitexecuted.txt"
-					+"phone_home:"
-					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId
+					+"touch /root/cloudinitexecuted.txt\n"
+					+"phone_home:\n"
+					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId+"\n"
 					+"  post: all";
 			myRequest.setUserData(unencodedData);
 			myRequest.setDiskId(this.diskId);
