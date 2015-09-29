@@ -225,7 +225,7 @@ public class BpmnService {
 	}
 	
 	public static File stream2file (String uploadName, InputStream in) throws IOException {
-        final File tempFile = File.createTempFile(uploadName, "tmp");
+        final File tempFile = File.createTempFile(uploadName+"|", "tmp");
         tempFile.deleteOnExit();
         try (FileOutputStream out = new FileOutputStream(tempFile)) {
             IOUtils.copy(in, out);
