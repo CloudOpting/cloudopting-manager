@@ -1,9 +1,11 @@
 package eu.cloudopting.store;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.jcr.Node;
@@ -102,12 +104,17 @@ public class StoreService {
         Node folder;
         InputStream stream;
 		try {
+			log.debug("[Local]\tFile Path:"+filePath+" - File name:"+theFile);
+			log.debug("[Remote]\tFile Path:"+storePath+" - File name:"+storeFile);
 	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
 	        String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
 //			folder = session.getRootNode().getNode(storePath);
 //			Node file = folder.addNode(theFile, "nt:file");
 //	        Node content = file.addNode("jcr:content", "nt:resource");
-			folder = JcrUtils.getOrAddFolder(session.getRootNode(), storePath);
+//			folder = JcrUtils.getOrAddFolder(session.getRootNode(), storePath);
+	        //Add the file separator to the local path, if missing
+	        filePath += filePath.endsWith(File.separator)?"":File.separator;
+	        folder = this.createNodesForPath(storePath);
 	        JcrUtils.putFile(folder, theFile, mimeType, stream);
 //	        Binary binary = session.getValueFactory().createBinary(stream);
 //	        content.setProperty("jcr:data", binary);
@@ -120,8 +127,38 @@ public class StoreService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-
+    }
+    
+    /**
+     * Creates a hierarchy of Nodes by splitting the input String on occurrences of File.pathSeparator
+     * @param localFileAbsolutePath the path whose matching nodes have to be created
+     * @return The last (deepest) created node for the provided path
+     * @throws RepositoryException
+     */
+    public Node createNodesForPath(String localFileAbsolutePath) throws RepositoryException{
+    	String splitRegex = Pattern.quote(File.separator);
+    	if (localFileAbsolutePath.startsWith(File.separator)){
+    		localFileAbsolutePath = localFileAbsolutePath.replaceFirst(splitRegex, "");
+    	}
+		String[] splittedFileName = localFileAbsolutePath.split(splitRegex);
+		Node lastCreatedNode = session.getRootNode();
+		for (int i = 0; i < splittedFileName.length; i++) {
+			lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
+		}
+		return lastCreatedNode;
+    }
+    
+    /**
+     * Creates a JCR Child Node for the provided parent node
+     * @param parent The containing node
+     * @param childFolder The name of the child node
+     * @return The new child node, or null if there were issues.
+     */
+    public Node addChildToNode(Node parent, String childFolder) throws RepositoryException{
+    	Node childNode = null;
+    	childNode = JcrUtils.getOrAddFolder(parent, childFolder);
+	    session.save();
+		return childNode;
     }
 
 

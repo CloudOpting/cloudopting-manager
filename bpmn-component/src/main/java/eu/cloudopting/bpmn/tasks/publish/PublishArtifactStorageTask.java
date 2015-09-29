@@ -45,10 +45,15 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 		    try {
 //				JackrabbitStoreResult res = storeService.storeBinary(jrReq);
 		    	String 	localFileAbsolutePath 	= fileToDelete.getAbsolutePath(),
-						localFilePath = localFileAbsolutePath.substring(0,localFileAbsolutePath.lastIndexOf(File.separator)),
+						localFilePath = localFileAbsolutePath.substring(0,localFileAbsolutePath.lastIndexOf(File.separator)+1),
 						localFileName 	= fileToDelete.getName(), 
 						remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadIdApp), 
 						remoteFileName	= fileToDelete.getName();
+				log.debug("--- Local File Absolute Path:"+localFileAbsolutePath);
+				log.debug("--- Local File Path:"+localFilePath);
+				log.debug("--- Local File Name:"+localFileName);
+				log.debug("--- Remote File Path:"+remoteFilePath);
+				log.debug("--- Remote File Name:"+remoteFileName);
 				storeService.storeFile(
 						localFilePath, 
 						localFileName, 
