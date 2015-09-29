@@ -26,8 +26,14 @@ public class DeployCheckDown implements JavaDelegate {
 		log.debug("in DeployCheckDown");
 		String vmId = (String) execution.getVariable("vmId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
+		
+		Integer downpassages = (Integer) execution.getVariable("downpassages");
+		log.debug("LOG OG PASSAGES OF DOWN CHECK:"+downpassages);
+		downpassages += 1;
+		execution.setVariable("downpassages", downpassages,true);
+		
 		if (this.doDeploy) {
-			TimeUnit.SECONDS.sleep(120);
+//			TimeUnit.SECONDS.sleep(300);
 			String isoTaskId = "";
 			boolean check = cloudService.isVMrunning(cloudAccountId, vmId);
 			if(!check){
