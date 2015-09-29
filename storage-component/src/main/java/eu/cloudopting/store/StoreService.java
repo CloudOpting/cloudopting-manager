@@ -115,7 +115,7 @@ public class StoreService {
 	        //Add the file separator to the local path, if missing
 	        filePath += filePath.endsWith(File.separator)?"":File.separator;
 	        folder = this.createNodesForPath(storePath);
-	        JcrUtils.putFile(folder, theFile, mimeType, stream);
+	        JcrUtils.putFile(folder, storeFile, mimeType, stream);
 //	        Binary binary = session.getValueFactory().createBinary(stream);
 //	        content.setProperty("jcr:data", binary);
 //	        content.setProperty("jcr:mimeType", mimeType);

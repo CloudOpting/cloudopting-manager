@@ -49,7 +49,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 						localFileName 	= fileToDelete.getName(), 
 						remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadIdApp), 
 						remoteFileName	= fileToDelete.getName(),
-						remoteFileNameReduced	= remoteFileName.substring(0,localFileAbsolutePath.indexOf("|"));
+						remoteFileNameReduced	= remoteFileName.substring(0,remoteFileName.indexOf("|"));
 				log.debug("--- Local File Absolute Path:"+localFileAbsolutePath);
 				log.debug("--- Local File Path:"+localFilePath);
 				log.debug("--- Local File Name:"+localFileName);
@@ -59,7 +59,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 						localFilePath, 
 						localFileName, 
 						remoteFilePath, 
-						remoteFileName
+						remoteFileNameReduced
 				);
 				log.debug("Artifact UPLOAD performed");
 			} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
