@@ -28,7 +28,7 @@ public class DeployCheckPortForward implements JavaDelegate {
 		String portForwardJobId = (String) execution.getVariable("portForwardJobId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		if (this.doDeploy) {
-			TimeUnit.SECONDS.sleep(20);
+//			TimeUnit.SECONDS.sleep(20);
 			boolean check = cloudService.checkPortForward(cloudAccountId, portForwardJobId);
 			execution.setVariable("chkForward", check);
 		} else {

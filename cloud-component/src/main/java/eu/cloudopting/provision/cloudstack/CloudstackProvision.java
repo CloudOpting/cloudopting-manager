@@ -149,8 +149,8 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		Set<Zone> theZones = theClient.getZoneApi().listZones(null);
 		log.debug(theZones.toString());
 		DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
-		options.displayName("testmachine10");
-		options.name("testmachinename10");
+		options.displayName("testmachine15");
+		options.name("testmachinename15");
 //		options.userData(unencodedData.getBytes());
 		options.userData(request.getUserData().getBytes());
 		options.hypervisor("KVM");
@@ -235,6 +235,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 			vmData.put("vmId", theVM.getId());
 			vmData.put("created", theVM.getCreated());
 			vmData.put("state", theVM.getState());
+			System.out.println("VM STATE:" + theVM.getState());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

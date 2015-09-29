@@ -80,7 +80,8 @@ public class CloudService {
 			log.debug("before creating the cloudstack VM");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			String unencodedData = "#cloud-config\n"
-					+"touch /root/cloudinitexecuted.txt\n"
+					+"runcmd:\n"
+					+"  - touch /root/cloudinitexecuted.txt\n"
 					+"phone_home:\n"
 					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId+"\n"
 					+"  post: all";
@@ -339,8 +340,11 @@ public class CloudService {
 			myRequest.setVirtualMachineId(vmId);
 			// cloudStackProvision.provision(myRequest);
 			vmData = cloudStackProvision.getVMinfoById(myRequest);
+			
 			try {
-				if(vmData.get("state")=="STOPPED"){
+				String state = vmData.getString("state");
+				log.debug("The state is:"+state);
+				if(state.equals("Stopped")){
 					isRunning = false;
 				}
 			} catch (JSONException e) {
