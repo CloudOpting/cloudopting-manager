@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
+import java.lang.UnsupportedOperationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.BasicJsonParser;
@@ -209,13 +211,11 @@ public class DockerService {
 	}
 	
 	public String commitImage(String image){
-		log.debug("Committing the image to the registry");
-		return "1234";
+		throw new UnsupportedOperationException("Invalid operation. Commiting is now done in the same step that building.");
 	}
 	
 	public boolean isCommitted(String tocken){
-		log.debug("check to see if the commit went ok");
-		return true;
+		throw new UnsupportedOperationException("Invalid operation. Commiting is now done in the same step that building.");
 	}
 	
 	
@@ -232,8 +232,7 @@ public class DockerService {
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public String createCluster(String hostname, int port, File privateKey, String passphrase) throws DockerError{
-		log.debug("in createCluster (private key + passphrase credentials) and calling the API");
-		return this.cluster.initCluster(new Machine(hostname, port, privateKey, passphrase));
+		throw new UnsupportedOperationException("Cluster creation from SSH credentials is not supported for the moment. Use 'addMachine'.");
 	}
 	
 	/**
@@ -246,8 +245,7 @@ public class DockerService {
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public String createCluster(String hostname, int port, String user, String password) throws DockerError{
-		log.debug("in createCluster (user + pass credentials) and calling the API");
-		return this.cluster.initCluster(new Machine(hostname, port, user, password));
+		throw new UnsupportedOperationException("Cluster creation from SSH credentials is not supported for the moment. Use 'addMachine'.");
 	}
 	
 	/**
@@ -257,18 +255,62 @@ public class DockerService {
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public String createCluster(ArrayList<Machine> machines) throws DockerError{
-		log.debug("in createCluster (from list of machines) and calling the API");
-		return this.cluster.initCluster(machines);
+		throw new UnsupportedOperationException("Cluster creation from list of machines is not supported for the moment. Use 'addMachine'.");
 	}
+
 	
 	/**
-	 * Checks if the cluster is ready to deploy containers.
+	 * Start cluster with machine.
+	 * @return Cluster token.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String addMachine(String hostname, int dockerPort) throws DockerError{
+		log.debug("in addMachine with hostname:port'"+hostname+":"+dockerPort+"' and calling the API");
+		
+		
+		ResponseEntity<String> response = cluster.initCluster(new Machine(hostname, dockerPort));
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		
+		String aux = map.get("token").toString(); 
+		
+		return aux;
+	}
+	
+	
+	/**
+	 * Add Machine to Cluster.
+	 * @return Cluster token.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public void addMachine(String hostname, int dockerPort, String clusterToken) throws DockerError{
+		log.debug("in addMachine with hostname:port'"+hostname+":"+dockerPort+"' and clusterToken '"+clusterToken+"' and calling the API");
+		//cluster.addToCluster(new Machine(hostname, dockerPort), clusterToken);
+		throw new UnsupportedOperationException("Not implemented yet.");
+	}
+	
+	
+	/**
+	 * Checks if the cluster is ready to deploy containers and has all his nodes joined.
 	 * @return true if it is ready, false if not.
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
-	public boolean isClusterReady(String token) throws DockerError{
+	public boolean isClusterReady(String clusterToken) throws DockerError{
 		log.debug("in isClusterReady and calling the API");
-		return this.cluster.isReady(token);
+		
+		ResponseEntity<String> response = cluster.getInfo(clusterToken);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		String status = map.get("status").toString();
+		if(!response.getStatusCode().is2xxSuccessful() || status.equals("error"))
+			throw new DockerError(map.get("description").toString());
+		
+		if(status.equals("ready"))
+			return true;
+		else
+			return false;
+		
+
 	}
 	
 	/**
@@ -277,9 +319,15 @@ public class DockerService {
 	 * @return Status information about the cluster in a human-readable format.
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
-	public String getClusterInfo(String token) throws DockerError{
+	public String getClusterInfo(String clusterToken) throws DockerError{
 		log.debug("in getClusterInfo and calling the API");
-		return this.cluster.getInfo(token);
+		
+		ResponseEntity<String> response = cluster.getInfo(clusterToken);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		
+		return response.getBody();
 	}
 	
 	/**
@@ -288,8 +336,7 @@ public class DockerService {
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public void stopCluster(String token) throws DockerError{
-		log.debug("in stopCluster and calling the API");
-		this.cluster.stop(token);
+		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 	
 	
@@ -354,23 +401,4 @@ public class DockerService {
 		this.composer.stopComposition(token);
 	}
 	
-	public String sendHostname(String hostname){
-		
-
-		return "token";
-	}
-	
-	public boolean hasCertificateGenerated(String token){
-
-		return true;
-	}
-	
-	public String configureSwarm(String ipAddress){
-		
-		return "token";
-	}
-	
-	public boolean isSwarmConfigured(String token){
-		return true;
-	}
 }
