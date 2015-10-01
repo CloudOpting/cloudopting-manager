@@ -38,8 +38,8 @@
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>spring-boot-starter-basic</artifactId>
-            <version>5.17.0</version>
+            <artifactId>activiti-spring-boot-starter-basic</artifactId>
+            <version>5.18.0</version>
         </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>

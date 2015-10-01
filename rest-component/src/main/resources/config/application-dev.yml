@@ -34,6 +34,9 @@ spring:
     thymeleaf:
         mode: XHTML
         cache: false
+    activiti:
+        jobExecutorActivate: true
+        restApiEnabled: true
 
 metrics:
     jmx.enabled: true

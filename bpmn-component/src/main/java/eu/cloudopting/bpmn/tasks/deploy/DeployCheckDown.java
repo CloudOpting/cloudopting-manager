@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import eu.cloudopting.cloud.CloudService;
 
-@Service
+@Service("deployCheckDown")
 public class DeployCheckDown implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeployCheckDown.class);
 	@Autowired

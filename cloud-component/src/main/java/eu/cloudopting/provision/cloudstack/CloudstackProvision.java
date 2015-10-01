@@ -149,8 +149,8 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 		Set<Zone> theZones = theClient.getZoneApi().listZones(null);
 		log.debug(theZones.toString());
 		DeployVirtualMachineOptions options = new DeployVirtualMachineOptions();
-		options.displayName("testmachine15");
-		options.name("testmachinename15");
+		options.displayName("testmachine23");
+		options.name("testmachinename23");
 //		options.userData(unencodedData.getBytes());
 		options.userData(request.getUserData().getBytes());
 		options.hypervisor("KVM");
