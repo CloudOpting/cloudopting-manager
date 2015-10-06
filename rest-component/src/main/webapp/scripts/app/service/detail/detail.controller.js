@@ -13,8 +13,13 @@ angular.module('cloudoptingApp')
         if($scope.currentApp == undefined || $scope.currentApp == null ){
             $state.go('catalog');
         }
-
-        if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
+        if(!Principal.isAuthenticated()) {
+            $scope.detail_function = function() {
+                $state.go('subscriber');
+            };
+            $scope.buttonValue = $translate.instant('detail.button.subscribe');
+        }
+        else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
             //TODO: Define all status possible for an APPLICATION.
             if($scope.currentApp.status === SERVICE.STATUS.UNFINISHED){
                 $scope.detail_function = function() {
