@@ -10,6 +10,7 @@ public class ApplicationDTO implements Serializable{
 
     private String applicationName;
     private String applicationDescription;
+    private String applicationToscaName;
     private Long id;
     String status;
     String type;
@@ -88,5 +89,14 @@ public class ApplicationDTO implements Serializable{
                 ", applicationDescription='" + applicationDescription + '\'' +
                 '}';
     }
+
+	public String getApplicationToscaName() {
+		return applicationToscaName;
+	}
+
+	public void setApplicationToscaName(String applicationToscaName) {
+		this.applicationToscaName = applicationToscaName;
+	}
+
 }
 

@@ -46,6 +46,7 @@ public class PublishContextSetupTask implements JavaDelegate {
         applicationSource.setProcessId(execution.getProcessInstanceId());
         execution.setVariable("application", applicationSource);
         execution.setVariable("applicationId", savedApplication.getId());
+        execution.setVariable("toscaname", savedApplication.getApplicationToscaName());
         execution.setVariable("chkPublishMetadataAvailable", true);
     }
 

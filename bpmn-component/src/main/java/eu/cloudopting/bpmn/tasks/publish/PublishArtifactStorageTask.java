@@ -29,6 +29,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 	    String uploadFileId = (String) execution.getVariable("fileId");
 	    String uploadFilePath = (String) execution.getVariable("filePath");
 	    String uploadIdApp = (String) execution.getVariable("appId");
+	    String uploadToscaName = (String) execution.getVariable("toscaname");
 	    String uploadProcessId = (String) execution.getVariable("processId");
 	    Organizations org = (Organizations) execution.getVariable("org");
 	    User user = (User) execution.getVariable("user");
@@ -47,7 +48,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 		    	String 	localFileAbsolutePath 	= fileToDelete.getAbsolutePath(),
 						localFilePath = localFileAbsolutePath.substring(0,localFileAbsolutePath.lastIndexOf(File.separator)+1),
 						localFileName 	= fileToDelete.getName(), 
-						remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadIdApp), 
+						remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
 						remoteFileName	= fileToDelete.getName(),
 						remoteFileNameReduced	= remoteFileName.substring(0,remoteFileName.indexOf("|"));
 				log.debug("--- Local File Absolute Path:"+localFileAbsolutePath);

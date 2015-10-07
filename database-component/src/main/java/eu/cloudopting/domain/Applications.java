@@ -129,6 +129,9 @@ public class Applications implements BaseEntity {
 
 	@Column(name = "application_name", length = 50)
     private String applicationName;
+	
+	@Column(name = "application_tosca_name", length = 10)
+    private String applicationToscaName;
 
 	@Column(name = "application_description")
     private String applicationDescription;
@@ -198,4 +201,12 @@ public class Applications implements BaseEntity {
 	public String toString() {
         return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationMedias", "customizationss", "statusId", "userId", "organizationId").toString();
     }
+
+	public String getApplicationToscaName() {
+		return applicationToscaName;
+	}
+
+	public void setApplicationToscaName(String applicationToscaName) {
+		this.applicationToscaName = applicationToscaName;
+	}
 }

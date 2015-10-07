@@ -25,6 +25,7 @@ public class PublishMetadataTask implements JavaDelegate {
 		Applications application = applicationService.findOne(applications.getId());
 		BeanUtils.copyProperties(applications,application);
         applicationService.update(application);
+        execution.setVariable("toscaname", application.getApplicationToscaName());
         execution.setVariable("chkPublishMetadataAvailable", true);
 	}
 
