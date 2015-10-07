@@ -2,36 +2,97 @@
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="publish.title">Publish Service</div>
         <div class="panel-body">
-            <form novalidate class="">
+
+            <form name="form_publish" novalidate show-validation>
+
                 <div class="form-group row">
                     <label class="darkgreen" >Process ID:</label>
-                    <input class="form-control" type="text" autocomplete="off" ng-model="processID" disabled/>
+                    <input class="form-control" type="text" autocomplete="off" ng-model="processID" disabled />
                 </div>
+
                 <div class="form-group row">
                     <label class="darkgreen" translate="publish.service.name">Service Name</label>
-                    <input class="form-control" type="text" autocomplete="off" ng-model="name"/>
+                    <input class="form-control" type="text" autocomplete="off" name="name" ng-model="application.applicationName"
+                           ng-minlength=1 required />
+
+                    <div ng-show="form_publish.name.$dirty && form_publish.name.$invalid || form_publish.name.$touched">
+                        <p class="help-block"
+                           ng-show="form_publish.name.$error.required"
+                           translate="publish.messages.validate.name.required">
+                            The name is required.
+                        </p>
+                        <p class="help-block"
+                           ng-show="form_publish.name.$error.minlength"
+                           translate="publish.messages.validate.name.minlength">
+                            The name is required to be at least 1 character.
+                        </p>
+                    </div>
                 </div>
+
                 <div class="form-group row">
                     <label class="darkgreen" translate="publish.service.toscaname">Service TOSCA Name</label>
-                    <input class="form-control" type="text" autocomplete="off" ng-model="toscaname"/>
+                    <input class="form-control" type="text" autocomplete="off" name="toscaname" ng-model="application.applicationToscaName"
+                           ng-pattern="/^[a-zA-Z0-9\-_]{0,40}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10" />
+
+                    <div ng-show="form_publish.toscaname.$dirty && form_publish.toscaname.$invalid || form_publish.toscaname.$touched">
+                        <p class="help-block"
+                           ng-show="form_publish.toscaname.$error.required"
+                           translate="publish.messages.validate.toscaname.required">
+                            The Service TOSCA Name is required.
+                        </p>
+                        <p class="help-block"
+                           ng-show="form_publish.toscaname.$error.minlength"
+                           translate="publish.messages.validate.toscaname.minlength">
+                            The Service TOSCA Name is required to be at least 1 character.
+                        </p>
+                        <p class="help-block"
+                           ng-show="form_publish.toscaname.$error.maxlength"
+                           translate="publish.messages.validate.toscaname.maxlength">
+                            The Service TOSCA Name cannot be longer than 10 characters.
+                        </p>
+                        <!--No spaces -> "/^[a-zA-Z0-9\-_]{0,40}$/"-->
+                        <p class="help-block"
+                           ng-show="form_publish.toscaname.$error.pattern"
+                           translate="publish.messages.validate.toscaname.pattern">
+                            The Service TOSCA Name cannot contain spaces.
+                        </p>
+                    </div>
                 </div>
+
                 <div class="form-group row">
                     <label class="darkgreen" translate="publish.service.description">Service Description</label>
-                    <textarea class="form-control" rows="5" autocomplete="off" ng-model="description"></textarea>
+                    <textarea class="form-control" rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
+                              ng-minlength=1 required ></textarea>
+
+                    <div ng-show="form_publish.description.$dirty && form_publish.description.$invalid || form_publish.description.$touched">
+                        <p class="help-block"
+                           ng-show="form_publish.description.$error.required"
+                           translate="publish.messages.validate.description.required">
+                            The description is required.
+                        </p>
+                        <p class="help-block"
+                           ng-show="form_publish.description.$error.minlength"
+                           translate="publish.messages.validate.description.minlength">
+                            The description is required to be at least 1 character.
+                        </p>
+                    </div>
                 </div>
+
                 <div class="form-group row">
                     <label class="darkgreen" translate="publish.service.image">Service Image</label>
                     <!--ngf-multiple="multiple"-->
                     <div class="btn btn-info" ngf-select ngf-change="newPromoImage($files)" translate="publish.select.file">Select File</div>
                 </div>
+
                 <div class="form-group row" ng-show="files">
                     <label translate="publish.selectedfile">Selected File</label>
-                    <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled/>
+                    <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
                 </div>
+
                 <!--
                 <button type="button" class="btn btn-primary" ng-click="saveConfigurationWizardOne()" translate="publish.button.save_n_next">Save Configuration & Next</button>
                 -->
-                <button ng-disabled="disableSave" type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
+                <button ng-disabled="form_publish.$invalid || disableSave" type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
                 <button ng-disabled="disableUpdate" type="button" class="btn btn-success" ng-click="updateWizardOne()">Update</button>
                 <button ng-disabled="disableNextOne" type="button" class="btn btn-success" ng-click="nextWizardOne()">Next</button>
             </form>

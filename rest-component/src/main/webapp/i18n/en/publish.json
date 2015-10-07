@@ -26,6 +26,24 @@
       "publish": "Publish Service",
       "add": "+ Add Item in Library",
       "delete": "Delete Item in Library"
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "The name is required.",
+          "minlength": "The name is required to be at least 1 character."
+        },
+        "toscaname": {
+          "required": "The Service TOSCA Name is required.",
+          "minlength": "The Service TOSCA Name is required to be at least 1 character.",
+          "maxlength": "The Service TOSCA Name cannot be longer than 10 characters.",
+          "pattern": "The Service TOSCA Name cannot contain spaces."
+        },
+        "description": {
+          "required": "The description is required.",
+          "minlength": "The description is required to be at least 1 character."
+        }
+      }
     }
   }
 }
