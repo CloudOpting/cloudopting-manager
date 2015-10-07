@@ -30,7 +30,7 @@
                     </div>
 
                 </div>
-                <button type="button" class="btn btn-success" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
+                <button ng-disabled="isLibraryEmpty()" type="button" class="btn btn-success" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
             </form>
         </div>
     </div>

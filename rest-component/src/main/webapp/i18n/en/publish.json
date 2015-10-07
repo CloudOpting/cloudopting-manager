@@ -3,6 +3,7 @@
     "title": "Publish Service",
     "service" : {
       "name": "Service Name",
+      "toscaname": "Service TOSCA Name",
       "description": "Service Description",
       "image": "Service Image"
     },

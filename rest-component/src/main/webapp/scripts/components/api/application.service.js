@@ -9,7 +9,7 @@ angular.module('cloudoptingApp')
         var app = null;
         var baseURI = 'api/application';
 
-        function upload(idApplication, processID, files, type, callback){
+        function upload(idApplication, processID, files, type, callback) {
             //headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
@@ -25,6 +25,8 @@ angular.module('cloudoptingApp')
                     }).success(function (data, status, headers, config) {
                         callback(data);
                         $log.debug('Application ID: ' + data);
+                    }).error(function (data, status, headers, config) {
+                        $log.error('Error uploading a file for Application ID: ' + data);
                     });
                 }
             }
@@ -37,13 +39,13 @@ angular.module('cloudoptingApp')
              */
             findAll: function (page, size, sortBy, sortOrder, filter) {
                 var endpoint = baseURI +
-                    '?page='+ page +
+                    '?page=' + page +
                     '&size=' + size +
                     '&sortBy=' + sortBy +
                     '&sortOrder=' + sortOrder +
                     '&filter=' + filter;
                 return $http.get(endpoint)
-                    .success(function(applications) {
+                    .success(function (applications) {
                         apps = applications;
                     });
             },
@@ -55,10 +57,10 @@ angular.module('cloudoptingApp')
             findAllUnpaginated: function (callback) {
                 //return $http.get('mocks/applications.js')
                 return $http.get(baseURI + SERVICE.SEPARATOR + 'unpaginated')
-                    .success(function(data, status, headers, config){
+                    .success(function (data, status, headers, config) {
                         callback(data);
                     })
-                    .error(function(data, status, headers, config){
+                    .error(function (data, status, headers, config) {
                         $log.error("Something went wrong" + data);
                     });
             },
@@ -68,25 +70,25 @@ angular.module('cloudoptingApp')
                         app = application;
                     });
             },
-            create: function(application, callback) {
+            create: function (application, callback) {
                 return $http.post(baseURI, application)
-                    .success(function(data, status, headers, config) {
+                    .success(function (data, status, headers, config) {
                         callback(data);
                     });
             },
-            update: function(idApplication, processId, application, callback) {
-                return $http.put(baseURI + SERVICE.SEPARATOR +  idApplication + SERVICE.SEPARATOR + processId, application)
-                    .success(function(data, status, headers, config) {
+            update: function (idApplication, processId, application, callback) {
+                return $http.put(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processId, application)
+                    .success(function (data, status, headers, config) {
                         callback(data);
                     });
             },
-            delete: function(idApplication, processId) {
-                return $http.delete(baseURI + SERVICE.SEPARATOR +  idApplication + SERVICE.SEPARATOR + processId)
-                    .success(function(data, status, headers, config) {
+            delete: function (idApplication, processId) {
+                return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processId)
+                    .success(function (data, status, headers, config) {
                         //callback(data);
                     });
             },
-            addPromotionalImage: function(idApplication, processID, files, callback) {
+            addPromotionalImage: function (idApplication, processID, files, callback) {
                 return upload(idApplication, processID, files, SERVICE.FILE_TYPE.PROMO_IMAGE, callback);
             },
             addContentLibrary: function (idApplication, processID, libraryList, callback) {
@@ -100,6 +102,6 @@ angular.module('cloudoptingApp')
                     + processID + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId);
             }
 
-        };
+        }
     }
 );

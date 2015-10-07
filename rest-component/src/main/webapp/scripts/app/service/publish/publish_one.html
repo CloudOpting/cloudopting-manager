@@ -12,6 +12,10 @@
                     <input class="form-control" type="text" autocomplete="off" ng-model="name"/>
                 </div>
                 <div class="form-group row">
+                    <label class="darkgreen" translate="publish.service.toscaname">Service TOSCA Name</label>
+                    <input class="form-control" type="text" autocomplete="off" ng-model="toscaname"/>
+                </div>
+                <div class="form-group row">
                     <label class="darkgreen" translate="publish.service.description">Service Description</label>
                     <textarea class="form-control" rows="5" autocomplete="off" ng-model="description"></textarea>
                 </div>
@@ -29,7 +33,7 @@
                 -->
                 <button ng-disabled="disableSave" type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
                 <button ng-disabled="disableUpdate" type="button" class="btn btn-success" ng-click="updateWizardOne()">Update</button>
-                <button type="button" class="btn btn-success" ng-click="nextWizardOne()">Next</button>
+                <button ng-disabled="disableNextOne" type="button" class="btn btn-success" ng-click="nextWizardOne()">Next</button>
             </form>
         </div>
     </div>

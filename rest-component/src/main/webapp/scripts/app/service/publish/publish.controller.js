@@ -9,6 +9,7 @@ angular.module('cloudoptingApp')
 
         $scope.disableUpdate = true;
         $scope.disableSave = false;
+        $scope.disableNextOne = true;
 
         /**
          * Function to save the promotional image.
@@ -73,8 +74,8 @@ angular.module('cloudoptingApp')
             };
             var application = {};
             application.applicationName = $scope.name;
-            application.applicationDescription=$scope.description;
-            
+            application.applicationDescription = $scope.description;
+            application.applicationToscaName = $scope.toscaname;
 
             //Save the current app in order to use it in the future.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
@@ -83,6 +84,7 @@ angular.module('cloudoptingApp')
             ApplicationService.create(application, callback);
             $scope.disableUpdate = false;
             $scope.disableSave = true;
+            $scope.disableNextOne = false;
         };
 
         $scope.updateWizardOne = function() {
@@ -91,11 +93,13 @@ angular.module('cloudoptingApp')
             };
             var application = {};
             application.applicationName = $scope.name;
-            application.applicationDescription=$scope.description;
+            application.applicationDescription = $scope.description;
+            application.applicationToscaName = $scope.toscaname;
+
             //TODO: Fix a bit
             //Create
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            application.id=activiti.applicationId;
+            application.id = activiti.applicationId;
 
             //Save the current app in order to use it in the future.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
@@ -187,6 +191,7 @@ angular.module('cloudoptingApp')
         /*
          * WIZARD - SCREEN THREE
          */
+        $scope.disablePublish = true;
         $scope.toscaFiles = [];
 
         $scope.addToscaArchive = function(toscaArchive) {
@@ -201,7 +206,7 @@ angular.module('cloudoptingApp')
         $scope.saveConfiguration = function () {
             var callback = function(data) {
                 //TODO: Show a message of completion.
-
+                $scope.disablePublish = false;
                 //TODO: Enable button of publication.
 
             };
@@ -240,6 +245,10 @@ angular.module('cloudoptingApp')
             application.status = "Requested";
             console.log("Requesting publication for application:"+angular.toJson(application, true));
             ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
+        };
+
+        $scope.isToscaEmpty = function() {
+            return $scope.toscaFiles.length==0;
         };
     }
 );

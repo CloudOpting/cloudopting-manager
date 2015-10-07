@@ -14,9 +14,8 @@
                     <label class="darkgreen" translate="publish.select.tosca">TOSCA Archive</label>
                     <input ng-repeat="file in toscaFiles" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled/>
                 </div>
-                <button type="button" class="btn btn-success" ng-click="saveConfiguration()" translate="publish.button.save">Save Configuration</button>
-                <button ng-hide="toscaFiles" type="button" class="btn btn-success" disabled translate="publish.button.publish">Publish Service</button>
-                <button ng-show="toscaFiles" type="button" class="btn btn-success" ng-click="publishService()" translate="publish.button.publish">Publish Service</button>
+                <button ng-disabled="isToscaEmpty()" type="button" class="btn btn-success" ng-click="saveConfiguration()" translate="publish.button.save">Save Configuration</button>
+                <button ng-disabled="disablePublish" type="button" class="btn btn-success" ng-click="publishService()" translate="publish.button.publish">Publish Service</button>
             </form>
         </div>
     </div>
