@@ -3,21 +3,22 @@ server:
 
 spring:
     profiles:
-        active: prod
-    
+        active: dev
+
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: 
+        driver: org.postgresql.Driver
+        url: jdbc:postgresql://cloudopting1.cloudapp.net:5432/cloudopting
         databaseName: cloudopting
-        serverName: localhost
-        username: cloudopting
-        password: 
+        serverName: cloudopting1.cloudapp.net
+        username: postgres
+        password: 1qaz2wsx
 
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect
         database: POSTGRESQL
         openInView: false
-        show_sql: false
+        show_sql: true
         generate-ddl: false
         hibernate:
             ddl-auto: none
@@ -26,15 +27,16 @@ spring:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
-            
-            
 
     mail:
         baseUrl: http://localhost:8080
 
     thymeleaf:
         mode: XHTML
-        cache: true
+        cache: false
+    activiti:
+        jobExecutorActivate: true
+        restApiEnabled: true
 
 metrics:
     jmx.enabled: true
@@ -47,5 +49,13 @@ metrics:
         host: localhost
         port: 2003
         prefix: cloudopting
+zabbix:
+    user: admin
+    password: admin
+    endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
 
-
+cloud:
+    doDeploy: true
+    ip: 127.0.0.1
+    templateId: 1a74adaa-845d-4fec-a12c-cc26026b38b7
+    diskId: ec700372-e694-45a1-b3a8-30a636c5a747
