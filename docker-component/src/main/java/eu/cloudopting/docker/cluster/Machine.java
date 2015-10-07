@@ -11,6 +11,7 @@ import java.io.File;
 public class Machine {
 	private String hostname;
 	private int port;
+	private int dockerPort;
 	private File privateKey;
 	private String passphrase;
 	private String user;
@@ -30,6 +31,7 @@ public class Machine {
 		this.passphrase = passphrase;
 		this.user = null;
 		this.password = null;
+		this.dockerPort = 0;
 	}
 	
 	/**
@@ -46,6 +48,22 @@ public class Machine {
 		this.password = password;
 		this.privateKey = null;
 		this.passphrase = null;
+		this.dockerPort = 0;
+	}
+	
+	/**
+	 * New machine from docker port.
+	 * @param hostname Hostname or ip address
+	 * @param dockerPort Docker port
+	 */
+	public Machine(String hostname, int dockerPort){
+		this.hostname = hostname;
+		this.port = 0;
+		this.privateKey = null;
+		this.passphrase = null;
+		this.user = null;
+		this.password = null;
+		this.dockerPort = dockerPort;
 	}
 
 	/**
@@ -88,6 +106,13 @@ public class Machine {
 	 */
 	public String getPassword() {
 		return password;
+	}
+
+	/**
+	 * @return the dockerPort
+	 */
+	public int getDockerPort() {
+		return dockerPort;
 	}
 
 }
