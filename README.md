@@ -45,6 +45,8 @@ Prepare the run configuration as in the image below, this this configuration you
 
 ## Fast deploy with docker-compose
 
+Requires [__docker__](https://docs.docker.com/installation/) and [__docker-compose__](https://docs.docker.com/compose/install/).
+
 Build the war file (in the Dockerfile folder):
 `./build-war.sh`
 
