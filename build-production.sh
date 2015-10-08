@@ -1,2 +1,2 @@
-mvn clean install -Dmaven.test.skip=true -Dspring.config.name=prod -U
+mvn clean install -Dmaven.test.skip=true -U
 mv ./rest-component/target/cloudopting.war ./Dockerfile/cloudopting.war

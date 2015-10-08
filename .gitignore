@@ -17,3 +17,4 @@ build
 bpmn-component/.bpmn/
 bpmn-component/.xml/
 .metadata/
+Dockerfile/cloudopting.war
