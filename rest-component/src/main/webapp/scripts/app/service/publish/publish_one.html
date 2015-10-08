@@ -32,7 +32,7 @@
                 <div class="form-group row">
                     <label class="darkgreen" translate="publish.service.toscaname">Service TOSCA Name</label>
                     <input class="form-control" type="text" autocomplete="off" name="toscaname" ng-model="application.applicationToscaName"
-                           ng-pattern="/^[a-zA-Z0-9\-_]{0,40}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10" />
+                           ng-pattern="/^[a-zA-Z0-9\-_]{0,10}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10" />
 
                     <div ng-show="form_publish.toscaname.$dirty && form_publish.toscaname.$invalid || form_publish.toscaname.$touched">
                         <p class="help-block"
@@ -50,7 +50,7 @@
                            translate="publish.messages.validate.toscaname.maxlength">
                             The Service TOSCA Name cannot be longer than 10 characters.
                         </p>
-                        <!--No spaces -> "/^[a-zA-Z0-9\-_]{0,40}$/"-->
+                        <!--No spaces witha a limit of 40 characters -> "/^[a-zA-Z0-9\-_]{0,40}$/"-->
                         <p class="help-block"
                            ng-show="form_publish.toscaname.$error.pattern"
                            translate="publish.messages.validate.toscaname.pattern">
@@ -86,7 +86,18 @@
 
                 <div class="form-group row" ng-show="files">
                     <label translate="publish.selectedfile">Selected File</label>
+                    <!--
                     <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
+                    -->
+                    <div  ng-repeat="file in files">
+                        <div class="input-group">
+                            <span class="input-group-addon" translate="publish.content.file">File</span>
+                            <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-danger" ng-click="deletePromotionalImage(file)" translate="publish.button.delete">Delete Item</button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <!--
