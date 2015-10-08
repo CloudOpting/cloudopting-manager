@@ -13,6 +13,8 @@ angular.module('cloudoptingApp')
 
         $scope.application = {};
 
+        var promoInDatabase = false;
+
         /**
          * Function to save the promotional image.
          * @param images
@@ -21,10 +23,33 @@ angular.module('cloudoptingApp')
             $scope.files = images;
         };
 
+        /**
+         * Function to delete the promotional image.
+         * @param file
+         */
+        $scope.deletePromotionalImage = function (file){
+            console.log("delete " + file.name);
+            var index = $scope.files.indexOf(file);
+            if (index > -1) {
+                $scope.files.splice(index, 1);
+                if($scope.files.length == 0) {
+                    $scope.files = null;
+                }
+            }
+            //If already saved into database we have to delete it from there also.
+            if(promoInDatabase){
+                //Send a REST call if it is already persisted in database.
+                var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file);
+                promoInDatabase = false;
+            }
+
+        };
+
         function savePromotionalImage() {
             var callback = function(data) {
                 //TODO: Update the corresponding file with the corresponding id to keep track.
-
+                promoInDatabase = true;
             };
             //Add content libraries
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
