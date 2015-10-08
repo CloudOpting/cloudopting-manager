@@ -12,7 +12,16 @@
                 </div>
                 <div class="form-group row" ng-show="toscaFiles">
                     <label class="darkgreen" translate="publish.select.tosca">TOSCA Archive</label>
-                    <input ng-repeat="file in toscaFiles" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled/>
+
+                    <div  ng-repeat="file in toscaFiles">
+                        <div class="input-group">
+                            <span class="input-group-addon" translate="publish.content.file">File</span>
+                            <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-danger" ng-click="deleteToscaArchive(file)" translate="publish.button.delete">Delete File</button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <button ng-disabled="isToscaEmpty()" type="button" class="btn btn-success" ng-click="saveConfiguration()" translate="publish.button.save">Save Configuration</button>
                 <button ng-disabled="disablePublish" type="button" class="btn btn-success" ng-click="publishService()" translate="publish.button.publish">Publish Service</button>

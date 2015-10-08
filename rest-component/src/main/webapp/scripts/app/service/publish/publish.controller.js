@@ -211,6 +211,7 @@ angular.module('cloudoptingApp')
          * WIZARD - SCREEN THREE
          */
         $scope.disablePublish = true;
+        var toscaArchiveInDatabase = false;
         $scope.toscaFiles = [];
 
         $scope.addToscaArchive = function(toscaArchive) {
@@ -226,6 +227,7 @@ angular.module('cloudoptingApp')
             var callback = function(data) {
                 //TODO: Show a message of completion.
                 $scope.disablePublish = false;
+                toscaArchiveInDatabase = true;
                 //TODO: Enable button of publication.
 
             };
@@ -237,6 +239,26 @@ angular.module('cloudoptingApp')
                 activiti.processInstanceId,
                 $scope.toscaFiles,
                 callback);
+        };
+
+        /**
+         * Function to delete the tosca archive.
+         * @param file
+         */
+        $scope.deleteToscaArchive = function (file){
+            console.log("delete " + file.name);
+            var index = $scope.toscaFiles.indexOf(file);
+            if (index > -1) {
+                $scope.toscaFiles.splice(index, 1);
+            }
+            //If already saved into database we have to delete it from there also.
+            if(toscaArchiveInDatabase){
+                //Send a REST call if it is already persisted in database.
+                var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file);
+                toscaArchiveInDatabase = false;
+            }
+
         };
 
         /**

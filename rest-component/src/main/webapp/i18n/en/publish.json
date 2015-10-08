@@ -17,8 +17,8 @@
     "content" : {
       "emptylibrary": "The Library is Empty",
       "libarary" : "Content Library",
-      "name" : "name",
-      "file" : "file"
+      "name" : "Name",
+      "file" : "File"
     },
     "button" : {
       "save": "Save Configuration",
