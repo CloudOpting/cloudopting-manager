@@ -132,21 +132,19 @@ public class Organizations implements BaseEntity {
     private Date organizationCreation;
 
 	@Column(name = "organization_activation")
-    @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(style = "M-")
     private Date organizationActivation;
 
 	@Column(name = "organization_decommission")
-    @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(style = "M-")
     private Date organizationDecommission;
 
-	@Column(name = "status_id")
-    @NotNull
-    private Long statusId;
-
+	@ManyToOne
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
+    private OrganizationStatus organizationStatus;
+	
 	@Column(name = "description", length = 500)
     @NotNull
     private String description;
@@ -221,13 +219,13 @@ public class Organizations implements BaseEntity {
         this.organizationDecommission = organizationDecommission;
     }
 
-	public Long getStatusId() {
-        return statusId;
-    }
+	public OrganizationStatus getOrganizationStatus() {
+		return organizationStatus;
+	}
 
-	public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
+	public void setOrganizationStatus(OrganizationStatus organizationStatus) {
+		this.organizationStatus = organizationStatus;
+	}
 
 	public String getDescription() {
         return description;
