@@ -4,18 +4,15 @@ import eu.cloudopting.domain.User;
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
-import java.util.Locale;
 
 /**
  * Service for sending e-mails.
@@ -34,11 +31,6 @@ public class MailService {
 
     @Inject
     private JavaMailSenderImpl javaMailSender;
-
-    @Inject
-    private MessageSource messageSource;
-    
-
 
     /**
      * System default email address that sends the e-mails.
@@ -73,18 +65,15 @@ public class MailService {
     @Async
     public void sendActivationEmail(User user, String baseUrl) {
         log.debug("Sending activation e-mail to '{}'", user.getEmail());
-        Locale locale = Locale.forLanguageTag(user.getLangKey());
-        //Context context = new Context(locale);
-        //context.setVariable("user", user);
-        //context.setVariable("baseUrl", baseUrl);
-        //String content = templateEngine.process("activationEmail", context);
         String content = "<html>" +
                 "<body>" +
-                "<p>"+user+"</p>" +
-                "<p>Activation URL: "+baseUrl+"</p>" +
+                "<p> Dear "+user.getFirstName()+", </p>" +
+                "<p>Activation URL: "+baseUrl+"/#/activate?key="+user.getActivationKey()+"</p>" +
+                "<p>Best regards,</p>" +
+                "<p>CloudOpting team.</p>" +
                 "</body>" +
                 "</html>";
-        String subject = "CloudOpting Catalog Activation Link";//messageSource.getMessage("email.activation.title", null, locale);
+        String subject = "CloudOpting Catalog Activation Link";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 }

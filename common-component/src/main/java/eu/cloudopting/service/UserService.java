@@ -51,7 +51,7 @@ public class UserService {
             .map(user -> {
                 // activate given user for the registration key.
                 user.setActivated(true);
-                user.setActivationKey(null);
+                user.setActivationKey(key);
                 userRepository.save(user);
                 log.debug("Activated user: {}", user);
                 return user;

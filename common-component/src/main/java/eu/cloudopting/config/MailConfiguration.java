@@ -24,9 +24,9 @@ public class MailConfiguration implements EnvironmentAware {
     private static final String PROP_PROTO = "protocol";
     private static final String PROP_TLS = "tls";
     private static final String PROP_AUTH = "auth";
-    private static final String PROP_SMTP_AUTH = "mail.smtp.auth";
-    private static final String PROP_STARTTLS = "mail.smtp.starttls.enable";
-    private static final String PROP_TRANSPORT_PROTO = "mail.transport.protocol";
+    private static final String PROP_SMTP_AUTH = "spring.mail.smtp.auth";
+    private static final String PROP_STARTTLS = "spring.mail.smtp.starttls.enable";
+    private static final String PROP_TRANSPORT_PROTO = "spring.mail.transport.protocol";
 
     private final Logger log = LoggerFactory.getLogger(MailConfiguration.class);
 

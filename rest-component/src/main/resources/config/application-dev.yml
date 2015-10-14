@@ -28,9 +28,6 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
 
-    mail:
-        baseUrl: http://localhost:8080
-
     thymeleaf:
         mode: XHTML
         cache: false
