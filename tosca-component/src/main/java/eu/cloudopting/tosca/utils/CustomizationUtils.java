@@ -23,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import eu.cloudopting.domain.Applications;
-import eu.cloudopting.service.ApplicationService;
 
 @Service
 public class CustomizationUtils {
@@ -34,8 +32,7 @@ public class CustomizationUtils {
 	private XPathImpl xpath;
 
 	
-	@Autowired
-	private ApplicationService applicationService;
+
 	
 	@Autowired
 	private CSARUtils csarUtils;
@@ -62,7 +59,7 @@ public class CustomizationUtils {
 		}
 	}
 	
-	public JSONObject getCustomizationFormData(Long idApp){
+	public JSONObject getCustomizationFormData(Long idApp, String csarPath){
 		JSONObject jret = null;
 		try {
 			jret = new JSONObject("{\"type\": \"object\",\"title\": \"Compute\",\"properties\": {\"idApp\":  {\"title\": \"Application ID\",\"type\": \"string\"}}}");
@@ -73,8 +70,8 @@ public class CustomizationUtils {
 		DocumentImpl theDoc = this.xToscaHash.get(idApp);
 		if (theDoc == null){
 			// need to read the Application and get the TOSCA file
-			Applications application = applicationService.findOne(idApp);
-			String csarPath = application.getApplicationToscaTemplate();
+//			Applications application = applicationService.findOne(idApp);
+//			String csarPath = application.getApplicationToscaTemplate();
 			log.debug("path to csar:"+csarPath);
 			// unzip the csar
 			String destinationPath = "/cloudOptingData/"+idApp;

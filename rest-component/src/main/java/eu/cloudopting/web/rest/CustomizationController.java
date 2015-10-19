@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.User;
+import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.tosca.ToscaService;
 
@@ -29,6 +31,9 @@ public class CustomizationController {
 	@Autowired
 	private ToscaService toscaService;
 	
+	@Autowired
+	private ApplicationService applicationService;
+	
 	@RequestMapping(value = "/application/{idApp}/getSizings",
             method = RequestMethod.GET)
 	public void getSizing(@PathVariable("appId") final Long id){
@@ -42,7 +47,9 @@ public class CustomizationController {
 		log.debug("in getCustomizationForm");
 		log.debug(idApp.toString());
 //		JSONObject jret = new JSONObject("{\"type\": \"object\",\"title\": \"Compute\",\"properties\": {\"node_id\":  {\"title\": \"Node ID\",\"type\": \"string\"},\"node_label\":  {\"title\": \"Node Label\",\"type\": \"string\",\"description\": \"Email will be used for evil.\"},\"memory\":  {\"title\": \"Memory\",\"type\": \"string\",\"enum\": [\"512\",\"1024\",\"2048\"]},\"cpu\": {\"title\": \"CPU\",\"type\": \"integer\",\"maxLength\": 20,\"validationMessage\": \"Dont be greedy!\"}},\"required\": [\"node_id\",\"node_label\",\"memory\", \"cpu\"]}");
-		JSONObject jret = toscaService.getCustomizationFormData(idApp);
+		Applications application = applicationService.findOne(idApp);
+		String csarPath = application.getApplicationToscaTemplate();
+		JSONObject jret = toscaService.getCustomizationFormData(idApp, csarPath);
 		return jret.toString();
   		
 	}

@@ -744,9 +744,9 @@ public class ToscaService {
 		toscaUtils.generateDockerCompose(templData, serviceHome);
 	}
 	
-	public JSONObject getCustomizationFormData(Long idApp){
+	public JSONObject getCustomizationFormData(Long idApp, String csarPath){
 		
-		return customizationUtils.getCustomizationFormData(idApp);
+		return customizationUtils.getCustomizationFormData(idApp, csarPath);
 	
 	}
 }
