@@ -18,17 +18,15 @@ async:
 
 spring:
     mail:
-        #baseUrl: http://localhost:8080
+        baseUrl: http://cloudopting1.cloudapp.net
         protocol: smtp
-        host: aspmx.l.google.com
-        port: 25
-        smtp:
-            auth: false
-            starttls:
-                enable: false
-        from: cloudopting@gmail.com
-        username: cloudopting
+        host: smtp.gmail.com
+        port: 587
+        username: cloudopting@gmail.com
         password: Smart@2012
+        tls: true
+        auth: true
+        from: cloudopting@gmail.com
 
     messageSource:
         cacheSeconds: 1

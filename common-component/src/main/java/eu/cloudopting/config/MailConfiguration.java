@@ -19,14 +19,14 @@ public class MailConfiguration implements EnvironmentAware {
     private static final String PROP_HOST = "host";
     private static final String DEFAULT_PROP_HOST = "localhost";
     private static final String PROP_PORT = "port";
-    private static final String PROP_USER = "user";
+    private static final String PROP_USER = "username";
     private static final String PROP_PASSWORD = "password";
     private static final String PROP_PROTO = "protocol";
     private static final String PROP_TLS = "tls";
     private static final String PROP_AUTH = "auth";
-    private static final String PROP_SMTP_AUTH = "spring.mail.smtp.auth";
-    private static final String PROP_STARTTLS = "spring.mail.smtp.starttls.enable";
-    private static final String PROP_TRANSPORT_PROTO = "spring.mail.transport.protocol";
+    private static final String PROP_SMTP_AUTH = "mail.smtp.auth";
+    private static final String PROP_STARTTLS = "mail.smtp.starttls.enable";
+    private static final String PROP_TRANSPORT_PROTO = "mail.transport.protocol";
 
     private final Logger log = LoggerFactory.getLogger(MailConfiguration.class);
 
@@ -57,6 +57,7 @@ public class MailConfiguration implements EnvironmentAware {
             sender.setHost(DEFAULT_HOST);
         }
         sender.setPort(port);
+        sender.setProtocol(protocol);
         sender.setUsername(user);
         sender.setPassword(password);
 
