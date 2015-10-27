@@ -82,7 +82,14 @@ public class UserService {
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
-
+    
+    public User setUserActivatedFlag(long userId, boolean activated){
+    	User user = userRepository.findOne(userId);
+    	user.setActivated(activated);
+    	user.setActivationKey(RandomUtil.generateActivationKey());
+    	return userRepository.save(user);
+    }
+    
     public void updateUserInformation(String firstName, String lastName, String email) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u -> {
             u.setFirstName(firstName);
@@ -93,6 +100,14 @@ public class UserService {
         });
     }
 
+    public void updateUserInformation(long userId, String firstName, String lastName, String email) {
+    	User user = userRepository.findOne(userId);
+    	user.setFirstName(firstName);
+    	user.setLastName(lastName);
+    	user.setEmail(email);
+    	userRepository.save(user);
+    }
+    
     public void changePassword(String password) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u-> {
             String encryptedPassword = passwordEncoder.encode(password);

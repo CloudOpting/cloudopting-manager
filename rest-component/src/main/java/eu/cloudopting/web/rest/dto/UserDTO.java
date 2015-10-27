@@ -9,6 +9,8 @@ import java.util.List;
 
 public class UserDTO {
 
+	private Long id;
+	
     @Pattern(regexp = "^[a-z0-9]*$")
     @NotNull
     @Size(min = 1, max = 50)
@@ -31,6 +33,8 @@ public class UserDTO {
     @Size(min = 2, max = 5)
     private String langKey;
 
+    private boolean activated = true;
+    
     private List<String> roles;
 
     public UserDTO() {
@@ -75,7 +79,15 @@ public class UserDTO {
         return roles;
     }
 
-    @Override
+    public boolean isActivated() {
+		return activated;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	@Override
     public String toString() {
         return "UserDTO{" +
         "login='" + login + '\'' +
