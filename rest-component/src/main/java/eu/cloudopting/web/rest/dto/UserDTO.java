@@ -35,6 +35,8 @@ public class UserDTO {
 
     private boolean activated = true;
     
+    private Long organizationId;
+    
     private List<String> roles;
 
     public UserDTO() {
@@ -85,6 +87,10 @@ public class UserDTO {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Long getOrganizationId() {
+		return organizationId;
 	}
 
 	@Override

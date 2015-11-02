@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.cloudopting.domain.Authority;
+import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.repository.AuthorityRepository;
+import eu.cloudopting.repository.OrganizationRepository;
 import eu.cloudopting.repository.PersistentTokenRepository;
 import eu.cloudopting.repository.UserRepository;
 import eu.cloudopting.security.SecurityUtils;
@@ -44,7 +46,10 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
-
+    
+    @Inject
+    private OrganizationRepository organizationRepository;
+    
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         userRepository.findOneByActivationKey(key)
@@ -60,7 +65,7 @@ public class UserService {
     }
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
-                                      String langKey) {
+                                      String langKey, Long organizationId) {
         User newUser = new User();
         Authority authority = authorityRepository.findOne("ROLE_SUBSCRIBER");
         Set<Authority> authorities = new HashSet<>();
@@ -78,6 +83,7 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+        setUserOrganization(newUser, organizationId);
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
@@ -100,12 +106,23 @@ public class UserService {
         });
     }
 
-    public void updateUserInformation(long userId, String firstName, String lastName, String email) {
+    public void updateUserInformation(long userId, String firstName, String lastName, String email, Long organizationId) {
     	User user = userRepository.findOne(userId);
     	user.setFirstName(firstName);
     	user.setLastName(lastName);
     	user.setEmail(email);
+    	setUserOrganization(user, organizationId);
     	userRepository.save(user);
+    }
+    
+    private void setUserOrganization(User user, Long organizationId){
+    	if(organizationId != null){
+    		Organizations organization = organizationRepository.findOne(organizationId);
+    		if(organization != null){
+    			user.setOrganizationId(organization);
+    			organization.getTUsers().add(user);
+    		}
+    	}
     }
     
     public void changePassword(String password) {

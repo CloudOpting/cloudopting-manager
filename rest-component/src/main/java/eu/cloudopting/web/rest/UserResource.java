@@ -82,7 +82,7 @@ public class UserResource {
 						.orElseGet(() -> {
 							User user = getUserService().createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
 									userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
-									userDTO.getLangKey());
+									userDTO.getLangKey(), userDTO.getOrganizationId());
 							user = getUserService().setUserActivatedFlag(user.getId(), userDTO.isActivated());
 							return new ResponseEntity<>(HttpStatus.CREATED);
 						})
@@ -96,7 +96,8 @@ public class UserResource {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		} 
-		getUserService().updateUserInformation(user.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail());
+		getUserService().updateUserInformation(user.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+				userDTO.getOrganizationId());
 		getUserService().setUserActivatedFlag(user.getId(), userDTO.isActivated());
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
