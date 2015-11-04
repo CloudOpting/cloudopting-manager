@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.exception.ToscaException;
@@ -50,7 +51,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 						localFileName 	= fileToDelete.getName(), 
 						remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
 						remoteFileName	= fileToDelete.getName(),
-						remoteFileNameReduced	= remoteFileName.substring(0,remoteFileName.indexOf("|"));
+						remoteFileNameReduced	= remoteFileName.substring(0,remoteFileName.indexOf(BpmnService.TEMP_FILE_NAME_SEPARATOR));
 				log.debug("--- Local File Absolute Path:"+localFileAbsolutePath);
 				log.debug("--- Local File Path:"+localFilePath);
 				log.debug("--- Local File Name:"+localFileName);

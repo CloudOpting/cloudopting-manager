@@ -52,16 +52,21 @@ angular.module('cloudoptingApp')
 
         //Function to delete a service.
         $scope.goToDelete = function (app) {
-            var callback = function(data) {
-                //Deleteing current service on storage.
-                localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
 
-                //Reload page
-                $state.go($state.current, {}, {reload: true});
+            if($window.confirm('Are you sure that you want to delete this service?')) {
+                var callback = function(data) {
+                    //Deleteing current service on storage.
+                    localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
 
-            };
-            //Deleting a service
-            ApplicationService.delete(app.id, callback);
+                    //Reload page
+                    $state.go($state.current, {}, {reload: true});
+
+                };
+                //Deleting a service
+                ApplicationService.delete(app.id, callback);
+            } else {
+            //Nothing to do.
+            }
         };
 
         //Function to go to the instances detail.
