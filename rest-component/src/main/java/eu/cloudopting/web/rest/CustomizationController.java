@@ -2,6 +2,8 @@ package eu.cloudopting.web.rest;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.validator.internal.util.privilegedactions.NewJaxbContext;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,13 +56,23 @@ public class CustomizationController {
   		
 	}
 
-	@RequestMapping(value = "/application/sendCustomizationForm",
+	@RequestMapping(value = "/application/{idApp}/sendCustomizationForm",
             method = RequestMethod.POST)
-	public void postCustomizationForm(@RequestParam(value = "formData") String formData,HttpServletRequest request){
+	public void postCustomizationForm(@PathVariable("idApp") final Long idApp, @RequestParam(value = "formData") String formData,HttpServletRequest request){
 		log.debug("in postCustomizationForm");
+		log.debug(idApp.toString());
 		log.debug(formData);
+		JSONObject jsonData = null;;
+		try {
+			jsonData = new JSONObject(formData);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		User user = userService.loadUserByLogin(request.getUserPrincipal().getName());
-		
+		Applications application = applicationService.findOne(idApp);
+		String csarPath = application.getApplicationToscaTemplate();
+		toscaService.generateCustomizedTosca(idApp, csarPath, jsonData);
 		
 	}
 }

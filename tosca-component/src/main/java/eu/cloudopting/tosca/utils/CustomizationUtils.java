@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathConstants;
@@ -44,6 +45,7 @@ public class CustomizationUtils {
 		XPathFactoryImpl xpathFactory = (XPathFactoryImpl) XPathFactoryImpl.newInstance();
 		this.xpath = (XPathImpl) xpathFactory.newXPath();
 		this.xpath.setNamespaceContext(new eu.cloudopting.tosca.xml.coNamespaceContext());
+		
 		this.xpath.setXPathFunctionResolver(new XPathFunctionResolverImpl());
 		DocumentBuilderFactoryImpl dbf = new DocumentBuilderFactoryImpl();
 		dbf.setNamespaceAware(true);
@@ -56,6 +58,39 @@ public class CustomizationUtils {
 		}
 	}
 
+	public void generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
+
+		DocumentImpl theDoc = getToscaTemplateDesc(idApp, csarPath);
+
+		JSONObject properties = getUserInputs(theDoc, "xpath");
+		log.debug(properties.toString());
+		Iterator dataNames = data.keys();
+		while (dataNames.hasNext()){
+			String dataKey = dataNames.next().toString();
+			log.debug(dataKey);
+			DTMNodeList nodes = null;
+			
+			try {
+				String xPathProcInt = properties.getString(dataKey);
+//				xPathProcInt = "//ns:NodeTemplate[@id='ClearoPostgreSQLDB']/ns:Properties/co:PostgreSQLDatabaseProperties/co:password";
+				log.debug(xPathProcInt);
+				nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
+				log.debug(new Integer(nodes.getLength()).toString());
+				log.debug(data.getString(dataKey));
+				nodes.item(0).removeChild(nodes.item(0).getFirstChild());
+				nodes.item(0).setTextContent(data.getString(dataKey));
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.debug(nodes.toString());
+		}
+		log.debug(theDoc.saveXML(null));
+	}
+
 	public JSONObject getCustomizationFormData(Long idApp, String csarPath) {
 		JSONObject jret = null;
 		try {
@@ -65,6 +100,69 @@ public class CustomizationUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		DocumentImpl theDoc = getToscaTemplateDesc(idApp, csarPath);
+
+		JSONObject properties = getUserInputs(theDoc, "form");
+		log.debug(properties.toString());
+
+		// maybe keeping a hash for it so sequent calls can go faster (there
+		// will be the instance generation)
+
+		// csarUtils.getToscaTemplate("csisp/Clearo.czar", "/cloudOptingData/");
+		// TODO dummy data return for now
+		try {
+			/*
+			 * jret = new JSONObject(
+			 * "{\"type\": \"object\",\"title\": \"Compute\",\"properties\": {\"node_id\":  {\"title\": \"Node ID\",\"type\": \"string\"},\"node_label\":  {\"title\": \"Node Label\",\"type\": \"string\",\"description\": \"Email will be used for evil.\"},\"memory\":  {\"title\": \"Memory\",\"type\": \"string\",\"enum\": [\"512\",\"1024\",\"2048\"]},\"cpu\": {\"title\": \"CPU\",\"type\": \"integer\",\"maxLength\": 20,\"validationMessage\": \"Dont be greedy!\"}},\"required\": [\"node_id\",\"node_label\",\"memory\", \"cpu\"]}"
+			 * );
+			 */
+			jret = new JSONObject("{\"type\": \"object\",\"title\": \"Compute\"}");
+			jret.put("properties", properties);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jret;
+
+	}
+
+	private JSONObject getUserInputs(DocumentImpl theDoc, String what) {
+		JSONObject properties = new JSONObject();
+		DTMNodeList nodes = null;
+		String xPathProcInt = "//processing-instruction('userInput')";
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			log.debug(nodes.item(i).getNodeValue());
+			try {
+				JSONObject field = new JSONObject(nodes.item(i).getNodeValue());
+				String fieldName = field.keys().next().toString();
+				log.debug("fieldName:" + fieldName);
+				switch (what) {
+				case "form":
+					properties.put(fieldName, field.getJSONObject(fieldName).getJSONObject(what));
+					break;
+
+				default:
+					properties.put(fieldName, field.getJSONObject(fieldName).getString(what));
+					break;
+				}
+				
+			} catch (DOMException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return properties;
+	}
+
+	private DocumentImpl getToscaTemplateDesc(Long idApp, String csarPath) {
 		DocumentImpl theDoc = this.xToscaHash.get(idApp);
 		if (theDoc == null) {
 			// need to read the Application and get the TOSCA file
@@ -91,51 +189,8 @@ public class CustomizationUtils {
 				e1.printStackTrace();
 			}
 
-		} else {
-
 		}
-
-		String xPathProcInt = "//processing-instruction('userInput')";
-		DTMNodeList nodes = null;
-		try {
-			nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
-		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		JSONObject properties = new JSONObject();
-		for (int i = 0; i < nodes.getLength(); ++i) {
-			log.debug(nodes.item(i).getNodeValue());
-			try {
-				JSONObject field = new JSONObject(nodes.item(i).getNodeValue());
-				String fieldName = field.keys().next().toString();
-				log.debug("fieldName:"+fieldName);
-				properties.put(fieldName, field.getJSONObject(fieldName).getJSONObject("form"));
-			} catch (DOMException | JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		log.debug(properties.toString());
-		// maybe keeping a hash for it so sequent calls can go faster (there
-		// will be the instance generation)
-
-		// csarUtils.getToscaTemplate("csisp/Clearo.czar", "/cloudOptingData/");
-		// TODO dummy data return for now
-		try {
-/*			jret = new JSONObject(
-					"{\"type\": \"object\",\"title\": \"Compute\",\"properties\": {\"node_id\":  {\"title\": \"Node ID\",\"type\": \"string\"},\"node_label\":  {\"title\": \"Node Label\",\"type\": \"string\",\"description\": \"Email will be used for evil.\"},\"memory\":  {\"title\": \"Memory\",\"type\": \"string\",\"enum\": [\"512\",\"1024\",\"2048\"]},\"cpu\": {\"title\": \"CPU\",\"type\": \"integer\",\"maxLength\": 20,\"validationMessage\": \"Dont be greedy!\"}},\"required\": [\"node_id\",\"node_label\",\"memory\", \"cpu\"]}");
-					*/
-			jret = new JSONObject(
-					"{\"type\": \"object\",\"title\": \"Compute\"}");
-			jret.put("properties", properties);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return jret;
-
+		return theDoc;
 	}
 
 }

@@ -51,7 +51,7 @@ angular.module('cloudoptingApp')
                 var callback = function(data) {
                     $log.info("sendCustomForm succeeded with data: " + data);
                 };
-                CustomizationService.sendCustomizationForm($scope.model, callback);
+                CustomizationService.sendCustomizationForm(idApp, $scope.model, callback);
             }
         }
     }
