@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.DOMException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -102,18 +103,33 @@ public class CustomizationUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		JSONObject properties = new JSONObject();
 		for (int i = 0; i < nodes.getLength(); ++i) {
 			log.debug(nodes.item(i).getNodeValue());
+			try {
+				JSONObject field = new JSONObject(nodes.item(i).getNodeValue());
+				String fieldName = field.keys().next().toString();
+				log.debug("fieldName:"+fieldName);
+				properties.put(fieldName, field.getJSONObject(fieldName).getJSONObject("form"));
+			} catch (DOMException | JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
+		log.debug(properties.toString());
 		// maybe keeping a hash for it so sequent calls can go faster (there
 		// will be the instance generation)
 
 		// csarUtils.getToscaTemplate("csisp/Clearo.czar", "/cloudOptingData/");
 		// TODO dummy data return for now
 		try {
-			jret = new JSONObject(
+/*			jret = new JSONObject(
 					"{\"type\": \"object\",\"title\": \"Compute\",\"properties\": {\"node_id\":  {\"title\": \"Node ID\",\"type\": \"string\"},\"node_label\":  {\"title\": \"Node Label\",\"type\": \"string\",\"description\": \"Email will be used for evil.\"},\"memory\":  {\"title\": \"Memory\",\"type\": \"string\",\"enum\": [\"512\",\"1024\",\"2048\"]},\"cpu\": {\"title\": \"CPU\",\"type\": \"integer\",\"maxLength\": 20,\"validationMessage\": \"Dont be greedy!\"}},\"required\": [\"node_id\",\"node_label\",\"memory\", \"cpu\"]}");
+					*/
+			jret = new JSONObject(
+					"{\"type\": \"object\",\"title\": \"Compute\"}");
+			jret.put("properties", properties);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
