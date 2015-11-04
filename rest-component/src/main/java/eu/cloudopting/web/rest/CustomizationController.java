@@ -75,6 +75,7 @@ public class CustomizationController {
 			e.printStackTrace();
 		}
 		User user = userService.loadUserByLogin(request.getUserPrincipal().getName());
+//		Long orgId = user.getOrganizationId().getId()
 		Applications application = applicationService.findOne(idApp);
 		String csarPath = application.getApplicationToscaTemplate();
 		String theTosca = toscaService.generateCustomizedTosca(idApp, csarPath, jsonData);
@@ -82,6 +83,7 @@ public class CustomizationController {
 		Customizations newC = new Customizations();
 		newC.setApplicationId(idApp);
 		newC.setCustomizationToscaFile(theTosca);
-				customizationService.create(newC);
+		newC.setCustomerOrganizationId(user.getOrganizationId());
+		customizationService.create(newC);
 	}
 }
