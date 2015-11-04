@@ -163,6 +163,20 @@ public class ToscaUtils {
 		zipIn.close();
 	}
 
+private static void mkdirs(File outdir,String path)
+  {
+    File d = new File(outdir, path);
+    if( !d.exists() )
+      d.mkdirs();
+  }
+
+  private static String dirpart(String name)
+  {
+    int s = name.lastIndexOf( File.separatorChar );
+    return s == -1 ? null : name.substring( 0, s );
+  }
+
+
 	public void unzip(InputStream stream, String destDirectory)
 			throws IOException {
 		File destDir = new File(destDirectory);
@@ -175,6 +189,9 @@ public class ToscaUtils {
 		while (entry != null) {
 			String filePath = destDirectory + File.separator + entry.getName();
 			if (!entry.isDirectory()) {
+				dir = dirpart(entry.getName());
+        if( dir != null )
+          mkdirs(destDirectory,dir);
 				// if the entry is a file, extracts it
 				extractFile(zipIn, filePath);
 			} else {
