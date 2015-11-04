@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="bs-example col-md-offset-1 col-md-10">
+        <div class="panel-heading darkgreen" translate="user_org_manager.title">User & Organization Management</div>
+        <div class="panel-body">
+            <div class="col-md-12">
+                <label>{{'user_org_manager.search' | translate}}</label>
+                <input ng-model="searchTextOrg">
+                <button type="button" ng-click="createOrganizationPage()" class="btn btn-default"  translate="user_org_manager.button.create_organization">Create Organization</button>
+                <hr>
+                <table id="searchTextResults" cellspacing="1" cellpadding="1" class="table-responsive"  style="width: 100%;">
+                    <tr>
+                        <th class="darkgreen" translate="user_org_manager.col.name">Name</th>
+                        <th class="darkgreen" translate="user_org_manager.col.status">Status</th>
+                        <th class="darkgreen" translate="user_org_manager.col.type">Type</th>
+                        <th class="darkgreen" translate="user_org_manager.col.actions">Actions</th>
+                    </tr>
+                    <tr ng-repeat="org in organizations | filter:searchTextOrg">
+                        <td>{{org.organizationName}}</td>
+                        <td>{{org.organizationStatus.status}}</td>
+                        <td>{{org.organizationType.types}}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                <button type="button" ng-click="editOrganization(org.id)" class="btn btn-default"  translate="user_org_manager.button.edit">Edit</button>
+                                <button type="button" ng-click="deleteOrganization(org.id)" class="btn btn-default"  translate="user_org_manager.button.delete">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

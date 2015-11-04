@@ -1,0 +1,31 @@
+{
+  "user_org_manager": {
+    "title": "User & Organization Management",
+    "title.user_detail": "User Dteail",
+    "search": "Search:",
+    "col": {
+      "name": "Name",
+      "description": "Description",
+      "status":"Status",
+      "type":"Type",
+      "login": "Alias",
+      "role": "Role",
+      "langKey": "Language",
+      "firstName" : "First Name",
+      "lastName" : "Last Name",
+      "email": "Email",
+      "activated": "Activated",
+      "organization": "Organization",
+      "actions": "Actions",
+      "cloudaccounts": "Cloud Account"
+    },
+    "button" : {
+      "edit": "Edit",
+      "edit_user": "Edit User",
+      "create_user": "Create User",
+      "edit_organization":"Edit Organization",
+      "create_organization":"Create Organization",
+      "delete": "Delete"
+    }
+  }
+}
