@@ -97,14 +97,7 @@ public class StoreService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		File targetFile = new File("/tmp/targetFile.zip");
-		 
-	    try {
-			FileUtils.copyInputStreamToFile(retStream, targetFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	    	
 
     	return retStream;

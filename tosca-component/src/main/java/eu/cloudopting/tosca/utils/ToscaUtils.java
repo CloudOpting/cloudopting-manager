@@ -22,6 +22,9 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.environment.EnvironmentUtils;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.tosca.ToscaService;
@@ -35,9 +38,9 @@ import freemarker.template.TemplateNotFoundException;
 @Service
 public class ToscaUtils {
 	private static final int BUFFER_SIZE = 4096;
+	private final Logger log = LoggerFactory.getLogger(ToscaUtils.class);
 
-	public void generatePuppetfile(HashMap<String, Object> templData,
-			String serviceHome) {
+	public void generatePuppetfile(HashMap<String, Object> templData, String serviceHome) {
 		// write the "Puppetfile" file
 		Configuration cfg = new Configuration();
 		cfg.setClassForTemplateLoading(ToscaService.class, "/templates");
@@ -83,8 +86,8 @@ public class ToscaUtils {
 		}
 
 	}
-	
-	public void generateDockerCompose(HashMap<String, Object> templData, String serviceHome){
+
+	public void generateDockerCompose(HashMap<String, Object> templData, String serviceHome) {
 		Configuration cfg = new Configuration();
 		cfg.setClassForTemplateLoading(ToscaService.class, "/templates");
 		Template tpl = null;
@@ -129,19 +132,24 @@ public class ToscaUtils {
 		}
 	}
 
-	public void unzip(String zipFilePath, String destDirectory)
-			throws IOException {
+	public void unzip(String zipFilePath, String destDirectory) throws IOException {
 		File destDir = new File(destDirectory);
 		if (!destDir.exists()) {
 			destDir.mkdir();
 		}
-		ZipInputStream zipIn = new ZipInputStream(new FileInputStream(
-				zipFilePath));
+		log.debug("zipFilePath:" + zipFilePath);
+		log.debug("destDirectory:" + destDirectory);
+		ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
 		ZipEntry entry = zipIn.getNextEntry();
 		// iterates over entries in the zip file
 		while (entry != null) {
 			String filePath = destDirectory + File.separator + entry.getName();
+			log.debug("filePath:" + filePath);
 			if (!entry.isDirectory()) {
+				String dir = dirpart(entry.getName());
+				if (dir != null)
+					mkdirs(destDir, dir);
+
 				// if the entry is a file, extracts it
 				extractFile(zipIn, filePath);
 			} else {
@@ -155,8 +163,18 @@ public class ToscaUtils {
 		zipIn.close();
 	}
 
-	public void unzip(InputStream stream, String destDirectory)
-			throws IOException {
+	private void mkdirs(File outdir, String path) {
+		File d = new File(outdir, path);
+		if (!d.exists())
+			d.mkdirs();
+	}
+
+	private String dirpart(String name) {
+		int s = name.lastIndexOf(File.separatorChar);
+		return s == -1 ? null : name.substring(0, s);
+	}
+
+	public void unzip(InputStream stream, String destDirectory) throws IOException {
 		File destDir = new File(destDirectory);
 		if (!destDir.exists()) {
 			destDir.mkdir();
@@ -187,10 +205,8 @@ public class ToscaUtils {
 	 * @param filePath
 	 * @throws IOException
 	 */
-	private void extractFile(ZipInputStream zipIn, String filePath)
-			throws IOException {
-		BufferedOutputStream bos = new BufferedOutputStream(
-				new FileOutputStream(filePath));
+	private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
 		byte[] bytesIn = new byte[BUFFER_SIZE];
 		int read = 0;
 		while ((read = zipIn.read(bytesIn)) != -1) {
@@ -199,8 +215,8 @@ public class ToscaUtils {
 		bos.close();
 	}
 
-	public R10kResultHandler runR10k(String puppetFile, String puppetDir,
-			final long r10kJobTimeout, final boolean r10kInBackground, String workingDir) {
+	public R10kResultHandler runR10k(String puppetFile, String puppetDir, final long r10kJobTimeout,
+			final boolean r10kInBackground, String workingDir) {
 		int exitValue = 0;
 		ExecuteWatchdog watchdog = null;
 		R10kResultHandler resultHandler;
@@ -214,26 +230,27 @@ public class ToscaUtils {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-//		env.put("PUPPETFILE", puppetFile);
-//		env.put("PUPPETFILE_DIR", puppetDir);
-//		final CommandLine commandLine = new CommandLine("/bin/sh");
-//		commandLine.addArgument("-c", false);
+		// env.put("PUPPETFILE", puppetFile);
+		// env.put("PUPPETFILE_DIR", puppetDir);
+		// final CommandLine commandLine = new CommandLine("/bin/sh");
+		// commandLine.addArgument("-c", false);
 		final CommandLine commandLine = new CommandLine("/usr/local/bin/r10k");
 		commandLine.addArgument("puppetfile");
 		commandLine.addArgument("install");
-//		commandLine.addArgument("PUPPETFILE=" + puppetFile, false);
-//		commandLine.addArgument("PUPPETFILE_DIR="+ puppetDir, false);
-//		commandLine.addArgument("puppetfile", false);
-//		commandLine.addArgument("r10k", false);
-//		commandLine.addArgument("install", false);
-//		commandLine.addArgument("'PUPPETFILE=" + puppetFile + " PUPPETFILE_DIR="
-//				+ puppetDir + " /usr/local/bin/r10k puppetfile install'", false);
+		// commandLine.addArgument("PUPPETFILE=" + puppetFile, false);
+		// commandLine.addArgument("PUPPETFILE_DIR="+ puppetDir, false);
+		// commandLine.addArgument("puppetfile", false);
+		// commandLine.addArgument("r10k", false);
+		// commandLine.addArgument("install", false);
+		// commandLine.addArgument("'PUPPETFILE=" + puppetFile + "
+		// PUPPETFILE_DIR="
+		// + puppetDir + " /usr/local/bin/r10k puppetfile install'", false);
 		System.out.println(commandLine.getExecutable());
 		// create the executor and consider the exitValue '1' as success
 		final Executor executor = new DefaultExecutor();
 		executor.setWorkingDirectory(new File(workingDir));
-		
-//		executor.setExitValue(1);
+
+		// executor.setExitValue(1);
 
 		// create a watchdog if requested
 		if (r10kJobTimeout > 0) {
@@ -246,7 +263,7 @@ public class ToscaUtils {
 			System.out.println("[print] Executing non-blocking r10k job  ...");
 			resultHandler = new R10kResultHandler(watchdog);
 			try {
-				executor.execute(commandLine,env, resultHandler);
+				executor.execute(commandLine, env, resultHandler);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -266,13 +283,13 @@ public class ToscaUtils {
 		/*
 		 * List<String> commands = new ArrayList<String>();
 		 * commands.add("/bin/sh"); commands.add("-c");
-		 * commands.add("PUPPETFILE="
-		 * +path+"/"+customer+"-"+service+"/Puppetfile PUPPETFILE_DIR="
-		 * +path+"/puppet/modules r10k puppetfile install");
-		 * System.out.println("PUPPETFILE="
-		 * +path+"/"+customer+"-"+service+"/Puppetfile PUPPETFILE_DIR="
-		 * +path+"/puppet/modules r10k puppetfile install"); // execute the
-		 * command SystemCommandExecutor commandExecutor = new
+		 * commands.add("PUPPETFILE=" +path+"/"+customer+"-"+service+
+		 * "/Puppetfile PUPPETFILE_DIR=" +path+
+		 * "/puppet/modules r10k puppetfile install");
+		 * System.out.println("PUPPETFILE=" +path+"/"+customer+"-"+service+
+		 * "/Puppetfile PUPPETFILE_DIR=" +path+
+		 * "/puppet/modules r10k puppetfile install"); // execute the command
+		 * SystemCommandExecutor commandExecutor = new
 		 * SystemCommandExecutor(commands); int result = 0; try { result =
 		 * commandExecutor.executeCommand(); } catch (IOException e) { // TODO
 		 * Auto-generated catch block e.printStackTrace(); } catch
@@ -284,9 +301,9 @@ public class ToscaUtils {
 		 * commandExecutor.getStandardOutputFromCommand(); StringBuilder stderr
 		 * = commandExecutor.getStandardErrorFromCommand();
 		 * 
-		 * // print the stdout and stderr
-		 * System.out.println("The numeric result of the command was: " +
-		 * result); System.out.println("STDOUT:"); System.out.println(stdout);
+		 * // print the stdout and stderr System.out.println(
+		 * "The numeric result of the command was: " + result);
+		 * System.out.println("STDOUT:"); System.out.println(stdout);
 		 * System.out.println("STDERR:"); System.out.println(stderr);
 		 */
 	}

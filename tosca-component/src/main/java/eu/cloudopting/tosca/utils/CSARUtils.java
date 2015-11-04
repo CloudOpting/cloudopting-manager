@@ -70,12 +70,22 @@ public class CSARUtils {
 		log.debug("destinationPath: "+destinationPath);
 		log.debug("repository: "+repository.toString());
 		InputStream stream = storeService.getDocumentAsStream(originPath);
+		File targetFile = new File("/tmp/targetFile.zip");
+		 
+	    try {
+			FileUtils.copyInputStreamToFile(stream, targetFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
-			toscaUtils.unzip(stream, destinationPath);
+			toscaUtils.unzip("/tmp/targetFile.zip", destinationPath);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
+			log.debug("ECCEZIONE IN SCOMPATTAMENTO ZIP");
 			e1.printStackTrace();
 		}
+		/*
 		String content;
 		try {
 			content = IOUtils.toString(stream);
@@ -88,7 +98,7 @@ public class CSARUtils {
 			e.printStackTrace();
 		}
 		
-			
+			*/
 	}
 
 	
