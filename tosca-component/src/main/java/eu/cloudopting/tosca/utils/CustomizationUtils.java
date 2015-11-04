@@ -58,7 +58,7 @@ public class CustomizationUtils {
 		}
 	}
 
-	public void generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
+	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
 
 		DocumentImpl theDoc = getToscaTemplateDesc(idApp, csarPath);
 
@@ -89,6 +89,7 @@ public class CustomizationUtils {
 			log.debug(nodes.toString());
 		}
 		log.debug(theDoc.saveXML(null));
+		return theDoc.saveXML(null);
 	}
 
 	public JSONObject getCustomizationFormData(Long idApp, String csarPath) {

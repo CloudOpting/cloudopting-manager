@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.domain.Applications;
+import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.service.ApplicationService;
+import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.tosca.ToscaService;
 
@@ -35,6 +37,9 @@ public class CustomizationController {
 	
 	@Autowired
 	private ApplicationService applicationService;
+	
+	@Autowired
+	CustomizationService customizationService;
 	
 	@RequestMapping(value = "/application/{idApp}/getSizings",
             method = RequestMethod.GET)
@@ -72,7 +77,11 @@ public class CustomizationController {
 		User user = userService.loadUserByLogin(request.getUserPrincipal().getName());
 		Applications application = applicationService.findOne(idApp);
 		String csarPath = application.getApplicationToscaTemplate();
-		toscaService.generateCustomizedTosca(idApp, csarPath, jsonData);
+		String theTosca = toscaService.generateCustomizedTosca(idApp, csarPath, jsonData);
 		
+		Customizations newC = new Customizations();
+		newC.setApplicationId(idApp);
+		newC.setCustomizationToscaFile(theTosca);
+				customizationService.create(newC);
 	}
 }

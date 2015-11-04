@@ -749,8 +749,8 @@ public class ToscaService {
 		return customizationUtils.getCustomizationFormData(idApp, csarPath);
 	
 	}
-	public void generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
-		customizationUtils.generateCustomizedTosca(idApp, csarPath, data);
-		return;
+	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
+		return customizationUtils.generateCustomizedTosca(idApp, csarPath, data);
+		
 	}
 }
