@@ -186,15 +186,14 @@ public class ApplicationResource extends AbstractController<Applications> {
         return getBpmnService().updateApplication(application, processId);
     }
 
-    @RequestMapping(value = "/application/{idApp}/{processId}", method = RequestMethod.DELETE,
+    @RequestMapping(value = "/application/{idApp}", method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final ActivitiDTO deleteApplication(@PathVariable Long idApp, @PathVariable String processId,
+    public final ActivitiDTO deleteApplication(@PathVariable Long idApp,
                                                HttpServletRequest request) throws IOException {
         ApplicationDTO application = new ApplicationDTO();
         application.setId(idApp);
-        application.setProcessId(processId);
         return getBpmnService().deleteApplication(application);
     }
 

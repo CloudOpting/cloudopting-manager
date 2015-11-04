@@ -296,9 +296,9 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
-	public ActivitiDTO deleteApplication(ApplicationDTO uploadDTO) {
+	public ActivitiDTO deleteApplication(ApplicationDTO applicationDTO) {
 		HashMap<String, Object> v = new HashMap<>();
-		v.put("applicationdto",uploadDTO);
+		v.put("applicationdto",applicationDTO);
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("deleteApplication",v);
 		ActivitiDTO activitiDTO = new ActivitiDTO();
 		Map map = ((ExecutionEntity) pi).getVariableInstances();
