@@ -82,10 +82,10 @@ angular.module('cloudoptingApp')
                         callback(data);
                     });
             },
-            delete: function (idApplication, processId) {
-                return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processId)
+            delete: function (idApplication, callback) {
+                return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication)
                     .success(function (data, status, headers, config) {
-                        //callback(data);
+                        callback(data);
                     });
             },
             addPromotionalImage: function (idApplication, processID, files, callback) {

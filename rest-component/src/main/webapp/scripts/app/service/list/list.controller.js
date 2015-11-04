@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ListController', function (SERVICE, $rootScope, $scope, $state, $timeout, localStorageService, Principal, Auth, ApplicationService) {
+    .controller('ListController', function (SERVICE, $rootScope, $scope, $state, $timeout, localStorageService, Principal, Auth, ApplicationService, $window) {
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
         $scope.applicationList = null;
 
@@ -35,17 +35,16 @@ angular.module('cloudoptingApp')
             //Save the ID on a place where edit can get it.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
 
-
+            $window.alert("This functionality is not ready yet. For any inconvenience, contact cloudopting@gmail.com");
 
             //Redirect to instances
             //$state.go('edit');
         };
 
         //Function to go to the instances detail.
-        $scope.goToInstanceList = function (appId) {
+        $scope.goToInstanceList = function (app) {
             //Save the ID on a place where instances can get it.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
-
 
             //Redirect to instances
             $state.go('instances');
@@ -53,14 +52,16 @@ angular.module('cloudoptingApp')
 
         //Function to delete a service.
         $scope.goToDelete = function (app) {
-            //Deleting a serive
-            ApplicationService.delete(app, '123456');
+            var callback = function(data) {
+                //Deleteing current service on storage.
+                localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
 
-            //Deleteing current service on storage.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
-            //ApplicationService
+                //Reload page
+                $state.go($state.current, {}, {reload: true});
 
-            //$state.go('delete');
+            };
+            //Deleting a service
+            ApplicationService.delete(app.id, callback);
         };
 
         //Function to go to the instances detail.
