@@ -82,13 +82,26 @@ angular.module('cloudoptingApp')
 
 
         /// ORGANIZATIONS ////////////////////////
-        $scope.org = null;
+        $scope.org = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_ORG);
         $scope.organizations = null;
 
-        //Get all users
+        $scope.status = null;
+        $scope.types = null;
+
+        //Get all organizations
         OrganizationService.findAll()
             .success(function (organizations) {
                 $scope.organizations = organizations;
+            });
+
+        OrganizationService.getTypes()
+            .success(function (types) {
+                $scope.types = types;
+            });
+
+        OrganizationService.getStatus()
+            .success(function (status) {
+                $scope.status = status;
             });
 
         $scope.createOrganizationPage = function() {
@@ -98,8 +111,7 @@ angular.module('cloudoptingApp')
         };
 
         $scope.deleteOrganization = function(idOrganization) {
-
-            if($window.confirm('Are you sure that you want to delete this user?')) {
+            if($window.confirm('Are you sure that you want to delete this organization?')) {
                 var deleteCallback = function(data) {
                     //if data XXX...
                     $state.go($state.current, {}, {reload: true});
@@ -111,14 +123,20 @@ angular.module('cloudoptingApp')
             }
         };
 
-
+        $scope.submitOrganizationForm = function(orgId) {
+            if(orgId) {
+                saveOrganization();
+            } else {
+                createOrganization();
+            }
+        };
 
         $scope.editOrganization = function(organization) {
             localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_ORG, organization);
             $state.go('org_detail_manager');
         };
 
-        $scope.createOrganization = function() {
+        var createOrganization = function() {
             var callback = function(data){
                 //Return to the list
                 $state.go('org_manager');
@@ -126,12 +144,12 @@ angular.module('cloudoptingApp')
             OrganizationService.create($scope.org, callback);
         };
 
-        $scope.saveOrganization = function() {
+        var saveOrganization = function() {
             var callback = function(data){
                 //Return to the list
                 $state.go('org_manager');
             };
-            UserService.update($scope.org, callback);
+            OrganizationService.update($scope.org, callback);
         };
         //////////////////////////////////////////
 

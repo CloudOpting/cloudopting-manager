@@ -1,7 +1,11 @@
 {
   "user_org_manager": {
-    "title": "User & Organization Management",
-    "title.user_detail": "User Dteail",
+    "title": {
+      "user": "User Management",
+      "org": "Organization Management"
+    },
+    "title.user_detail": "User Detail",
+    "title.org_detail": "Organization Detail",
     "search": "Search:",
     "col": {
       "name": "Name",
@@ -12,6 +16,7 @@
       "role": "Role",
       "langKey": "Language",
       "firstName" : "First Name",
+      "organizationKey": "Key",
       "lastName" : "Last Name",
       "email": "Email",
       "activated": "Activated",

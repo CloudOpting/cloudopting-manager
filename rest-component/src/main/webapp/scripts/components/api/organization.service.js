@@ -7,6 +7,8 @@ angular.module('cloudoptingApp')
     .factory('OrganizationService', function (SERVICE, $http, $log) {
         var orgs = null;
         var org = null;
+        var status = null;
+        var types = null;
         var baseURI = 'api/organization';
 
         return {
@@ -64,22 +66,16 @@ angular.module('cloudoptingApp')
                         //callback(data);
                     });
             },
-            getTypes: function (callback) {
+            getTypes: function () {
                 return $http.get(baseURI + 'Type')
-                    .success(function (data, status, headers, config) {
-                        callback(data);
-                    })
-                    .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                    .success(function (typess) {
+                        types = typess;
                     });
             },
-            getStatus: function (callback) {
+            getStatus: function () {
                 return $http.get(baseURI + 'Status')
-                    .success(function (data, status, headers, config) {
-                        callback(data);
-                    })
-                    .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                    .success(function (statuss) {
+                        status = statuss;
                     });
             }
         }
