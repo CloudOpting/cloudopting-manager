@@ -22,6 +22,9 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.environment.EnvironmentUtils;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.tosca.ToscaService;
@@ -35,6 +38,7 @@ import freemarker.template.TemplateNotFoundException;
 @Service
 public class ToscaUtils {
 	private static final int BUFFER_SIZE = 4096;
+	private final Logger log = LoggerFactory.getLogger(ToscaUtils.class);
 
 	public void generatePuppetfile(HashMap<String, Object> templData,
 			String serviceHome) {
@@ -135,13 +139,17 @@ public class ToscaUtils {
 		if (!destDir.exists()) {
 			destDir.mkdir();
 		}
+		log.debug("zipFilePath:"+zipFilePath);
+		log.debug("destDirectory:"+destDirectory);
 		ZipInputStream zipIn = new ZipInputStream(new FileInputStream(
 				zipFilePath));
 		ZipEntry entry = zipIn.getNextEntry();
 		// iterates over entries in the zip file
 		while (entry != null) {
 			String filePath = destDirectory + File.separator + entry.getName();
+			log.debug("filePath:"+filePath);
 			if (!entry.isDirectory()) {
+				FileUtils.
 				// if the entry is a file, extracts it
 				extractFile(zipIn, filePath);
 			} else {
