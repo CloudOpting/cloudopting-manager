@@ -47,11 +47,11 @@ angular.module('cloudoptingApp')
             // Then we check if the form is valid
             if (form.$valid) {
                 // ... do whatever you need to do with your data.
-                $log.info("The form is valid, let's send it: " + form.node_id.$modelValue + " " +  form.memory.$modelValue);
+                $log.info("The form is valid, let's send it: " );
                 var callback = function(data) {
                     $log.info("sendCustomForm succeeded with data: " + data);
                 };
-                CustomizationService.sendCustomizationForm(form, callback);
+                CustomizationService.sendCustomizationForm($scope.model, callback);
             }
         }
     }
