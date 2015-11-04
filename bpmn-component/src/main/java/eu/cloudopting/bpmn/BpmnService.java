@@ -51,7 +51,8 @@ import eu.cloudopting.service.util.StatusConstants;
 @Transactional
 public class BpmnService {
 	private final Logger log = LoggerFactory.getLogger(BpmnService.class);
-
+	
+	public static final String TEMP_FILE_NAME_SEPARATOR = "___";
 
 	@Autowired
     private RuntimeService runtimeService;
@@ -225,7 +226,7 @@ public class BpmnService {
 	}
 	
 	public static File stream2file (String uploadName, InputStream in) throws IOException {
-        final File tempFile = File.createTempFile(uploadName+"|", "tmp");
+        final File tempFile = File.createTempFile(uploadName+BpmnService.TEMP_FILE_NAME_SEPARATOR, "tmp");
         tempFile.deleteOnExit();
         try (FileOutputStream out = new FileOutputStream(tempFile)) {
             IOUtils.copy(in, out);
