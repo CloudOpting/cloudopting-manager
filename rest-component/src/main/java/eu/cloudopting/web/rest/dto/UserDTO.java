@@ -2,6 +2,8 @@ package eu.cloudopting.web.rest.dto;
 
 import org.hibernate.validator.constraints.Email;
 
+import eu.cloudopting.domain.Organizations;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -38,7 +40,7 @@ public class UserDTO {
 
     private boolean activated = true;
     
-    private Long organizationId;
+    private Organizations organizationId;
     
     private List<String> roles;
 
@@ -92,7 +94,7 @@ public class UserDTO {
 		return id;
 	}
 
-	public Long getOrganizationId() {
+	public Organizations getOrganizationId() {
 		return organizationId;
 	}
 

@@ -40,7 +40,7 @@ public class UserResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<User> findOne(@PathVariable("idUser") final Long idUser) {
-		User user = getUserRepository().findOne(idUser);
+		User user = getUserService().findOneAndInitRolesCollection(idUser);
 		if(user == null){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -53,7 +53,7 @@ public class UserResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<List<User>> findAll() {
-		List<User> users = getUserRepository().findAll();
+		List<User> users = getUserService().findAllAndInitRolesCollection();
 		//Don't send password to the client
 		for(User user : users){
 			user.setPassword(null);
@@ -80,9 +80,10 @@ public class UserResource {
 				.orElseGet(() -> getUserRepository().findOneByEmail(userDTO.getEmail())
 						.map(user -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
 						.orElseGet(() -> {
+							Long organizationId = userDTO.getOrganizationId() == null ? null : userDTO.getOrganizationId().getId();
 							User user = getUserService().createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
 									userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
-									userDTO.getLangKey(), userDTO.getOrganizationId());
+									userDTO.getLangKey(), organizationId);
 							user = getUserService().setUserActivatedFlag(user.getId(), userDTO.isActivated());
 							return new ResponseEntity<>(HttpStatus.CREATED);
 						})
@@ -96,8 +97,9 @@ public class UserResource {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		} 
-		getUserService().updateUserInformation(user.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
-				userDTO.getOrganizationId());
+		Long organizationId = userDTO.getOrganizationId() == null ? null : userDTO.getOrganizationId().getId();
+		getUserService().updateUserInformation(user.getId(), userDTO.getFirstName(), userDTO.getLastName(), 
+				userDTO.getEmail(), organizationId);
 		getUserService().setUserActivatedFlag(user.getId(), userDTO.isActivated());
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
