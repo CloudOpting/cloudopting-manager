@@ -40,7 +40,7 @@ public class UserResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<User> findOne(@PathVariable("idUser") final Long idUser) {
-		User user = getUserRepository().findOne(idUser);
+		User user = getUserService().findOneAndInitRolesCollection(idUser);
 		if(user == null){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -53,7 +53,7 @@ public class UserResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<List<User>> findAll() {
-		List<User> users = getUserRepository().findAll();
+		List<User> users = getUserService().findAllAndInitRolesCollection();
 		//Don't send password to the client
 		for(User user : users){
 			user.setPassword(null);

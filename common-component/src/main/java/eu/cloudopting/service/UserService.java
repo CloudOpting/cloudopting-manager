@@ -182,4 +182,21 @@ public class UserService {
         user.getOrganizationId();
         return user;
     }
+    
+    public List<User> findAllAndInitRolesCollection(){
+    	List<User> users = userRepository.findAll();
+		for(User user : users){
+			user.getAuthorities().size();
+		}
+		return users;
+    }
+    
+    public User findOneAndInitRolesCollection(final Long idUser){
+    	User user = userRepository.findOne(idUser);
+    	if(user == null){
+    		return null;
+    	}
+    	user.getAuthorities().size();
+		return user;
+    }
 }

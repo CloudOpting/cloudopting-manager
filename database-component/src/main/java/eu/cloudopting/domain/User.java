@@ -1,6 +1,8 @@
 package eu.cloudopting.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -62,7 +64,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organizations organizationId;
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonProperty(value = "roles")
     @ManyToMany
     @JoinTable(
             name = "T_USER_AUTHORITY",
