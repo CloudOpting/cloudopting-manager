@@ -1,9 +1,6 @@
 package eu.cloudopting.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -62,6 +59,36 @@ public class UserService {
                 return user;
             });
         return Optional.empty();
+    }
+
+    public Optional<User> completePasswordReset(String newPassword, String key) {
+        log.debug("Reset user password for reset key {}", key);
+
+        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        Date oneDayAgo = new Date(System.currentTimeMillis() - (7 * DAY_IN_MS));
+
+        return userRepository.findOneByResetKey(key)
+                .filter(user -> user.getActivated() && user.getResetDate().after(oneDayAgo))
+                .map(user -> {
+                    user.setPassword(passwordEncoder.encode(newPassword));
+                    user.setResetKey(null);
+                    user.setResetDate(null);
+                    userRepository.save(user);
+                    return user;
+                });
+
+    }
+
+    public Optional<User> requestPasswordReset(String mail) {
+        return userRepository.findOneByEmail(mail)
+                .filter(user -> user.getActivated())
+                .map(user -> {
+                    user.setResetKey(RandomUtil.generateResetKey());
+                    user.setResetDate(new Date());
+                    userRepository.save(user);
+                    return user;
+                });
+        //return Optional.empty();
     }
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,

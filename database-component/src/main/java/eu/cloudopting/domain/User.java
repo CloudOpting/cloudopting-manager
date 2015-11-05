@@ -1,6 +1,7 @@
 package eu.cloudopting.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -8,8 +9,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 
 /**
  * A user.
@@ -57,6 +60,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     private String activationKey;
+
+    @Size(max = 20)
+    @Column(name = "reset_key", length = 20)
+    private String resetKey;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "reset_date", nullable = true)
+    private Date resetDate = null;
 
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
@@ -136,6 +147,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setActivationKey(String activationKey) {
         this.activationKey = activationKey;
+    }
+
+    public String getResetKey() {
+        return resetKey;
+    }
+
+    public void setResetKey(String resetKey) {
+        this.resetKey = resetKey;
+    }
+
+    public Date getResetDate() {
+        return resetDate;
+    }
+
+    public void setResetDate(Date resetDate) {
+        this.resetDate = resetDate;
     }
 
     public String getLangKey() {

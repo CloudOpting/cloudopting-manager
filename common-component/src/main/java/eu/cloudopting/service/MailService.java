@@ -76,4 +76,19 @@ public class MailService {
         String subject = "CloudOpting Catalog Activation Link";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
+
+    @Async
+    public void sendPasswordResetMail(User user, String baseUrl) {
+        log.debug("Sending password reset e-mail to '{}'", user.getEmail());
+        String content = "<html>" +
+                "<body>" +
+                "<p> Dear "+user.getFirstName()+", </p>" +
+                "<p>Reset password URL: "+baseUrl+"/#/reset/finish?key="+user.getResetKey()+"</p>" +
+                "<p>Best regards,</p>" +
+                "<p>CloudOpting team.</p>" +
+                "</body>" +
+                "</html>";
+        String subject = "CloudOpting Catalog Reset Password Link";
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
 }

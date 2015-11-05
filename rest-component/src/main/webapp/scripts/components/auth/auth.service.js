@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -94,6 +94,26 @@ angular.module('cloudoptingApp')
                 var cb = callback || angular.noop;
 
                 return Password.save(newPassword, function () {
+                    return cb();
+                }, function (err) {
+                    return cb(err);
+                }).$promise;
+            },
+
+            resetPasswordInit: function (mail, callback) {
+                var cb = callback || angular.noop;
+
+                return PasswordResetInit.save(mail, function() {
+                    return cb();
+                }, function (err) {
+                    return cb(err);
+                }).$promise;
+            },
+
+            resetPasswordFinish: function(key, newPassword, callback) {
+                var cb = callback || angular.noop;
+
+                return PasswordResetFinish.save(key, newPassword, function () {
                     return cb();
                 }, function (err) {
                     return cb(err);
