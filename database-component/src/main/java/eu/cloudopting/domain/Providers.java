@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -107,6 +109,7 @@ public class Providers implements BaseEntity {
         return merged;
     }
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "providerId")
     private Set<CloudAccounts> cloudAccountss;
 

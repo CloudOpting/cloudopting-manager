@@ -9,4 +9,6 @@ public interface OrganizationService extends BaseService<Organizations> {
 	Organizations create(OrganizationDTO organizationDTO);
 
 	void update(OrganizationDTO organizationDTO);
+
+	Organizations findOneAndInitCloudAccountCollection(Long organizationId);
 }

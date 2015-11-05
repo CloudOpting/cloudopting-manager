@@ -48,6 +48,11 @@ public class OrganizationServiceImpl extends AbstractService<Organizations> impl
 	}
 
 	@Override
+	public Organizations findOneAndInitCloudAccountCollection(Long organizationId) {
+		return organizationRepository.findOneAndInitCloudAccountCollection(organizationId);
+	}
+	
+	@Override
 	public Organizations create(OrganizationDTO organizationDTO) {
 		Organizations organization = new Organizations();
 		copyPropertiesFromDto(organizationDTO, organization);
