@@ -42,7 +42,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <endEvent id="endDockerGenSub" name="End"></endEvent>
       <sequenceFlow id="toGenerateDocker" sourceRef="startDockerGenSub" targetRef="dockerTask"></sequenceFlow>
     </subProcess>
-    <sequenceFlow id="toR10k" sourceRef="subDockerPuppetPrepare" targetRef="r10kTask"></sequenceFlow>
+    <sequenceFlow id="toR10k" sourceRef="subDockerPuppetPrepare" targetRef="exclusivegateway11"></sequenceFlow>
     <serviceTask id="servicetask1" name="Add new VM to docker swarm" activiti:delegateExpression="${deployDockerSwarm}"></serviceTask>
     <serviceTask id="setupTask" name="setup Process" activiti:delegateExpression="${deploySetup}"></serviceTask>
     <sequenceFlow id="toGetTosca" sourceRef="setupTask" targetRef="getToscaCsar"></sequenceFlow>
@@ -75,7 +75,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <serviceTask id="getToscaCsar" name="Get TOSCA csar" activiti:delegateExpression="${deployManageTosca}"></serviceTask>
     <sequenceFlow id="toCustomer" sourceRef="getCustomization" targetRef="getCustomer"></sequenceFlow>
     <sequenceFlow id="toSetup" sourceRef="getCustomer" targetRef="setupTask"></sequenceFlow>
-    <sequenceFlow id="toVm" sourceRef="getToscaCsar" targetRef="vmTask"></sequenceFlow>
+    <sequenceFlow id="toVm" sourceRef="getToscaCsar" targetRef="exclusivegateway10"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway9" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="checkDeploy" name="Check Deploy" activiti:delegateExpression="${deployCheckDeploy}"></serviceTask>
@@ -209,488 +209,525 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow17" sourceRef="timerChkIp" targetRef="chkAquireIp"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway10" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="noTesting" sourceRef="exclusivegateway10" targetRef="vmTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTesting==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="isTesting" sourceRef="exclusivegateway10" targetRef="subDockerPuppetPrepare">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTesting==true}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway11" targetRef="r10kTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTesting==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway11" targetRef="theEnd">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTesting==true}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
     <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">
       <bpmndi:BPMNShape bpmnElement="theStart" id="BPMNShape_theStart">
-        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="268.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="271.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="vmTask" id="BPMNShape_vmTask">
-        <omgdc:Bounds height="60.0" width="100.0" x="212.0" y="252.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="100.0" x="590.0" y="252.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
-        <omgdc:Bounds height="35.0" width="35.0" x="1019.0" y="781.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1397.0" y="781.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="vmInstalledTask" id="BPMNShape_vmInstalledTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="464.0" y="254.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="842.0" y="254.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="split1" id="BPMNShape_split1">
-        <omgdc:Bounds height="40.0" width="40.0" x="585.0" y="261.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="963.0" y="261.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="join1" id="BPMNShape_join1">
-        <omgdc:Bounds height="40.0" width="40.0" x="340.0" y="261.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="718.0" y="261.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="deployOnDockerTask" id="BPMNShape_deployOnDockerTask">
-        <omgdc:Bounds height="61.0" width="105.0" x="981.0" y="392.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="1359.0" y="392.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="subDockerPuppetPrepare" id="BPMNShape_subDockerPuppetPrepare">
-        <omgdc:Bounds height="161.0" width="395.0" x="128.0" y="401.0"></omgdc:Bounds>
+        <omgdc:Bounds height="161.0" width="395.0" x="236.0" y="401.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startDockerGenSub" id="BPMNShape_startDockerGenSub">
-        <omgdc:Bounds height="35.0" width="35.0" x="143.0" y="462.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="251.0" y="462.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="dockerTask" id="BPMNShape_dockerTask">
-        <omgdc:Bounds height="78.0" width="105.0" x="318.0" y="441.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="426.0" y="441.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endDockerGenSub" id="BPMNShape_endDockerGenSub">
-        <omgdc:Bounds height="35.0" width="35.0" x="468.0" y="462.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="576.0" y="462.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="819.0" y="321.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="1197.0" y="321.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="setupTask" id="BPMNShape_setupTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="209.0" y="181.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="206.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="subDockerBuild" id="BPMNShape_subDockerBuild">
-        <omgdc:Bounds height="151.0" width="586.0" x="108.0" y="607.0"></omgdc:Bounds>
+        <omgdc:Bounds height="151.0" width="586.0" x="722.0" y="607.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="buildTask" id="BPMNShape_buildTask">
-        <omgdc:Bounds height="63.0" width="105.0" x="178.0" y="652.0"></omgdc:Bounds>
+        <omgdc:Bounds height="63.0" width="105.0" x="792.0" y="652.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startBuildSub" id="BPMNShape_startBuildSub">
-        <omgdc:Bounds height="35.0" width="35.0" x="111.0" y="666.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="725.0" y="666.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endBuildSub" id="BPMNShape_endBuildSub">
-        <omgdc:Bounds height="35.0" width="35.0" x="601.0" y="667.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1215.0" y="667.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkBuild" id="BPMNShape_checkBuild">
-        <omgdc:Bounds height="55.0" width="105.0" x="371.0" y="656.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="985.0" y="656.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="join3" id="BPMNShape_join3">
-        <omgdc:Bounds height="40.0" width="40.0" x="311.0" y="663.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="925.0" y="663.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="fork3" id="BPMNShape_fork3">
-        <omgdc:Bounds height="40.0" width="40.0" x="511.0" y="664.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1125.0" y="664.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="r10kTask" id="BPMNShape_r10kTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="559.0" y="454.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="937.0" y="454.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="taskDockerComposeFile" id="BPMNShape_taskDockerComposeFile">
-        <omgdc:Bounds height="55.0" width="105.0" x="839.0" y="454.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1217.0" y="454.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="getCustomization" id="BPMNShape_getCustomization">
-        <omgdc:Bounds height="55.0" width="105.0" x="68.0" y="254.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="68.0" y="257.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="getCustomer" id="BPMNShape_getCustomer">
-        <omgdc:Bounds height="55.0" width="105.0" x="68.0" y="181.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="68.0" y="184.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="getToscaCsar" id="BPMNShape_getToscaCsar">
-        <omgdc:Bounds height="55.0" width="105.0" x="351.0" y="181.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="348.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
-        <omgdc:Bounds height="40.0" width="40.0" x="1013.0" y="489.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1391.0" y="489.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway9" id="BPMNShape_exclusivegateway9">
-        <omgdc:Bounds height="40.0" width="40.0" x="1013.0" y="630.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1391.0" y="630.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="checkDeploy" id="BPMNShape_checkDeploy">
-        <omgdc:Bounds height="55.0" width="105.0" x="981.0" y="551.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1359.0" y="551.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="cleanup" id="BPMNShape_cleanup">
-        <omgdc:Bounds height="55.0" width="105.0" x="984.0" y="701.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1362.0" y="701.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="join2" id="BPMNShape_join2">
-        <omgdc:Bounds height="40.0" width="40.0" x="644.0" y="402.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1022.0" y="402.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="split2" id="BPMNShape_split2">
-        <omgdc:Bounds height="40.0" width="40.0" x="700.0" y="474.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1078.0" y="474.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkcontext" id="BPMNShape_chkcontext">
-        <omgdc:Bounds height="55.0" width="105.0" x="703.0" y="396.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1081.0" y="396.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="acquireIpTask" id="BPMNShape_acquireIpTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="787.0" y="48.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1165.0" y="48.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkAquireIp" id="BPMNShape_chkAquireIp">
-        <omgdc:Bounds height="55.0" width="105.0" x="764.0" y="204.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1142.0" y="204.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="joinIp" id="BPMNShape_joinIp">
-        <omgdc:Bounds height="40.0" width="40.0" x="644.0" y="215.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1022.0" y="215.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="splitIp" id="BPMNShape_splitIp">
-        <omgdc:Bounds height="40.0" width="40.0" x="889.0" y="213.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1267.0" y="213.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="subPorts" id="BPMNShape_subPorts">
-        <omgdc:Bounds height="205.0" width="501.0" x="960.0" y="179.0"></omgdc:Bounds>
+        <omgdc:Bounds height="205.0" width="501.0" x="1338.0" y="179.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startPorts" id="BPMNShape_startPorts">
-        <omgdc:Bounds height="35.0" width="35.0" x="970.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1348.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endPorts" id="BPMNShape_endPorts">
-        <omgdc:Bounds height="35.0" width="35.0" x="970.0" y="331.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1348.0" y="331.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="forwardTask" id="BPMNShape_forwardTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="1020.0" y="201.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1398.0" y="201.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkForwardTask" id="BPMNShape_chkForwardTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="1270.0" y="201.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1648.0" y="201.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkFirewallTask" id="BPMNShape_chkFirewallTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="1100.0" y="321.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1478.0" y="321.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="firewallTask" id="BPMNShape_firewallTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="1270.0" y="321.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1648.0" y="321.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="joinForward" id="BPMNShape_joinForward">
-        <omgdc:Bounds height="40.0" width="40.0" x="1140.0" y="208.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1518.0" y="208.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="splitFirewall" id="BPMNShape_splitFirewall">
-        <omgdc:Bounds height="40.0" width="40.0" x="1040.0" y="328.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1418.0" y="328.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="splitForward" id="BPMNShape_splitForward">
-        <omgdc:Bounds height="40.0" width="40.0" x="1400.0" y="208.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1778.0" y="208.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="joinFirewall" id="BPMNShape_joinFirewall">
-        <omgdc:Bounds height="40.0" width="40.0" x="1220.0" y="328.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1598.0" y="328.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent5" id="BPMNShape_timerintermediatecatchevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="1204.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1582.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="activateVM" id="BPMNShape_activateVM">
-        <omgdc:Bounds height="149.0" width="683.0" x="50.0" y="1.0"></omgdc:Bounds>
+        <omgdc:Bounds height="149.0" width="683.0" x="428.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startVM" id="BPMNShape_startVM">
-        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="438.0" y="59.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endVM" id="BPMNShape_endVM">
-        <omgdc:Bounds height="35.0" width="35.0" x="690.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1068.0" y="59.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkDownVmTask" id="BPMNShape_chkDownVmTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="49.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="538.0" y="49.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="JoinDown" id="BPMNShape_JoinDown">
-        <omgdc:Bounds height="40.0" width="40.0" x="110.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="488.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="splitDown" id="BPMNShape_splitDown">
-        <omgdc:Bounds height="40.0" width="40.0" x="280.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="658.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="eventVMend" id="BPMNShape_eventVMend">
-        <omgdc:Bounds height="40.0" width="40.0" x="570.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="948.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="chkISOTask" id="BPMNShape_chkISOTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="49.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="758.0" y="49.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="splitIso" id="BPMNShape_splitIso">
-        <omgdc:Bounds height="40.0" width="40.0" x="500.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="878.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="messageVMfinished" id="BPMNShape_messageVMfinished">
-        <omgdc:Bounds height="35.0" width="35.0" x="630.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1008.0" y="59.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="joinIso" id="BPMNShape_joinIso">
-        <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="708.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerDown" id="BPMNShape_timerDown">
-        <omgdc:Bounds height="35.0" width="35.0" x="170.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="548.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerISO" id="BPMNShape_timerISO">
-        <omgdc:Bounds height="35.0" width="35.0" x="415.0" y="0.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="793.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerInstall" id="BPMNShape_timerInstall">
-        <omgdc:Bounds height="35.0" width="35.0" x="400.0" y="264.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="778.0" y="264.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerChkIp" id="BPMNShape_timerChkIp">
-        <omgdc:Bounds height="35.0" width="35.0" x="707.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1085.0" y="216.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway10" id="BPMNShape_exclusivegateway10">
+        <omgdc:Bounds height="40.0" width="40.0" x="380.0" y="264.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
+        <omgdc:Bounds height="40.0" width="40.0" x="671.0" y="461.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fromStart" id="BPMNEdge_fromStart">
-        <omgdi:waypoint x="36.0" y="285.0"></omgdi:waypoint>
-        <omgdi:waypoint x="68.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="36.0" y="288.0"></omgdi:waypoint>
+        <omgdi:waypoint x="68.0" y="284.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinVm" id="BPMNEdge_toJoinVm">
-        <omgdi:waypoint x="312.0" y="282.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="282.0"></omgdi:waypoint>
+        <omgdi:waypoint x="718.0" y="281.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toForkVM" id="BPMNEdge_toForkVM">
-        <omgdi:waypoint x="569.0" y="281.0"></omgdi:waypoint>
-        <omgdi:waypoint x="585.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="947.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="963.0" y="281.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="vmNotInstalled" id="BPMNEdge_vmNotInstalled">
-        <omgdi:waypoint x="605.0" y="301.0"></omgdi:waypoint>
-        <omgdi:waypoint x="552.0" y="373.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="373.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="983.0" y="301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="930.0" y="373.0"></omgdi:waypoint>
+        <omgdi:waypoint x="738.0" y="373.0"></omgdi:waypoint>
+        <omgdi:waypoint x="738.0" y="301.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="36.0" width="65.0" x="548.0" y="320.0"></omgdc:Bounds>
+          <omgdc:Bounds height="36.0" width="65.0" x="926.0" y="320.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toTimerInstall" id="BPMNEdge_toTimerInstall">
-        <omgdi:waypoint x="380.0" y="281.0"></omgdi:waypoint>
-        <omgdi:waypoint x="400.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="758.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="778.0" y="281.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="vmInstalled" id="BPMNEdge_vmInstalled">
-        <omgdi:waypoint x="605.0" y="261.0"></omgdi:waypoint>
-        <omgdi:waypoint x="391.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="983.0" y="261.0"></omgdi:waypoint>
+        <omgdi:waypoint x="769.0" y="150.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="36.0" width="41.0" x="585.0" y="237.0"></omgdc:Bounds>
+          <omgdc:Bounds height="36.0" width="41.0" x="963.0" y="237.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSwarm" id="BPMNEdge_toSwarm">
-        <omgdi:waypoint x="960.0" y="281.0"></omgdi:waypoint>
-        <omgdi:waypoint x="871.0" y="321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1338.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1249.0" y="321.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSubprocess" id="BPMNEdge_toSubprocess">
-        <omgdi:waypoint x="819.0" y="356.0"></omgdi:waypoint>
-        <omgdi:waypoint x="325.0" y="401.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1197.0" y="356.0"></omgdi:waypoint>
+        <omgdi:waypoint x="433.0" y="401.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinCheckDeploy" id="BPMNEdge_toJoinCheckDeploy">
-        <omgdi:waypoint x="1033.0" y="453.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1033.0" y="489.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="453.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="489.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toEndSub" id="BPMNEdge_toEndSub">
-        <omgdi:waypoint x="423.0" y="480.0"></omgdi:waypoint>
-        <omgdi:waypoint x="468.0" y="479.0"></omgdi:waypoint>
+        <omgdi:waypoint x="531.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="479.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toGenerateDocker" id="BPMNEdge_toGenerateDocker">
-        <omgdi:waypoint x="178.0" y="479.0"></omgdi:waypoint>
-        <omgdi:waypoint x="318.0" y="480.0"></omgdi:waypoint>
+        <omgdi:waypoint x="286.0" y="479.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="480.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toR10k" id="BPMNEdge_toR10k">
-        <omgdi:waypoint x="523.0" y="481.0"></omgdi:waypoint>
-        <omgdi:waypoint x="559.0" y="481.0"></omgdi:waypoint>
+        <omgdi:waypoint x="631.0" y="481.0"></omgdi:waypoint>
+        <omgdi:waypoint x="671.0" y="481.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toGetTosca" id="BPMNEdge_toGetTosca">
-        <omgdi:waypoint x="314.0" y="208.0"></omgdi:waypoint>
-        <omgdi:waypoint x="351.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="348.0" y="208.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinBuild" id="BPMNEdge_toJoinBuild">
-        <omgdi:waypoint x="283.0" y="683.0"></omgdi:waypoint>
-        <omgdi:waypoint x="311.0" y="683.0"></omgdi:waypoint>
+        <omgdi:waypoint x="897.0" y="683.0"></omgdi:waypoint>
+        <omgdi:waypoint x="925.0" y="683.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toBuild" id="BPMNEdge_toBuild">
-        <omgdi:waypoint x="146.0" y="683.0"></omgdi:waypoint>
-        <omgdi:waypoint x="178.0" y="683.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="683.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="683.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toForkBuild" id="BPMNEdge_toForkBuild">
-        <omgdi:waypoint x="476.0" y="683.0"></omgdi:waypoint>
-        <omgdi:waypoint x="511.0" y="684.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1090.0" y="683.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1125.0" y="684.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckBuild" id="BPMNEdge_toCheckBuild">
-        <omgdi:waypoint x="351.0" y="683.0"></omgdi:waypoint>
-        <omgdi:waypoint x="371.0" y="683.0"></omgdi:waypoint>
+        <omgdi:waypoint x="965.0" y="683.0"></omgdi:waypoint>
+        <omgdi:waypoint x="985.0" y="683.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="noBuild" id="BPMNEdge_noBuild">
-        <omgdi:waypoint x="531.0" y="704.0"></omgdi:waypoint>
-        <omgdi:waypoint x="518.0" y="735.0"></omgdi:waypoint>
-        <omgdi:waypoint x="327.0" y="735.0"></omgdi:waypoint>
-        <omgdi:waypoint x="331.0" y="703.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1145.0" y="704.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1132.0" y="735.0"></omgdi:waypoint>
+        <omgdi:waypoint x="941.0" y="735.0"></omgdi:waypoint>
+        <omgdi:waypoint x="945.0" y="703.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="buildOk" id="BPMNEdge_buildOk">
-        <omgdi:waypoint x="551.0" y="684.0"></omgdi:waypoint>
-        <omgdi:waypoint x="601.0" y="684.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1165.0" y="684.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1215.0" y="684.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckContext" id="BPMNEdge_toCheckContext">
-        <omgdi:waypoint x="611.0" y="454.0"></omgdi:waypoint>
-        <omgdi:waypoint x="664.0" y="442.0"></omgdi:waypoint>
+        <omgdi:waypoint x="989.0" y="454.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1042.0" y="442.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCompose" id="BPMNEdge_toCompose">
-        <omgdi:waypoint x="401.0" y="607.0"></omgdi:waypoint>
-        <omgdi:waypoint x="891.0" y="509.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1015.0" y="607.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1269.0" y="509.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toDeploy" id="BPMNEdge_toDeploy">
-        <omgdi:waypoint x="944.0" y="481.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1033.0" y="453.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1322.0" y="481.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="453.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCustomer" id="BPMNEdge_toCustomer">
-        <omgdi:waypoint x="120.0" y="254.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="236.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="239.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSetup" id="BPMNEdge_toSetup">
-        <omgdi:waypoint x="173.0" y="208.0"></omgdi:waypoint>
-        <omgdi:waypoint x="209.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="173.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="206.0" y="208.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toVm" id="BPMNEdge_toVm">
-        <omgdi:waypoint x="403.0" y="236.0"></omgdi:waypoint>
-        <omgdi:waypoint x="262.0" y="252.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="236.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="264.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCkeckDeploy" id="BPMNEdge_toCkeckDeploy">
-        <omgdi:waypoint x="1033.0" y="529.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1033.0" y="551.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="529.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="551.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toForkDeploy" id="BPMNEdge_toForkDeploy">
-        <omgdi:waypoint x="1033.0" y="606.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1033.0" y="630.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="606.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="630.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="deploy" id="BPMNEdge_deploy">
-        <omgdi:waypoint x="1033.0" y="670.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1036.0" y="701.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1411.0" y="670.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1414.0" y="701.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="noDeploy" id="BPMNEdge_noDeploy">
-        <omgdi:waypoint x="1013.0" y="650.0"></omgdi:waypoint>
-        <omgdi:waypoint x="973.0" y="650.0"></omgdi:waypoint>
-        <omgdi:waypoint x="973.0" y="509.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1013.0" y="509.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1391.0" y="650.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1351.0" y="650.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1351.0" y="509.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1391.0" y="509.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toEnd" id="BPMNEdge_toEnd">
-        <omgdi:waypoint x="1036.0" y="756.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1036.0" y="781.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1414.0" y="756.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1414.0" y="781.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="fromJoinContext" id="BPMNEdge_fromJoinContext">
-        <omgdi:waypoint x="684.0" y="422.0"></omgdi:waypoint>
-        <omgdi:waypoint x="703.0" y="423.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1062.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1081.0" y="423.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toForkContext" id="BPMNEdge_toForkContext">
-        <omgdi:waypoint x="755.0" y="451.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="474.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1133.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1098.0" y="474.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="noContext" id="BPMNEdge_noContext">
-        <omgdi:waypoint x="720.0" y="474.0"></omgdi:waypoint>
-        <omgdi:waypoint x="664.0" y="442.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1098.0" y="474.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1042.0" y="442.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="okContext" id="BPMNEdge_okContext">
-        <omgdi:waypoint x="720.0" y="514.0"></omgdi:waypoint>
-        <omgdi:waypoint x="401.0" y="607.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1098.0" y="514.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1015.0" y="607.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinIp" id="BPMNEdge_toJoinIp">
-        <omgdi:waypoint x="839.0" y="103.0"></omgdi:waypoint>
-        <omgdi:waypoint x="664.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1217.0" y="103.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1042.0" y="215.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="fromJoinIp" id="BPMNEdge_fromJoinIp">
-        <omgdi:waypoint x="684.0" y="235.0"></omgdi:waypoint>
-        <omgdi:waypoint x="707.0" y="233.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1062.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1085.0" y="233.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSplitIp" id="BPMNEdge_toSplitIp">
-        <omgdi:waypoint x="869.0" y="231.0"></omgdi:waypoint>
-        <omgdi:waypoint x="889.0" y="233.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1247.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1267.0" y="233.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="ipNotAcquired" id="BPMNEdge_ipNotAcquired">
-        <omgdi:waypoint x="909.0" y="253.0"></omgdi:waypoint>
-        <omgdi:waypoint x="909.0" y="280.0"></omgdi:waypoint>
-        <omgdi:waypoint x="672.0" y="280.0"></omgdi:waypoint>
-        <omgdi:waypoint x="664.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1287.0" y="253.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1287.0" y="280.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1050.0" y="280.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1042.0" y="255.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="ipAcquired" id="BPMNEdge_ipAcquired">
-        <omgdi:waypoint x="929.0" y="233.0"></omgdi:waypoint>
-        <omgdi:waypoint x="960.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1307.0" y="233.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1338.0" y="281.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toForward" id="BPMNEdge_toForward">
-        <omgdi:waypoint x="1005.0" y="228.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1020.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1383.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1398.0" y="228.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinForward" id="BPMNEdge_toJoinForward">
-        <omgdi:waypoint x="1125.0" y="228.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1140.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1503.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1518.0" y="228.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toChkForward" id="BPMNEdge_toChkForward">
-        <omgdi:waypoint x="1180.0" y="228.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1204.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1558.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1582.0" y="228.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="1375.0" y="228.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1400.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1753.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1778.0" y="228.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="notForwarded" id="BPMNEdge_notForwarded">
-        <omgdi:waypoint x="1420.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1361.0" y="282.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1241.0" y="282.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1160.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1798.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1739.0" y="282.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1619.0" y="282.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1538.0" y="248.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toFirewall" id="BPMNEdge_toFirewall">
-        <omgdi:waypoint x="1420.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1420.0" y="347.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1375.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1798.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1798.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1753.0" y="348.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinFirewall" id="BPMNEdge_toJoinFirewall">
-        <omgdi:waypoint x="1270.0" y="348.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1260.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1648.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1638.0" y="348.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toChkFirewall" id="BPMNEdge_toChkFirewall">
-        <omgdi:waypoint x="1220.0" y="348.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1205.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1598.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1583.0" y="348.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSlitFirewall" id="BPMNEdge_toSlitFirewall">
-        <omgdi:waypoint x="1100.0" y="348.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1080.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1478.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1458.0" y="348.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toEndPorts" id="BPMNEdge_toEndPorts">
-        <omgdi:waypoint x="1040.0" y="348.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1005.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1418.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1383.0" y="348.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="noFirewallRuled" id="BPMNEdge_noFirewallRuled">
-        <omgdi:waypoint x="1060.0" y="328.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1059.0" y="303.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1238.0" y="303.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1240.0" y="328.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1438.0" y="328.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1437.0" y="303.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1616.0" y="303.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1618.0" y="328.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="1239.0" y="228.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1270.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1617.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1648.0" y="228.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toJoinDown" id="BPMNEdge_toJoinDown">
-        <omgdi:waypoint x="95.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSplitDown" id="BPMNEdge_toSplitDown">
-        <omgdi:waypoint x="265.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="643.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="658.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="vmNotDown" id="BPMNEdge_vmNotDown">
-        <omgdi:waypoint x="300.0" y="96.0"></omgdi:waypoint>
-        <omgdi:waypoint x="308.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="205.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="686.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="583.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toGtw" id="BPMNEdge_toGtw">
-        <omgdi:waypoint x="320.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="330.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="698.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="708.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="610.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="630.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="988.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1008.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="isoRemoved" id="BPMNEdge_isoRemoved">
-        <omgdi:waypoint x="540.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="570.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="918.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="948.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="noIsoRemoved" id="BPMNEdge_noIsoRemoved">
-        <omgdi:waypoint x="520.0" y="96.0"></omgdi:waypoint>
-        <omgdi:waypoint x="487.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="338.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="898.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="865.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="728.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSplitIso" id="BPMNEdge_toSplitIso">
-        <omgdi:waypoint x="485.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="500.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="863.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="878.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="665.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1043.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toTimerIso" id="BPMNEdge_toTimerIso">
-        <omgdi:waypoint x="350.0" y="56.0"></omgdi:waypoint>
-        <omgdi:waypoint x="432.0" y="35.0"></omgdi:waypoint>
+        <omgdi:waypoint x="728.0" y="56.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="35.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toChkDown" id="BPMNEdge_toChkDown">
-        <omgdi:waypoint x="150.0" y="76.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="528.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="538.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckISO" id="BPMNEdge_toCheckISO">
-        <omgdi:waypoint x="432.0" y="35.0"></omgdi:waypoint>
-        <omgdi:waypoint x="432.0" y="49.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="35.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="49.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="170.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="548.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="128.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toAcqIP" id="BPMNEdge_toAcqIP">
-        <omgdi:waypoint x="733.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="787.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1111.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1165.0" y="75.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toCheckVM" id="BPMNEdge_toCheckVM">
-        <omgdi:waypoint x="435.0" y="281.0"></omgdi:waypoint>
-        <omgdi:waypoint x="464.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="813.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="842.0" y="281.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="742.0" y="233.0"></omgdi:waypoint>
-        <omgdi:waypoint x="764.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1120.0" y="233.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1142.0" y="231.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="noTesting" id="BPMNEdge_noTesting">
+        <omgdi:waypoint x="420.0" y="284.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="282.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="isTesting" id="BPMNEdge_isTesting">
+        <omgdi:waypoint x="400.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="433.0" y="401.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="711.0" y="481.0"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0" y="481.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="691.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="691.0" y="798.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1397.0" y="798.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
