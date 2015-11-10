@@ -78,10 +78,11 @@ public class BpmnService {
 	@Inject
 	private ApplicationService applicationService;
 
-	public String startDeployProcess(String customizationId, String cloudId){
+	public String startDeployProcess(String customizationId, String cloudId, boolean isTesting){
 		log.info("Before activating process");
 		log.info("customizationId: "+customizationId);
 		log.info("cloudId: "+cloudId);
+		log.info("isTesting: "+isTesting);
 		
 		
 		// the UI will pass the customization ID and the cloud ID since is in that page
@@ -105,6 +106,7 @@ public class BpmnService {
 		HashMap<String, Object> v = new HashMap<String, Object>();
 //		v.put("toscaFile", toscaId);
 		v.put("customizationId", customizationId);
+		v.put("isTesting", isTesting);
 		v.put("cloudId", cloudId);
 		v.put("cloudId", account.getProviderId().getProvider());
 		v.put("cloudAccountId", account.getId());

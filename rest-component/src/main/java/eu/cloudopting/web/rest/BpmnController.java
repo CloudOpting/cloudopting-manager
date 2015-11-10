@@ -60,11 +60,11 @@ public class BpmnController {
 	@RequestMapping(value = "/process", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	public @ResponseBody String startProcessInstance(
 			@RequestParam(value = "customizationId", required = false) String customizationId,
-			@RequestParam(value = "cloudId", required = false) String cloudId, HttpServletRequest request) {
+			@RequestParam(value = "cloudId", required = false) String cloudId, @RequestParam(value = "isTesting", required = false, defaultValue="false") boolean isTesting,HttpServletRequest request) {
 
         User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         user.getOrganizationId().getOrganizationKey();
-		String pid = bpmn.startDeployProcess(customizationId, cloudId);
+		String pid = bpmn.startDeployProcess(customizationId, cloudId,isTesting);
 		System.out.println("returning pid: " + pid);
 		return pid;
 	}
