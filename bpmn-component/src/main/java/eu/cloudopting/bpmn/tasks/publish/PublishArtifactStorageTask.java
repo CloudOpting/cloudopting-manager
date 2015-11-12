@@ -36,16 +36,8 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 	    User user = (User) execution.getVariable("user");
 		log.debug("Artifact UPLOAD Name: "+uploadName);
 		File fileToDelete = FileUtils.getFile(uploadFilePath);
-//	    InputStream in = new FileInputStream(fileToDelete);
-	    //TODO Fix this when JackRabbit works
-	    execution.setVariable("chkPublishArtifactsAvailable", true);
 	    try {
-//		    in = new java.io.BufferedInputStream(in);
-//		    JackrabbitStoreRequest jrReq = 
-//		    		new JackrabbitStoreRequest(storeService.getTemplatePath(org.getOrganizationKey(),  uploadIdApp), 
-//		    				uploadName, new Date(), uploadName.substring(uploadName.lastIndexOf(".")+1), in);
-		    try {
-//				JackrabbitStoreResult res = storeService.storeBinary(jrReq);
+		    
 		    	String 	localFileAbsolutePath 	= fileToDelete.getAbsolutePath(),
 						localFilePath = localFileAbsolutePath.substring(0,localFileAbsolutePath.lastIndexOf(File.separator)+1),
 						localFileName 	= fileToDelete.getName(), 
@@ -64,13 +56,10 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 						remoteFileNameReduced
 				);
 				log.debug("Artifact UPLOAD performed");
-			} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
-				// TODO Auto-generated catch block
-				log.error("Error in storing Artifact File");
-				e.printStackTrace();
-			}
-			execution.setVariable("chkPublishArtifactsAvailable", true);
-	    } catch (ToscaException e) {
+		} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
+			log.error("Error in storing Artifact File");
+			e.printStackTrace();
+		} catch (ToscaException e) {
 			throw e;
 		} finally {
 			FileUtils.deleteQuietly(fileToDelete);
