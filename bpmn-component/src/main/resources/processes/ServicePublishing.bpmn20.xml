@@ -12,7 +12,6 @@
     <eventBasedGateway id="eventgateway2" name="Event Gateway"></eventBasedGateway>
     <sequenceFlow id="flow27" sourceRef="startevent" targetRef="publishContextSetupTask"></sequenceFlow>
     <serviceTask id="publishMetadataTask" name="Metadata Retrieval" activiti:delegateExpression="${publishMetadataTask}"></serviceTask>
-    <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="publishMetadataTask" targetRef="postMetadataTaskId"></sequenceFlow>
     <serviceTask id="publishPublishTask" name="Publish" activiti:delegateExpression="${publishPublishTask}"></serviceTask>
     <sequenceFlow id="flow37" sourceRef="postArtifactsUploadId" targetRef="eventgateway2"></sequenceFlow>
@@ -28,7 +27,6 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(chkPublishMetadataAvailable == true)&&(chkPublishToscaAvailable == true)}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="eventgateway2" targetRef="PublishIntermediateCatchEvent"></sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="publishPublishTask" targetRef="endevent2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" name="No Metatadata Available" sourceRef="exclusivegateway4" targetRef="eventgateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==false}]]></conditionExpression>
@@ -69,6 +67,7 @@
     <sequenceFlow id="flow64" sourceRef="postToscaUploadId" targetRef="eventgateway2"></sequenceFlow>
     <receiveTask id="postArtifactsUploadId" name="After Artifacts Upload"></receiveTask>
     <sequenceFlow id="flow65" sourceRef="publishArtifactStorageTask" targetRef="postArtifactsUploadId"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ServicePublishingProcess">
     <bpmndi:BPMNPlane bpmnElement="ServicePublishingProcess" id="BPMNPlane_ServicePublishingProcess">
@@ -80,9 +79,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="publishMetadataTask" id="BPMNShape_publishMetadataTask">
         <omgdc:Bounds height="55.0" width="265.0" x="389.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="1010.0" y="500.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="publishPublishTask" id="BPMNShape_publishPublishTask">
         <omgdc:Bounds height="55.0" width="105.0" x="649.0" y="490.0"></omgdc:Bounds>
@@ -126,6 +122,9 @@
       <bpmndi:BPMNShape bpmnElement="postArtifactsUploadId" id="BPMNShape_postArtifactsUploadId">
         <omgdc:Bounds height="55.0" width="149.0" x="662.0" y="283.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="788.0" y="500.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="86.0" y="155.0"></omgdi:waypoint>
         <omgdi:waypoint x="86.0" y="193.0"></omgdi:waypoint>
@@ -162,10 +161,6 @@
         <omgdi:waypoint x="228.0" y="330.0"></omgdi:waypoint>
         <omgdi:waypoint x="227.0" y="517.0"></omgdi:waypoint>
         <omgdi:waypoint x="312.0" y="517.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="754.0" y="517.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="517.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="439.0" y="176.0"></omgdi:waypoint>
