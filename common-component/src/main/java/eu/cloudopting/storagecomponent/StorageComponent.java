@@ -10,4 +10,6 @@ public interface StorageComponent<Resp extends StoreResult, Req extends StoreReq
 
     public  Resp retrieve(String path);
 
+    public  Resp remove(String path);
+
 }

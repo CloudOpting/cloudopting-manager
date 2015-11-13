@@ -49,6 +49,14 @@ public class JackrabbitStoreTests extends GenericStorageTests {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    public void testRemoveOcm() {
+        testRetrieveOcm();
+        JackrabbitStoreResult<JackrabbitStoreRequest> retrieve = jackrabbitOcmStore.remove("/ocm_"+path);
+        Assert.assertTrue(retrieve.isStored());
+    }
+
+    @Test
     public void testBinaryStore() {
         JackrabbitStoreRequest req = createRequest();
         JackrabbitStoreResult result = jackrabbitBinaryStore.store(req);
@@ -76,6 +84,25 @@ public class JackrabbitStoreTests extends GenericStorageTests {
 //        testBinaryStore();
         JackrabbitStoreResult<InputStream> retrieve = jackrabbitBinaryStore.retrieve("1432287780536.zip");
         Assert.assertTrue(retrieve.getStoredContent().available() > 0);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testBinaryRemove() throws IOException {
+        JackrabbitStoreRequest req = createRequest();
+        JackrabbitStoreResult result = jackrabbitBinaryStore.store(req);
+        path = req.getPath();
+        Assert.assertTrue(result.isStored());
+        System.out.println(">>>> STORED >>>>> : "+path+".zip");
+
+        JackrabbitStoreResult<InputStream> retrieve = jackrabbitBinaryStore.retrieve(path+".zip");
+        Assert.assertTrue(retrieve.isStored());
+        System.out.println(">>>> RETRIEVED >>>>> : "+path+".zip");
+
+
+        JackrabbitStoreResult<InputStream> remove = jackrabbitBinaryStore.remove(path+".zip");
+        Assert.assertTrue(remove.isStored());
+        System.out.println(">>>> REMOVED >>>>> : "+path+".zip");
     }
 
     @Test

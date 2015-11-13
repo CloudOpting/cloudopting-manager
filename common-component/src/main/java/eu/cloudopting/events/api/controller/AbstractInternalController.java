@@ -354,4 +354,22 @@ abstract class AbstractInternalController<T extends BaseEntity> {
         }
         return resultPage;
     }
+    /**
+     * Find all sorted.
+     *
+     * @param sortBy     the sort by
+     * @param sortOrder  the sort order
+     * @param uriBuilder the uri builder
+     * @param response   the response
+     * @return the list
+     */
+    protected final List<T> findAllSorted(final String sortBy,
+                                          final String sortOrder,
+                                          final UriComponentsBuilder uriBuilder,
+                                          final HttpServletResponse response) {
+        final List<T> resultPage = getService().findAllSorted(sortBy, sortOrder);
+        raiseEvent(uriBuilder,response);
+        return resultPage;
+    }
+
 }

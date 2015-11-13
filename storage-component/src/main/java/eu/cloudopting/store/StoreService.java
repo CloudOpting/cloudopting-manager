@@ -77,7 +77,12 @@ public class StoreService {
 		return retrieve;
 	}
 
-    public InputStream getDocumentAsStream(String originPath){
+	public JackrabbitStoreResult<InputStream> remove(String s) {
+		JackrabbitStoreResult<InputStream> remove = jackrabbitBinaryStore.remove(s);
+		return remove;
+	}
+
+	public InputStream getDocumentAsStream(String originPath){
     	InputStream retStream = null;
     	log.debug("in getDocumentAsStream");
 		log.debug("originPath: "+originPath);

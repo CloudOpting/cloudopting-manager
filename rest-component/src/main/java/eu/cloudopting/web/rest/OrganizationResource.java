@@ -107,7 +107,7 @@ public class OrganizationResource extends AbstractController<Organizations> {
 		CloudAccounts cloudAccount = getCloudAccountService().findOne(idCloudAccount);
 		if (organization == null || cloudAccount == null ||
 				!cloudAccount.getOrganizationId().getId().equals(organization.getId())){
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>((CloudAccounts)null, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(cloudAccount, HttpStatus.OK);
 	}
@@ -138,7 +138,7 @@ public class OrganizationResource extends AbstractController<Organizations> {
 			@PathVariable Long idOrganization) {
 		Organizations organization = getService().findOne(idOrganization);
 		if(organization == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>((CloudAccounts)null, HttpStatus.NOT_FOUND);
 		}
 		CloudAccounts cloudAccount = ((CloudAccountService)getCloudAccountService()).create(idOrganization, cloudAccountDTO);
 		return new ResponseEntity<>(cloudAccount, HttpStatus.CREATED);
