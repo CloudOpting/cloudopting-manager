@@ -64,7 +64,7 @@ public class BpmnController {
 
         User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         user.getOrganizationId().getOrganizationKey();
-		String pid = bpmn.startDeployProcess(customizationId, cloudId,isTesting);
+		String pid = bpmn.startDeployProcess(customizationId, cloudId, isTesting);
 		System.out.println("returning pid: " + pid);
 		return pid;
 	}
