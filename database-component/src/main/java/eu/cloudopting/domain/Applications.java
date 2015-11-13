@@ -142,7 +142,20 @@ public class Applications implements BaseEntity {
 	@Column(name = "application_version", length = 10)
     private String applicationVersion;
 
-	public Set<ApplicationMedia> getApplicationMedias() {
+    @OneToMany(mappedBy = "applicationId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Customizations> customizationss;
+
+    public Set<Customizations> getCustomizationss() {
+        return customizationss;
+    }
+
+    public void setCustomizationss(Set<Customizations> customizationss) {
+        this.customizationss = customizationss;
+    }
+
+
+    public Set<ApplicationMedia> getApplicationMedias() {
         return applicationMedias;
     }
 
