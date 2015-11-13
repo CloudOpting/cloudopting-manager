@@ -41,13 +41,11 @@ public class Customizations implements BaseEntity {
     private Date customizationCreation;
 
 	@Column(name = "customization_activation")
-    @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(style = "M-")
     private Date customizationActivation;
 
 	@Column(name = "customization_decommission")
-    @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(style = "M-")
     private Date customizationDecommission;
