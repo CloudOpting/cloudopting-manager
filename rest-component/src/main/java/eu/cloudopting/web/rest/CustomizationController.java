@@ -1,5 +1,7 @@
 package eu.cloudopting.web.rest;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.validator.internal.util.privilegedactions.NewJaxbContext;
@@ -63,7 +65,7 @@ public class CustomizationController {
 
 	@RequestMapping(value = "/application/{idApp}/sendCustomizationForm",
             method = RequestMethod.POST)
-	public void postCustomizationForm(@PathVariable("idApp") final Long idApp, @RequestParam(value = "formData") String formData,HttpServletRequest request){
+	public String postCustomizationForm(@PathVariable("idApp") final Long idApp, @RequestParam(value = "formData") String formData,HttpServletRequest request){
 		log.debug("in postCustomizationForm");
 		log.debug(idApp.toString());
 		log.debug(formData);
@@ -84,6 +86,13 @@ public class CustomizationController {
 		newC.setApplicationId(idApp);
 		newC.setCustomizationToscaFile(theTosca);
 		newC.setCustomerOrganizationId(user.getOrganizationId());
+		newC.setCustomizationActivation(new Date());
+		newC.setCustomizationCreation(new Date());
+		newC.setCustomizationDecommission(new Date());
+		newC.setStatusId(new Long(100));
+		
 		customizationService.create(newC);
+		
+		return "Customization successfully saved";
 	}
 }

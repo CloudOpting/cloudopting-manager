@@ -60,20 +60,33 @@ public class CustomizationUtils {
 
 	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
 
-		DocumentImpl theDoc = getToscaTemplateDesc(idApp, csarPath);
+		log.debug("generateCustomizedTosca");
+//		DocumentImpl theDoc = new DocumentImpl();
+		DocumentImpl theDoc = null;
+		try {
+//			theDoc = (DocumentImpl)getToscaTemplateDesc(idApp, csarPath).clone();
+//			getToscaTemplateDesc(idApp, csarPath).cloneNode(true);
+			theDoc = (DocumentImpl) this.db.parse(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
+		} catch (DOMException | SAXException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+//		log.debug(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
+//		theDoc.load(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
 
 		JSONObject properties = getUserInputs(theDoc, "xpath");
+		log.debug("xpath");
 		log.debug(properties.toString());
 		Iterator dataNames = data.keys();
 		while (dataNames.hasNext()){
 			String dataKey = dataNames.next().toString();
-			log.debug(dataKey);
+			log.debug("datakey:"+dataKey);
 			DTMNodeList nodes = null;
 			
 			try {
 				String xPathProcInt = properties.getString(dataKey);
 //				xPathProcInt = "//ns:NodeTemplate[@id='ClearoPostgreSQLDB']/ns:Properties/co:PostgreSQLDatabaseProperties/co:password";
-				log.debug(xPathProcInt);
+				log.debug("xpathprocint"+xPathProcInt);
 				nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
 				log.debug(new Integer(nodes.getLength()).toString());
 				log.debug(data.getString(dataKey));
@@ -89,6 +102,8 @@ public class CustomizationUtils {
 			log.debug(nodes.toString());
 		}
 		log.debug(theDoc.saveXML(null));
+		log.debug("ORIGINAL---------------");
+		log.debug(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
 		return theDoc.saveXML(null);
 	}
 
@@ -128,6 +143,8 @@ public class CustomizationUtils {
 	}
 
 	private JSONObject getUserInputs(DocumentImpl theDoc, String what) {
+		log.debug("getUserInputs");
+		log.debug(theDoc.saveXML(null));
 		JSONObject properties = new JSONObject();
 		DTMNodeList nodes = null;
 		String xPathProcInt = "//processing-instruction('userInput')";
@@ -135,9 +152,11 @@ public class CustomizationUtils {
 			nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
-
+		log.debug("nodes wth PI");
+log.debug(new Integer(nodes.getLength()).toString());
 		for (int i = 0; i < nodes.getLength(); ++i) {
 			log.debug(nodes.item(i).getNodeValue());
 			try {
@@ -191,6 +210,7 @@ public class CustomizationUtils {
 			}
 
 		}
+		log.debug(theDoc.saveXML(null));
 		return theDoc;
 	}
 
