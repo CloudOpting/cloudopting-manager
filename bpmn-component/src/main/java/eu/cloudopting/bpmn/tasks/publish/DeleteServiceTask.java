@@ -27,6 +27,9 @@ public class DeleteServiceTask implements JavaDelegate {
 		log.debug("Deleting application with id:"+app.getId());
 		//TODO: Implement clean-up of JackRabbit as soon as the Store Service API
 		//      exposes a "Remove" method
+		
+		//TODO CHECK WHY THE APPLICATION DOES NOT HAVE AN ASSOCIATED ORGANIZATION
+		//     AS SOON AS THE DATABASE COMES BACK UP
 		Applications a = applicationService.findOne(app.getId());
 		storeService.deletePath(a.getOrganizationId().getOrganizationKey(), a.getApplicationToscaName());
 		applicationService.delete(app.getId());
