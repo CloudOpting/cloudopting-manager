@@ -267,7 +267,8 @@ angular.module('cloudoptingApp')
         $scope.publishService = function () {
             console.log($scope.contentLib);
             var callback = function (){
-                alert("Publication Requested!!!");
+                console.log("Publication Requested!!!");
+                $state.go('list');
             };
 
             //Request publication
