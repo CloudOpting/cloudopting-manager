@@ -2,6 +2,8 @@ package eu.cloudopting.web.rest;
 
 import java.io.IOException;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -132,7 +135,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     public final Page<Applications> findAllPaginated(
             final UriComponentsBuilder uriBuilder,
             final HttpServletResponse response, final HttpServletRequest request, final Pageable pageable) {
-        return findAllInternalPageable(request, uriBuilder, response, pageable);
+        return new PageImpl(findAllSorted("applicationName", "ASC", uriBuilder, response));
     }
 
     /**
