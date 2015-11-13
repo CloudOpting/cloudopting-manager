@@ -45,6 +45,15 @@ public class JackrabbitOcmStoreImpl extends AbstractJackrabbitStore implements J
         return storeResult;
     }
 
+    @Override
+    public JackrabbitStoreResult remove(String path) {
+        JackrabbitStoreResult<JackrabbitStoreRequest> storeResult = new JackrabbitStoreResult<>();
+        ocm.remove(path);
+        ocm.save();
+        storeResult.setStored(true);
+        return storeResult;
+    }
+
 
     @Override
     public JackrabbitStore getBinaryStore() {

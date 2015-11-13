@@ -72,6 +72,21 @@ public class JackrabbitBinaryStoreImpl extends AbstractJackrabbitStore implement
     }
 
     @Override
+    public JackrabbitStoreResult remove(String path) {
+        Node file = null;
+        InputStream stream;
+        try {
+            session.getRootNode().getNode("binary/"+path).remove();
+            session.save();
+        } catch (RepositoryException e) {
+            throw new StorageGeneralException(e);
+        }
+        JackrabbitStoreResult<InputStream> storeResult = new JackrabbitStoreResult<>();
+        storeResult.setStored(true);//set the flag that the operation has succeeded (it is strage that we mark a successful deletion as stored)
+        return storeResult;
+    }
+
+    @Override
     public JackrabbitStore getBinaryStore() {
         return this;
     }
