@@ -115,9 +115,9 @@ public class ApplicationResource extends AbstractController<Applications> {
     public final Page<Applications> findAllPaginatedAndSorted(
             @RequestParam(QueryConstants.PAGE) final int page,
             @RequestParam(QueryConstants.SIZE) final int size,
-            @RequestParam(QueryConstants.SORT_BY) final String sortBy,
-            @RequestParam(QueryConstants.SORT_ORDER) final String sortOrder,
-            @RequestParam(QueryConstants.FILTER) final String filterObj,
+            @RequestParam(value = QueryConstants.SORT_BY, defaultValue = "applicationName") final String sortBy,
+            @RequestParam(value = QueryConstants.SORT_ORDER, defaultValue = "ASC") final String sortOrder,
+            @RequestParam(value = QueryConstants.FILTER, required = false) final String filterObj,
             final UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
         return findPaginatedAndSortedWithFilter(page, size, sortBy, sortOrder, filterObj, uriBuilder, response);
