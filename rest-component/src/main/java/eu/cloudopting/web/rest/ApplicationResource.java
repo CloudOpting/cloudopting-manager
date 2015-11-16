@@ -1,8 +1,8 @@
 package eu.cloudopting.web.rest;
 
 import java.io.IOException;
-
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +40,7 @@ import eu.cloudopting.events.api.service.BaseService;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.service.UserService;
+import eu.cloudopting.store.StoreService;
 
 
 /**
@@ -63,6 +64,9 @@ public class ApplicationResource extends AbstractController<Applications> {
     
     @Inject
     private UserService userService;
+    
+    @Inject
+    private StoreService storeService;
 
     /**
      * Default contructor.
@@ -163,6 +167,27 @@ public class ApplicationResource extends AbstractController<Applications> {
         return getBpmnService().startPublish(application, org);
     }
 
+    /**
+     * This method returns the set of files associated to the Application with the provided id
+     * @param idApp			The id of the application whose file paths we want to retrieve
+     * @param uriBuilder
+     * @param response
+     * @param request
+     * @return The set of of associated files paths.
+     */
+    @RequestMapping(value = "/application/{idApp}/file", method = RequestMethod.GET)
+    @ResponseBody
+    public final Set<String> getApplicationFiles(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
+                                               final HttpServletResponse response, final HttpServletRequest request) {
+        Applications app = getService().findOne(idApp);
+        String toscaName = app.getApplicationToscaName();
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        String orgKey = org.getOrganizationKey();
+        String path = StoreService.getTemplatePath(orgKey, toscaName);
+        return storeService.getFilesStartingFromPath(path);
+    }
+    
     /**
      * This method returns a single Applications instance.
      *
