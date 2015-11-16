@@ -4,19 +4,26 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.query.InvalidQueryException;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +69,7 @@ public class StoreService {
 	 * @param applicationToscaName The Tosca Name of the Template (no spaces and fancy chars)
 	 * @return The path to be passed as first parameter to the JackRabbitStoreRequest constructor.
 	 */
-	public String getTemplatePath (String organizationKey, String applicationToscaName){
+	public static String getTemplatePath (String organizationKey, String applicationToscaName){
 		//TODO Uncomment once JackRabbit is able to create intermediate paths
 		return organizationKey + "/" + applicationToscaName + "/template";
 		
@@ -180,16 +187,48 @@ public class StoreService {
              folderParent;
         try {
 			folder = session.getRootNode().getNode(this.getTemplatePath(orgKey, toscaName));
+			log.debug("Folder->"+folder.getPath());
 			folderParent = folder.getParent();
-			folder.remove();
-			session.getNodeByIdentifier(folderParent.getIdentifier());
-	        session.save();
+			log.debug("FolderParent->"+folderParent.getPath());
+			folderParent.remove();
+			session.save();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
+			log.error("Repository Exception", e);
 			e.printStackTrace();
 		}
-    }    
-
+    }  
+    
+    /**
+     * Returns the set of file paths for each element below the provided
+     * root path.
+     * @param path The root node path for retrieval of files
+     * @return A set of strings each with the JCR Path to a file
+     */
+	public Set<String> getFilesStartingFromPath(String path) {
+		Set<String> resultSet = new HashSet<String>();
+		try {
+			QueryManager manager = session.getWorkspace().getQueryManager();
+			String basePath = session.getRootNode().getPath();
+			String queryStatement = "select * from nt:file where jcr:path LIKE '" + basePath + path + "/%'";
+			Query query = manager.createQuery(queryStatement, Query.SQL);
+			QueryResult result = query.execute();
+			
+			NodeIterator nodeIterator = result.getNodes();
+			Node node = null;
+			while (nodeIterator.hasNext()) {
+				node = (Node) nodeIterator.next();
+				resultSet.add(node.getPath());
+			}
+		} catch (InvalidQueryException e) {
+			log.error("InvalidQueryException", e);
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			log.error("RepositoryException", e);
+			e.printStackTrace();
+		}
+		return resultSet;
+	}
 
     /*
     public boolean getDocument(String originPath, String destinationPath){
