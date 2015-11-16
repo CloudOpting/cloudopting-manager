@@ -34,6 +34,7 @@ import org.springframework.stereotype.Service;
 import scala.collection.concurrent.Debug;
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.cloud.CloudService;
+import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.Status;
@@ -97,25 +98,37 @@ public class BpmnService {
 		Customizations theCust = customizationS.findOne(Long.parseLong(customizationId));
 		log.info("theCust: "+theCust.toString());
 		CloudAccounts account = theCust.getCloudAccount();
+		Applications app = applicationService.findOne(theCust.getApplicationId()); 
 
 		if(theCust.getProcessId()!= null){
 			log.debug("Customization "+customizationId+" has already a deployment process");
 			return theCust.getProcessId();
 		}
 		
+		// Prepare the hash of data for the process
 		HashMap<String, Object> v = new HashMap<String, Object>();
+		
+		if (isTesting){
+			
+		}else{
+			v.put("cloudId", account.getProviderId().getProvider());
+			v.put("cloudAccountId", account.getId());
+			cloudService.setUpCloud(account.getApiKey(), account.getSecretKey(), account.getEndpoint(), account.getProviderId().getProvider(), account.getId());
+			log.info("apikey: "+account.getApiKey());
+			log.info("secretkey: "+account.getSecretKey());
+			log.info("cloudEndpoint: "+account.getEndpoint());
+			log.info("account_id: "+account.getId());		
+		}
+		
+		
+		
 //		v.put("toscaFile", toscaId);
 		v.put("customizationId", customizationId);
 		v.put("isTesting", isTesting);
 		v.put("cloudId", cloudId);
-		v.put("cloudId", account.getProviderId().getProvider());
-		v.put("cloudAccountId", account.getId());
-		cloudService.setUpCloud(account.getApiKey(), account.getSecretKey(), account.getEndpoint(), account.getProviderId().getProvider(), account.getId());
+		v.put("toscaCsarPath", app.getApplicationToscaTemplate());
 		
-		log.info("apikey: "+account.getApiKey());
-		log.info("secretkey: "+account.getSecretKey());
-		log.info("cloudEndpoint: "+account.getEndpoint());
-		log.info("account_id: "+account.getId());
+		
 		
 		// TODO the process string has to go in a constant
         ProcessInstance pi = runtimeService.startProcessInstanceByKey("cloudoptingProcess",v);

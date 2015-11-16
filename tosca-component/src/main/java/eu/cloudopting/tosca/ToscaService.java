@@ -28,11 +28,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import eu.cloudopting.exception.ToscaException;
+import eu.cloudopting.tosca.utils.CSARUtils;
 import eu.cloudopting.tosca.utils.CustomizationUtils;
 import eu.cloudopting.tosca.utils.R10kResultHandler;
 import eu.cloudopting.tosca.utils.ToscaUtils;
@@ -55,6 +57,9 @@ public class ToscaService {
 	
 	@Autowired
 	private CustomizationUtils customizationUtils;
+	
+	@Autowired
+	private CSARUtils csarUtils;
 
 	public ToscaService() {
 		super();
@@ -119,6 +124,8 @@ public class ToscaService {
 					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
+			log.debug("PROBLEMA IN PATH");
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -151,10 +158,25 @@ public class ToscaService {
 			// System.out.println(relations.item(i).getAttributes()
 			// .getNamedItem("id").getNodeValue());
 			// this.g.addVertex(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
-			g.addEdge(nl.item(1).getAttributes().getNamedItem("ref")
-					.getNodeValue(),
-					nl.item(3).getAttributes().getNamedItem("ref")
-							.getNodeValue());
+			String sourceElement = null;
+			String targetElement = null;
+			for(int r=0; r< nl.getLength(); r++){
+				Node el = nl.item(r);
+				switch (el.getNodeName()) {
+				case "SourceElement":
+					sourceElement = el.getAttributes().getNamedItem("ref").getNodeValue();
+					break;
+				case "TargetElement":
+					targetElement = el.getAttributes().getNamedItem("ref").getNodeValue();
+					break;
+				default:
+					break;
+				}
+				
+			}
+			log.debug(targetElement);
+			log.debug(sourceElement);
+			g.addEdge(sourceElement, targetElement);
 		}
 		this.graphHash.put(customizationId, g);
 		String v;
@@ -196,26 +218,35 @@ public class ToscaService {
 	public String getOperationForNode(String customizationId, String id,
 			String interfaceType) {
 		log.debug("in getOperationForNode");
+		log.debug("customizationId:"+customizationId);
+		log.debug("id:"+id);
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
-
+//log.debug(theDoc.saveXML(null));
 		DTMNodeList nodes = null;
 		// System.out.println("//ns:NodeType[@name=string(//ns:NodeTemplate[@id='"
 		// + id + "']/@type)]/ns:Interfaces/ns:Interface[@name='" +
 		// interfaceType + "']/ns:Operation/@name");
+/*		String xq = "//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id
+				+ "']/@type)]/ns:Interfaces/ns:Interface[@name='"
+				+ interfaceType + "']/ns:Operation/@name";
+	*/
+		String xq = "//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id
+				+ "']/@type)]/ns:Interfaces/ns:Interface[@name='"
+				+ interfaceType + "']/ns:Operation/@name";
+		log.debug("xq:"+xq);
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate(
-					"//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id
-							+ "']/@type)]/ns:Interfaces/ns:Interface[@name='"
-							+ interfaceType + "']/ns:Operation/@name", theDoc,
-					XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate( xq, theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
+			log.debug("PROBLEMA IN PATH");
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
 		// since there is a single ID we are sure that the array is with a
 		// single element
+		log.debug("nodes:"+new Integer(nodes.getLength()).toString());
 		String template = nodes.item(0).getNodeValue();
 		return template;
 	}
@@ -226,6 +257,7 @@ public class ToscaService {
 		if (theDoc == null)
 			return null;
 
+		log.debug("type:"+type);
 		DTMNodeList nodes = null;
 		try {
 			nodes = (DTMNodeList) this.xpath.evaluate(
@@ -233,6 +265,8 @@ public class ToscaService {
 					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
+			log.debug("PROBLEMA IN PATH");
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
 		return nodes;
@@ -263,18 +297,20 @@ public class ToscaService {
 	 * @param provider
 	 */
 	public void manageToscaCsar(String customizationId, String service,
-			String serviceHome, String provider) {
+			String serviceHome, String provider, String toscaCsarPath) {
 		log.debug("in manageToscaCsar");
 		String fileName = service + ".czar";
 		String path = "/cloudOptingData/";
 
+		csarUtils.unzipToscaCsar(toscaCsarPath, serviceHome + "/tosca");
+		/*
 		try {
 			toscaUtils.unzip(path + service + ".czar", serviceHome + "/tosca");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+*/
 	}
 
 	public HashMap<String, String> getCloudData(String customizationId) {
@@ -347,10 +383,12 @@ public class ToscaService {
 		try {
 			modules = (DTMNodeList) this.xpath
 					.evaluate(
-							"//ns:NodeTypeImplementation/ns:ImplementationArtifacts/ns:ImplementationArtifact[@artifactType='PuppetModule']/@artifactRef",
+							"//ns:NodeTypeImplementation/ns:DeploymentArtifacts/ns:DeploymentArtifact[@artifactType='PuppetModule']/@artifactRef",
 							theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
+			log.debug("PROBLEMA IN PATH");
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
 		ArrayList<String> modulesList = new ArrayList<String>();
@@ -366,6 +404,7 @@ public class ToscaService {
 	public HashMap<String, String> getPuppetModulesProperties(
 			String customizationId, String module) {
 		log.info("in getPuppetModulesProperties");
+		log.info("module"+module);
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
@@ -538,11 +577,14 @@ public class ToscaService {
 					"//ns:ServiceTemplate/@id", theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
+			log.debug("PROBLEMA IN PATH");
+			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
 		// since there is a single ID we are sure that the array is with a
 		// single element
 		String serviceName = nodes.item(0).getNodeValue();
+		log.debug("serviceName:"+serviceName);
 		return serviceName;
 	}
 
