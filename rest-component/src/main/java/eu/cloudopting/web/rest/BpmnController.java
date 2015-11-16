@@ -60,7 +60,7 @@ public class BpmnController {
 	@RequestMapping(value = "/process", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	public @ResponseBody String startProcessInstance(
 			@RequestParam(value = "customizationId", required = false) String customizationId,
-			@RequestParam(value = "cloudId", required = false) String cloudId, @RequestParam(value = "isTesting", required = false, defaultValue="false") boolean isTesting,HttpServletRequest request) {
+			@RequestParam(value = "cloudId", required = false) String cloudId, @RequestParam(value = "isTesting", required = false, defaultValue="true") boolean isTesting,HttpServletRequest request) {
 
         User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         user.getOrganizationId().getOrganizationKey();
