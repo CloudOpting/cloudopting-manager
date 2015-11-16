@@ -36,7 +36,9 @@ import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
+import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.Status;
+import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.CustomizationDTO;
@@ -44,6 +46,7 @@ import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
+import eu.cloudopting.service.UserService;
 import eu.cloudopting.service.util.StatusConstants;
 
 
@@ -77,6 +80,14 @@ public class BpmnService {
 
 	@Inject
 	private ApplicationService applicationService;
+	
+	@Inject
+    private UserService userService;
+
+
+    public UserService getUserService() {
+        return userService;
+    }
 
 	public String startDeployProcess(String customizationId, String cloudId, boolean isTesting){
 		log.info("Before activating process");
@@ -216,9 +227,11 @@ public class BpmnService {
 	}
 	
 
-	public ActivitiDTO startPublish(ApplicationDTO application) {
+	public ActivitiDTO startPublish(ApplicationDTO application, Organizations org) {
 	    HashMap<String, Object> v = new HashMap<>();
+	   
 		v.put("application",application);
+		v.put("org", org);
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("ServicePublishingProcess",v);
 		ActivitiDTO activitiDTO = new ActivitiDTO();
 		Map map = ((ExecutionEntity) pi).getVariableInstances();

@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Pattern;
 
@@ -16,7 +15,6 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,12 +178,14 @@ public class StoreService {
              folderParent;
         try {
 			folder = session.getRootNode().getNode(this.getTemplatePath(orgKey, toscaName));
+			log.debug("Folder->"+folder.getPath());
 			folderParent = folder.getParent();
-			folder.remove();
-			session.getNodeByIdentifier(folderParent.getIdentifier());
-	        session.save();
+			log.debug("FolderParent->"+folderParent.getPath());
+			folderParent.remove();
+			session.save();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
+			log.error("Repository Exception", e);
 			e.printStackTrace();
 		}
     }    

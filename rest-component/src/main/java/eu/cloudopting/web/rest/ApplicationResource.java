@@ -157,8 +157,10 @@ public class ApplicationResource extends AbstractController<Applications> {
 
 
 //        createInternal(application, uriBuilder, response);
-
-        return getBpmnService().startPublish(application);
+    	 User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+         Organizations org = user.getOrganizationId();
+ 		
+        return getBpmnService().startPublish(application, org);
     }
 
     /**

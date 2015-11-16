@@ -1,11 +1,13 @@
 package eu.cloudopting.bpmn.tasks.publish;
 
 import eu.cloudopting.domain.Applications;
+import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.Status;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.service.util.StatusConstants;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
@@ -40,6 +42,7 @@ public class PublishContextSetupTask implements JavaDelegate {
         BeanUtils.copyProperties(applicationSource,application);
         application.setStatusId(status);
         application.setApplicationVersion(String.valueOf(1));
+        application.setOrganizationId((Organizations)execution.getVariable("org"));
         Applications savedApplication = applicationService.create(application);
         //UPDATE THE PROCESS VARIABLE
         applicationSource.setId(savedApplication.getId());
