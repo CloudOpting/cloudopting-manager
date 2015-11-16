@@ -123,7 +123,7 @@ public class ApplicationMedia implements BaseEntity {
     private Applications applicationId;
 
 	@Column(name = "media_content")
-    private byte[] mediaContent;
+    private String mediaContent;
 
 	public Applications getApplicationId() {
         return applicationId;
@@ -133,11 +133,11 @@ public class ApplicationMedia implements BaseEntity {
         this.applicationId = applicationId;
     }
 
-	public byte[] getMediaContent() {
+	public String getMediaContent() {
         return mediaContent;
     }
 
-	public void setMediaContent(byte[] mediaContent) {
+	public void setMediaContent(String mediaContent) {
         this.mediaContent = mediaContent;
     }
 }
