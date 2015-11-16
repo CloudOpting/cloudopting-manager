@@ -169,6 +169,26 @@ public class StoreService {
 	    session.save();
 		return childNode;
     }
+    
+	/**
+     * Removes the JCR Path that is identified by the parameters
+     * @param orgKey The Organization Key
+     * @param toscaName The Service Tosca Name
+     */
+    public void deletePath(String orgKey, String toscaName){
+        Node folder,
+             folderParent;
+        try {
+			folder = session.getRootNode().getNode(this.getTemplatePath(orgKey, toscaName));
+			folderParent = folder.getParent();
+			folder.remove();
+			session.getNodeByIdentifier(folderParent.getIdentifier());
+	        session.save();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }    
 
 
     /*
