@@ -87,6 +87,10 @@ public class ApplicationResource extends AbstractController<Applications> {
     public UserService getUserService() {
 		return userService;
 	}
+    
+    public StoreService getStoreService() {
+		return storeService;
+	}
 
     @Override
     protected BaseService<Applications> getService() {
@@ -175,9 +179,8 @@ public class ApplicationResource extends AbstractController<Applications> {
      * @param request
      * @return The set of of associated files paths.
      */
-    @RequestMapping(value = "/application/{idApp}/file", method = RequestMethod.GET)
-    @ResponseBody
-    public final Set<String> getApplicationFiles(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
+    @RequestMapping(value = "/application/{idApp}/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final @ResponseBody Set<String> getApplicationFiles(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
                                                final HttpServletResponse response, final HttpServletRequest request) {
         Applications app = getService().findOne(idApp);
         String toscaName = app.getApplicationToscaName();
@@ -185,7 +188,8 @@ public class ApplicationResource extends AbstractController<Applications> {
         Organizations org = user.getOrganizationId();
         String orgKey = org.getOrganizationKey();
         String path = StoreService.getTemplatePath(orgKey, toscaName);
-        return storeService.getFilesStartingFromPath(path);
+        StoreService ss = this.getStoreService(); 
+        return ss.getFilesStartingFromPath(path);
     }
     
     /**

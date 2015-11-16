@@ -20,6 +20,9 @@ import javax.jcr.Session;
 import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
 
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
@@ -199,18 +202,20 @@ public class StoreService {
     /**
      * Returns the set of file paths for each element below the provided
      * root path.
-     * @param pathRoot The root node path for retrieval of files
+     * @param path The root node path for retrieval of files
      * @return A set of strings each with the JCR Path to a file
      */
-	public Set<String> getFilesStartingFromPath(String pathRoot) {
+	public Set<String> getFilesStartingFromPath(String path) {
 		Set<String> resultSet = new HashSet<String>();
 		try {
 			QueryManager manager = session.getWorkspace().getQueryManager();
-			String queryStatement = "select * from nt:file where (jcr:path LIKE '" + pathRoot + "%')";
+			String basePath = session.getRootNode().getPath();
+			String queryStatement = "select * from nt:file where jcr:path LIKE '" + basePath + path + "/%'";
 			Query query = manager.createQuery(queryStatement, Query.SQL);
-			NodeIterator nodeIterator = query.execute().getNodes();
+			QueryResult result = query.execute();
+			
+			NodeIterator nodeIterator = result.getNodes();
 			Node node = null;
-
 			while (nodeIterator.hasNext()) {
 				node = (Node) nodeIterator.next();
 				resultSet.add(node.getPath());
