@@ -67,6 +67,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 
     @Bean
     public DataSource dataSource() {
+    	log.debug("Setting datasource");
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(propertyResolver.getProperty("driver"));
         dataSource.setUrl(propertyResolver.getProperty("url"));

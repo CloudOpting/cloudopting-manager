@@ -42,6 +42,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      */
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
+    	log.debug("Customize mimetypes");
         MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
         mappings.add("html", "text/html;charset=utf-8");
         mappings.add("json", "text/html;charset=utf-8");

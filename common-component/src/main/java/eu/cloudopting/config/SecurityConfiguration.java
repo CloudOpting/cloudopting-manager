@@ -3,6 +3,9 @@ package eu.cloudopting.config;
 
 import eu.cloudopting.filter.CsrfCookieGeneratorFilter;
 import eu.cloudopting.security.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -51,6 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    
+    private final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
 
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -61,6 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+    	log.debug("Configure web security");
         web.ignoring()
             .antMatchers("/scripts/**/*.{js,html}")
             .antMatchers("/bower_components/**")
@@ -72,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	log.debug("Configure http security");
         http
             .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
             .exceptionHandling()

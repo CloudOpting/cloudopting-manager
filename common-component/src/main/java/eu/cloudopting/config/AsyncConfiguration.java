@@ -42,6 +42,7 @@ public class AsyncConfiguration implements AsyncConfigurer, EnvironmentAware {
         executor.setMaxPoolSize(propertyResolver.getProperty("maxPoolSize", Integer.class, 50));
         executor.setQueueCapacity(propertyResolver.getProperty("queueCapacity", Integer.class, 10000));
         executor.setThreadNamePrefix("cloudopting-Executor-");
+        log.debug("Created Async Task Executor");
         return new ExceptionHandlingAsyncTaskExecutor(executor);
     }
 
