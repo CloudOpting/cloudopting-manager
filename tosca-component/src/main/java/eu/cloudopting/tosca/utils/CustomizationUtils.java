@@ -1,5 +1,6 @@
 package eu.cloudopting.tosca.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -61,13 +63,17 @@ public class CustomizationUtils {
 	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
 
 		log.debug("generateCustomizedTosca");
-//		DocumentImpl theDoc = new DocumentImpl();
-		DocumentImpl theDoc = null;
+		DocumentImpl theDoc = new DocumentImpl();
+//		DocumentImpl theDoc = null;
 		try {
 //			theDoc = (DocumentImpl)getToscaTemplateDesc(idApp, csarPath).clone();
 //			getToscaTemplateDesc(idApp, csarPath).cloneNode(true);
-			theDoc = (DocumentImpl) this.db.parse(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
-		} catch (DOMException | SAXException | IOException e1) {
+			theDoc = (DocumentImpl)this.db.newDocument();
+			Node an = theDoc.importNode(getToscaTemplateDesc(idApp, csarPath).getDocumentElement(), true);
+			theDoc.appendChild(an);
+//			theDoc.loadXML(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
+//			theDoc = (DocumentImpl) this.db.parse(new InputSource(new ByteArrayInputStream(getToscaTemplateDesc(idApp, csarPath).saveXML(null).getBytes())));
+		} catch (DOMException  e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}

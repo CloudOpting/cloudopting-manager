@@ -32,14 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import eu.cloudopting.config.jcr.JcrConfig;
 import eu.cloudopting.store.StoreService;
-/*
-import eu.cloudopting.store.config.StorageConfig;
-import eu.cloudopting.store.jackrabbit.JackrabbitStore;
-import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
-import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
 
-*/
-//@ContextConfiguration(classes = {StorageConfig.class, JcrConfig.class})
 @Service
 public class CSARUtils {
 	private final Logger log = LoggerFactory.getLogger(CSARUtils.class);
@@ -133,6 +126,5 @@ public class CSARUtils {
 		return toscaDefinitionContent;
 	}
 	
-//	public void unzipToscaCsar()
 
 }
