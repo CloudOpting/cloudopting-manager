@@ -81,16 +81,17 @@ angular.module('cloudoptingApp')
                         //TODO: Do something if all went ok.
                     });
             },
-            deploy: function(instance) {
+            deploy: function(instance, callback) {
+                //TODO: Ask for the cloud account needed.
                 instance.status = "deploy";
-                return $http.put(baseURI, angular.toJson(instance))
+                $http.put(baseURI, angular.toJson(instance))
                     .success(function (data) {
-                        //TODO: Do something if all went ok.
+                        if(callback) { callback(data); }
                     });
             },
             delete: function(instance) {
                 return $http.delete(baseURI + SERVICE.SEPARATOR + instance.id);
-            },
+            }
         };
     }
 );

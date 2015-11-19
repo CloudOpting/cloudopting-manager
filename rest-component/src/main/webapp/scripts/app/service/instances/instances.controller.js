@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function (SERVICE, $scope, $log, $location, Principal, localStorageService, InstanceService) {
+    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService) {
         $scope.instancesList = null;
         if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)) {
             //Get all instances of the user if it is a SUBSCRIBER.
@@ -38,20 +38,34 @@ angular.module('cloudoptingApp')
         //TODO: Implement button "Search Service" functionality.
 
         //TODO: Implement button go for each instance.
-        $scope.deploy = function(customizationId) {
-            InstanceService.deploy(customizationId);
+        $scope.test = function(instance) {
+            var callback = function(data){
+                window.alert("Test requested.");
+            };
+            ProcessService.test(instance, callback);
+
         };
-        $scope.stop = function(customizationId) {
-            InstanceService.stop(customizationId);
+        $scope.deploy = function(instance) {
+            var callback = function(data){
+                window.alert("Deploy requested.");
+                //TODO:When the bpmn is ready we should uncomment this line in order to save the new status.
+                //InstanceService.deploy(instance);
+                //{"timestamp":1447946243960,"status":500,"error":"Internal Server Error","exception":"org.activiti.engine.ActivitiObjectNotFoundException","message":"no processes deployed with key 'updateCustomization'","path":"/api/customization"}
+            };
+            ProcessService.deploy(instance, callback);
         };
-        $scope.delete = function(customizationId) {
-            InstanceService.delete(customizationId);
+        $scope.stop = function(instance) {
+            InstanceService.stop(instance);
         };
-        $scope.monitor = function(customizationId) {
-            //$state.go('monitor');
+        $scope.delete = function(instance) {
+            InstanceService.delete(instance);
         };
-        $scope.start = function(customizationId) {
-            InstanceService.start(customizationId);
+        $scope.monitor = function(instance) {
+            //TODO: Save the instance in the local storage in order to be accessible in the monitoring page.
+            $state.go('monitoring');
+        };
+        $scope.start = function(instance) {
+            InstanceService.start(instance);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){

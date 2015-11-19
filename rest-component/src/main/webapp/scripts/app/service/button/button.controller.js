@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ButtonController', function (SERVICE, $scope, $state, $log, ButtonService) {
+    .controller('ButtonController', function (SERVICE, $scope, $state, $log, ProcessService) {
 
         $scope.apiProcessOne = function(){
-            ButtonService.apiProcessOne();
+            ProcessService.apiProcessOne();
         };
     }
 );

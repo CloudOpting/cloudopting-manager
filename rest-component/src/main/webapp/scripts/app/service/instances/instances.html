@@ -36,11 +36,12 @@
                             <button type="button" ng-show="showStart(instance.status)" ng-click="start()" class="btn btn-default" translate="instances.button.start">Start</button>
                             <button type="button" ng-show="showMonitor(instance.status)" ng-click="monitor()" class="btn btn-default" translate="instances.button.monitor">Monitoring</button>
                             -->
-                            <button type="button" ng-click="deploy(instance.id)" class="btn btn-default"  translate="instances.button.deploy">Deploy</button>
-                            <button type="button" ng-click="stop(instance.id)" class="btn btn-default" translate="instances.button.stop">Stop</button>
-                            <button type="button" ng-click="delete(instance.id)" class="btn btn-default" translate="instances.button.delete">Delete</button>
-                            <button type="button" ng-click="start(instance.id)" class="btn btn-default" translate="instances.button.start">Start</button>
-                            <button type="button" ng-click="monitor(instance.id)" class="btn btn-default" translate="instances.button.monitor">Monitoring</button>
+                            <button type="button" ng-click="test(instance)" class="btn btn-default"  translate="instances.button.test">Test</button>
+                            <button type="button" ng-click="deploy(instance)" class="btn btn-default"  translate="instances.button.deploy">Deploy</button>
+                            <button type="button" ng-disabled="true" ng-click="stop(instance)" class="btn btn-default" translate="instances.button.stop">Stop</button>
+                            <button type="button" ng-disabled="true" ng-click="delete(instance)" class="btn btn-default" translate="instances.button.delete">Delete</button>
+                            <button type="button" ng-disabled="true" ng-click="start(instance)" class="btn btn-default" translate="instances.button.start">Start</button>
+                            <button type="button" ng-click="monitor(instance)" class="btn btn-default" translate="instances.button.monitor">Monitoring</button>
                         </div>
                     </td>
                 </tr>

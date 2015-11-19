@@ -17,6 +17,7 @@
       "stopped": "Stopped"
     },
     "button" : {
+      "test" : "Test",
       "search" : "Search Service",
       "go": "GO",
       "monitor": "Monitoring",

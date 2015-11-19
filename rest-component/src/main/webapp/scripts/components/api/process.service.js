@@ -1,0 +1,60 @@
+/**
+ * Created by a591584 on 30/06/2015.
+ */
+'use strict';
+
+angular.module('cloudoptingApp')
+    .factory('ProcessService', function ($http) {
+        //{ "customizationId" : "1", "cloudId" : "1" }
+        var baseURI = 'api/process';
+        var header = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
+
+        return {
+            //FIXME: This function should be deleted together with the Button Screen.
+            apiProcessOne: function () {
+                return $http.post(
+                    baseURI + '?customizationId=4308&cluodId=1&isTesting=true',
+                    {},
+                    { headers: header }
+                )
+                    .success(function (data) {
+                       //Do we need to deal with the returned data here.
+                        var a = data;
+                    })
+                    .error(function(data, status, headers, config) {
+                        //TODO: Do something if it fails
+                    });
+            },
+            test: function(instance, callback) {
+                //TODO: Ask for the cloud account needed.
+                var cloudId = 1;
+                return $http.post(
+                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudId+'isTesting=true',
+                    {},
+                    { headers: header }
+                )
+                    .success(function (data) {
+                        if(callback) { callback(data); }
+                    })
+                    .error(function(data, status, headers, config) {
+                        //TODO: Do something if it fails
+                    });
+            },
+            deploy: function(instance, callback) {
+                //TODO: Ask for the cloud account needed.
+                var cloudId = 1;
+                return $http.post(
+                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudId,
+                    {},
+                    { headers: header }
+                )
+                    .success(function (data) {
+                        if(callback) { callback(data); }
+                    })
+                    .error(function(data, status, headers, config) {
+                        //TODO: Do something if it fails
+                    });
+            }
+        };
+    }
+);

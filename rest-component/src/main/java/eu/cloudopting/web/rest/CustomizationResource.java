@@ -79,10 +79,10 @@ public class CustomizationResource  extends AbstractController<Customizations> {
     }
 
 
-    @RequestMapping(value="/customization/{customizationId}",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/customization",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public final void update(@RequestBody CustomizationDTO customizationDTO,@PathVariable String customizationId, final UriComponentsBuilder uriBuilder,
+    public final void update(@RequestBody CustomizationDTO customizationDTO, final UriComponentsBuilder uriBuilder,
                              final HttpServletResponse response, final HttpServletRequest request) {
         getBpmnService().updateCustomization(customizationDTO);
     }
