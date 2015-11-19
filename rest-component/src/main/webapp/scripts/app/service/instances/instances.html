@@ -23,17 +23,24 @@
                     <th class="darkgreen" translate="instances.col.actions">Actions</th>
                 </tr>
                 <tr ng-repeat="instance in instancesList">
-                    <td>{{instance.service_name}}</td>
-                    <td>{{instance.author}}</td>
-                    <td>{{instance.date}}</td>
-                    <td>{{instance.status}}</td>
+                    <td>{{instance.applicationName}}</td>
+                    <td>{{instance.customerOrganizationId}}</td>
+                    <td>{{instance.customizationCreation}}</td>
+                    <td>{{instance.statusId}}</td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                            <!--
                             <button type="button" ng-show="showDeploy(instance.status)" ng-click="deploy()" class="btn btn-default"  translate="instances.button.deploy">Deploy</button>
                             <button type="button" ng-show="showStop(instance.status)" ng-click="stop()" class="btn btn-default" translate="instances.button.stop">Stop</button>
                             <button type="button" ng-show="showDelete(instance.status)" ng-click="delete()" class="btn btn-default" translate="instances.button.delete">Delete</button>
                             <button type="button" ng-show="showStart(instance.status)" ng-click="start()" class="btn btn-default" translate="instances.button.start">Start</button>
                             <button type="button" ng-show="showMonitor(instance.status)" ng-click="monitor()" class="btn btn-default" translate="instances.button.monitor">Monitoring</button>
+                            -->
+                            <button type="button" ng-click="deploy(instance.id)" class="btn btn-default"  translate="instances.button.deploy">Deploy</button>
+                            <button type="button" ng-click="stop(instance.id)" class="btn btn-default" translate="instances.button.stop">Stop</button>
+                            <button type="button" ng-click="delete(instance.id)" class="btn btn-default" translate="instances.button.delete">Delete</button>
+                            <button type="button" ng-click="start(instance.id)" class="btn btn-default" translate="instances.button.start">Start</button>
+                            <button type="button" ng-click="monitor(instance.id)" class="btn btn-default" translate="instances.button.monitor">Monitoring</button>
                         </div>
                     </td>
                 </tr>
