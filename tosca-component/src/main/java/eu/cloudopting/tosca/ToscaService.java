@@ -657,7 +657,7 @@ public class ToscaService {
 
 		ArrayList<String> ports = new ArrayList<String>();
 		String xPathExpr = new String("//ns:NodeTemplate[@id='" + id
-				+ "']/ns:Capabilities/ns:Capability/ns:Properties/co:ports");
+				+ "']/ns:Capabilities/ns:Capability[@type='DockerContainerPortsCaps']/ns:Properties/co:DockerContainerPorts");
 
 		DTMNodeList nodes = null;
 		try {
@@ -670,11 +670,9 @@ public class ToscaService {
 
 		System.out.println("nodes :" + nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); ++i) {
-			String portInfo = nodes.item(i).getAttributes()
-					.getNamedItem("host").getNodeValue()
+			String portInfo = nodes.item(i).getLastChild().getNodeValue()
 					+ ":"
-					+ nodes.item(i).getAttributes().getNamedItem("container")
-							.getNodeValue();
+					+ nodes.item(i).getFirstChild().getNodeValue();
 			ports.add(portInfo);
 			System.out.println("portInfo :" + portInfo);
 		}
@@ -689,7 +687,7 @@ public class ToscaService {
 		ArrayList<String> ports = new ArrayList<String>();
 
 		String xPathExpr = new String(
-				"//ns:NodeTemplate[@type='DockerContainer']/ns:Capabilities/ns:Capability/ns:Properties/co:ports");
+				"//ns:NodeTemplate[@type='DockerContainer']/ns:Capabilities/ns:Capability[@type='DockerContainerPortsCaps']/ns:Properties/co:DockerContainerPorts");
 		// System.out.println("xpath :" + xPathExpr);
 
 		DTMNodeList nodes = null;
@@ -706,8 +704,9 @@ public class ToscaService {
 
 		System.out.println("nodes :" + nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); ++i) {
-			String portInfo = nodes.item(i).getAttributes()
-					.getNamedItem("host").getNodeValue();
+			// interested only in the host port that is the last
+			String portInfo = nodes.item(i).getLastChild().getNodeValue();
+			log.debug(portInfo);
 			ports.add(portInfo);
 			// System.out.println("portInfo :" + portInfo);
 		}
