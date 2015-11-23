@@ -57,11 +57,17 @@ public class DeploySetup implements JavaDelegate {
 		dockerPortsList.add("Port1");
 		
 		ArrayList<String> dockerNodesList = toscaService.getArrNodesByType(customizationId, "DockerContainer");
+		log.debug("dockerNodesList");
 		log.debug(dockerNodesList.toString());
+		log.debug("dockerPortsList");
+		log.debug(dockerPortsList.toString());
 		execution.setVariable("dockerNodesList", dockerNodesList);
 		execution.setVariable("vmPortsList", dockerPortsList);
 		
-		
+		log.debug("organizationName:"+organizationName);
+		log.debug("service:"+service);
+		log.debug("coRoot:"+coRoot);
+		log.debug("serviceHome:"+serviceHome);
 		// setting the variables for the rest of the tasks
 		execution.setVariable("customizationName", organizationName+"-"+service);
 		execution.setVariable("coRoot", coRoot);

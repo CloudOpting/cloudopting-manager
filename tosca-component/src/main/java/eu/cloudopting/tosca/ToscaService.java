@@ -54,20 +54,18 @@ public class ToscaService {
 
 	@Autowired
 	private ToscaUtils toscaUtils;
-	
+
 	@Autowired
 	private CustomizationUtils customizationUtils;
-	
+
 	@Autowired
 	private CSARUtils csarUtils;
 
 	public ToscaService() {
 		super();
-		XPathFactoryImpl xpathFactory = (XPathFactoryImpl) XPathFactoryImpl
-				.newInstance();
+		XPathFactoryImpl xpathFactory = (XPathFactoryImpl) XPathFactoryImpl.newInstance();
 		this.xpath = (XPathImpl) xpathFactory.newXPath();
-		this.xpath
-				.setNamespaceContext(new eu.cloudopting.tosca.xml.coNamespaceContext());
+		this.xpath.setNamespaceContext(new eu.cloudopting.tosca.xml.coNamespaceContext());
 		this.xpath.setXPathFunctionResolver(new XPathFunctionResolverImpl());
 		DocumentBuilderFactoryImpl dbf = new DocumentBuilderFactoryImpl();
 		dbf.setNamespaceAware(true);
@@ -109,8 +107,7 @@ public class ToscaService {
 		// Get the NodeTemplates
 		DTMNodeList nodes = null;
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate",
-					document, XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate", document, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -119,8 +116,7 @@ public class ToscaService {
 		// Get the RelationshipTemplate
 		DTMNodeList relations = null;
 		try {
-			relations = (DTMNodeList) this.xpath.evaluate(
-					"//ns:RelationshipTemplate[@type='hostedOn']", document,
+			relations = (DTMNodeList) this.xpath.evaluate("//ns:RelationshipTemplate[@type='hostedOn']", document,
 					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
@@ -132,14 +128,12 @@ public class ToscaService {
 		// Now we create the Graph structure so we know the correct traversal
 		// ordering
 		ArrayList<String> values = new ArrayList<String>();
-		DefaultDirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(
-				DefaultEdge.class);
+		DefaultDirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
 		for (int i = 0; i < nodes.getLength(); ++i) {
 			// values.add(nodes.item(i).getFirstChild().getNodeValue());
 			// System.out.println(nodes.item(i).getFirstChild().getNodeValue());
 			// System.out.println(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
-			g.addVertex(nodes.item(i).getAttributes().getNamedItem("id")
-					.getNodeValue());
+			g.addVertex(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
 		}
 
 		for (int i = 0; i < relations.getLength(); ++i) {
@@ -160,7 +154,7 @@ public class ToscaService {
 			// this.g.addVertex(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
 			String sourceElement = null;
 			String targetElement = null;
-			for(int r=0; r< nl.getLength(); r++){
+			for (int r = 0; r < nl.getLength(); r++) {
 				Node el = nl.item(r);
 				switch (el.getNodeName()) {
 				case "SourceElement":
@@ -172,7 +166,7 @@ public class ToscaService {
 				default:
 					break;
 				}
-				
+
 			}
 			log.debug(targetElement);
 			log.debug(sourceElement);
@@ -190,19 +184,19 @@ public class ToscaService {
 		}
 
 	}
-	
-	public void removeToscaCustomization(String customizationId){
+
+	public void removeToscaCustomization(String customizationId) {
 		this.graphHash.remove(customizationId);
 		this.xdocHash.remove(customizationId);
 		return;
 	}
-	
-	public boolean validateToscaCsar(String csarPath) throws ToscaException{
+
+	public boolean validateToscaCsar(String csarPath) throws ToscaException {
 		boolean isValid = true;
-		if(csarPath.isEmpty()){
+		if (csarPath.isEmpty()) {
 			throw new ToscaException("File not good");
 		}
-		//Perform validation here and change the value of isValid accordingly
+		// Perform validation here and change the value of isValid accordingly
 		return isValid;
 	}
 
@@ -215,29 +209,28 @@ public class ToscaService {
 
 	}
 
-	public String getOperationForNode(String customizationId, String id,
-			String interfaceType) {
+	public String getOperationForNode(String customizationId, String id, String interfaceType) {
 		log.debug("in getOperationForNode");
-		log.debug("customizationId:"+customizationId);
-		log.debug("id:"+id);
+		log.debug("customizationId:" + customizationId);
+		log.debug("id:" + id);
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
-//log.debug(theDoc.saveXML(null));
+		// log.debug(theDoc.saveXML(null));
 		DTMNodeList nodes = null;
 		// System.out.println("//ns:NodeType[@name=string(//ns:NodeTemplate[@id='"
 		// + id + "']/@type)]/ns:Interfaces/ns:Interface[@name='" +
 		// interfaceType + "']/ns:Operation/@name");
-/*		String xq = "//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id
-				+ "']/@type)]/ns:Interfaces/ns:Interface[@name='"
-				+ interfaceType + "']/ns:Operation/@name";
-	*/
+		/*
+		 * String xq = "//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id
+		 * + "']/@type)]/ns:Interfaces/ns:Interface[@name='" + interfaceType +
+		 * "']/ns:Operation/@name";
+		 */
 		String xq = "//ns:NodeType[@name=string(//ns:NodeTemplate[@id='" + id
-				+ "']/@type)]/ns:Interfaces/ns:Interface[@name='"
-				+ interfaceType + "']/ns:Operation/@name";
-		log.debug("xq:"+xq);
+				+ "']/@type)]/ns:Interfaces/ns:Interface[@name='" + interfaceType + "']/ns:Operation/@name";
+		log.debug("xq:" + xq);
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate( xq, theDoc, XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate(xq, theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			log.debug("PROBLEMA IN PATH");
@@ -246,7 +239,7 @@ public class ToscaService {
 		}
 		// since there is a single ID we are sure that the array is with a
 		// single element
-		log.debug("nodes:"+new Integer(nodes.getLength()).toString());
+		log.debug("nodes:" + new Integer(nodes.getLength()).toString());
 		String template = nodes.item(0).getNodeValue();
 		return template;
 	}
@@ -257,11 +250,10 @@ public class ToscaService {
 		if (theDoc == null)
 			return null;
 
-		log.debug("type:"+type);
+		log.debug("type:" + type);
 		DTMNodeList nodes = null;
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate(
-					"//ns:NodeTemplate[@type='" + type + "']", theDoc,
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@type='" + type + "']", theDoc,
 					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
@@ -296,21 +288,18 @@ public class ToscaService {
 	 * @param serviceHome
 	 * @param provider
 	 */
-	public void manageToscaCsar(String customizationId, String service,
-			String serviceHome, String provider, String toscaCsarPath) {
+	public void manageToscaCsar(String customizationId, String service, String serviceHome, String provider,
+			String toscaCsarPath) {
 		log.debug("in manageToscaCsar");
 		String fileName = service + ".czar";
 		String path = "/cloudOptingData/";
 
 		csarUtils.unzipToscaCsar(toscaCsarPath, serviceHome + "/tosca");
 		/*
-		try {
-			toscaUtils.unzip(path + service + ".czar", serviceHome + "/tosca");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-*/
+		 * try { toscaUtils.unzip(path + service + ".czar", serviceHome +
+		 * "/tosca"); } catch (IOException e) { // TODO Auto-generated catch
+		 * block e.printStackTrace(); }
+		 */
 	}
 
 	public HashMap<String, String> getCloudData(String customizationId) {
@@ -323,14 +312,12 @@ public class ToscaService {
 
 	}
 
-	public ArrayList<String> getArrNodesByType(String customizationId,
-			String type) {
+	public ArrayList<String> getArrNodesByType(String customizationId, String type) {
 		DTMNodeList nodes = getNodesByType(customizationId, type);
 		ArrayList<String> retList = new ArrayList<String>();
 		System.out.println("before cycle");
 		for (int i = 0; i < nodes.getLength(); ++i) {
-			retList.add(nodes.item(i).getAttributes().getNamedItem("id")
-					.getNodeValue());
+			retList.add(nodes.item(i).getAttributes().getNamedItem("id").getNodeValue());
 		}
 		return retList;
 	}
@@ -340,29 +327,23 @@ public class ToscaService {
 		return;
 	}
 
-	public String getTemplateForNode(String customizationId, String id,
-			String templateType) {
+	public String getTemplateForNode(String customizationId, String id, String templateType) {
 		log.debug("in getTemplateForNode");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
 
 		DTMNodeList nodes = null;
-		log.debug("//ArtifactTemplate[@id=string(//NodeTemplate[@id='"
-				+ id
-				+ "']/DeploymentArtifacts/DeploymentArtifact[@artifactType='"
-				+ templateType
+		log.debug("//ArtifactTemplate[@id=string(//NodeTemplate[@id='" + id
+				+ "']/DeploymentArtifacts/DeploymentArtifact[@artifactType='" + templateType
 				+ "']/@artifactRef)]/ArtifactReferences/ArtifactReference/@reference");
 		try {
 
-			nodes = (DTMNodeList) this.xpath
-					.evaluate(
-							"//ns:ArtifactTemplate[@id=string(//ns:NodeTemplate[@id='"
-									+ id
-									+ "']/ns:DeploymentArtifacts/ns:DeploymentArtifact[@artifactType='"
-									+ templateType
-									+ "']/@artifactRef)]/ns:ArtifactReferences/ns:ArtifactReference/@reference",
-							theDoc, XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate(
+					"//ns:ArtifactTemplate[@id=string(//ns:NodeTemplate[@id='" + id
+							+ "']/ns:DeploymentArtifacts/ns:DeploymentArtifact[@artifactType='" + templateType
+							+ "']/@artifactRef)]/ns:ArtifactReferences/ns:ArtifactReference/@reference",
+					theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -381,10 +362,9 @@ public class ToscaService {
 		DTMNodeList modules = null;
 
 		try {
-			modules = (DTMNodeList) this.xpath
-					.evaluate(
-							"//ns:NodeTypeImplementation/ns:DeploymentArtifacts/ns:DeploymentArtifact[@artifactType='PuppetModule']/@artifactRef",
-							theDoc, XPathConstants.NODESET);
+			modules = (DTMNodeList) this.xpath.evaluate(
+					"//ns:NodeTypeImplementation/ns:DeploymentArtifacts/ns:DeploymentArtifact[@artifactType='PuppetModule']/@artifactRef",
+					theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			log.debug("PROBLEMA IN PATH");
@@ -401,10 +381,9 @@ public class ToscaService {
 		return modulesList;
 	}
 
-	public HashMap<String, String> getPuppetModulesProperties(
-			String customizationId, String module) {
+	public HashMap<String, String> getPuppetModulesProperties(String customizationId, String module) {
 		log.info("in getPuppetModulesProperties");
-		log.info("module"+module);
+		log.info("module" + module);
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
@@ -412,10 +391,8 @@ public class ToscaService {
 		// System.out.println("//ArtifactTemplate[@id='" + module +
 		// "']/Properties/*");
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate(
-					"//ns:ArtifactTemplate[@id='" + module
-							+ "']/ns:Properties/*", theDoc,
-					XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:ArtifactTemplate[@id='" + module + "']/ns:Properties/*",
+					theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -449,8 +426,7 @@ public class ToscaService {
 		return dockerNodesList;
 	}
 
-	public HashMap<String, String> getPropertiesForNode(String customizationId,
-			String id) {
+	public HashMap<String, String> getPropertiesForNode(String customizationId, String id) {
 		log.debug("in getPropertiesForNode");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
@@ -459,10 +435,8 @@ public class ToscaService {
 		DTMNodeList nodes = null;
 		// System.out.println("//NodeTemplate[@id='" + id + "']/Properties/*");
 		try {
-			nodes = (DTMNodeList) this.xpath
-					.evaluate("//ns:NodeTemplate[@id='" + id
-							+ "']/ns:Properties/*", theDoc,
-							XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@id='" + id + "']/ns:Properties/*", theDoc,
+					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -479,8 +453,7 @@ public class ToscaService {
 		return myHash;
 	}
 
-	public HashMap getPropertiesForNodeApplication(String customizationId,
-			String id) {
+	public HashMap getPropertiesForNodeApplication(String customizationId, String id) {
 		log.debug("in getPropertiesForNodeApplication");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
@@ -488,10 +461,8 @@ public class ToscaService {
 
 		DTMNodeList nodes = null;
 		try {
-			nodes = (DTMNodeList) this.xpath
-					.evaluate("//ns:NodeTemplate[@id='" + id
-							+ "']/ns:Properties/*", theDoc,
-							XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@id='" + id + "']/ns:Properties/*", theDoc,
+					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -499,18 +470,15 @@ public class ToscaService {
 		HashMap<String, String> myHash = new HashMap<String, String>();
 		NodeList props = nodes.item(0).getChildNodes();
 		for (int i = 0; i < props.getLength(); ++i) {
-			String key = props.item(i).getAttributes().getNamedItem("name")
-					.getNodeValue();
+			String key = props.item(i).getAttributes().getNamedItem("name").getNodeValue();
 			myHash.put(key, props.item(i).getTextContent());
 		}
 		return myHash;
 	}
 
-	public ArrayList<String> getChildrenOfNode(String customizationId,
-			String node) {
+	public ArrayList<String> getChildrenOfNode(String customizationId, String node) {
 		log.debug("in getChildrenOfNode");
-		DefaultDirectedGraph<String, DefaultEdge> graph = this.graphHash
-				.get(customizationId);
+		DefaultDirectedGraph<String, DefaultEdge> graph = this.graphHash.get(customizationId);
 		if (graph == null)
 			return null;
 
@@ -525,8 +493,7 @@ public class ToscaService {
 		return children;
 	}
 
-	public ArrayList<String> getAllChildrenOfNode(String customizationId,
-			String node) {
+	public ArrayList<String> getAllChildrenOfNode(String customizationId, String node) {
 		log.debug("in getAllChildrenOfNode");
 		ArrayList<String> children = new ArrayList<String>();
 		children = getChildrenOfNode(customizationId, node);
@@ -534,8 +501,7 @@ public class ToscaService {
 		ArrayList<String> returnChildren = new ArrayList<String>();
 		while (child.hasNext()) {
 			String theChild = child.next();
-			returnChildren.addAll(getAllChildrenOfNode(customizationId,
-					theChild));
+			returnChildren.addAll(getAllChildrenOfNode(customizationId, theChild));
 			returnChildren.add(theChild);
 		}
 
@@ -551,8 +517,8 @@ public class ToscaService {
 		DTMNodeList nodes = null;
 
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@id='"
-					+ id + "']", theDoc, XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:NodeTemplate[@id='" + id + "']", theDoc,
+					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -560,8 +526,7 @@ public class ToscaService {
 		// since there is a single ID we are sure that the array is with a
 		// single element
 		// We need to get the type
-		String type = nodes.item(0).getAttributes().getNamedItem("type")
-				.getNodeValue();
+		String type = nodes.item(0).getAttributes().getNamedItem("type").getNodeValue();
 		return type;
 	}
 
@@ -573,8 +538,7 @@ public class ToscaService {
 		DTMNodeList nodes = null;
 
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate(
-					"//ns:ServiceTemplate/@id", theDoc, XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate("//ns:ServiceTemplate/@id", theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			log.debug("PROBLEMA IN PATH");
@@ -584,40 +548,40 @@ public class ToscaService {
 		// since there is a single ID we are sure that the array is with a
 		// single element
 		String serviceName = nodes.item(0).getNodeValue();
-		log.debug("serviceName:"+serviceName);
+		log.debug("serviceName:" + serviceName);
 		return serviceName;
 	}
 
-	public ArrayList<String> getExposedPortsOfChildren(String customizationId,
-			String id) {
+	public ArrayList<String> getExposedPortsOfChildren(String customizationId, String id) {
 		log.debug("in getExposedPortsOfChildren");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
 
 		ArrayList<String> exPorts = new ArrayList<String>();
-		ArrayList<String> allChildren = getAllChildrenOfNode(customizationId,
-				id);
+		ArrayList<String> allChildren = getAllChildrenOfNode(customizationId, id);
 		Iterator<String> aChild = allChildren.iterator();
 		log.debug("all children" + allChildren.toString());
 		ArrayList<String> xPathExprList = new ArrayList<String>();
 		while (aChild.hasNext()) {
-			xPathExprList.add("//ns:NodeTemplate[@id='" + aChild.next()
-					+ "']/ns:Capabilities/ns:Capability/ns:Properties/*");
+			xPathExprList.add(
+					"//ns:NodeTemplate[@id='" + aChild.next() + "']/ns:Capabilities/ns:Capability/ns:Properties/*");
 		}
 		String xPathExpr = StringUtils.join(xPathExprList, "|");
 		log.debug("xpath :" + xPathExpr);
-		DTMNodeList nodes = null;
-		try {
-			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc,
-					XPathConstants.NODESET);
-		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//  since child nodes could not have ports to expose xpath could be ampty
+		if(!xPathExpr.isEmpty()){
+			DTMNodeList nodes = null;
+			try {
+				nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc, XPathConstants.NODESET);
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-		for (int i = 0; i < nodes.getLength(); ++i) {
-			exPorts.add(nodes.item(i).getTextContent());
+			for (int i = 0; i < nodes.getLength(); ++i) {
+				exPorts.add(nodes.item(i).getTextContent());
+			}
 		}
 		return exPorts;
 	}
@@ -630,10 +594,9 @@ public class ToscaService {
 
 		DTMNodeList links = null;
 		try {
-			links = (DTMNodeList) this.xpath.evaluate(
-					"//ns:RelationshipTemplate[@type='containerLink']/ns:SourceElement[@ref='"
-							+ id + "']/../ns:TargetElement", theDoc,
-					XPathConstants.NODESET);
+			links = (DTMNodeList) this.xpath
+					.evaluate("//ns:RelationshipTemplate[@type='containerLink']/ns:SourceElement[@ref='" + id
+							+ "']/../ns:TargetElement", theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -641,8 +604,7 @@ public class ToscaService {
 		ArrayList<String> linksList = new ArrayList<String>();
 
 		for (int i = 0; i < links.getLength(); ++i) {
-			String link = links.item(i).getAttributes().getNamedItem("ref")
-					.getNodeValue();
+			String link = links.item(i).getAttributes().getNamedItem("ref").getNodeValue();
 			linksList.add(link);
 		}
 
@@ -661,8 +623,7 @@ public class ToscaService {
 
 		DTMNodeList nodes = null;
 		try {
-			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc,
-					XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -670,11 +631,12 @@ public class ToscaService {
 
 		System.out.println("nodes :" + nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); ++i) {
-			String portInfo = nodes.item(i).getLastChild().getNodeValue()
-					+ ":"
-					+ nodes.item(i).getFirstChild().getNodeValue();
-			ports.add(portInfo);
-			System.out.println("portInfo :" + portInfo);
+			if (nodes.item(i).getChildNodes().getLength() > 0) {
+				String portInfo = nodes.item(i).getLastChild().getNodeValue() + ":"
+						+ nodes.item(i).getFirstChild().getNodeValue();
+				ports.add(portInfo);
+				System.out.println("portInfo :" + portInfo);
+			}
 		}
 		return ports;
 	}
@@ -694,8 +656,7 @@ public class ToscaService {
 		try {
 			XPathExpression expr = this.xpath.compile(xPathExpr);
 
-			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc,
-					XPathConstants.NODESET);
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc, XPathConstants.NODESET);
 			nodes = (DTMNodeList) expr.evaluate(theDoc, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
@@ -705,25 +666,31 @@ public class ToscaService {
 		System.out.println("nodes :" + nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); ++i) {
 			// interested only in the host port that is the last
-			String portInfo = nodes.item(i).getLastChild().getNodeValue();
-			log.debug(portInfo);
-			ports.add(portInfo);
-			// System.out.println("portInfo :" + portInfo);
+			// since the container could have no attributes we need before to
+			// chack if there are children
+			if (nodes.item(i).getChildNodes().getLength() > 0) {
+				String portInfo = nodes.item(i).getLastChild().getTextContent();
+				log.debug("portInfo:" + portInfo);
+				log.debug("nodename:" + nodes.item(i).getLastChild().getNodeName());
+				log.debug("nodetype:" + nodes.item(i).getLastChild().getNodeType());
+				log.debug("textcontent:" + nodes.item(i).getLastChild().getTextContent());
+				ports.add(portInfo);
+				// System.out.println("portInfo :" + portInfo);
+
+			}
 		}
 		return ports;
 	}
 
-	
 	/*
 	 * public void getPuppetModules(String customizationId, String id){ // here
-	 * I get the puppet module list and use r10k to download them
-	 * log.debug("in getHostPorts"); DocumentImpl theDoc =
+	 * I get the puppet module list and use r10k to download them log.debug(
+	 * "in getHostPorts"); DocumentImpl theDoc =
 	 * this.xdocHash.get(customizationId); if (theDoc == null) return null;
 	 * 
 	 * }
 	 */
-	public void runR10k(String customizationId, String serviceHome,
-			String coRoot) {
+	public void runR10k(String customizationId, String serviceHome, String coRoot) {
 		log.debug("in getDefinitionFile");
 		final long r10kJobTimeout = 95000;
 		final boolean r10kInBackground = true;
@@ -732,8 +699,8 @@ public class ToscaService {
 		log.debug("puppetFile:" + puppetFile);
 		log.debug("puppetDir:" + puppetDir);
 
-		R10kResultHandler r10kResult = toscaUtils.runR10k(puppetFile,
-				puppetDir, r10kJobTimeout, r10kInBackground, serviceHome);
+		R10kResultHandler r10kResult = toscaUtils.runR10k(puppetFile, puppetDir, r10kJobTimeout, r10kInBackground,
+				serviceHome);
 
 		try {
 			r10kResult.waitFor();
@@ -746,11 +713,12 @@ public class ToscaService {
 
 	}
 
-	public void generateDockerCompose(String customizationId, String organizationName, String serviceHome, ArrayList<String> dockerNodesList) {
+	public void generateDockerCompose(String customizationId, String organizationName, String serviceHome,
+			ArrayList<String> dockerNodesList) {
 		ArrayList<HashMap<String, String>> modData = new ArrayList<HashMap<String, String>>();
 		for (String node : dockerNodesList) {
 			HashMap<String, String> containerData = new HashMap<String, String>();
-			String imageName = "cloudopting/"+organizationName+"_"+node.toLowerCase();
+			String imageName = "cloudopting/" + organizationName + "_" + node.toLowerCase();
 			containerData.put("container", node);
 			containerData.put("image", imageName);
 			// modData.add(toscaFileManager.getPuppetModulesProperties(mod));
@@ -758,20 +726,15 @@ public class ToscaService {
 
 			ArrayList<String> links = getContainerLinks(customizationId, node);
 			if (links != null && !links.isEmpty()) {
-				containerData.put("links",
-						"   - " + StringUtils.join(links, "\n   - "));
+				containerData.put("links", "   - " + StringUtils.join(links, "\n   - "));
 			}
 			ArrayList<String> exPorts = getExposedPortsOfChildren(customizationId, node);
 			if (exPorts != null && !exPorts.isEmpty()) {
-				containerData.put("exPorts",
-						"   - \"" + StringUtils.join(exPorts, "\"\n   - \"")
-								+ "\"");
+				containerData.put("exPorts", "   - \"" + StringUtils.join(exPorts, "\"\n   - \"") + "\"");
 			}
 			ArrayList<String> ports = getContainerPorts(customizationId, node);
 			if (ports != null && !ports.isEmpty()) {
-				containerData.put("ports",
-						"   - \"" + StringUtils.join(ports, "\"\n   - \"")
-								+ "\"");
+				containerData.put("ports", "   - \"" + StringUtils.join(ports, "\"\n   - \"") + "\"");
 			}
 
 			System.out.println(node);
@@ -784,14 +747,15 @@ public class ToscaService {
 		// write the "Puppetfile" file
 		toscaUtils.generateDockerCompose(templData, serviceHome);
 	}
-	
-	public JSONObject getCustomizationFormData(Long idApp, String csarPath){
-		
+
+	public JSONObject getCustomizationFormData(Long idApp, String csarPath) {
+
 		return customizationUtils.getCustomizationFormData(idApp, csarPath);
-	
+
 	}
+
 	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
 		return customizationUtils.generateCustomizedTosca(idApp, csarPath, data);
-		
+
 	}
 }
