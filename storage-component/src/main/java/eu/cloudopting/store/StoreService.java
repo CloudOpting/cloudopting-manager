@@ -75,17 +75,32 @@ public class StoreService {
 		
 	}
 
+	/**
+	 * Stores the binary content into the repository
+	 * @param request The request object
+	 * @return The result of the operation.
+	 */
 	public JackrabbitStoreResult storeBinary(JackrabbitStoreRequest request){
 		return jackrabbitBinaryStore.store(request);
 	}
 
-	public JackrabbitStoreResult<InputStream> retrieve(String s) {
-		JackrabbitStoreResult<InputStream> retrieve = jackrabbitBinaryStore.retrieve(s);
+	/**
+	 * Reads content from the repository based on the path
+	 * @param path The path of the object to be read
+	 * @return The InputStream of the object that was read.
+	 */
+	public JackrabbitStoreResult<InputStream> retrieve(String path) {
+		JackrabbitStoreResult<InputStream> retrieve = jackrabbitBinaryStore.retrieve(path);
 		return retrieve;
 	}
 
-	public JackrabbitStoreResult<InputStream> remove(String s) {
-		JackrabbitStoreResult<InputStream> remove = jackrabbitBinaryStore.remove(s);
+	/**
+	 * Deletes content from the repository based on the path
+	 * @param path The path of the object to be deleted
+	 * @return The result of the delete operation.
+	 */
+	public JackrabbitStoreResult<InputStream> remove(String path) {
+		JackrabbitStoreResult remove = jackrabbitBinaryStore.remove(path);
 		return remove;
 	}
 
