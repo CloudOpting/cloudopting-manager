@@ -9,13 +9,13 @@ public class coNamespaceContext implements NamespaceContext
 {
     public String getNamespaceURI(String prefix)
     {
-    	System.out.println("getNamespaceURI:"+prefix);
+//    	System.out.println("getNamespaceURI:"+prefix);
         if (prefix.equals("co")){
-        	System.out.println("beccato prefisso");
+//        	System.out.println("beccato prefisso");
             return "http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes";
         }
         else if (prefix.equals("ns")) {
-        	System.out.println("prefisso vuoto");
+//        	System.out.println("prefisso vuoto");
         	return "http://docs.oasis-open.org/tosca/ns/2011/12";
 		}
         else{

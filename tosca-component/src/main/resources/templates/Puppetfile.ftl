@@ -17,6 +17,3 @@ mod 'java',
   
 mod 'staging',
   :git => 'https://github.com/nanliu/puppet-staging.git'
-  
-mod 'liferay',
-  :git => 'https://github.com/gioppoluca/puppet-liferay.git'  

@@ -611,6 +611,31 @@ public class ToscaService {
 		return linksList;
 	}
 
+	public ArrayList<String> getVolumesFrom(String customizationId, String id) {
+		log.debug("in getVolumesFrom");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		DTMNodeList volumesFroms = null;
+		try {
+			volumesFroms = (DTMNodeList) this.xpath
+					.evaluate("//ns:RelationshipTemplate[@type='volumeFrom']/ns:SourceElement[@ref='" + id
+							+ "']/../ns:TargetElement", theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ArrayList<String> volumesFromList = new ArrayList<String>();
+
+		for (int i = 0; i < volumesFroms.getLength(); ++i) {
+			String volumesFrom = volumesFroms.item(i).getAttributes().getNamedItem("ref").getNodeValue();
+			volumesFromList.add(volumesFrom);
+		}
+
+		return volumesFromList;
+	}
+
 	public ArrayList<String> getContainerPorts(String customizationId, String id) {
 		log.debug("in getContainerPorts");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
@@ -632,8 +657,8 @@ public class ToscaService {
 		System.out.println("nodes :" + nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); ++i) {
 			if (nodes.item(i).getChildNodes().getLength() > 0) {
-				String portInfo = nodes.item(i).getLastChild().getNodeValue() + ":"
-						+ nodes.item(i).getFirstChild().getNodeValue();
+				String portInfo = nodes.item(i).getLastChild().getTextContent() + ":"
+						+ nodes.item(i).getFirstChild().getTextContent();
 				ports.add(portInfo);
 				System.out.println("portInfo :" + portInfo);
 			}
@@ -735,6 +760,10 @@ public class ToscaService {
 			ArrayList<String> ports = getContainerPorts(customizationId, node);
 			if (ports != null && !ports.isEmpty()) {
 				containerData.put("ports", "   - \"" + StringUtils.join(ports, "\"\n   - \"") + "\"");
+			}
+			ArrayList<String> volumesFrom = getVolumesFrom(customizationId, node);
+			if (volumesFrom != null && !volumesFrom.isEmpty()) {
+				containerData.put("volumesFrom", "   - " + StringUtils.join(volumesFrom, "\n   - "));
 			}
 
 			System.out.println(node);

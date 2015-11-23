@@ -9,4 +9,6 @@ ${dockerContainer['links']}</#if>
 ${dockerContainer['exPorts']}</#if>
 <#if dockerContainer['ports']?has_content>  ports:
 ${dockerContainer['ports']}</#if>
+<#if dockerContainer['volumesFrom']?has_content>  volumes_from:
+${dockerContainer['volumesFrom']}</#if>
 </#list>
