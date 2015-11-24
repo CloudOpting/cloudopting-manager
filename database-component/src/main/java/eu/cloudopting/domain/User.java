@@ -1,8 +1,8 @@
 package eu.cloudopting.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -12,7 +12,9 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -74,15 +76,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organizations organizationId;
 
-//    @JsonIgnore
-    @JsonProperty(value = "roles")
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "T_USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<Authority> authorities = new HashSet<>();
-
+    
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private Set<PersistentToken> persistentTokens = new HashSet<>();
@@ -199,7 +200,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.organizationId = organizationId;
     }
 
-    @Override
+    @JsonGetter("roles")
+    public List<String> getRoles(){
+    	return getAuthorities().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
