@@ -426,7 +426,7 @@ public class ToscaService {
 		return dockerNodesList;
 	}
 
-	public HashMap<String, String> getPropertiesForNode(String customizationId, String id) {
+	public HashMap getPropertiesForNode(String customizationId, String id) {
 		log.debug("in getPropertiesForNode");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
@@ -441,15 +441,41 @@ public class ToscaService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HashMap<String, String> myHash = new HashMap<String, String>();
+		HashMap myHash = new HashMap();
 		NodeList props = nodes.item(0).getChildNodes();
 		for (int i = 0; i < props.getLength(); ++i) {
 			String[] keys = props.item(i).getNodeName().split(":");
+			String key = null;
 			if (keys.length > 1) {
-				String key = keys[1];
-				myHash.put(key, props.item(i).getTextContent());
+				key = keys[1];
 			}
+			if (props.item(i).getFirstChild().getNodeType() == Node.TEXT_NODE) {
+				log.debug("HAS CHILD TEXT NODES ----------------------*****");
+				myHash.put(key, props.item(i).getTextContent());
+			} else {
+				log.debug("HAS CHILD ELEMENT NODES *********++++++++++*****");
+				ArrayList myArrChild = null;
+				if (myHash.containsKey(key)) {
+					myArrChild = (ArrayList) myHash.get(key);
+				} else {
+					myArrChild = new ArrayList();
+				}
+				HashMap myHashChild = new HashMap<>();
+				for (int c = 0; c < props.item(i).getChildNodes().getLength(); c++) {
+					String[] keysChild = props.item(i).getChildNodes().item(c).getNodeName().split(":");
+					String keyChild = null;
+					if (keysChild.length > 1) {
+						keyChild = keysChild[1];
+						log.debug("keyChild:"+keyChild);
+					}
+					myHashChild.put(keyChild, props.item(i).getChildNodes().item(c).getTextContent());
+				}
+				myArrChild.add(myHashChild);
+				myHash.put(key, myArrChild);
+			}
+
 		}
+		log.debug(myHash.toString());
 		return myHash;
 	}
 
@@ -569,8 +595,8 @@ public class ToscaService {
 		}
 		String xPathExpr = StringUtils.join(xPathExprList, "|");
 		log.debug("xpath :" + xPathExpr);
-		//  since child nodes could not have ports to expose xpath could be ampty
-		if(!xPathExpr.isEmpty()){
+		// since child nodes could not have ports to expose xpath could be ampty
+		if (!xPathExpr.isEmpty()) {
 			DTMNodeList nodes = null;
 			try {
 				nodes = (DTMNodeList) this.xpath.evaluate(xPathExpr, theDoc, XPathConstants.NODESET);
