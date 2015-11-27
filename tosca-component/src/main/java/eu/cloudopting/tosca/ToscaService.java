@@ -466,7 +466,7 @@ public class ToscaService {
 					String keyChild = null;
 					if (keysChild.length > 1) {
 						keyChild = keysChild[1];
-						log.debug("keyChild:"+keyChild);
+						log.debug("keyChild:" + keyChild);
 					}
 					myHashChild.put(keyChild, props.item(i).getChildNodes().item(c).getTextContent());
 				}
@@ -662,6 +662,23 @@ public class ToscaService {
 		return volumesFromList;
 	}
 
+	public ArrayList<HashMap> getVolumes(String customizationId, String id) {
+		log.debug("in getVolumes");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		HashMap props = getPropertiesForNode(customizationId, id);
+		ArrayList<HashMap> volumesList = null;
+		if (props.containsKey("volumes")) {
+			return (ArrayList<HashMap>) props.get("volumes");
+		}
+
+		// ArrayList<HashMap> volumesList = new ArrayList<HashMap>();
+
+		return null;
+	}
+
 	public ArrayList<String> getContainerPorts(String customizationId, String id) {
 		log.debug("in getContainerPorts");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
@@ -766,9 +783,9 @@ public class ToscaService {
 
 	public void generateDockerCompose(String customizationId, String organizationName, String serviceHome,
 			ArrayList<String> dockerNodesList) {
-		ArrayList<HashMap<String, String>> modData = new ArrayList<HashMap<String, String>>();
+		ArrayList<HashMap<String, Object>> modData = new ArrayList<HashMap<String, Object>>();
 		for (String node : dockerNodesList) {
-			HashMap<String, String> containerData = new HashMap<String, String>();
+			HashMap<String, Object> containerData = new HashMap<String, Object>();
 			String imageName = "cloudopting/" + organizationName + "_" + node.toLowerCase();
 			containerData.put("container", node);
 			containerData.put("image", imageName);
@@ -790,6 +807,10 @@ public class ToscaService {
 			ArrayList<String> volumesFrom = getVolumesFrom(customizationId, node);
 			if (volumesFrom != null && !volumesFrom.isEmpty()) {
 				containerData.put("volumesFrom", "   - " + StringUtils.join(volumesFrom, "\n   - "));
+			}
+			ArrayList<HashMap> volumes = getVolumes(customizationId, node);
+			if (volumes != null && !volumes.isEmpty()) {
+				containerData.put("volumes", volumes);
 			}
 
 			System.out.println(node);
