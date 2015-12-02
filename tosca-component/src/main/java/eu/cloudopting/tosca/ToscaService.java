@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -60,6 +61,9 @@ public class ToscaService {
 
 	@Autowired
 	private CSARUtils csarUtils;
+	
+	@Value("${orchestrator.logger_address}")
+	private String logger_address;
 
 	public ToscaService() {
 		super();
@@ -789,6 +793,7 @@ public class ToscaService {
 			String imageName = "cloudopting/" + organizationName + "_" + node.toLowerCase();
 			containerData.put("container", node);
 			containerData.put("image", imageName);
+			containerData.put("log_driver_address", logger_address);
 			// modData.add(toscaFileManager.getPuppetModulesProperties(mod));
 			// get the link information for the node
 

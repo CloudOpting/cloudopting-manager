@@ -56,3 +56,5 @@ cloud:
     ip: 127.0.0.1
     templateId: 1a74adaa-845d-4fec-a12c-cc26026b38b7
     diskId: ec700372-e694-45a1-b3a8-30a636c5a747
+orchestrator:
+    logger_address: 84.240.187.4:4044
