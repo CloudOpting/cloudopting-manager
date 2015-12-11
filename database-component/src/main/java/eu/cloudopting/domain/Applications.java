@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Configurable
 @Entity
@@ -144,7 +142,6 @@ public class Applications implements BaseEntity {
     private String applicationVersion;
 
     @OneToMany(mappedBy = "applicationId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonManagedReference
     private Set<Customizations> customizationss;
 
     public Set<Customizations> getCustomizationss() {
