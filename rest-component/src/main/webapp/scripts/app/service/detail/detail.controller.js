@@ -45,9 +45,8 @@ angular.module('cloudoptingApp')
         else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER))
         {
             $scope.detail_function = function() {
-                $state.go('taylor');
-                //At the moment we redirect to taylor fixed form till the form_generation is not done.
-                //$state.go('form_generation');
+                //Customize the service.
+                $state.go('form_generation');
             };
             $scope.buttonValue = $translate.instant('detail.button.subscribe');
         }
