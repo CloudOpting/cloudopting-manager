@@ -1,0 +1,33 @@
+{
+  "contact": {
+    "title": "Contact",
+    "form": {
+      "button": "Send Message",
+      "name": "Name",
+      "phone": "Phone",
+      "companyName": "Company name",
+      "message": "Message",
+      "placeholder": {
+        "name": "Your name",
+        "phone": "Your phone",
+        "companyName": "Your company name",
+        "message": "What can we do for you?"
+      }
+    },
+
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "Your name is required."
+        },
+        "lastName": {
+          "required": "Your last name is required."
+        }
+      },
+      "success": "<strong>Message sent!</strong> We will contact with you soon.",
+      "error": {
+        "fail": "<strong>Something went wrong!</strong> Please try again later."
+      }
+    }
+  }
+}

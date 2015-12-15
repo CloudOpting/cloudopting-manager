@@ -225,5 +225,11 @@ a {
     background-repeat: no-repeat;
     background-size: 150px 61px;
 }
+
+.footer {
+    margin-top: 12px;
+    background-color: lightgray;
+}
+
 /* END WEB UI STYLES */
 

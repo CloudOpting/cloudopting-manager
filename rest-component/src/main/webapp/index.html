@@ -32,11 +32,11 @@
         <div class="container">
             <div ui-view="menu" ng-cloak=""></div>
             <div ui-view="content"></div><!--class="well"-->
-            <!--
-                        <div class="footer">
-                            <p translate="footer">This is your footer</p>
-                        </div>
-                        -->
+
+            <div class="footer">
+                <div ui-view="footerlinks"></div>
+            </div>
+
         </div>
 
 
@@ -105,6 +105,7 @@
         <script src="scripts/components/api/instance.service.js"></script>
         <script src="scripts/components/api/organization.service.js"></script>
         <script src="scripts/components/api/user.service.js"></script>
+        <script src="scripts/components/api/contact.service.js"></script>
 
         <script src="scripts/components/api/process.service.js"></script>
 
@@ -150,6 +151,7 @@
         <!-- cloudopting-manager-webui init -->
         <script src="scripts/app/service.constants.js"></script>
         <script src="scripts/app/menu/menu.controller.js"></script>
+        <script src="scripts/app/footer/footer.controller.js"></script>
 
         <script src="scripts/app/service/service.js"></script>
         <script src="scripts/app/service/catalog/catalog.js"></script>
@@ -178,6 +180,8 @@
         <script src="scripts/app/service/profile/profile.controller.js"></script>
         <script src="scripts/app/service/user_org_manager/user_org_manager.js"></script>
         <script src="scripts/app/service/user_org_manager/user_org_manager.controller.js"></script>
+        <script src="scripts/app/service/contact/contact.js"></script>
+        <script src="scripts/app/service/contact/contact.controller.js"></script>
 
         <!-- BUTTON SCREEN IS TO EXECUTE DIRECT ACTIONS -->
         <script src="scripts/app/service/button/button.js"></script>
