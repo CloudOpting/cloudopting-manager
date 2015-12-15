@@ -3,26 +3,20 @@
 angular.module('cloudoptingApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('profile', {
+            .state('cloudaccount', {
                 parent: 'service',
-                url: '/profile',
-                params: {
-                    tab: null,
-                },
+                url: '/cloudaccount',
                 data: {
-                    roles: ['ROLE_USER']
+                    roles: []
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/service/profile/profile.html',
-                        controller: 'ProfileController'
+                        templateUrl: 'scripts/app/service/cloudaccount/cloudaccount.html',
+                        controller: 'CloudAccountController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('profile');
-                        $translatePartialLoader.addPart('settings');
-                        $translatePartialLoader.addPart('password');
                         $translatePartialLoader.addPart('cloudaccount');
                         return $translate.refresh();
                     }]

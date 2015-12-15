@@ -8,6 +8,10 @@
             <li class="active"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')">Settings</a></li>
             <li><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')">Password</a></li>
             <li ng-show="passAccount.isAdmin"><a data-toggle="tab" href="#" ng-click="changeTab('tab_organization')">Organization</a></li>
+            <li><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')">Cloud Accounts</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_settings'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')">Settings</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_password'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')">Password</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_cloudaccounts'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')">Cloud Accounts</a></li>
         </ul>
         <div class="tab-content">
             <div id="tab_settings" class="tab-pane" ng-class="{active: tab_selected == 'tab_settings'}">
@@ -157,6 +161,29 @@
 
             </div>
 
+            <div id="tab_cloudaccounts" class="tab-pane" ng-class="{active: tab_selected == 'tab_cloudaccounts'}">
+
+                <h2 translate="cloudaccount.title">Cloud Accounts</h2>
+
+                <table cellspacing="1" cellpadding="1" class="table-responsive" style="width: 100%;">
+                    <tr>
+                        <th class="darkgreen" translate="cloudaccount.col.name">Cloud Account Name</th>
+                        <th class="darkgreen" translate="cloudaccount.col.provider">Provider</th>
+                        <th class="darkgreen" translate="cloudaccount.col.actions">Actions</th>
+                    </tr>
+                    <tr ng-repeat="cloudAcc in cloudAccList">
+                        <td>{{cloudAcc.name}}</td>
+                        <td>{{cloudAcc.providerId.provider}}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default" ng-click="goToEdit(cloudAcc)" translate="cloudaccount.button.edit">Edit</button>
+                                <button type="button" class="btn btn-default" ng-click="deleteCloudAccount(cloudAcc)" translate="cloudaccount.button.delete">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
         </div>
         <div ng-show="passAccount.isAdmin" id="tab_organization" class="tab-pane" ng-class="{active: tab_selected == 'tab_organization'}">
         </div>

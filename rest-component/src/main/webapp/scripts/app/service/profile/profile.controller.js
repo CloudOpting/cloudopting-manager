@@ -1,11 +1,17 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ProfileController', function (SERVICE, $scope, Principal, Auth) {
+    .controller('ProfileController', function (SERVICE, $scope, $state, $stateParams, $location, Principal, Auth, localStorageService, OrganizationService) {
+
+
         $scope.tab_selected = 'tab_settings';
+        if($stateParams.tab!=null && $stateParams.tab!=undefined && $stateParams.tab!="") {
+            $scope.tab_selected = $stateParams.tab;
+        }
+
         $scope.changeTab = function(id) {
             $scope.tab_selected = id;
-        }
+        };
 
         //SETTINGS
         $scope.settingsSuccess = null;
@@ -48,6 +54,59 @@ angular.module('cloudoptingApp')
                     $scope.passError = 'ERROR';
                 });
             }
+        };
+
+        //CLOUD ACCOUNTS
+
+        localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, null);
+
+        //$scope.cloudAccList = $scope.settingsAccount.cloudAccountss;
+        $scope.cloudAccList = [
+            {
+                "id": 0,
+                "customizationss": [
+                    {
+                        "customerOrganizationId": "Organizations",
+                        "cloudAccount": "CloudAccounts",
+                        "applicationId": 0,
+                        "customizationToscaFile": "",
+                        "customizationCreation": "",
+                        "customizationActivation": "",
+                        "customizationDecommission": "",
+                        "statusId": 0,
+                        "processId": "",
+                        "id": 0
+                    }
+                ],
+                "providerId": {
+                    "provider": "CloudStack",
+                    "id": 0
+                },
+                "name": "CloudAccoount 1",
+                "apiKey": "",
+                "secretKey": "",
+                "endpoint": ""
+            }
+        ];
+
+        $scope.deleteCloudAccount = function (cloudAccount) {
+
+            var callback = function(data){
+                if(data) {
+                    $state.go('profile', { tab: "tab_cloudaccounts" } );
+                } else {
+                    console.log("Error deleting the Cloud Account");
+                }
+            };
+
+            //CloudAccountService.delete(cloudAccount, callback);
+        };
+
+        $scope.goToEdit = function(cloudAccount){
+            //Save the cloudAccount on a place where edit can get it.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, cloudAccount);
+            $state.go('cloudaccount');
+
         };
 
     }

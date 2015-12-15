@@ -1,0 +1,51 @@
+<div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1 class="darkgreen" translate="cloudaccount.title">Contact</h1>
+
+            <button ng-click="goToProfile()" translate="cloudaccount.form.button.back">Back</button>
+
+            <div class="alert alert-success" ng-show="successNew" translate="cloudaccount.messages.success.new">
+                <strong>Message sent!</strong> We will contact with you soon.
+            </div>
+            <div class="alert alert-success" ng-show="successUpdate" translate="cloudaccount.messages.success.update">
+                <strong>Message sent!</strong> We will contact with you soon.
+            </div>
+            <div class="alert alert-danger" ng-show="error" translate="cloudaccount.messages.error.fail">
+                <strong>Something went wrong!</strong> Please try again later.
+            </div>
+
+            <form ng-show="!success" name="form" role="form" novalidate ng-submit="createCloudAccount()" show-validation>
+
+                <div class="form-group">
+                    <label class="darkgreen" translate="cloudaccount.form.name">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="{{'cloudaccount.form.placeholder.name' | translate}}"
+                           ng-model="cloudAcc.name" required>
+                </div>
+                <div class="form-group">
+                    <label class="darkgreen" translate="cloudaccount.form.provider">Provider</label>
+                    <select class="form-control" ng-model="cloudAcc.provider" ng-options="provider.provider for provider in providerList"></select>
+                </div>
+                <div class="form-group">
+                    <label class="darkgreen" translate="cloudaccount.form.apiKey">API Key</label>
+                    <input type="text" class="form-control" name="apiKey" placeholder="{{'cloudaccount.form.placeholder.apiKey' | translate}}"
+                           ng-model="cloudAcc.apiKey" required>
+                </div>
+                <div class="form-group">
+                    <label class="darkgreen" translate="cloudaccount.form.secretKey">Secret Key</label>
+                    <input type="text" class="form-control" name="secretKey" placeholder="{{'cloudaccount.form.placeholder.secretKey' | translate}}"
+                           ng-model="cloudAcc.secretKey" required>
+                </div>
+                <div class="form-group">
+                    <label class="darkgreen" translate="cloudaccount.form.endpoint">Endpoint</label>
+                    <input type="text" class="form-control" name="endpoint" placeholder="{{'cloudaccount.form.placeholder.endpoint' | translate}}"
+                           ng-model="cloudAcc.endpoint" required>
+                </div>
+
+                <button ng-hide="cloudAcc.id" type="submit" ng-disabled="form.$invalid" class="btn btn-success" translate="cloudaccount.form.button.save">Save</button>
+                <button ng-show="cloudAcc.id" ng-disabled="form.$invalid" class="btn btn-success" ng-click="updateCloudAccount()" translate="cloudaccount.form.button.update">Update</button>
+                <button ng-show="cloudAcc.id" class="btn btn-success" ng-click="deleteCloudAccount()" translate="cloudaccount.form.button.delete">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
