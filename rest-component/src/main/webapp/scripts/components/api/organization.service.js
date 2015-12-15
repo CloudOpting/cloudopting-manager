@@ -10,6 +10,7 @@ angular.module('cloudoptingApp')
         var status = null;
         var types = null;
         var baseURI = 'api/organization';
+        var cloudAccountsURI = "cloudaccounts";
 
         return {
             /**
@@ -76,6 +77,30 @@ angular.module('cloudoptingApp')
                 return $http.get(baseURI + 'Status')
                     .success(function (statuss) {
                         status = statuss;
+                    });
+            },
+            getCloudAccount: function (idOrganization, callback) {
+                return $http.get(baseURI + SERVICE.SEPARATOR + idOrganization + SERVICE.SEPARATOR + cloudAccountsURI)
+                    .success(function (data, status, headers, config) {
+                        callback(data);
+                    });
+            },
+            createCloudAccount: function (idOrganization, cloudAccount, callback) {
+                return $http.post(baseURI+ SERVICE.SEPARATOR + idOrganization + SERVICE.SEPARATOR + cloudAccountsURI, cloudAccount)
+                    .success(function (data, status, headers, config) {
+                        callback(data);
+                    });
+            },
+            updateCloudAccount: function (idOrganization, cloudAccount, callback) {
+                return $http.put(baseURI+ SERVICE.SEPARATOR + idOrganization + SERVICE.SEPARATOR + cloudAccountsURI, cloudAccount)
+                    .success(function (data, status, headers, config) {
+                        callback(data);
+                    });
+            },
+            deleteCloudAccount: function (idOrganization, idCloudAccount, callback) {
+                return $http.delete(baseURI+ SERVICE.SEPARATOR + idOrganization + SERVICE.SEPARATOR + cloudAccountsURI + SERVICE.SEPARATOR + idCloudAccount)
+                    .success(function (data, status, headers, config) {
+                        callback(data);
                     });
             }
         }

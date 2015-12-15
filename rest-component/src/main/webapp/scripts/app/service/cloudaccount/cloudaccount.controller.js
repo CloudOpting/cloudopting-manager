@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('CloudAccountController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Contact, Providers) {
+    .controller('CloudAccountController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Contact, Providers, OrganizationService) {
 
         function resetMessages(){
             $scope.successNew = null;
@@ -12,6 +12,7 @@ angular.module('cloudoptingApp')
         resetMessages();
 
         $scope.cloudAcc = localStorageService.get(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT);
+        $scope.organization = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_ORG);
 
         Providers.get(function(providers) {
             $scope.providerList =  providers;
@@ -22,7 +23,7 @@ angular.module('cloudoptingApp')
         };
 
 
-        $scope.createCloudAccount = function () {
+        $scope.createCloudAccount = function (cloudAccount) {
             resetMessages();
 
             var callback = function (data){
@@ -33,10 +34,10 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            //CloudAccountService.save($scope.cloudAcc, callback);
+            OrganizationService.createCloudAccount($scope.organization.id, cloudAccount, callback);
         };
 
-        $scope.updateCloudAccount = function () {
+        $scope.updateCloudAccount = function (cloudAccount) {
             resetMessages();
 
             var callback = function (data){
@@ -47,21 +48,21 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            //CloudAccountService.update($scope.cloudAcc, callback);
+            OrganizationService.updateCloudAccount($scope.organization.id, cloudAccount, callback);
         };
 
+
         $scope.deleteCloudAccount = function (cloudAccount) {
-            resetMessages();
 
             var callback = function(data){
                 if(data) {
                     $state.go('profile', { tab: "tab_cloudaccounts" } );
                 } else {
-                    $scope.error = true;
+                    console.log("Error deleting the Cloud Account");
                 }
             };
 
-            //CloudAccountService.delete(cloudAccount, callback);
+            OrganizationService.deleteCloudAccount($scope.organization.id, cloudAccount, callback);
         };
 
         $scope.goToProfile = function(){

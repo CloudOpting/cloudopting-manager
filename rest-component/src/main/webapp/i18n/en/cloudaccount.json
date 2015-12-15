@@ -6,6 +6,7 @@
       "apiKey" : "API Key",
       "secretKey" : "Secret Key",
       "endpoint" : "Endpoint",
+      "provider" : "Provider",
       "placeholder" : {
         "name" : "The Cloud Account Name",
         "apiKey" : "The API Key",
@@ -18,6 +19,16 @@
         "delete" : "Delete",
         "update" : "Update"
       }
+    },
+    "col" : {
+      "name": "Cloud Account Name",
+      "provider": "Provider",
+      "actions": "Actions"
+    },
+    "button" : {
+      "add" : "Add",
+      "edit" : "Edit",
+      "delete" : "Delete"
     }
   }
 }

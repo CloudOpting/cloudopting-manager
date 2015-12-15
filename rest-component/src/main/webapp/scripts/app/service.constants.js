@@ -21,7 +21,7 @@ angular.module('cloudoptingApp')
             "CURRENT_INSTANCE_ID" : "currentInstanceId",
             "ACTIVITI" : "activiti",
             "CURRENT_EDIT_USER" : "currentEditUser",
-            "CURRENT_EDIT_ORG" : "currentEditOrganization"
+            "CURRENT_EDIT_ORG" : "currentEditOrganization",
             "CURRENT_CLOUDACCOUNT" : "currentCloudAccount"
         },
         "FILE_TYPE" : {

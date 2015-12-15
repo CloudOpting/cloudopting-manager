@@ -99,12 +99,22 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            //CloudAccountService.delete(cloudAccount, callback);
+            OrganizationService.deleteCloudAccount($scope.settingsAccount.organizationId.id, cloudAccount, callback);
         };
 
         $scope.goToEdit = function(cloudAccount){
             //Save the cloudAccount on a place where edit can get it.
             localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, cloudAccount);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_ORG, $scope.settingsAccount.organizationId);
+            $state.go('cloudaccount');
+
+        };
+
+
+        $scope.goToAdd = function(){
+            //Save the cloudAccount on a place where edit can get it.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, null);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_ORG, $scope.settingsAccount.organizationId);
             $state.go('cloudaccount');
 
         };
