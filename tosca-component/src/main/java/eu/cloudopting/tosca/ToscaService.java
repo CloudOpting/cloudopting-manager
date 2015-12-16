@@ -683,6 +683,23 @@ public class ToscaService {
 		return null;
 	}
 
+	public String getLogType(String customizationId, String id) {
+		log.debug("in getVolumes");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		HashMap props = getPropertiesForNode(customizationId, id);
+		String logType = null;
+		if (props.containsKey("logtype")) {
+			return (String) props.get("logtype");
+		}
+
+		// ArrayList<HashMap> volumesList = new ArrayList<HashMap>();
+
+		return null;
+	}
+
 	public ArrayList<String> getContainerPorts(String customizationId, String id) {
 		log.debug("in getContainerPorts");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
@@ -793,6 +810,8 @@ public class ToscaService {
 			String imageName = "cloudopting/" + organizationName + "_" + node.toLowerCase();
 			containerData.put("container", node);
 			containerData.put("image", imageName);
+			String logType = getLogType(customizationId, node);
+			containerData.put("logtype", logType);
 			containerData.put("log_driver_address", logger_address);
 			// modData.add(toscaFileManager.getPuppetModulesProperties(mod));
 			// get the link information for the node
