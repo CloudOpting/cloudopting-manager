@@ -58,6 +58,12 @@ public class UserDTO {
         this.roles = roles;
     }
 
+    public UserDTO(String login, String password, String firstName, String lastName, String email, String langKey,
+    		List<String> roles, Organizations organizationId) {
+    	this(login, password, firstName, lastName, email, langKey, roles);
+    	this.organizationId = organizationId;
+    }
+    
     public String getPassword() {
         return password;
     }

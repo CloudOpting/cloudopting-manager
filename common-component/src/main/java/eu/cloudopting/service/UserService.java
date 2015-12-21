@@ -163,13 +163,23 @@ public class UserService {
         } );
     }
 
+//    @Transactional(readOnly = true)
+//    public User getUserWithAuthorities() {
+//        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).get();
+//        currentUser.getAuthorities().size(); // eagerly load the association
+//        return currentUser;
+//    }
+
     @Transactional(readOnly = true)
-    public User getUserWithAuthorities() {
+    public User getUserAndInitLazyCollections() {
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).get();
         currentUser.getAuthorities().size(); // eagerly load the association
+        if(currentUser.getOrganizationId() != null){
+        	currentUser.getOrganizationId().getCloudAccountss().size(); // eagerly load the association
+        }
         return currentUser;
     }
-
+    
     /**
      * Persistent Token are used for providing automatic authentication, they should be automatically deleted after
      * 30 days.
