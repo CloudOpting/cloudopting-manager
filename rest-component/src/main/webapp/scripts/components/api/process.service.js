@@ -25,11 +25,9 @@ angular.module('cloudoptingApp')
                         //TODO: Do something if it fails
                     });
             },
-            test: function(instance, callback) {
-                //TODO: Ask for the cloud account needed.
-                var cloudId = 1;
+            test: function(instance, cloudAccount, callback) {
                 return $http.post(
-                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudId+'isTesting=true',
+                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudAccount.id+'isTesting=true',
                     {},
                     { headers: header }
                 )
@@ -40,11 +38,9 @@ angular.module('cloudoptingApp')
                         //TODO: Do something if it fails
                     });
             },
-            deploy: function(instance, callback) {
-                //TODO: Ask for the cloud account needed.
-                var cloudId = 1;
+            deploy: function(instance, cloudAccount, callback) {
                 return $http.post(
-                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudId,
+                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudAccount.id+'isTesting=false',
                     {},
                     { headers: header }
                 )

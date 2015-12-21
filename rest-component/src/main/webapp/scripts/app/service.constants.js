@@ -18,11 +18,18 @@ angular.module('cloudoptingApp')
         },
         "STORAGE" : {
             "CURRENT_APP" : "currentApplication",
+            "CURRENT_ORGANIZATION" : "currentOrganization",
+            "CURRENT_INSTANCE" : "currentInstance",
             "CURRENT_INSTANCE_ID" : "currentInstanceId",
             "ACTIVITI" : "activiti",
             "CURRENT_EDIT_USER" : "currentEditUser",
             "CURRENT_EDIT_ORG" : "currentEditOrganization",
-            "CURRENT_CLOUDACCOUNT" : "currentCloudAccount"
+            "PUBLISH_EDITION" : "isApplicationBeingEdited",
+            "CURRENT_CLOUDACCOUNT" : "currentCloudAccount",
+            "WIZARD_INSTANCES" : {
+                "ORGANIZATION" : "storageWizardInstancesOrganization",
+                "FUNCTION" : "storageWizardInstancesFunction"
+            }
         },
         "FILE_TYPE" : {
             "PROMO_IMAGE" : "promoimage",

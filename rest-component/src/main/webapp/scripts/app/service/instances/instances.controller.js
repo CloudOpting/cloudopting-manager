@@ -33,26 +33,43 @@ angular.module('cloudoptingApp')
             })*/
         }
 
-
-
         //TODO: Implement button "Search Service" functionality.
 
-        //TODO: Implement button go for each instance.
         $scope.test = function(instance) {
-            var callback = function(data){
-                window.alert("Test requested.");
+            //Save the organization in order to retrieve later the clouds accounts.
+            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp.organizationId);
+
+            var func = function (cloudAccount, call_b) {
+                var callback = function (data) {
+                    window.alert("Test requested.");
+                    call_b();
+                };
+                ProcessService.test(instance, cloudAccount, callback);
             };
-            ProcessService.test(instance, callback);
+
+            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
+
+            $state.go('chooseaccount');
 
         };
         $scope.deploy = function(instance) {
-            var callback = function(data){
-                window.alert("Deploy requested.");
-                //TODO:When the bpmn is ready we should uncomment this line in order to save the new status.
-                //InstanceService.deploy(instance);
-                //{"timestamp":1447946243960,"status":500,"error":"Internal Server Error","exception":"org.activiti.engine.ActivitiObjectNotFoundException","message":"no processes deployed with key 'updateCustomization'","path":"/api/customization"}
+            //Save the organization in order to retrieve later the clouds accounts.
+            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
+
+            var func = function (cloudAccount, call_b) {
+                var callback = function (data) {
+                    window.alert("Deploy requested.");
+                    call_b();
+                };
+                ProcessService.deploy(instance, cloudAccount, callback);
             };
-            ProcessService.deploy(instance, callback);
+
+            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
+
+            $state.go('chooseaccount');
+
         };
         $scope.stop = function(instance) {
             InstanceService.stop(instance);
@@ -61,7 +78,7 @@ angular.module('cloudoptingApp')
             InstanceService.delete(instance);
         };
         $scope.monitor = function(instance) {
-            //TODO: Save the instance in the local storage in order to be accessible in the monitoring page.
+            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, instance);
             $state.go('monitoring');
         };
         $scope.start = function(instance) {

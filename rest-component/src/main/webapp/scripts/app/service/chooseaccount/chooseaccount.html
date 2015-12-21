@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="bs-example col-md-offset-1 col-md-10">
+        <div class="panel-heading darkgreen" translate="chooseaccount.title">Cloud Accounts Available</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success pull-right" type="button" ng-click="goToInstances()" translate="chooseaccount.button.back">Back</button>
+                    </span>
+                </div><!-- /.col-lg-12 -->
+            </div>
+            <!--
+            <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="{{'chooseaccount.search.placeholder' | translate}}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="button" translate="chooseaccount.button.search">Search Service</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            -->
+            <br />
+
+            <table cellspacing="1" cellpadding="1" class="table-responsive" style="width: 100%;">
+                <tr>
+                    <th class="darkgreen" translate="chooseaccount.col.name">Cloud Account Name</th>
+                    <th class="darkgreen" translate="chooseaccount.col.provider">Provider</th>
+                    <th class="darkgreen"></th>
+                </tr>
+                <tr ng-repeat="clAcc in cloudAccountsList">
+                    <td>{{clAcc.name}}</td>
+                    <td>{{clAcc.providerId.provider}}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default" ng-click="choose(clAcc)" translate="chooseaccount.button.choose">Choose</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
