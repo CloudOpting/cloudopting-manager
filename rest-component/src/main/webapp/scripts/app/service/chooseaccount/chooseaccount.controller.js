@@ -3,8 +3,8 @@
 angular.module('cloudoptingApp')
     .controller('ChooseAccountController', function (SERVICE, $rootScope, $scope, $state, $timeout, localStorageService) {
 
-        var organization = localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION);
-        var func = localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION);
+        var organization = localStorageService.get(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION);
+        var func = localStorageService.get(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION);
 
         //Get account for organization and show it.
         $scope.cloudAccountsList = organization.cloudAccount;
