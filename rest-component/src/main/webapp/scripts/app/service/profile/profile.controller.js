@@ -60,7 +60,15 @@ angular.module('cloudoptingApp')
 
         localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, null);
 
-        //$scope.cloudAccList = $scope.settingsAccount.cloudAccountss;
+        $scope.$watch( "$scope.settingsAccount" , function(){
+
+            OrganizationService.getCloudAccount($scope.settingsAccount.organizationId.id,
+                function(data) {
+                    $scope.cloudAccList = data;
+                });
+
+
+        },true);
         $scope.cloudAccList = [
             {
                 "id": 0,
