@@ -35,6 +35,20 @@ angular.module('cloudoptingApp')
 
         //TODO: Implement button "Search Service" functionality.
 
+        $scope.testapp1 = function(instance) {
+            //Save the organization in order to retrieve later the clouds accounts.
+            var callback = function (data) {
+                window.alert("Test requested.");
+                call_b();
+            };
+            var cloudAccount = {};
+            cloudAccount.id = 1;
+            ProcessService.test(instance, cloudAccount, callback);
+
+            $state.go('chooseaccount');
+
+        };
+
         $scope.test = function(instance) {
             //Save the organization in order to retrieve later the clouds accounts.
             var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);

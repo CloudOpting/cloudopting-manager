@@ -29,13 +29,7 @@
                     <td>{{instance.statusId}}</td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <!--
-                            <button type="button" ng-show="showDeploy(instance.status)" ng-click="deploy()" class="btn btn-default"  translate="instances.button.deploy">Deploy</button>
-                            <button type="button" ng-show="showStop(instance.status)" ng-click="stop()" class="btn btn-default" translate="instances.button.stop">Stop</button>
-                            <button type="button" ng-show="showDelete(instance.status)" ng-click="delete()" class="btn btn-default" translate="instances.button.delete">Delete</button>
-                            <button type="button" ng-show="showStart(instance.status)" ng-click="start()" class="btn btn-default" translate="instances.button.start">Start</button>
-                            <button type="button" ng-show="showMonitor(instance.status)" ng-click="monitor()" class="btn btn-default" translate="instances.button.monitor">Monitoring</button>
-                            -->
+                            <button type="button" ng-click="testapp1(instance)" class="btn btn-default">Test APP 1</button>
                             <button type="button" ng-click="test(instance)" class="btn btn-default"  translate="instances.button.test">Test</button>
                             <button type="button" ng-click="deploy(instance)" class="btn btn-default"  translate="instances.button.deploy">Deploy</button>
                             <button type="button" ng-disabled="true" ng-click="stop(instance)" class="btn btn-default" translate="instances.button.stop">Stop</button>
