@@ -1,7 +1,6 @@
 package eu.cloudopting.web.rest;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -36,6 +35,8 @@ import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.events.api.constants.QueryConstants;
 import eu.cloudopting.events.api.controller.AbstractController;
+import eu.cloudopting.events.api.events.PaginatedResultsRetrievedEvent;
+import eu.cloudopting.events.api.exceptions.ResourceNotFoundException;
 import eu.cloudopting.events.api.service.BaseService;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.StatusService;
@@ -128,10 +129,22 @@ public class ApplicationResource extends AbstractController<Applications> {
             @RequestParam(value = QueryConstants.FILTER, required = false) final String filterObj,
             final UriComponentsBuilder uriBuilder,
             final HttpServletResponse response) {
-        return findPaginatedAndSortedWithFilter(page, size, sortBy, sortOrder, filterObj, uriBuilder, response);
+        final Page<Applications> resultPage = ((ApplicationService)getService()).findForApiGetAll(page, size, sortBy, sortOrder, filterObj);
+        if (resultPage == null || page > resultPage.getTotalPages()) {
+            throw new ResourceNotFoundException();
+        }
+        try {
+            getEventPublisher().publishEvent(new PaginatedResultsRetrievedEvent<>(Applications.class, uriBuilder, response, page,
+                    resultPage.getTotalPages(), size));
+        } catch (Exception e) {
+            if (!e.getMessage().contains("null source")) {
+                throw new RuntimeException(e);
+            }
+        }
+        return resultPage;
     }
 
-    /**
+	/**
      * This method returns a list of Applications
      *
      * @param uriBuilder UriComponentsBuilder

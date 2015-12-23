@@ -1,14 +1,16 @@
 package eu.cloudopting.service;
 
-import eu.cloudopting.domain.Applications;
-import org.springframework.stereotype.Service;
-import eu.cloudopting.events.api.service.BaseService;
+import org.springframework.data.domain.Page;
 
-import javax.transaction.Transactional;
+import eu.cloudopting.domain.Applications;
+import eu.cloudopting.events.api.service.BaseService;
 
 /**
  * @author Daniel P.
  */
 
 public interface ApplicationService extends BaseService<Applications> {
+	
+	Page<Applications> findForApiGetAll(int page, int size, String sortBy, String sortOrder,
+			String filterObj);
 }

@@ -13,6 +13,9 @@ import java.util.Set;
 @Configurable
 @Entity
 @Table(schema = "public",name = "applications")
+@NamedEntityGraph(name = "graph.api.application.GET.all",
+	attributeNodes = @NamedAttributeNode(value = "organizationId", subgraph = "cloudAccountss"),
+	subgraphs = @NamedSubgraph(name = "cloudAccountss", attributeNodes = @NamedAttributeNode("cloudAccountss")))
 public class Applications implements BaseEntity {
 
 	@Id
