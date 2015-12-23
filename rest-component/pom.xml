@@ -178,6 +178,27 @@
             <artifactId>flexjson</artifactId>
             <version>2.1</version>
         </dependency>
+        <!-- Activiti Rest -->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-rest</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+        <!-- 		<dependency> -->
+        <!-- 		    <groupId>org.activiti</groupId> -->
+        <!-- 		    <artifactId>activiti-spring-boot-starter-security</artifactId> -->
+        <!-- 		    <version>${activiti.version}</version> -->
+        <!-- 		</dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.activiti</groupId> -->
+        <!--             <artifactId>activiti-spring-boot-starter-jpa</artifactId> -->
+        <!--             <version>${activiti.version}</version> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.activiti</groupId> -->
+        <!--             <artifactId>activiti-spring-boot-starter-rest-api</artifactId> -->
+        <!--             <version>${activiti.version}</version> -->
+        <!--         </dependency> -->
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

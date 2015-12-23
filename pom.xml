@@ -24,10 +24,10 @@
         <module>rest-component</module>
         <module>storage-component</module>
         <module>tosca-component</module>
-        <module>wordpress-component</module>
     </modules>
 
     <properties>
+        <activiti.version>5.18.0</activiti.version>
         <assertj-core.version>1.6.1</assertj-core.version>
         <common-dbcp.version>1.4</common-dbcp.version>
         <commons-io.version>2.4</commons-io.version>
@@ -115,7 +115,11 @@
             <name>Local project libraries</name>
             <url>file://${project.basedir}/mvnrepo</url>
         </repository>
-
+        <repository>
+            <id>activiti-repo</id>
+            <name>Alfresco Maven Repository</name>
+            <url>https://maven.alfresco.com/nexus/content/groups/public/</url>
+        </repository>
         <repository>
             <snapshots>
                 <enabled>true</enabled>
