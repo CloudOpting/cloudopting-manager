@@ -68,6 +68,7 @@
     <receiveTask id="postArtifactsUploadId" name="After Artifacts Upload"></receiveTask>
     <sequenceFlow id="flow65" sourceRef="publishArtifactStorageTask" targetRef="postArtifactsUploadId"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow66" sourceRef="publishPublishTask" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ServicePublishingProcess">
     <bpmndi:BPMNPlane bpmnElement="ServicePublishingProcess" id="BPMNPlane_ServicePublishingProcess">
@@ -237,6 +238,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="736.0" y="373.0"></omgdi:waypoint>
         <omgdi:waypoint x="736.0" y="338.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="754.0" y="517.0"></omgdi:waypoint>
+        <omgdi:waypoint x="788.0" y="517.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
