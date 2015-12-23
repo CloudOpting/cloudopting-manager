@@ -21,8 +21,6 @@ import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
-import javax.jcr.query.Row;
-import javax.jcr.query.RowIterator;
 
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
@@ -45,23 +43,6 @@ public class StoreService {
 
 	@Inject
 	StorageComponent<JackrabbitStoreResult,JackrabbitStoreRequest> jackrabbitBinaryStore;
-
-
-
-	//   @Inject
- //   Mapper mapper;
-    
-  //  ObjectContentManager ocm;
-    /*
-    public StoreService(){
-    	super();
-    	log.debug("repository"+repository);
-    	log.debug("session"+session);
-    	log.debug("mapper"+mapper);
-  //  	this.ocm = new ObjectContentManagerImpl(session,mapper);
-    //	log.debug("ocm"+this.ocm);
-    }
-    */
 	
 	/**
 	 * Gets the path where to save Service Template files
@@ -116,19 +97,13 @@ public class StoreService {
 				Property prop = (Property) props.next();
 				log.debug("prop: "+prop.toString());
 				log.debug("prop name: "+prop.getName());
-//				log.debug("prop name: "+prop.get);
 			}
-//			final Binary in = storedFile.getProperty("jcr:data").getBinary();
 			retStream = JcrUtils.readFile(storedFile);
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	    	
-
     	return retStream;
-
     }
     
     public void storeFile(String filePath, String theFile, String storePath, String storeFile){
@@ -139,23 +114,14 @@ public class StoreService {
 			log.debug("[Remote]\tFile Path:"+storePath+" - File name:"+storeFile);
 	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
 	        String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
-//			folder = session.getRootNode().getNode(storePath);
-//			Node file = folder.addNode(theFile, "nt:file");
-//	        Node content = file.addNode("jcr:content", "nt:resource");
-//			folder = JcrUtils.getOrAddFolder(session.getRootNode(), storePath);
 	        //Add the file separator to the local path, if missing
 	        filePath += filePath.endsWith(File.separator)?"":File.separator;
 	        folder = this.createNodesForPath(storePath);
 	        JcrUtils.putFile(folder, storeFile, mimeType, stream);
-//	        Binary binary = session.getValueFactory().createBinary(stream);
-//	        content.setProperty("jcr:data", binary);
-//	        content.setProperty("jcr:mimeType", mimeType);
 	        session.save();
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -201,7 +167,7 @@ public class StoreService {
         Node folder,
              folderParent;
         try {
-			folder = session.getRootNode().getNode(this.getTemplatePath(orgKey, toscaName));
+			folder = session.getRootNode().getNode(StoreService.getTemplatePath(orgKey, toscaName));
 			log.debug("Folder->"+folder.getPath());
 			folderParent = folder.getParent();
 			log.debug("FolderParent->"+folderParent.getPath());
@@ -244,40 +210,5 @@ public class StoreService {
 		}
 		return resultSet;
 	}
-
-    /*
-    public boolean getDocument(String originPath, String destinationPath){
-    	log.debug("in getDocument");
-		log.debug(originPath);
-		log.debug("destinationPath: "+destinationPath);
-		try {
-			Node storedFile = session.getRootNode().getNode(originPath);
-			log.debug("file: "+storedFile.toString());
-			PropertyIterator props = storedFile.getProperties();
-			while(props.hasNext()){
-				Property prop = (Property) props.next();
-				log.debug("prop: "+prop.toString());
-				log.debug("prop name: "+prop.getName());
-//				log.debug("prop name: "+prop.get);
-			}
-			
-			InputStream contentStream = JcrUtils.readFile(storedFile);
-			
-			
-			
-			
-			final Binary in = file.getProperty("jcr:data").getBinary();
-			retStream = in.getStream();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		File targetFile = new File("src/main/resources/targetFile.tmp");
- 
-    FileUtils.copyInputStreamToFile(initialStream, targetFile);
-    	return true;
-    }
-    */
 
 }

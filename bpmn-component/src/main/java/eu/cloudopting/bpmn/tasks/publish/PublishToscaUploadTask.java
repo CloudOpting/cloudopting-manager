@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
-import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.exception.ToscaException;
 import eu.cloudopting.service.ApplicationService;
@@ -46,7 +45,7 @@ public class PublishToscaUploadTask implements JavaDelegate {
 	private void setToscaTemplatePath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
 		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = applicationService.findOne(applicationSource.getId());
-        application.setApplicationToscaTemplate(storeService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
+        application.setApplicationToscaTemplate(StoreService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
         applicationService.update(application);
 	}
 
@@ -64,7 +63,6 @@ public class PublishToscaUploadTask implements JavaDelegate {
 		//User user = (User) execution.getVariable("user");
 
 		File fileToDelete = FileUtils.getFile(uploadFilePath);
-//		InputStream in = new FileInputStream(fileToDelete);
 		//TODO check the result of upload to JackRabbit
 		execution.setVariable("chkPublishToscaAvailable", true);
 		try {
@@ -75,7 +73,7 @@ public class PublishToscaUploadTask implements JavaDelegate {
 					String 	localFileAbsolutePath 	= fileToDelete.getAbsolutePath(),
 							localFilePath = localFileAbsolutePath.substring(0,localFileAbsolutePath.lastIndexOf(File.separator)+1),
 							localFileName 	= fileToDelete.getName(), 
-							remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
+							remoteFilePath 	= StoreService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
 							remoteFileName	= fileToDelete.getName(),
 							remoteFileNameReduced	= remoteFileName.substring(0,remoteFileName.indexOf(BpmnService.TEMP_FILE_NAME_SEPARATOR));
 					log.debug("--- Local File Absolute Path:"+localFileAbsolutePath);
@@ -92,7 +90,6 @@ public class PublishToscaUploadTask implements JavaDelegate {
 					log.debug("Tosca Archive UPLOAD performed");
 					this.setToscaTemplatePath(execution, org.getOrganizationKey(), uploadToscaName, remoteFileNameReduced);
 				} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
-					// TODO Auto-generated catch block
 					log.error("Error in storing Tosca File");
 					e.printStackTrace();
 				}
@@ -104,7 +101,6 @@ public class PublishToscaUploadTask implements JavaDelegate {
 			throw e;
 		} finally {
 			FileUtils.deleteQuietly(fileToDelete);
-//			IOUtils.closeQuietly(in);
 		}
 	}
 }
