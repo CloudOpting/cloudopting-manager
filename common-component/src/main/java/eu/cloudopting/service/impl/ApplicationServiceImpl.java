@@ -50,4 +50,10 @@ public class ApplicationServiceImpl extends AbstractService<Applications> implem
         final Sort sortInfo = constructSort(sortBy, sortOrder);
         return applicationsRepository.findForApiGetAll(new PageRequest(page, size, sortInfo));
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Applications findForApiGetOne(Long id) {
+		return applicationsRepository.findById(id);
+	}
 }

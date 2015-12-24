@@ -13,4 +13,6 @@ public interface ApplicationService extends BaseService<Applications> {
 	
 	Page<Applications> findForApiGetAll(int page, int size, String sortBy, String sortOrder,
 			String filterObj);
+	
+	Applications findForApiGetOne(Long id);
 }

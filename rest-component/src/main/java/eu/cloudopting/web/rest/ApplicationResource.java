@@ -217,7 +217,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     @ResponseBody
     public final Applications findOne(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
                                                final HttpServletResponse response) {
-        return getService().findOne(idApp);
+        return ((ApplicationService)getService()).findForApiGetOne(idApp);
     }
 
     @RequestMapping(value = "/application/{idApp}/{processId}", method = RequestMethod.PUT,
