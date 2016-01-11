@@ -1,6 +1,9 @@
 package eu.cloudopting.service;
 
 import eu.cloudopting.domain.User;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +12,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -36,13 +43,50 @@ public class MailService {
      * System default email address that sends the e-mails.
      */
     private String from;
+    private String subject;
+    private boolean isMultipart;
+    private boolean isHtml;
+    private String content;
+    
 
     @PostConstruct
     public void init() {
         this.from = env.getProperty("spring.mail.from");
     }
 
-    @Async
+    public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public void setMultipart(boolean isMultipart) {
+		this.isMultipart = isMultipart;
+	}
+
+	public void setHtml(boolean isHtml) {
+		this.isHtml = isHtml;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
+	public void setContent(Map<String, Object> dataMap, Template template) {
+		StringWriter writer = new StringWriter();
+		try {
+			template.process(dataMap, writer);
+			this.content = writer.toString();
+		} catch (TemplateException e) {
+			log.warn("Error paring the template, message is {}", e.getMessage());
+		} catch (IOException e) {
+			log.warn("Error paring the template, message is {}", e.getMessage());
+		}
+	}
+	
+	public void sendEmail(String to) {
+		sendEmail(to, this.subject, this.content, this.isMultipart, this.isHtml);
+	}
+
+	@Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
                 isMultipart, isHtml, to, subject, content);
