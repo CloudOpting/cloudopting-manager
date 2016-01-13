@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>${json-path.version}</version>
+            <!--             <version>${json-path.version}</version> -->
             <scope>test</scope>
         </dependency>
 
@@ -143,7 +143,7 @@
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>database-component</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <!--             <version>1.0-SNAPSHOT</version> -->
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
@@ -166,7 +166,7 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>${joda-time.version}</version>
+            <!--             <version>${joda-time.version}</version> -->
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -183,6 +183,12 @@
             <groupId>org.activiti</groupId>
             <artifactId>activiti-rest</artifactId>
             <version>${activiti.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- 		<dependency> -->
         <!-- 		    <groupId>org.activiti</groupId> -->
@@ -203,7 +209,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.4</version>
+            <!--             <version>4.4</version> -->
         </dependency>
         <dependency>
             <groupId>org.apache.jackrabbit</groupId>
@@ -247,13 +253,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.1.6.RELEASE</version>
+            <!--             <version>4.1.6.RELEASE</version> -->
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.1.6.RELEASE</version>
+            <!--             <version>4.1.6.RELEASE</version> -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -266,7 +272,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-loader-tools</artifactId>
-            <version>${spring-boot.version}</version>
+            <!--             <version>${spring-boot.version}</version> -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

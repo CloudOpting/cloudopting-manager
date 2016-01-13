@@ -32,7 +32,11 @@
         <common-dbcp.version>1.4</common-dbcp.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
+        <guava.version>18.0</guava.version>
+        <jackrabbit-jcr.version>2.10.1</jackrabbit-jcr.version>
+        <jackrabbit-ocm.version>1.5.3</jackrabbit-ocm.version>
         <javax.inject.version>1</javax.inject.version>
+        <javax.jcr.version>2.0</javax.jcr.version>
         <jclouds.version>1.9.0</jclouds.version>
         <joda-time-hibernate.version>1.3</joda-time-hibernate.version>
         <maven-enforcer-plugin.version>1.3.1</maven-enforcer-plugin.version>
@@ -51,7 +55,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>18.0</version>
+                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>eu.cloudopting</groupId>
@@ -66,22 +70,22 @@
             <dependency>
                 <groupId>javax.jcr</groupId>
                 <artifactId>jcr</artifactId>
-                <version>2.0</version>
+                <version>${javax.jcr.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>jackrabbit-jcr-commons</artifactId>
-                <version>2.10.1</version>
+                <version>${jackrabbit-jcr.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>jackrabbit-jcr2dav</artifactId>
-                <version>2.10.1</version>
+                <version>${jackrabbit-jcr.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.jackrabbit</groupId>
                 <artifactId>jackrabbit-ocm</artifactId>
-                <version>1.5.3</version>
+                <version>${jackrabbit-ocm.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.jclouds</groupId>
@@ -148,8 +152,8 @@
         </resources>
         <pluginManagement>
             <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings
-                only. It has no influence on the Maven build itself.-->
+                <!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -236,6 +240,23 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>analyze-dep-mgt</goal>
+                        </goals>
+                        <configuration>
+                            <failBuild>true</failBuild>
+                            <ignoreDirect>false</ignoreDirect>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <configuration>
                     <downloadSources>true</downloadSources>
@@ -261,7 +282,8 @@
                             <version>[3.0.0,)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
-                            <message>You are running an older version of Java. Requires at least JDK ${java.version}</message>
+                            <message>You are running an older version of Java. Requires at
+								least JDK ${java.version}</message>
                             <version>[${java.version}.0,)</version>
                         </requireJavaVersion>
                     </rules>
@@ -272,10 +294,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>-Xmx256m</argLine>
-                    <!--<forkCount>1</forkCount>-->
-                    <!--<reuseForks>true</reuseForks>-->
+                    <!--<forkCount>1</forkCount> -->
+                    <!--<reuseForks>true</reuseForks> -->
                     <!-- Force alphabetical order to have a reproducible build -->
-                    <!--<runOrder>alphabetical</runOrder>-->
+                    <!--<runOrder>alphabetical</runOrder> -->
                 </configuration>
             </plugin>
             <plugin>
@@ -295,7 +317,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>-Djava.rmi.server.hostname=localhost -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
+                    <jvmArguments>-Djava.rmi.server.hostname=localhost -Xdebug
+						-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
                     <arguments>
                         <argument>--spring.profiles.active=dev</argument>
                     </arguments>
