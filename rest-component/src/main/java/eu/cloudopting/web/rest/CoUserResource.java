@@ -28,7 +28,7 @@ import eu.cloudopting.web.rest.dto.UserDTO;
  */
 @RestController
 @RequestMapping("/api")
-public class UserResource {
+public class CoUserResource {
 
 	@Inject
 	private UserRepository userRepository;

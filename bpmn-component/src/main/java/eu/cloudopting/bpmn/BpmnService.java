@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import scala.collection.concurrent.Debug;
+//import scala.collection.concurrent.Debug;
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.domain.Applications;
@@ -39,7 +39,6 @@ import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.Status;
-import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.CustomizationDTO;
@@ -152,7 +151,8 @@ public class BpmnService {
 		log.info("Before processing message");
 		Map<String, Object> params = new HashMap<String, Object>();
     	Set<String> executionIds = unlockProcess(processInstanceId, "machineInstalled", params);
-    	Debug.log(executionIds.toString());
+    	//Commented out, do we need to add Scala just to debug?
+    	//Debug.log(executionIds.toString());
     	
 	}
 

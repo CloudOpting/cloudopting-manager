@@ -14,7 +14,10 @@ import eu.cloudopting.events.api.repository.GenericRepository;
  */
 public interface ApplicationsRepository extends GenericRepository<Applications, Long> {
 	
-	@EntityGraph(value = "graph.api.application.GET.all", type = EntityGraphType.LOAD)
+	@EntityGraph(value = "graph.api.application.GET", type = EntityGraphType.LOAD)
 	@Query("SELECT a FROM Applications a")
 	Page<Applications> findForApiGetAll(Pageable pageable);
+	
+	@EntityGraph(value = "graph.api.application.GET", type = EntityGraphType.LOAD)
+	Applications findById(Long id);
 }

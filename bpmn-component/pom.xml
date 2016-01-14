@@ -39,13 +39,13 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring-boot-starter-basic</artifactId>
-            <version>5.18.0</version>
+            <version>${activiti.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.10.4</version>
-        </dependency>
+        <!--         <dependency> -->
+        <!--             <groupId>org.scala-lang</groupId> -->
+        <!--             <artifactId>scala-library</artifactId> -->
+        <!--             <version>2.10.4</version> -->
+        <!--         </dependency> -->
         <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>
