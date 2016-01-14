@@ -238,23 +238,24 @@
                     <expandEmptyElements>false</expandEmptyElements>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>analyze</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>analyze-dep-mgt</goal>
-                        </goals>
-                        <configuration>
-                            <failBuild>true</failBuild>
-                            <ignoreDirect>false</ignoreDirect>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--             Re-enable after dependencies versions will have become more stable -->
+            <!--             <plugin> -->
+            <!--                 <groupId>org.apache.maven.plugins</groupId> -->
+            <!--                 <artifactId>maven-dependency-plugin</artifactId> -->
+            <!--                 <executions> -->
+            <!--                     <execution> -->
+            <!--                         <id>analyze</id> -->
+            <!--                         <phase>package</phase> -->
+            <!--                         <goals> -->
+            <!--                             <goal>analyze-dep-mgt</goal> -->
+            <!--                         </goals> -->
+            <!--                         <configuration> -->
+            <!--                             <failBuild>true</failBuild> -->
+            <!--                             <ignoreDirect>false</ignoreDirect> -->
+            <!--                         </configuration> -->
+            <!--                     </execution> -->
+            <!--                 </executions> -->
+            <!--             </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
