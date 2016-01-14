@@ -40,7 +40,8 @@ public class JcrConfig {
     public Repository repository() {
         Repository repository;
         try {
-            repository = JcrUtils.getRepository("http://cloudopting1.cloudapp.net:8082/server");
+            //repository = JcrUtils.getRepository("http://localhost:8082/server");
+            repository = JcrUtils.getRepository("http://91.121.225.114:8082/server");
         } catch (RepositoryException e) {
             throw new CommonException(e);
         }
