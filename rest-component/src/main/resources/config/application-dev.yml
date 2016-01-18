@@ -34,7 +34,11 @@ spring:
     activiti:
         jobExecutorActivate: true
         restApiEnabled: true
-
+    data:
+        elasticsearch:
+            cluster-nodes: cloudoptingmaster.cloudopen.csipiemonte.it:9300
+            repositories.enabled: true
+            
 metrics:
     jmx.enabled: true
     spark:
@@ -50,6 +54,11 @@ zabbix:
     user: admin
     password: admin
     endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
+    
+
+elasticsearch:
+    host: cloudoptingmaster.cloudopen.csipiemonte.it
+    port: 9300
 
 cloud:
     doDeploy: true
