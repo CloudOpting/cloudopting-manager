@@ -5,10 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.support.NoOpCacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import java.util.Arrays;
 
 import javax.annotation.PreDestroy;
 
@@ -20,8 +23,6 @@ public class CacheConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
 
-    private CacheManager cacheManager;
-
     @PreDestroy
     public void destroy() {
         log.info("Closing Cache Manager");
@@ -29,8 +30,8 @@ public class CacheConfiguration {
 
     @Bean
     public CacheManager cacheManager() {
-        log.debug("No cache");
-        cacheManager = new NoOpCacheManager();
+    	SimpleCacheManager cacheManager = new SimpleCacheManager();
+    	cacheManager.setCaches(Arrays.asList(new ConcurrentMapCache("default")));
         return cacheManager;
     }
 }
