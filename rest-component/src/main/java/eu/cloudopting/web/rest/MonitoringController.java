@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.domain.User;
 import eu.cloudopting.monitoring.MonitoringService;
+import eu.cloudopting.monitoring.elastic.MonitordataService;
+import eu.cloudopting.monitoring.elastic.data.Monitordata;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.tosca.ToscaService;
 import eu.cloudopting.web.rest.dto.Data;
@@ -32,6 +34,9 @@ public class MonitoringController {
 	
 	@Autowired
 	MonitoringService monitoringService;
+	
+	@Autowired
+	MonitordataService monitordataService;
 	
 	/**
 	 * The the list of monitored objects
@@ -89,5 +94,14 @@ public class MonitoringController {
 				"}";
 				*/
     }
+	
+	@RequestMapping(value = "/monitoring/elastic/{instanceId}", method = RequestMethod.GET)
+	@ResponseBody
+	public String findOneDataById(@PathVariable("instanceId") final String instanceId){
+		Monitordata one = monitordataService.findOne("AVI6Z24UAx6YebBYGh3x");
+		log.debug(one.getHost());
+		log.debug(one.getTimestamp().toGMTString());
+		return one.getHost();
+	}
 
 }
