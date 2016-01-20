@@ -307,6 +307,16 @@ public class BpmnService {
 	      	//application = (ApplicationDTO) runtimeService.getVariable(uploadProcessId, "application");
 	      	runtimeService.signal(execution.getId());
         }
+ //       CLaudio Servicefile tipe Promo Image
+        if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_PROMO_IMAGE.toString())){
+        	executionIds = unlockProcess(uploadProcessId, "PublishPromoImageUploadEventRef", params);
+        	Execution execution = runtimeService.createExecutionQuery()
+      			  .processInstanceId(uploadProcessId)
+      			  .activityId("postPromoImageUploadId")
+      			  .singleResult();
+	      	//application = (ApplicationDTO) runtimeService.getVariable(uploadProcessId, "application");
+	      	runtimeService.signal(execution.getId());
+        }
         //Return the updated value of the model
         ActivitiDTO activitiDTO = new ActivitiDTO();
 		activitiDTO.setApplicationId(uploadIdApp);
