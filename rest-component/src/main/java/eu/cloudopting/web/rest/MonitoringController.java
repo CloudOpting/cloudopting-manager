@@ -1,24 +1,16 @@
 package eu.cloudopting.web.rest;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.service.common.MonitoringServiceInfo;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.cloudopting.domain.User;
 import eu.cloudopting.monitoring.MonitoringService;
-import eu.cloudopting.service.UserService;
-import eu.cloudopting.tosca.ToscaService;
+import eu.cloudopting.monitoring.elastic.MonitordataService;
 import eu.cloudopting.web.rest.dto.Data;
 import eu.cloudopting.web.rest.dto.GraphDTO;
 
@@ -32,6 +24,9 @@ public class MonitoringController {
 	
 	@Autowired
 	MonitoringService monitoringService;
+	
+//	@Autowired
+//	MonitordataService monitordataService;
 	
 	/**
 	 * The the list of monitored objects
@@ -89,5 +84,17 @@ public class MonitoringController {
 				"}";
 				*/
     }
+	
+	@RequestMapping(value = "/monitoring/elastic/{instanceId}", method = RequestMethod.GET)
+	@ResponseBody
+	public String findOneDataById(@PathVariable("instanceId") final String instanceId){
+//		Monitordata one = monitordataService.findOne("AVI6Z24UAx6YebBYGh3x");
+/*		log.debug(one.getHost());
+		log.debug(one.getTimestamp().toGMTString());
+		return one.getHost();
+		*/
+		String ret = null;
+		return ret;
+	}
 
 }
