@@ -6,14 +6,14 @@ spring:
         active: dev
 	
 	jcr:
-		repo_url: http://91.121.225.114:8082/server
+		repo_url: http://lab1.cloudopting.org:8082/server
 	
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
         driver: org.postgresql.Driver
-        url: jdbc:postgresql://91.121.225.114:5433/cloudopting
+        url: jdbc:postgresql://lab1.cloudopting.org:5433/cloudopting
         databaseName: cloudopting
-        serverName: 91.121.225.114
+        serverName: lab1.cloudopting.org
         username: postgres
         password: 1qaz2wsx
 
