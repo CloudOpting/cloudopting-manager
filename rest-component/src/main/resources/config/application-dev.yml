@@ -4,10 +4,10 @@ server:
 spring:
     profiles:
         active: dev
-	
-	jcr:
-		repo_url: http://lab1.cloudopting.org:8082/server
-	
+
+    jcr:
+        repo_url: http://lab1.cloudopting.org:8082/server
+
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
         driver: org.postgresql.Driver
