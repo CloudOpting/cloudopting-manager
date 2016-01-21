@@ -4,7 +4,10 @@ server:
 spring:
     profiles:
         active: dev
-
+	
+	jcr:
+		repo_url: http://91.121.225.114:8082/server
+	
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
         driver: org.postgresql.Driver

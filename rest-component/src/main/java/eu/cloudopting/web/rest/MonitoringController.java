@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.monitoring.MonitoringService;
-import eu.cloudopting.monitoring.elastic.MonitordataService;
 import eu.cloudopting.web.rest.dto.Data;
 import eu.cloudopting.web.rest.dto.GraphDTO;
 
