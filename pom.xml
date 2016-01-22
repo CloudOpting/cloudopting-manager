@@ -6,7 +6,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>1.2.3.RELEASE</version>
+        <version>1.2.8.RELEASE</version>
         <relativePath />
     </parent>
     <groupId>eu.cloudopting</groupId>
@@ -45,7 +45,7 @@
         <postgresql.version>9.3-1102-jdbc41</postgresql.version>
         <sonar-maven-plugin.version>2.2</sonar-maven-plugin.version>
         <spring-cloud.version>1.1.0.RELEASE</spring-cloud.version>
-        <spring.version>4.1.6.RELEASE</spring.version>
+        <!--<spring.version>4.1.6.RELEASE</spring.version>-->
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
     </properties>
