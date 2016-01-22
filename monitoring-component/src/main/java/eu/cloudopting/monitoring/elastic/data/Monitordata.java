@@ -2,17 +2,17 @@ package eu.cloudopting.monitoring.elastic.data;
 
 import java.util.Date;
 
-//import org.elasticsearch.common.joda.time.DateTime;
-//import org.springframework.data.annotation.Id;
-//import org.springframework.data.elasticsearch.annotations.Document;
+import org.elasticsearch.common.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-//@Document(indexName = "coidx-", type = "fluentd")
+@Document(indexName = "coidx-", type = "fluentd")
 public class Monitordata {
-//	@Id
+	@Id
 	private String id;
 	private String agent;
 	private Integer code;

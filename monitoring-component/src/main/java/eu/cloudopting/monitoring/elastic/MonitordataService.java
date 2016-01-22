@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 @Service
 public class MonitordataService {
-	/*
+	
 	@Autowired
 	private MonitordataRepository monitordataRepository;
 	private static final Logger logger = LoggerFactory.getLogger(MonitordataService.class);
@@ -25,5 +25,5 @@ public class MonitordataService {
 			// TODO Auto-generated method stub
 			return monitordataRepository.findAll();
 		}
-		*/
+		
 }
