@@ -1,16 +1,16 @@
 package eu.cloudopting.service.impl;
 
-import eu.cloudopting.domain.Applications;
-import eu.cloudopting.domain.Customizations;
-import eu.cloudopting.repository.CustomizationRepository;
-import eu.cloudopting.service.CustomizationService;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
-import eu.cloudopting.events.api.service.AbstractService;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
+import eu.cloudopting.domain.Customizations;
+import eu.cloudopting.events.api.service.AbstractService;
+import eu.cloudopting.repository.CustomizationRepository;
+import eu.cloudopting.service.CustomizationService;
 
 /**
  * Created by danielpo on 19/03/2015.
