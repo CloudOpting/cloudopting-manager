@@ -61,8 +61,11 @@
 
                 <div class="form-group row">
                     <label class="darkgreen" translate="publish.service.description">Service Description</label>
+                    <!--
                     <textarea class="form-control" rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
                               ng-minlength=1 required ></textarea>
+                    -->
+                    <text-angular ng-model="application.applicationDescription"></text-angular>
 
                     <div ng-show="form_publish.description.$dirty && form_publish.description.$invalid || form_publish.description.$touched">
                         <p class="help-block"
