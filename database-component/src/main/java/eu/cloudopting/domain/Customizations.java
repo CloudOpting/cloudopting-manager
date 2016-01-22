@@ -56,6 +56,13 @@ public class Customizations implements BaseEntity {
 
 	@Column(name = "process_id", length = 64)
     private String processId;
+	
+	//See: http://stackoverflow.com/questions/28588311/correct-jpa-annotation-for-postgresqls-text-type-without-hibernate-annotations
+	//and  http://stackoverflow.com/questions/3868096/jpa-how-do-i-persist-a-string-into-a-database-field-type-mysql-text
+	//Executed the following SQL Command on the db: ALTER TABLE customizations ADD COLUMN customization_form_value text;
+	@Lob
+	@Column(name = "customization_form_value")
+    private String customizationFormValue;
 
 	public Organizations getCustomerOrganizationId() {
         return customerOrganizationId;
@@ -232,4 +239,12 @@ public class Customizations implements BaseEntity {
     public void setCloudAccount(CloudAccounts cloudAccount) {
         this.cloudAccount = cloudAccount;
     }
+
+	public String getCustomizationFormValue() {
+		return customizationFormValue;
+	}
+
+	public void setCustomizationFormValue(String customizationFormValue) {
+		this.customizationFormValue = customizationFormValue;
+	}
 }

@@ -90,6 +90,8 @@ public class CustomizationController {
 		newC.setCustomizationCreation(new Date());
 		newC.setCustomizationDecommission(new Date());
 		newC.setStatusId(new Long(100));
+		//TODO Check this is correct
+		newC.setCustomizationFormValue(formData);
 		
 		customizationService.create(newC);
 		

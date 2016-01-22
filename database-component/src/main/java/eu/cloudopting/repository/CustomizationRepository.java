@@ -1,6 +1,5 @@
 package eu.cloudopting.repository;
 
-import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.events.api.repository.GenericRepository;
 
