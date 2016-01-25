@@ -1,5 +1,7 @@
 package eu.cloudopting.web.rest;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +94,9 @@ public class MonitoringController {
 		Monitordata one = monitordataService.findOne("AVI6Z24UAx6YebBYGh3x");
 		log.debug(one.getHost());
 		log.debug(one.getTimestamp().toGMTString());
+		
+		List<Monitordata> listret = monitordataService.findCustom();
+		log.debug(listret.toString());
 		return one.getHost();
 		/*
 		String ret = null;

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import eu.cloudopting.monitoring.elastic.data.Monitordata;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,10 @@ public class MonitordataService {
 		public Iterable<Monitordata> findAll() {
 			// TODO Auto-generated method stub
 			return monitordataRepository.findAll();
+		}
+		
+		public List<Monitordata> findCustom(){
+			return monitordataRepository.findCustom();
 		}
 		
 }
