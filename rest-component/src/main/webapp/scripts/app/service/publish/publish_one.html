@@ -65,7 +65,21 @@
                     <textarea class="form-control" rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
                               ng-minlength=1 required ></textarea>
                     -->
-                    <text-angular ng-model="application.applicationDescription"></text-angular>
+                    <text-angular ng-model="application.applicationDescription"><p>Lorem ipsum</p><h2 class="service-summary-heading">Features</h2>
+<ul class="service-summary-features-and-benefits">
+  <li>Feature 1</li>
+</ul>
+
+<h2 class="service-summary-heading">Benefits</h2>
+<ul class="service-summary-features-and-benefits">
+    <li>Benefit 1</li>
+</ul>
+<h2 class="service-summary-heading">Support</h2>
+<h2 class="service-summary-heading">Price</h2>
+<h2 class="service-summary-heading">Contact</h2>
+<p>Name Surname</p>
+<p>phone</p>
+<p>mail</p></text-angular>
 
                     <div ng-show="form_publish.description.$dirty && form_publish.description.$invalid || form_publish.description.$touched">
                         <p class="help-block"
