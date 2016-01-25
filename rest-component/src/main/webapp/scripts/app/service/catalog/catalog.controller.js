@@ -14,9 +14,20 @@ angular.module('cloudoptingApp')
         $scope.applicationList = null;
 
         var callback = function(applications) {
-            $scope.applicationList = applications.content;
+            var applicationFiltered = applications.content;
+
+            //Select only applications with "Published" status.
+            $scope.applicationList = [];
+            for (var app in applicationFiltered) {
+                if(applicationFiltered[app].statusId.status == "Published") {
+                    $scope.applicationList.push(applicationFiltered[app]);
+                }
+            }
+
+            //Do the pagination
             pagination();
 
+            //FIXME: Delete once a proper image is setted to the applications.
             for (var app in $scope.applicationList) {
                 var random=Math.random();
                 $scope.applicationList[app].applicationImage = "http://placehold.it/200x180";
