@@ -134,20 +134,10 @@ public class StoreService {
      */
     public Node createNodesForPath(String localFileAbsolutePath) throws RepositoryException{
     	String splitRegex = Pattern.quote(File.separator);
-    	////CLA 20151229
-    	String temp="", localFileAbsolutePathReplaced=""; 
-    	if (localFileAbsolutePath.contains("/")){
-    		temp = localFileAbsolutePath;
-    		localFileAbsolutePathReplaced = temp.replaceAll("/", "\\\\");
-    	}else
-    	{
-    		localFileAbsolutePathReplaced =localFileAbsolutePath;
+    	if (localFileAbsolutePath.startsWith(File.separator)){
+    		localFileAbsolutePath = localFileAbsolutePath.replaceFirst(splitRegex, "");
     	}
-    	//
-    	if (localFileAbsolutePathReplaced.startsWith(File.separator)){
-    		localFileAbsolutePathReplaced = localFileAbsolutePathReplaced.replaceFirst(splitRegex, "");
-    	}
-		String[] splittedFileName = localFileAbsolutePathReplaced.split(splitRegex);
+		String[] splittedFileName = localFileAbsolutePath.split(splitRegex);
 		Node lastCreatedNode = session.getRootNode();
 		for (int i = 0; i < splittedFileName.length; i++) {
 			lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
