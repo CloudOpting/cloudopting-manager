@@ -2,7 +2,8 @@
 
 angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
     'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster', 'textAngular',
-    'ngFileUpload', 'schemaForm', 'ui.bootstrap'])
+    'ngFileUpload', 'schemaForm', 'ui.bootstrap', 'checklist-model'])
+
     .run(function ($rootScope, $location, $http, $state, $translate, Auth, Principal, Language, ENV, VERSION) {
         $rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;

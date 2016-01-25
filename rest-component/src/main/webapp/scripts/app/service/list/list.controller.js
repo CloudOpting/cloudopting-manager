@@ -5,8 +5,7 @@ angular.module('cloudoptingApp')
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
         $scope.applicationList = null;
 
-        //TODO: Depending on the role, give the user a different list
-
+        //Depending on the role, give the user a different list
         if(Principal.isInRole(SERVICE.ROLE.ADMIN)) {
             var callback = function (applications) {
                 $scope.applicationList = applications.content;
@@ -45,6 +44,7 @@ angular.module('cloudoptingApp')
         $scope.goToInstanceList = function (app) {
             //Save the ID on a place where instances can get it.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
+            //FIXME: Do we have to set it as a TESTING deployment?
 
             //Redirect to instances
             $state.go('instances');
@@ -73,7 +73,6 @@ angular.module('cloudoptingApp')
         $scope.goToCreateInstance = function (app) {
             //Save the ID on a place where createinstance can get it.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
-
 
             //Redirect to instances
             $state.go('form_generation');

@@ -5,10 +5,6 @@
         <h3>Profile</h3>
 
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')">Settings</a></li>
-            <li><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')">Password</a></li>
-            <li ng-show="passAccount.isAdmin"><a data-toggle="tab" href="#" ng-click="changeTab('tab_organization')">Organization</a></li>
-            <li><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')">Cloud Accounts</a></li>
             <li ng-class="{'active': tab_selected === 'tab_settings'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')">Settings</a></li>
             <li ng-class="{'active': tab_selected === 'tab_password'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')">Password</a></li>
             <li ng-class="{'active': tab_selected === 'tab_cloudaccounts'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')">Cloud Accounts</a></li>
@@ -186,8 +182,7 @@
 
             </div>
         </div>
-        <div ng-show="passAccount.isAdmin" id="tab_organization" class="tab-pane" ng-class="{active: tab_selected == 'tab_organization'}">
-        </div>
+
     </div>
 
 </div>

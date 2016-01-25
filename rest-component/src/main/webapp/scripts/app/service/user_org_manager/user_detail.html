@@ -87,12 +87,12 @@
                     </div>
                     <div ng-hide="user.id" class="form-group row">
                         <label clappass="darkgreen" translate="user_org_manager.col.password">Password:</label>
-                        <input type="text" class="form-control" ng-model="user.password">
+                        <input type="password" class="form-control" ng-model="user.password">
                     </div>
                     <div class="form-group row">
                         <label class="darkgreen" translate="user_org_manager.col.langKey">Language:</label>
-                        <select class="form-control" ng-model="user.langKey" >
-                            <option ng-repeat="l in languages" value="{{l.langKey}}">{{l.langName}}</option>
+                        <select class="form-control" ng-model="user.langKey"
+                                ng-options="l.langKey as l.langName for l in languages">
                         </select>
                     </div>
                     <!--
@@ -108,23 +108,24 @@
                     <div class="form-group row">
                         <!-- This will be useful for organizations -->
                         <label class="darkgreen" translate="user_org_manager.col.role">Role:</label>
-                        <select class="form-control" ng-model="user.roles" >
-                            <option ng-repeat="r in roles" value="{{r.roleName}}">{{r.roleName}}</option>
+                        <!--
+                        <select class="form-control" ng-model="user.roles"
+                                ng-options="r.roleName as r.roleName for r in roles">
                         </select>
+                        -->
+                        <label ng-repeat="role in roles">
+                            <input type="checkbox" checklist-model="user.roles" checklist-value="role"> {{role}}
+                        </label>
                     </div>
                     <div class="form-group row">
-                        <!-- This will be useful for organizations -->
                         <label class="darkgreen" translate="user_org_manager.col.organization">Organization:</label>
-                        <select class="form-control" ng-model="user.organizationId.id" >
-                            <option ng-repeat="o in organizations" value="{{o.id}}">{{o.organizationName}}</option>
+                        <select class="form-control" ng-model="user.organizationId.id"
+                                ng-options="o.id as o.organizationName for o in organizations">
                         </select>
                     </div>
                     <button ng-show="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit_user">Edit User</button>
                     <button ng-hide="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create_user">Create User</button>
-                    <!--
-                    <button ng-show="user.id" type="button" class="btn btn-success" ng-click="saveUser()" translate="user_org_manager.button.edit_user">Edit User</button>
-                    <button ng-hide="user.id" type="button" class="btn btn-success" ng-click="createUser()" translate="user_org_manager.button.create_user">Create User</button>
-                    -->
+
                 </div>
             </form>
         </div>
