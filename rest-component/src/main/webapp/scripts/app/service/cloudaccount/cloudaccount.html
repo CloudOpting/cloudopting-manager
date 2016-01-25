@@ -24,7 +24,9 @@
                 </div>
                 <div class="form-group">
                     <label class="darkgreen" translate="cloudaccount.form.provider">Provider</label>
-                    <select class="form-control" ng-model="cloudAcc.provider" ng-options="provider.provider for provider in providerList"></select>
+                    <select class="form-control" ng-model="cloudAcc.providerId.id"
+                            ng-options="p.id as p.provider for p in providerList">
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="darkgreen" translate="cloudaccount.form.apiKey">API Key</label>

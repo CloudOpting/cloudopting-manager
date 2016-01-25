@@ -99,15 +99,15 @@ angular.module('cloudoptingApp')
 
         $scope.deleteCloudAccount = function (cloudAccount) {
 
-            var callback = function(data){
-                if(data) {
-                    $state.go('profile', { tab: "tab_cloudaccounts" } );
+            var callback = function(data, status, headers, config){
+                if(status==200) {
+                    $state.go('profile', { tab: "tab_cloudaccounts" }, {reload: true} );
                 } else {
                     console.log("Error deleting the Cloud Account");
                 }
             };
 
-            OrganizationService.deleteCloudAccount($scope.settingsAccount.organizationId.id, cloudAccount, callback);
+            OrganizationService.deleteCloudAccount($scope.settingsAccount.organizationId.id, cloudAccount.id, callback);
         };
 
         $scope.goToEdit = function(cloudAccount){

@@ -100,7 +100,7 @@ angular.module('cloudoptingApp')
             deleteCloudAccount: function (idOrganization, idCloudAccount, callback) {
                 return $http.delete(baseURI+ SERVICE.SEPARATOR + idOrganization + SERVICE.SEPARATOR + cloudAccountsURI + SERVICE.SEPARATOR + idCloudAccount)
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     });
             }
         }
