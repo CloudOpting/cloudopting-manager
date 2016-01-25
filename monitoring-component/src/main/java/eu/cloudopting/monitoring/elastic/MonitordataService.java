@@ -28,8 +28,8 @@ public class MonitordataService {
 			return monitordataRepository.findAll();
 		}
 		
-		public List<Monitordata> findCustom(){
-			return monitordataRepository.findCustom();
+		public List<Monitordata> findCustom(String container){
+			return monitordataRepository.findCustom(container);
 		}
 		
 }

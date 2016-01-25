@@ -95,8 +95,11 @@ public class MonitoringController {
 		log.debug(one.getHost());
 		log.debug(one.getTimestamp().toGMTString());
 		
-		List<Monitordata> listret = monitordataService.findCustom();
+		List<Monitordata> listret = monitordataService.findCustom("66.249.78.191");
 		log.debug(listret.toString());
+		for(Monitordata temp : listret){
+			log.debug(temp.getHost());
+		}
 		return one.getHost();
 		/*
 		String ret = null;
