@@ -39,7 +39,7 @@ angular.module('cloudoptingApp')
             if($window.confirm('Are you sure that you want to delete this user?')) {
                 var deleteCallback = function(data) {
                     //if data XXX...
-                    $state.go($state.current, {}, {reload: true});
+                    $state.go('user_manager', {}, {reload: true});
                 };
 
                 //Delete user
@@ -65,7 +65,7 @@ angular.module('cloudoptingApp')
         var createUser = function() {
             var callback = function(data){
                 //Return to the list
-                $state.go('user_manager');
+                $state.go('user_manager', {}, {reload: true});
             };
 
             for(var r in $scope.user.roles) {
@@ -78,7 +78,7 @@ angular.module('cloudoptingApp')
         var saveUser = function() {
             var callback = function(data){
                 //Return to the list
-                $state.go('user_manager');
+                $state.go('user_manager', {}, {reload: true});
             };
             UserService.update($scope.user, callback);
         };
@@ -118,7 +118,7 @@ angular.module('cloudoptingApp')
             if($window.confirm('Are you sure that you want to delete this organization?')) {
                 var deleteCallback = function(data) {
                     //if data XXX...
-                    $state.go($state.current, {}, {reload: true});
+                    $state.go('org_manager', {}, {reload: true});
                 };
                 //Delete organization.
                 OrganizationService.delete(idOrganization, deleteCallback);
@@ -143,7 +143,7 @@ angular.module('cloudoptingApp')
         var createOrganization = function() {
             var callback = function(data){
                 //Return to the list
-                $state.go('org_manager');
+                $state.go('org_manager', {}, {reload: true});
             };
             OrganizationService.create($scope.org, callback);
         };
@@ -151,7 +151,7 @@ angular.module('cloudoptingApp')
         var saveOrganization = function() {
             var callback = function(data){
                 //Return to the list
-                $state.go('org_manager');
+                $state.go('org_manager', {}, {reload: true});
             };
             OrganizationService.update($scope.org, callback);
         };

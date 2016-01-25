@@ -3,9 +3,11 @@ package eu.cloudopting.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import eu.cloudopting.domain.OrganizationStatus;
 import eu.cloudopting.domain.OrganizationTypes;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrganizationDTO implements Serializable{
 
 	private Long id;

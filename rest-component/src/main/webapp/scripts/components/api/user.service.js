@@ -24,6 +24,9 @@ angular.module('cloudoptingApp')
                 return $http.get(endpoint)
                     .success(function (users) {
                         usrs = users;
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("UserService.findAll error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
                     });
             },
             /**
@@ -34,10 +37,10 @@ angular.module('cloudoptingApp')
             findAllUnpaginated: function (callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + 'unpaginated')
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                        $log.error("UserService.findAllUnpaginated error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
                     });
             },
             findById: function (id) {
@@ -46,34 +49,34 @@ angular.module('cloudoptingApp')
                         usr = user;
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                        $log.error("UserService.findById error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
                     });
             },
             create: function (user, callback) {
                 return $http.post(baseURI, user)
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                        $log.error("UserService.create error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
                     });
             },
             update: function (user, callback) {
                 return $http.put(baseURI, user)
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                        $log.error("UserService.update error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
                     });
             },
             delete: function (idUser, callback) {
                 return $http.delete(baseURI + SERVICE.SEPARATOR + idUser)
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                        $log.error("UserService.delete error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
                     });
             }
         }
