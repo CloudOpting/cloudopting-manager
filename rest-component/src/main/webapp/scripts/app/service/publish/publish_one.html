@@ -82,11 +82,31 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-8">
-                                    <div class="form-group">
-                                        <div class="form-control textarea-lg" >
+                                    <!-- FIXME: ADDED NEW STYLE IN ORDER TO SOLVE VISIBILITY PROBLEMS -->
+                                    <div class="form-group"  style="height: 600px">
+                                        <div class="form-control textarea-lg">
+                                            <!-- FIXME: ADDED SOME KIND OF TEMPLATE. FIX THIS -->
                                             <div text-angular placeholder="{{'publish.service.description' | translate}}"
                                                  rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
-                                                 ng-minlength=1 required></div>
+                                                 ng-minlength=1 required>
+
+                                                <p>Lorem ipsum</p><h2 class="service-summary-heading">Features</h2>
+                                                <ul class="service-summary-features-and-benefits">
+                                                    <li>Feature 1</li>
+                                                </ul>
+
+                                                <h2 class="service-summary-heading">Benefits</h2>
+                                                <ul class="service-summary-features-and-benefits">
+                                                    <li>Benefit 1</li>
+                                                </ul>
+                                                <h2 class="service-summary-heading">Support</h2>
+                                                <h2 class="service-summary-heading">Price</h2>
+                                                <h2 class="service-summary-heading">Contact</h2>
+                                                <p>Name Surname</p>
+                                                <p>phone</p>
+                                                <p>mail</p>
+
+                                            </div>
                                             <!--<textarea class="form-control textarea-lg" placeholder="{{'publish.service.description' | translate}}"></textarea>-->
 
                                             <div ng-show="form_publish.description.$dirty && form_publish.description.$invalid || form_publish.description.$touched">
@@ -108,11 +128,35 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <div accept="image/*,audio/*,video/*" class="drop-box">
-                                            <span class="">Drag and drop to upload</span>
+                                            <span class="">Drag and drop to upload (Not working yet)</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <br/>
+                            <div class="form-group">
+                                <label class="darkgreen" translate="publish.service.image">Service Image</label>
+                                <!--ngf-multiple="multiple"-->
+                                <div class="btn btn-info" ngf-select ngf-change="newPromoImage($files)" translate="publish.select.file">Select File</div>
+                            </div>
+
+                            <div class="form-group row" ng-show="files">
+                                <label translate="publish.selectedfile">Selected File</label>
+                                <!--
+                                <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
+                                -->
+                                <div  ng-repeat="file in files">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" translate="publish.content.file">File</span>
+                                        <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-danger" ng-click="deletePromotionalImage(file)" translate="publish.button.delete">Delete Item</button>
+                            </span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row row-actions">
                                 <div class="col-xs-9">
                                     <button type="button" class="btn" ng-hide="isEdition" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()">Save</button>
@@ -134,120 +178,3 @@
         </div>
     </div>
 </section>
-
-
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="publish.title">Publish Service</div>
-        <div class="panel-body">
-
-            <form name="form_publish" novalidate show-validation>
-
-                <div class="form-group row">
-                    <label class="darkgreen" >Process ID:</label>
-                    <input class="form-control" type="text" autocomplete="off" ng-model="processID" disabled />
-                </div>
-
-                <div class="form-group row">
-                    <label class="darkgreen" translate="publish.service.name">Service Name</label>
-                    <input class="form-control" type="text" autocomplete="off" name="name" ng-model="application.applicationName"
-                           ng-minlength=1 required />
-
-                    <div ng-show="form_publish.name.$dirty && form_publish.name.$invalid || form_publish.name.$touched">
-                        <p class="help-block"
-                           ng-show="form_publish.name.$error.required"
-                           translate="publish.messages.validate.name.required">
-                            The name is required.
-                        </p>
-                        <p class="help-block"
-                           ng-show="form_publish.name.$error.minlength"
-                           translate="publish.messages.validate.name.minlength">
-                            The name is required to be at least 1 character.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="darkgreen" translate="publish.service.toscaname">Service TOSCA Name</label>
-                    <input class="form-control" type="text" autocomplete="off" name="toscaname" ng-model="application.applicationToscaName"
-                           ng-pattern="/^[a-zA-Z0-9\-_]{0,10}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10" />
-
-                    <div ng-show="form_publish.toscaname.$dirty && form_publish.toscaname.$invalid || form_publish.toscaname.$touched">
-                        <p class="help-block"
-                           ng-show="form_publish.toscaname.$error.required"
-                           translate="publish.messages.validate.toscaname.required">
-                            The Service TOSCA Name is required.
-                        </p>
-                        <p class="help-block"
-                           ng-show="form_publish.toscaname.$error.minlength"
-                           translate="publish.messages.validate.toscaname.minlength">
-                            The Service TOSCA Name is required to be at least 1 character.
-                        </p>
-                        <p class="help-block"
-                           ng-show="form_publish.toscaname.$error.maxlength"
-                           translate="publish.messages.validate.toscaname.maxlength">
-                            The Service TOSCA Name cannot be longer than 10 characters.
-                        </p>
-                        <!--No spaces witha a limit of 40 characters -> "/^[a-zA-Z0-9\-_]{0,40}$/"-->
-                        <p class="help-block"
-                           ng-show="form_publish.toscaname.$error.pattern"
-                           translate="publish.messages.validate.toscaname.pattern">
-                            The Service TOSCA Name cannot contain spaces.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="darkgreen" translate="publish.service.description">Service Description</label>
-                    <!--
-                    <textarea class="form-control" rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
-                              ng-minlength=1 required ></textarea>
-                    -->
-                    <text-angular ng-model="application.applicationDescription"></text-angular>
-
-                    <div ng-show="form_publish.description.$dirty && form_publish.description.$invalid || form_publish.description.$touched">
-                        <p class="help-block"
-                           ng-show="form_publish.description.$error.required"
-                           translate="publish.messages.validate.description.required">
-                            The description is required.
-                        </p>
-                        <p class="help-block"
-                           ng-show="form_publish.description.$error.minlength"
-                           translate="publish.messages.validate.description.minlength">
-                            The description is required to be at least 1 character.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="darkgreen" translate="publish.service.image">Service Image</label>
-                    <!--ngf-multiple="multiple"-->
-                    <div class="btn btn-info" ngf-select ngf-change="newPromoImage($files)" translate="publish.select.file">Select File</div>
-                </div>
-
-                <div class="form-group row" ng-show="files">
-                    <label translate="publish.selectedfile">Selected File</label>
-                    <!--
-                    <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
-                    -->
-                    <div  ng-repeat="file in files">
-                        <div class="input-group">
-                            <span class="input-group-addon" translate="publish.content.file">File</span>
-                            <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-danger" ng-click="deletePromotionalImage(file)" translate="publish.button.delete">Delete Item</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!--
-                <button type="button" class="btn btn-primary" ng-click="saveConfigurationWizardOne()" translate="publish.button.save_n_next">Save Configuration & Next</button>
-                -->
-                <button ng-hide="isEdition" ng-disabled="form_publish.$invalid || disableSave" type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
-                <button ng-disabled="form_publish.$invalid || disableUpdate" type="button" class="btn btn-success" ng-click="updateWizardOne()">Update</button>
-                <button ng-disabled="disableNextOne" type="button" class="btn btn-success" ng-click="nextWizardOne()">Next</button>
-            </form>
-        </div>
-    </div>
-</div>
