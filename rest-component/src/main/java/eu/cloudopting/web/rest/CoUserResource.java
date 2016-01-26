@@ -83,7 +83,7 @@ public class CoUserResource {
 							Long organizationId = userDTO.getOrganizationId() == null ? null : userDTO.getOrganizationId().getId();
 							User user = getUserService().createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
 									userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
-									userDTO.getLangKey(), organizationId);
+									userDTO.getLangKey(), organizationId, userDTO.getRoles());
 							user = getUserService().setUserActivatedFlag(user.getId(), userDTO.isActivated());
 							return new ResponseEntity<>(HttpStatus.CREATED);
 						})
@@ -99,7 +99,7 @@ public class CoUserResource {
 		} 
 		Long organizationId = userDTO.getOrganizationId() == null ? null : userDTO.getOrganizationId().getId();
 		getUserService().updateUserInformation(user.getId(), userDTO.getFirstName(), userDTO.getLastName(), 
-				userDTO.getEmail(), organizationId);
+				userDTO.getEmail(), organizationId, userDTO.getRoles());
 		getUserService().setUserActivatedFlag(user.getId(), userDTO.isActivated());
 		response.setStatus(HttpServletResponse.SC_OK);
 	}

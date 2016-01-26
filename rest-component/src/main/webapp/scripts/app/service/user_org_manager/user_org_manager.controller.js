@@ -15,11 +15,11 @@ angular.module('cloudoptingApp')
         ];
 
         $scope.roles = [
-            "ROLE_ADMIN",
-            "ROLE_USER",
-            "ROLE_OPERATOR",
-            "ROLE_SUBSCRIBER",
-            "ROLE_PUBLISHER"
+            'ROLE_ADMIN',
+            'ROLE_USER',
+            'ROLE_OPERATOR',
+            'ROLE_SUBSCRIBER',
+            'ROLE_PUBLISHER'
         ];
 
 
@@ -67,10 +67,10 @@ angular.module('cloudoptingApp')
                 //Return to the list
                 $state.go('user_manager', {}, {reload: true});
             };
-
+/*
             for(var r in $scope.user.roles) {
                 $scope.user.roles.push(r);
-            }
+            }*/
             //$scope.user.roles = [ '"' + $scope.user.roles + '"' ];
             UserService.create($scope.user, callback);
         };

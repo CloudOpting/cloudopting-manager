@@ -93,10 +93,22 @@ public class UserService {
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
                                       String langKey, Long organizationId) {
+        return createUserInformation(login, password, firstName, lastName, email, langKey, organizationId, null);
+    }
+
+    public User createUserInformation(String login, String password, String firstName, String lastName, String email,
+                                      String langKey, Long organizationId, List<String> roles) {
         User newUser = new User();
-        Authority authoritySubscriber = authorityRepository.findOne("ROLE_SUBSCRIBER");
-        Authority authorityUser = authorityRepository.findOne("ROLE_USER");
         Set<Authority> authorities = new HashSet<>();
+        if(roles==null || roles.isEmpty()) {
+            authorities.add(authorityRepository.findOne("ROLE_SUBSCRIBER"));
+        } else {
+            for(String role : roles) {
+                authorities.add(authorityRepository.findOne(role));
+            }
+        }
+        authorities.add(authorityRepository.findOne("ROLE_USER"));
+
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
         // new user gets initially a generated password
@@ -109,8 +121,6 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authoritySubscriber);
-        authorities.add(authorityUser);
         newUser.setAuthorities(authorities);
         setUserOrganization(newUser, organizationId);
         userRepository.save(newUser);
@@ -136,11 +146,22 @@ public class UserService {
     }
 
     public void updateUserInformation(long userId, String firstName, String lastName, String email, Long organizationId) {
+        updateUserInformation(userId, firstName, lastName, email, organizationId, null);
+    }
+    public void updateUserInformation(long userId, String firstName, String lastName, String email, Long organizationId, List<String> roles) {
     	User user = userRepository.findOne(userId);
     	user.setFirstName(firstName);
     	user.setLastName(lastName);
     	user.setEmail(email);
     	setUserOrganization(user, organizationId);
+
+        if(roles!=null && !roles.isEmpty()) {
+            Set<Authority> authorities = new HashSet<>();
+            for(String role : roles) {
+                authorities.add(authorityRepository.findOne(role));
+            }
+            user.setAuthorities(authorities);
+        }
     	userRepository.save(user);
     }
     
