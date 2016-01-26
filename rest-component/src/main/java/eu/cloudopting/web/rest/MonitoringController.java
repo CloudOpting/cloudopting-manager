@@ -1,5 +1,7 @@
 package eu.cloudopting.web.rest;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -55,7 +57,7 @@ public class MonitoringController {
 	@RequestMapping(value = "/monitoring/{instanceId}/{objectId}", method = RequestMethod.GET)
 	@ResponseBody
 	public GraphDTO findObject(@PathVariable("instanceId") final String instanceId, @PathVariable("objectId") final String objectId) {
-		monitoringService.testZabbix();
+//		monitoringService.testZabbix();
         GraphDTO graph = new GraphDTO();
         graph.setData(
                 new Data[] {
@@ -90,17 +92,33 @@ public class MonitoringController {
 	
 	@RequestMapping(value = "/monitoring/elastic/{instanceId}", method = RequestMethod.GET)
 	@ResponseBody
-	public String findOneDataById(@PathVariable("instanceId") final String instanceId){
+	public GraphDTO findOneDataById(@PathVariable("instanceId") final String instanceId){
 		Monitordata one = monitordataService.findOne("AVI6Z24UAx6YebBYGh3x");
 		log.debug(one.getHost());
 		log.debug(one.getTimestamp().toGMTString());
 		
+		
+		
 		List<Monitordata> listret = monitordataService.findCustom("66.249.78.191");
 		log.debug(listret.toString());
-		for(Monitordata temp : listret){
-			log.debug(temp.getHost());
+		
+		GraphDTO gdto = new GraphDTO();
+		Data[] dataarr = new Data[listret.size()];
+		ArrayList<Data> darr = new ArrayList<Data>();
+		
+//		for(Monitordata temp : listret){
+		for(int i=0; i<listret.size();i++){
+			log.debug(listret.get(i).getHost());
+			Data el = new Data(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(listret.get(i).getTimestamp()),"1","0","0");
+			dataarr[i] = el;
+//			darr.add(el);
 		}
-		return one.getHost();
+		gdto.setData(dataarr);
+		gdto.setXkey("time");
+		gdto.setYkeys(new String[] {"disk", "cpu", "ram"});
+		gdto.setLabels(new String[] {"Disk", "CPU", "RAM"});
+		gdto.setLineColors(new String[] {"green", "blue", "orange"});
+		return gdto;
 		/*
 		String ret = null;
 		return ret;*/

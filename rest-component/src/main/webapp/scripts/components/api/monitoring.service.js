@@ -37,7 +37,19 @@ angular.module('cloudoptingApp')
                         $log.error(data);
                     })
                     ;
+            },
+            
+            findOneDataById: function(instanceId, callback) {
+                return $http.get(baseURI + SERVICE.SEPARATOR + "elastic" + SERVICE.SEPARATOR + instanceId)
+                    .success(function(data, status, headers, config) {
+                        callback(data);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error(data);
+                    })
+                    ;
             }
+
         };
     }
 );

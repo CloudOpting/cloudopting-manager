@@ -35,6 +35,27 @@ angular.module('cloudoptingApp')
 
         MonitoringService.findObject(1, 1, callback);
 
+        var elasticgraph = null;
+        var elasticcallback = function(elasticgraph) {
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'elasticchart',
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: elasticgraph.data,
+
+                // The name of the data record attribute that contains x-values.
+                xkey: elasticgraph.xkey,/*'time',*/
+                // A list of names of data record attributes that contain y-values.
+                ykeys: elasticgraph.ykeys,/*['disk', 'cpu', 'ram'],*/
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: elasticgraph.labels,/*['Disk', 'CPU', 'RAM'],*/
+                lineColors: elasticgraph.lineColors/*['green', 'blue', 'orange']*/
+            });
+        };
+        
+        MonitoringService.findOneDataById(1,elasticcallback);
 
     }
 );

@@ -1,11 +1,14 @@
 package eu.cloudopting.monitoring.elastic;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.monitoring.elastic.data.Monitordata;
 
 import java.util.List;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +32,7 @@ public class MonitordataService {
 		}
 		
 		public List<Monitordata> findCustom(String container){
-			return monitordataRepository.findCustom(container);
+			return monitordataRepository.findCustom(container, new PageRequest(0,20,new Sort(new Sort.Order(Sort.Direction.ASC,"@timestamp"))));
 		}
 		
 }

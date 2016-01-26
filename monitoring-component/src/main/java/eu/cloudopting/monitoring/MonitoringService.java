@@ -53,5 +53,6 @@ public class MonitoringService {
 			e.printStackTrace();
 		}
         System.err.println(hostid);
+        
 	}
 }
