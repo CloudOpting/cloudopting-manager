@@ -54,7 +54,7 @@ angular.module('cloudoptingApp')
                 // Labels for the ykeys -- will be displayed when you hover over the
                 // chart.
                 labels: graph.labels,/*['Disk', 'CPU', 'RAM'],*/
-                lineColors: graph.lineColors/*['green', 'blue', 'orange']*/
+                barColors: graph.lineColors/*['green', 'blue', 'orange']*/
             });
         };
         MonitoringService.findObject(1, 1, callback_bar);
@@ -95,7 +95,7 @@ angular.module('cloudoptingApp')
                 // Labels for the ykeys -- will be displayed when you hover over the
                 // chart.
                 labels: graph.labels,/*['Disk', 'CPU', 'RAM'],*/
-                lineColors: graph.lineColors/*['green', 'blue', 'orange']*/
+                barColors: graph.lineColors/*['green', 'blue', 'orange']*/
             });
         };
         MonitoringService.findOneDataById(1,elasticcallback_bar);
