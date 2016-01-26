@@ -56,7 +56,7 @@ angular.module('cloudoptingApp')
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
-                if(item=='catalog' || item=='detail' || item=='instances' || item=='publish') {
+                if(item=='catalog' || item=='detail' || item=='instances' || item=='publish' || item=='list') {
                     return true;
                 }
             }
