@@ -17,9 +17,11 @@ angular.module('cloudoptingApp')
             findAllObjectsByInstance: function(instanceId, callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + instanceId)
                     .success(function (data, status, headers, config) {
-                        callback(data);
-                    }
-                )
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error(data);
+                    });
             },
 
             /**
@@ -31,23 +33,21 @@ angular.module('cloudoptingApp')
             findObject: function(instanceId, objectId, callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + instanceId + SERVICE.SEPARATOR + objectId)
                     .success(function(data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
                         $log.error(data);
-                    })
-                    ;
+                    });
             },
             
             findOneDataById: function(instanceId, callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + "elastic" + SERVICE.SEPARATOR + instanceId)
                     .success(function(data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
                         $log.error(data);
-                    })
-                    ;
+                    });
             }
 
         };
