@@ -1,3 +1,124 @@
+<section class="auth-modal" id="signin">
+    <div class="auth-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                    <div class="auth-box">
+                        <div class="auth-box-cabecera">
+                            <i class="icon-register"></i>
+                            <span translate="register.title">Register</span>
+                        </div>
+                        <div class="auth-box-content">
+                            <div class="alert alert-success" ng-show="success" translate="register.messages.success">
+                                <strong>Registration saved!</strong> Please check your email for confirmation.
+                            </div>
+
+                            <div class="alert alert-danger" ng-show="error" translate="register.messages.error.fail">
+                                <strong>Registration failed!</strong> Please check your input and try again.
+                            </div>
+
+                            <div class="alert alert-danger" ng-show="errorUserExists" translate="register.messages.error.userexists">
+                                <strong>Login name already registered!</strong> Please choose another one.
+                            </div>
+
+                            <div class="alert alert-danger" ng-show="errorEmailExists" translate="register.messages.error.emailexists">
+                                <strong>E-mail is already in use!</strong> Please choose another one.
+                            </div>
+
+                            <div class="alert alert-danger" ng-show="doNotMatch" translate="global.messages.error.dontmatch">
+                                The password and its confirmation do not match!
+                            </div>
+
+                            <form class="form" role="form" ng-show="!success" name="form" novalidate ng-submit="register()" show-validation>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="sr-only" for="username">Username</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <img src="assets/img/auth/icn_user.png" />
+                                                </div>
+                                                <input type="text" class="form-control" id="username" placeholder="{{'register.form.username.placeholder' | translate}}"
+                                                       ng-model="registerAccount.login" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="firstname">First name</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <img src="assets/img/auth/icn_name.png" />
+                                                </div>
+                                                <input type="text" class="form-control" id="firstname"  placeholder="{{'register.form.firstName.placeholder' | translate}}"
+                                                       ng-model="registerAccount.firstName" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="lastname">Last name</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <img src="assets/img/auth/icn_name.png" />
+                                                </div>
+                                                <input type="text" class="form-control" id="lastname" placeholder="{{'register.form.lastName.placeholder' | translate}}"
+                                                       ng-model="registerAccount.lastName" required />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="sr-only" for="password">Password</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <img src="assets/img/auth/icn_password.png" />
+                                                </div>
+                                                <input type="password" class="form-control" id="password" placeholder="{{'register.form.password.placeholder' | translate}}"
+                                                       ng-model="registerAccount.password" ng-minlength=5 ng-maxlength=50 required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="password2">Confirm Password</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <img src="assets/img/auth/icn_password.png" />
+                                                </div>
+                                                <input type="password" class="form-control" id="password2" placeholder="{{'register.form.confirmpassword.placeholder' | translate}}"
+                                                       ng-model="confirmPassword" ng-minlength=5 ng-maxlength=50 required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only" for="email">E-mail</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <img src="assets/img/auth/icn_mail.png" />
+                                                </div>
+                                                <input type="email" class="form-control" id="email" placeholder="{{'register.form.email.placeholder' | translate}}"
+                                                       ng-model="registerAccount.email" ng-minlength=5 ng-maxlength=100 required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <!--
+                                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                                        -->
+                                        <!-- for demo change button by link -->
+                                        <!--<a href="subscriber_taylor.html" class="btn btn-primary btn-block">Sign Up</a>-->
+                                        <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary btn-block" translate="register.form.button">Register</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <p class="help-block">
+                                Already a member? <a ui-sref="login">Login here</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--
 <div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -27,7 +148,7 @@
 
                 <div class="form-group">
                     <label class="darkgreen" translate="global.form.username">Login</label>
-                    <input type="text" class="form-control" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"
+                    <input type="text" class="form-control" name="login" placeholder="{{'register.form.username.placeholder' | translate}}"
                            ng-model="registerAccount.login" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/" required>
                     <div ng-show="form.login.$dirty && form.login.$invalid">
                         <p class="help-block"
@@ -50,7 +171,7 @@
                 </div>
                 <div class="form-group">
                     <label class="darkgreen" translate="global.form.firstName">First Name</label>
-                    <input type="text" class="form-control" name="firstName" placeholder="{{'global.form.firstName.placeholder' | translate}}"
+                    <input type="text" class="form-control" name="firstName" placeholder="{{'register.form.firstName.placeholder' | translate}}"
                            ng-model="registerAccount.firstName" required>
                     <div ng-show="form.firstName.$dirty && form.firstName.$invalid">
                         <p class="help-block"
@@ -62,7 +183,7 @@
                 </div>
                 <div class="form-group">
                     <label class="darkgreen" translate="global.form.lastName">Last Name</label>
-                    <input type="text" class="form-control" name="lastName" placeholder="{{'global.form.lastName.placeholder' | translate}}"
+                    <input type="text" class="form-control" name="lastName" placeholder="{{'register.form.lastName.placeholder' | translate}}"
                            ng-model="registerAccount.lastName" required>
                     <div ng-show="form.lastName.$dirty && form.lastName.$invalid">
                         <p class="help-block"
@@ -74,7 +195,7 @@
                 </div>
                 <div class="form-group">
                     <label class="darkgreen" translate="global.form.email">E-mail</label>
-                    <input type="email" class="form-control" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+                    <input type="email" class="form-control" name="email" placeholder="{{'register.form.email.placeholder' | translate}}"
                            ng-model="registerAccount.email" ng-minlength=5 ng-maxlength=100 required>
                     <div ng-show="form.email.$dirty && form.email.$invalid">
                         <p class="help-block"
@@ -144,6 +265,8 @@
                 password="admin".
             </div>
             -->
+<!--
         </div>
     </div>
 </div>
+-->

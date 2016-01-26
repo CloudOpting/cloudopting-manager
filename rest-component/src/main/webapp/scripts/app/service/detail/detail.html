@@ -1,3 +1,25 @@
+<section class="portfolio-modal" id="portfolioModal1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="modal-body">
+                    <!-- Project Details Go Here -->
+                    <h2>{{currentApp.applicationName}}</h2>
+                    <p class="item-intro text-muted">{{currentApp.applicationDescription}}</p>
+                    <img class="img-responsive img-centered" src="{{currentApp.applicationImage}}" alt="" />
+                    <p>{{currentApp.applicationDescription}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                <input type="button" class="hvr-rectangle-out" ng-show="showButton" ng-click="detail_function()" value="{{buttonValue}}" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--
 <div class="row">
     <div class="bs-example">
         <div class="row">
@@ -30,4 +52,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->

@@ -1,3 +1,141 @@
+<section class="wizzard-modal" id="signin">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="wizzard-box">
+                    <ul class="nav nav-wizard">
+                        <li class="active">
+                            <a href="step1.html">
+                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a ui-sref="publish_two"><span class="badge">2</span> <span class="text">Specify Entry Scheme</span></a>
+                        </li>
+                        <li class="">
+                            <a ui-sref="publish_three"><span class="badge badge-inverse">3</span> <span class="text">Create Test Entry</span></a>
+                        </li>
+                        <li class="">
+                            <a ui-sref="publish_four"><span class="badge">4</span> <span class="text">Check Your Data</span></a>
+                        </li>
+                    </ul>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger hide">
+                            <!-- TODO: This messages has no sense!! -->
+                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <img src="assets/img/auth/icn_help.png" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" autocomplete="off" ng-model="processID" disabled placeholder="Process ID"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="{{'publish.service.name' | translate}}"
+                                       autocomplete="off" name="name" ng-model="application.applicationName"
+                                       ng-minlength=1 required/>
+
+                                <div ng-show="form_publish.name.$dirty && form_publish.name.$invalid || form_publish.name.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.name.$error.required"
+                                       translate="publish.messages.validate.name.required">
+                                        The name is required.
+                                    </p>
+                                    <p class="help-block"
+                                       ng-show="form_publish.name.$error.minlength"
+                                       translate="publish.messages.validate.name.minlength">
+                                        The name is required to be at least 1 character.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="{{'publish.service.toscaname' | translate}}"
+                                       autocomplete="off" name="toscaname" ng-model="application.applicationToscaName"
+                                       ng-pattern="/^[a-zA-Z0-9\-_]{0,10}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10"/>
+
+                                <div ng-show="form_publish.toscaname.$dirty && form_publish.toscaname.$invalid || form_publish.toscaname.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.toscaname.$error.required"
+                                       translate="publish.messages.validate.toscaname.required">
+                                        The Service TOSCA Name is required.
+                                    </p>
+                                    <p class="help-block"
+                                       ng-show="form_publish.toscaname.$error.minlength"
+                                       translate="publish.messages.validate.toscaname.minlength">
+                                        The Service TOSCA Name is required to be at least 1 character.
+                                    </p>
+                                    <p class="help-block"
+                                       ng-show="form_publish.toscaname.$error.maxlength"
+                                       translate="publish.messages.validate.toscaname.maxlength">
+                                        The Service TOSCA Name cannot be longer than 10 characters.
+                                    </p>
+                                    <!--No spaces witha a limit of 40 characters -> "/^[a-zA-Z0-9\-_]{0,40}$/"-->
+                                    <p class="help-block"
+                                       ng-show="form_publish.toscaname.$error.pattern"
+                                       translate="publish.messages.validate.toscaname.pattern">
+                                        The Service TOSCA Name cannot contain spaces.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <div class="form-control textarea-lg" >
+                                            <div text-angular placeholder="{{'publish.service.description' | translate}}"
+                                                 rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
+                                                 ng-minlength=1 required></div>
+                                            <!--<textarea class="form-control textarea-lg" placeholder="{{'publish.service.description' | translate}}"></textarea>-->
+
+                                            <div ng-show="form_publish.description.$dirty && form_publish.description.$invalid || form_publish.description.$touched">
+                                                <p class="help-block"
+                                                   ng-show="form_publish.description.$error.required"
+                                                   translate="publish.messages.validate.description.required">
+                                                    The description is required.
+                                                </p>
+                                                <p class="help-block"
+                                                   ng-show="form_publish.description.$error.minlength"
+                                                   translate="publish.messages.validate.description.minlength">
+                                                    The description is required to be at least 1 character.
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div accept="image/*,audio/*,video/*" class="drop-box">
+                                            <span class="">Drag and drop to upload</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-actions">
+                                <div class="col-xs-9">
+                                    <button type="button" class="btn" ng-hide="isEdition" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()">Save</button>
+                                    <button type="button" class="btn btn-secondary" ng-disabled="form_publish.$invalid || disableUpdate" ng-click="updateWizardOne()">Update</button>
+                                </div>
+                                <div class="col-xs-3">
+                                    <!--
+                                    <button type="submit" class="btn btn-primary btn-block">Next</button>
+                                    -->
+                                    <!-- for demo change button by link -->
+                                    <!--<a href="step2.html" class="btn btn-primary pull-right">Next</a>-->
+                                    <button type="button" class="btn btn-primary btn-block" ng-disabled="disableNextOne" ng-click="nextWizardOne()">Next</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="publish.title">Publish Service</div>
@@ -106,8 +244,8 @@
                 <!--
                 <button type="button" class="btn btn-primary" ng-click="saveConfigurationWizardOne()" translate="publish.button.save_n_next">Save Configuration & Next</button>
                 -->
-                <button ng-disabled="form_publish.$invalid || disableSave" type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
-                <button ng-disabled="disableUpdate" type="button" class="btn btn-success" ng-click="updateWizardOne()">Update</button>
+                <button ng-hide="isEdition" ng-disabled="form_publish.$invalid || disableSave" type="button" class="btn btn-success" ng-click="saveWizardOne()">Save</button>
+                <button ng-disabled="form_publish.$invalid || disableUpdate" type="button" class="btn btn-success" ng-click="updateWizardOne()">Update</button>
                 <button ng-disabled="disableNextOne" type="button" class="btn btn-success" ng-click="nextWizardOne()">Next</button>
             </form>
         </div>

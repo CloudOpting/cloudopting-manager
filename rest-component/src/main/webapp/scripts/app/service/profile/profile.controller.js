@@ -48,7 +48,7 @@ angular.module('cloudoptingApp')
                 $scope.doNotMatch = null;
                 Auth.changePassword($scope.password).then(function () {
                     $scope.passError = null;
-                    $scope.passEuccess = 'OK';
+                    $scope.passSuccess = 'OK';
                 }).catch(function () {
                     $scope.passSuccess = null;
                     $scope.passError = 'ERROR';
@@ -56,8 +56,34 @@ angular.module('cloudoptingApp')
             }
         };
 
-        //CLOUD ACCOUNTS
+        //ORGANIZATION
 
+        //$scope.organizations = OrganizationService.findAll();
+        /*
+        Principal.identity().then(function(account) {
+            $scope.passAccount = account;
+        });
+
+        $scope.passSuccess = null;
+        $scope.passError = null;
+        $scope.doNotMatch = null;
+        $scope.updateOrganization = function () {
+            if ($scope.password !== $scope.confirmPassword) {
+                $scope.doNotMatch = 'ERROR';
+            } else {
+                $scope.doNotMatch = null;
+                Auth.changePassword($scope.password).then(function () {
+                    $scope.passError = null;
+                    $scope.passEuccess = 'OK';
+                }).catch(function () {
+                    $scope.passSuccess = null;
+                    $scope.passError = 'ERROR';
+                });
+            }
+        };
+*/
+
+        //CLOUD ACCOUNTS
         localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, null);
 
         $scope.$watch( "$scope.settingsAccount" , function(){
@@ -69,6 +95,8 @@ angular.module('cloudoptingApp')
 
 
         },true);
+
+        /*
         $scope.cloudAccList = [
             {
                 "id": 0,
@@ -96,6 +124,7 @@ angular.module('cloudoptingApp')
                 "endpoint": ""
             }
         ];
+        */
 
         $scope.deleteCloudAccount = function (cloudAccount) {
 

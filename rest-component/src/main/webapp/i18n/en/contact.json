@@ -1,6 +1,6 @@
 {
   "contact": {
-    "title": "Contact",
+    "title": "Contact Us",
     "form": {
       "button": "Send Message",
       "name": "Name",
@@ -8,10 +8,11 @@
       "companyName": "Company name",
       "message": "Message",
       "placeholder": {
-        "name": "Your name",
-        "phone": "Your phone",
-        "companyName": "Your company name",
-        "message": "What can we do for you?"
+        "name": "Your Name *",
+        "phone": "Your Phone *",
+        "email": "Your Email *",
+        "companyName": "Your Company",
+        "message": "Your Message *"
       }
     },
 

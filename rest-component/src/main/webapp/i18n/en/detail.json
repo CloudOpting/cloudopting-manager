@@ -4,8 +4,8 @@
     "service": "\"{{service_name}}\" Service",
     "status": "Status: {{service_status}}",
     "button" : {
-      "subscribe": "SUBSCRIBE",
-      "instances": "SEE INSTANCES",
+      "subscribe": "Subscribe Now",
+      "instances": "See Instances",
       "completepublish": "COMPLETE PUBLISH"
     }
   }

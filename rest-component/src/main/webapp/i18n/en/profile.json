@@ -1,0 +1,11 @@
+{
+  "profile": {
+    "form_org": {
+      "org_name": "Organization name",
+      "org_description": "Organization description",
+      "org_status": "Organization status",
+      "org_type": "Organization type",
+      "button": "Update"
+    }
+  }
+}

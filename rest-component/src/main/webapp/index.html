@@ -4,43 +4,65 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>cloudopting</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <meta name="author" content="worldline">
+
+        <title>CloudOpting</title>
+
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css assets/styles/vendor.css -->
         <!-- bower:css -->
+        <!-- Bootstrap Core CSS -->
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/metisMenu/dist/metisMenu.css" />
         <link rel="stylesheet" href="bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" />
         <link rel='stylesheet' href='bower_components/textAngular/dist/textAngular.css'>
-        <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css">
+
+        <!-- Plugin CSS -->
+        <link rel="stylesheet" href="assets/styles/animate.min.css" />
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="assets/styles/agency.css" />
+
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Montserrat:400,700" rel="stylesheet" type="text/css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css assets/styles/main.css -->
-        <link rel="stylesheet" href="assets/styles/main.css">
+        <!--<link rel="stylesheet" href="assets/styles/main.css">-->
         <!-- endbuild -->
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
-    <body ng-app="cloudoptingApp">
+    <body ng-app="cloudoptingApp" id="page-top" class="index">
         <!--[if lt IE 10]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <!--
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
+        -->
         <div ui-view="navbar" ng-cloak=""></div>
 
-        <div class="container">
-            <div ui-view="menu" ng-cloak=""></div>
-            <div ui-view="content"></div><!--class="well"-->
+        <div ui-view="menu" ng-cloak=""></div>
 
-            <div class="footer">
-                <div ui-view="footerlinks"></div>
-            </div>
+        <!-- Header -->
+        <header ui-view="header"></header>
 
-        </div>
+        <div ui-view="content"></div><!--class="well"-->
 
+        <footer ui-view="footer"></footer>
+        <!-- TODO: Do something to fix the footer only in particular cases class="fixed-bottom" -->
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
@@ -84,6 +106,23 @@
         <script src="bower_components/ui-bootstrap-tpls/ui-bootstrap-tpls-0.13.4.js"></script>
         <!-- endbuild -->
 
+        <!-- For Look & feel -->
+
+        <!-- Plugin JavaScript -->
+        <script src="assets/js/jquery.easing.min.js"></script>
+        <script src="assets/js/classie.js"></script>
+        <!--<script src="assets/js/cbpAnimatedHeader.js"></script>-->
+        <script src="assets/js/jquery.bxslider.js"></script> <!--http://bxslider.com/ -->
+        <script src="assets/js/wow.min.js"></script> <!--scroll animations -->
+        <script src="assets/js/jquery.shuffle.js"></script> <!--filters -->
+
+        <!-- Contact Form JavaScript -->
+        <script src="assets/js/jqBootstrapValidation.js"></script>
+        <script src="assets/js/contact_me.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="assets/js/agency.js"></script>
+        <!--<script src="assets/js/landing.js"></script>-->
 
         <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
         <script src="scripts/app/app.js"></script>

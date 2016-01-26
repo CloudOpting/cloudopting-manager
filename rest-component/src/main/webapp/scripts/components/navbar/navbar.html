@@ -1,3 +1,105 @@
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="NavbarController">
+    <div class="container">
+        <div class="col-lg-12">
+            <ul class="nav navbar-nav navbar-right pre-header">
+                <!-- Development only -->
+                <li ng-show="logoutButton" class="dropdown" ng-controller="MenuController">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Development menu<span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li ng-show="showMenu('publish')"><a ui-sref="publish">Publish Service</a></li>
+                        <li ng-show="showMenu('catalog')"><a ui-sref="catalog">Service Catalog</a></li>
+                        <li ng-show="showMenu('list')"><a ui-sref="list">Services List - Manager</a></li>
+                        <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager">User Manager</a></li>
+                        <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager">Org Manager</a></li>
+                        <!--<li ng-show="showMenu('manager')"><a ui-sref="manager">User/Org Manager</a></li>-->
+                        <li>- These should not be in the menu -</li>
+                        <li ng-show="showMenu('button')"><a ui-sref="button">Button Screen</a></li>
+                        <li ng-show="showMenu('detail')"><a ui-sref="detail">Service Detail</a></li>
+                        <li ng-show="showMenu('subscriber')"><a ui-sref="subscriber">Service Subscriber</a></li>
+                        <li ng-show="showMenu('addDeploy')"><a ui-sref="addDeploy">Add/Deploy Service</a></li>
+                        <li ng-show="showMenu('instances')"><a ui-sref="instances">Instances List - Manager</a></li>
+                        <li ng-show="showMenu('taylor')"><a ui-sref="taylor">Taylor Service</a></li>
+                        <li ng-show="showMenu('management')"><a ui-sref="management">Service Management</a></li>
+                        <li ng-show="showMenu('monitoring')"><a ui-sref="monitoring">Service Monitoring</a></li>
+                        <li ng-show="showMenu('logs')"><a ui-sref="logs">Service Logs</a></li>
+                        <li ng-show="showMenu('form_generation')"><a ui-sref="form_generation">Form Generation Screen</a></li>
+                    </ul>
+                </li>
+                <!-- Development only -->
+
+                <li class="dropdown" ng-controller="LanguageController">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Languages<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li active-menu="{{language}}" ng-repeat="language in languages">
+                            <a href="" ng-click="changeLanguage(language)">{{'language.' + language| translate}}</a>
+                        </li>
+                    </ul>
+                </li>
+                <li role="separator" class="divider">|</li>
+                <li class="social-buttons">
+                    <a href="https://twitter.com/cloudopting"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li class="social-buttons">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li class="social-buttons">
+                    <a href="https://www.linkedin.com/company/cloudopting"><i class="fa fa-linkedin"></i></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <h1 id="logo">
+                <a class="navbar-brand page-scroll" href="index.html#page-top">
+                    <img src="assets/img/cloudopting_logo.png" alt="CloudOpting" />
+                </a>
+            </h1>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="MenuController">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <li>
+                    <a class="page-scroll" ui-sref="catalog">Catalog of Services</a>
+                </li>
+                <li role="separator" class="divider hidden-xs">|</li>
+                <li>
+                    <a class="page-scroll" href="index.html#contact">Contact</a>
+                </li>
+                <li role="separator" class="divider hidden-xs">|</li>
+                <li ng-hide="logoutButton">
+                    <a ui-sref="login">Sign in</a>
+                </li>
+                <li ng-show="logoutButton">
+                    <a href="#" ng-click="profile()">Account</a>
+                </li>
+                <li role="separator" class="divider hidden-xs">|</li>
+                <li ng-hide="logoutButton">
+                    <a ui-sref="register">Join</a>
+                </li>
+                <li ng-show="logoutButton">
+                    <a href="#" ng-click="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+<!--
 <nav class="navbar navbar-default" role="navigation" ng-controller="NavbarController">
     <div class="container">
         <div class="navbar-header">
@@ -79,3 +181,4 @@
         </div>
     </div>
 </nav>
+-->

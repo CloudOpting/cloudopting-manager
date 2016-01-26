@@ -1,8 +1,14 @@
 {
     "register": {
-        "title": "Registration",
+        "title": "Register",
         "form": {
-            "button": "Register"
+            "button": "Register",
+            "username.placeholder": "Username",
+            "firstName.placeholder": "First name",
+            "lastName.placeholder": "Last name",
+            "email.placeholder": "E-mail",
+            "password.placeholder": "Password",
+            "confirmpassword.placeholder": "Confirm Password"
         },
         "messages": {
             "validate": {

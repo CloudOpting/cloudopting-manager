@@ -58,9 +58,8 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
                     templateUrl: 'scripts/app/menu/menu.html',
                     controller: 'MenuController'
                 },
-                'footerlinks@': {
-                    templateUrl: 'scripts/app/footer/footer.html',
-                    controller: 'FooterController'
+                'footer@': {
+                    templateUrl: 'scripts/app/footer/footer.html'
                 }
             },
             resolve: {
