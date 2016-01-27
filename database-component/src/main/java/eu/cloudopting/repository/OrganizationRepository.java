@@ -8,6 +8,6 @@ import eu.cloudopting.events.api.repository.GenericRepository;
 
 public interface OrganizationRepository extends GenericRepository<Organizations, Long> {
 
-	@Query("SELECT o FROM Organizations o JOIN FETCH o.cloudAccountss i WHERE o.id = :organizationId")
+	@Query("SELECT o FROM Organizations o left JOIN FETCH o.cloudAccountss i WHERE o.id = :organizationId")
 	Organizations findOneAndInitCloudAccountCollection(@Param("organizationId") Long organizationId);
 }

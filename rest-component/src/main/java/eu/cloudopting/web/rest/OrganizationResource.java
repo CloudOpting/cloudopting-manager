@@ -45,7 +45,7 @@ public class OrganizationResource extends AbstractController<Organizations> {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<Organizations> findOne(@PathVariable("idOrganization") final Long idOrganization) {
-		Organizations organization = getService().findOne(idOrganization);
+		Organizations organization = ((OrganizationService)getService()).findOneAndInitCloudAccountCollection(idOrganization);
 		if(organization == null){
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
