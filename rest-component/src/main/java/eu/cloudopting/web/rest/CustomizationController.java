@@ -1,6 +1,7 @@
 package eu.cloudopting.web.rest;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,6 +98,31 @@ public class CustomizationController {
 		newC.setCustomizationFormValue(formData);
 		
 		customizationService.create(newC);
+		
+		
+		// here we need to create the mail and send it to the SP and sub.
+		// Here I need mail of the sub
+		String mailSub = user.getEmail();
+		
+		// than the mail of the organization
+		String mailSp = application.getOrganizationId().getOrganizationName();
+		
+		HashMap<String, Object> mailData = new HashMap<String, Object>();
+		mailData.put("serviceName", application.getApplicationName());
+		mailData.put("serviceOrganization", application.getOrganizationId().getOrganizationName());
+		mailData.put("serviceProviderMail", mailSp);
+		mailData.put("subscriberFirstName", user.getFirstName());
+		mailData.put("subscriberLastName", user.getLastName());
+		mailData.put("subscriberMail", mailSub);
+		mailData.put("subscriberOrganization", user.getOrganizationId().getOrganizationName());
+		
+		// than getting the template
+		
+		// compile the template
+		
+		// send the template as mail
+		
+		
 		response.setStatus(HttpServletResponse.SC_OK);
 		return "Customization successfully saved";
 	}
