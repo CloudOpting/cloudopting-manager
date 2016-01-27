@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService) {
+    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService, $window) {
         $scope.instancesList = null;
         if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)) {
             //Get all instances of the user if it is a SUBSCRIBER.
@@ -86,17 +86,20 @@ angular.module('cloudoptingApp')
 
         };
         $scope.stop = function(instance) {
-            InstanceService.stop(instance);
+            $window.alert('Not implemented yet');
+            //InstanceService.stop(instance);
         };
         $scope.delete = function(instance) {
-            InstanceService.delete(instance);
+            $window.alert('Not implemented yet');
+            //InstanceService.delete(instance);
         };
         $scope.monitor = function(instance) {
             localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, instance);
             $state.go('monitoring');
         };
         $scope.start = function(instance) {
-            InstanceService.start(instance);
+            $window.alert('Not implemented yet');
+            //InstanceService.start(instance);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){

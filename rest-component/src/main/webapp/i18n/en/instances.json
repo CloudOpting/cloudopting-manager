@@ -17,10 +17,10 @@
       "stopped": "Stopped"
     },
     "button" : {
-      "test" : "Test",
+      "demo" : "Demo",
       "search" : "Search Service",
       "go": "GO",
-      "monitor": "Monitoring",
+      "monitor": "Monitor.",
       "deploy": "Deploy",
       "stop": "Stop",
       "start": "Start",
