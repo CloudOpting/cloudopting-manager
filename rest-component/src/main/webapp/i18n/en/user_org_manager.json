@@ -22,7 +22,8 @@
       "activated": "Activated",
       "organization": "Organization",
       "actions": "Actions",
-      "cloudaccounts": "Cloud Account"
+      "cloudaccounts": "Cloud Account",
+      "password": "Password"
     },
     "button" : {
       "edit": "Edit",
