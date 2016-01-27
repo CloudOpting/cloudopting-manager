@@ -61,13 +61,13 @@ public class OrganizationResource extends AbstractController<Organizations> {
 	}
 
 	@RequestMapping(value = "/organization", method = RequestMethod.POST)
-	public final ResponseEntity<Organizations> create(@RequestBody OrganizationDTO organizationDTO) {
+	public final ResponseEntity<Organizations> create(@Valid @RequestBody OrganizationDTO organizationDTO) {
 		Organizations organization = ((OrganizationService)getService()).create(organizationDTO);
 		return new ResponseEntity<>(organization, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/organization", method = RequestMethod.PUT)
-	public final void update(@RequestBody OrganizationDTO organizationDTO, HttpServletResponse response) {
+	public final void update(@Valid @RequestBody OrganizationDTO organizationDTO, HttpServletResponse response) {
 		Organizations organization = getService().findOne(organizationDTO.getId());
 		if (organization == null) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);

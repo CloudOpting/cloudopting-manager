@@ -87,6 +87,15 @@ public class OrganizationServiceImpl extends AbstractService<Organizations> impl
 		if(source.getOrganizationName() != null){
 			target.setOrganizationName(source.getOrganizationName());
 		}
+		if(source.getEmail() != null){
+			target.setEmail(source.getEmail());
+		}
+		if(source.getContactRepresentative() != null){
+			target.setContactRepresentative(source.getContactRepresentative());
+		}
+		if(source.getContactPhone() != null){
+			target.setContactPhone(source.getContactPhone());
+		}
 	}
 	
 	private void setOrganizationStatus(Organizations organization, Long organizationStatusId){

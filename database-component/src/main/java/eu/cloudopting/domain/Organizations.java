@@ -3,12 +3,15 @@ package eu.cloudopting.domain;
 import eu.cloudopting.events.api.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -155,6 +158,19 @@ public class Organizations implements BaseEntity {
     @Column(name = "organization_name", length = 300)
     private String organizationName;
 
+    @Email
+    @Size(max = 100)
+    @Column(name = "email", length = 100)
+    private String email;
+    
+    @Size(max = 300)
+    @Column(name = "contact_representative", length = 300)
+    private String contactRepresentative;
+    
+    @Size(max = 100)
+    @Column(name = "contact_phone", length = 100)
+    private String contactPhone;
+    
 	public Set<Applications> getApplicationss() {
         return applicationss;
     }
@@ -252,7 +268,31 @@ public class Organizations implements BaseEntity {
         this.organizationName = organizationName;
     }
 
-    @Id
+    public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getContactRepresentative() {
+		return contactRepresentative;
+	}
+
+	public void setContactRepresentative(String contactRepresentative) {
+		this.contactRepresentative = contactRepresentative;
+	}
+
+	public String getContactPhone() {
+		return contactPhone;
+	}
+
+	public void setContactPhone(String contactPhone) {
+		this.contactPhone = contactPhone;
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
