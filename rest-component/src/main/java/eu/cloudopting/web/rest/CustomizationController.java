@@ -3,6 +3,7 @@ package eu.cloudopting.web.rest;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.validator.internal.util.privilegedactions.NewJaxbContext;
 import org.json.JSONException;
@@ -65,7 +66,7 @@ public class CustomizationController {
 
 	@RequestMapping(value = "/application/{idApp}/sendCustomizationForm",
             method = RequestMethod.POST)
-	public String postCustomizationForm(@PathVariable("idApp") final Long idApp, @RequestParam(value = "formData") String formData,HttpServletRequest request){
+	public String postCustomizationForm(@PathVariable("idApp") final Long idApp, @RequestParam(value = "formData") String formData,HttpServletRequest request, HttpServletResponse response){
 		log.debug("in postCustomizationForm");
 		log.debug(idApp.toString());
 		log.debug(formData);
@@ -96,7 +97,7 @@ public class CustomizationController {
 		newC.setCustomizationFormValue(formData);
 		
 		customizationService.create(newC);
-		
+		response.setStatus(HttpServletResponse.SC_OK);
 		return "Customization successfully saved";
 	}
 }
