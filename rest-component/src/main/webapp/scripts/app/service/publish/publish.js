@@ -26,7 +26,7 @@ angular.module('cloudoptingApp')
                 parent: 'service',
                 url: '/publish2',
                 data: {
-                    roles: ['ROLE_ADMIN']
+                    roles: ['ROLE_ADMIN', 'ROLE_PUBLISHER']
                 },
                 views: {
                     'content@': {
@@ -45,11 +45,30 @@ angular.module('cloudoptingApp')
                 parent: 'service',
                 url: '/publish3',
                 data: {
-                    roles: ['ROLE_ADMIN']
+                    roles: ['ROLE_ADMIN', 'ROLE_PUBLISHER']
                 },
                 views: {
                     'content@': {
                         templateUrl: 'scripts/app/service/publish/publish_three.html',
+                        controller: 'PublishController'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('publish');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('publish4', {
+                parent: 'service',
+                url: '/publish4',
+                data: {
+                    roles: ['ROLE_ADMIN', 'ROLE_PUBLISHER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/service/publish/publish_four.html',
                         controller: 'PublishController'
                     }
                 },

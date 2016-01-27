@@ -214,6 +214,10 @@ angular.module('cloudoptingApp')
         var toscaArchiveInDatabase = false;
         $scope.toscaFiles = [];
 
+        $scope.isToscaFilesEmpty = function() {
+            return $scope.toscaFiles.length==0;
+        };
+
         $scope.addToscaArchive = function(toscaArchive) {
             if(toscaArchive) {
                 $scope.toscaFiles.push.apply($scope.toscaFiles, toscaArchive);
@@ -268,7 +272,7 @@ angular.module('cloudoptingApp')
             console.log($scope.contentLib);
             var callback = function (){
                 console.log("Publication Requested!!!");
-                $state.go('list');
+                $state.go('publish4');
             };
 
             //Request publication
@@ -287,10 +291,6 @@ angular.module('cloudoptingApp')
             application.status = "Requested";
             console.log("Requesting publication for application:"+angular.toJson(application, true));
             ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
-        };
-
-        $scope.isToscaEmpty = function() {
-            return $scope.toscaFiles.length==0;
         };
     }
 );

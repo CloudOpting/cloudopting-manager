@@ -2,21 +2,27 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-                <div class="wizzard-box">
+                <div class="wizard-box">
                     <ul class="nav nav-wizard">
                         <li class="active">
-                            <a href="step1.html">
+                            <a href="#">
                                 <span class="badge">1</span> <span class="text">Set Global Properties</span>
                             </a>
                         </li>
                         <li class="">
-                            <a ui-sref="publish_two"><span class="badge">2</span> <span class="text">Specify Entry Scheme</span></a>
+                            <a href="#">
+                                <span class="badge">2</span> <span class="text">Specify Entry Scheme</span>
+                            </a>
                         </li>
                         <li class="">
-                            <a ui-sref="publish_three"><span class="badge badge-inverse">3</span> <span class="text">Create Test Entry</span></a>
+                            <a href="#">
+                                <span class="badge badge-inverse">3</span> <span class="text">Create Test Entry</span>
+                            </a>
                         </li>
                         <li class="">
-                            <a ui-sref="publish_four"><span class="badge">4</span> <span class="text">Check Your Data</span></a>
+                            <a href="#">
+                                <span class="badge">4</span> <span class="text">Check Your Data</span>
+                            </a>
                         </li>
                     </ul>
                     <div class="backend-box-content">
@@ -31,10 +37,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" autocomplete="off" ng-model="processID" disabled placeholder="Process ID"/>
+                                <label class="sr-only" for="processID">Process ID</label>
+                                <input type="text" class="form-control" id="processID" autocomplete="off" ng-model="processID" disabled placeholder="Process ID"/>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="{{'publish.service.name' | translate}}"
+                                <label class="sr-only" for="serviceName">Service Name</label>
+                                <input type="text" class="form-control" id="serviceName" placeholder="{{'publish.service.name' | translate}}"
                                        autocomplete="off" name="name" ng-model="application.applicationName"
                                        ng-minlength=1 required/>
 
@@ -52,7 +60,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="{{'publish.service.toscaname' | translate}}"
+                                <label class="sr-only" for="toscaName">Tosca Name</label>
+                                <input type="text" class="form-control" id="toscaName" placeholder="{{'publish.service.toscaname' | translate}}"
                                        autocomplete="off" name="toscaname" ng-model="application.applicationToscaName"
                                        ng-pattern="/^[a-zA-Z0-9\-_]{0,10}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10"/>
 
@@ -83,18 +92,18 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <!-- FIXME: ADDED NEW STYLE IN ORDER TO SOLVE VISIBILITY PROBLEMS -->
-                                    <div class="form-group"  style="height: 600px">
+                                    <div class="form-group" style="height: 600px">
                                         <div class="form-control textarea-lg">
                                             <!-- FIXME: ADDED SOME KIND OF TEMPLATE. FIX THIS -->
                                             <div text-angular placeholder="{{'publish.service.description' | translate}}"
                                                  rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
                                                  ng-minlength=1 required>
 
-                                                <p>Lorem ipsum</p><h2 class="service-summary-heading">Features</h2>
+                                                <p>Lorem ipsum</p>
+                                                <h2 class="service-summary-heading">Features</h2>
                                                 <ul class="service-summary-features-and-benefits">
                                                     <li>Feature 1</li>
                                                 </ul>
-
                                                 <h2 class="service-summary-heading">Benefits</h2>
                                                 <ul class="service-summary-features-and-benefits">
                                                     <li>Benefit 1</li>

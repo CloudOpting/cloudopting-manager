@@ -16,13 +16,13 @@
     "selectedfile": "Selected File",
     "content" : {
       "emptylibrary": "The Library is Empty",
-      "libarary" : "Content Library",
+      "library" : "Content Library",
       "name" : "Name",
       "file" : "File"
     },
     "button" : {
-      "save": "Save Configuration",
-      "save_n_next": "Save Configuration & Next",
+      "save": "Save",
+      "save_n_next": "Save & Next",
       "publish": "Publish Service",
       "add": "+ Add Item in Library",
       "delete": "Delete File"

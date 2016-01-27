@@ -1,0 +1,57 @@
+<section class="wizzard-modal" id="signin">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="wizard-box">
+                    <ul class="nav nav-wizard">
+                        <li class="done">
+                            <a href="#">
+                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                            </a>
+                        </li>
+                        <li class="done">
+                            <a href="#">
+                                <span class="badge">2</span> <span class="text">Specify Entry Scheme</span>
+                            </a>
+                        </li>
+                        <li class="done">
+                            <a href="#">
+                                <span class="badge badge-inverse">3</span> <span class="text">Create Test Entry</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="#">
+                                <span class="badge">4</span> <span class="text">Check Your Data</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger hide">
+                            <!-- FIXME: Has no sense -->
+                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <img src="assets/img/auth/icn_help.png" />
+                                </div>
+                            </div>
+
+                            <div class="thanks">
+                                <h4>Thanks!</h4>
+                                <h5>Your service has been published</h5>
+                            </div>
+
+                            <div class="row row-actions">
+                                <div class="col-xs-9"></div>
+                                <div class="col-xs-3">
+                                    <a ui-sref="list" class="btn btn-primary pull-right">Service List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
