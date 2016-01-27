@@ -7,7 +7,7 @@
                     <h2>{{currentApp.applicationName}}</h2>
                     <p class="item-intro text-muted">{{currentApp.applicationDescription}}</p>
                     <img class="img-responsive img-centered" src="{{currentApp.applicationImage}}" alt="" />
-                    <p>{{currentApp.applicationDescription}}</p>
+                    <p><div ta-bind ng-model="currentApp.applicationDescription"></div></p>
                 </div>
             </div>
         </div>
