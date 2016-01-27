@@ -39,6 +39,7 @@ angular.module('cloudoptingApp')
         ];
 
         $scope.model = {};
+        var booleanAlertMessage = false;
 
         $scope.onSubmit = function(form) {
             // First we broadcast an event so all fields validate themselves
@@ -48,11 +49,20 @@ angular.module('cloudoptingApp')
             if (form.$valid) {
                 // ... do whatever you need to do with your data.
                 $log.info("The form is valid, let's send it: " );
-                var callback = function(data) {
-                    $log.info("sendCustomForm succeeded with data: " + data);
+                var callback = function(data, status, headers, config) {
+                    if(status==201) {
+                        booleanAlertMessage = false;
+                        $log.info("sendCustomForm succeeded with data: " + data);
+                    } else {
+                        booleanAlertMessage = true;
+                    }
                 };
                 CustomizationService.sendCustomizationForm(idApp, $scope.model, callback);
             }
+        };
+
+        $scope.showAlertMessage = function(){
+            return booleanAlertMessage;
         }
     }
 );

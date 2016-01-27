@@ -43,7 +43,7 @@ angular.module('cloudoptingApp')
              * @param callback
              * @returns {*}
              */
-            sendCustomizationForm: function(idApp,json, callback) {
+            sendCustomizationForm: function(idApp, json, callback) {
                 var config =  {
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     transformRequest: function(obj) {
@@ -56,9 +56,13 @@ angular.module('cloudoptingApp')
                 console.debug(baseURI + SERVICE.SEPARATOR + idApp + SERVICE.SEPARATOR + 'sendCustomizationForm');
                 return $http.post(baseURI + SERVICE.SEPARATOR + idApp + SERVICE.SEPARATOR + 'sendCustomizationForm', {formData: angular.toJson(json)}, config)
                     .success(function(data, status, headers, config) {
-                        callback(data);
-                    }
-                );
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        console.error("CustomizationService.sendCustomizationForm error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
             }
         };
     }
