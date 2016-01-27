@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -124,4 +125,34 @@ public class MonitoringController {
 		return ret;*/
 	}
 
+	
+	@RequestMapping(value = "/monitoring/elastic", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
+	@ResponseBody
+	public GraphDTO getMonitoringData(
+			@RequestParam(value = "container", required = false) String container,
+			@RequestParam(value = "condition", required = false) String condition, 
+			@RequestParam(value = "fields", required = false) String fields,
+			@RequestParam(value = "type", required = false) String type,
+			@RequestParam(value = "pagination", required = false) String pagination){
+		
+		List<Monitordata> listret = monitordataService.getMonitorData(container, condition, fields, type, pagination);
+		log.debug(listret.toString());
+		
+		GraphDTO gdto = new GraphDTO();
+		Data[] dataarr = new Data[listret.size()];
+		
+		for(int i=0; i<listret.size();i++){
+			log.debug(listret.get(i).getHost());
+			Data el = new Data(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(listret.get(i).getTimestamp()),"1","0","0");
+			dataarr[i] = el;
+		}
+		gdto.setData(dataarr);
+		gdto.setXkey("time");
+		gdto.setYkeys(new String[] {"disk", "cpu", "ram"});
+		gdto.setLabels(new String[] {"Disk", "CPU", "RAM"});
+		gdto.setLineColors(new String[] {"green", "blue", "orange"});
+		return gdto;
+	}
+
+		
 }

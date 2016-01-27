@@ -7,6 +7,7 @@ angular.module('cloudoptingApp')
     .factory('MonitoringService', function (SERVICE, $http, $log) {
 
         var baseURI = 'api/monitoring';
+        var header = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
 
         return {
             /**
@@ -39,6 +40,21 @@ angular.module('cloudoptingApp')
                         $log.error(data);
                     });
             },
+
+            getMonitoringData: function(container, condition, fields, type, pagination, callback) {
+                return $http.post(
+                    baseURI + SERVICE.SEPARATOR + "elastic" +'?container='+container+'&condition='+condition+'&fields='+fields+'&type='+type+'&pagination='+pagination,
+                    {},
+                    { headers: header }
+                )
+                    .success(function (data) {
+                        if(callback) { callback(data); }
+                    })
+                    .error(function(data, status, headers, config) {
+                        //TODO: Do something if it fails
+                    });
+            },
+
             
             findOneDataById: function(instanceId, callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + "elastic" + SERVICE.SEPARATOR + instanceId)

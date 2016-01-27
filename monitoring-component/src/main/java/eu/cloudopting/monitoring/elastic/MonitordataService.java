@@ -34,5 +34,9 @@ public class MonitordataService {
 		public List<Monitordata> findCustom(String container){
 			return monitordataRepository.findCustom(container, new PageRequest(0,20,new Sort(new Sort.Order(Sort.Direction.ASC,"@timestamp"))));
 		}
-		
+
+		public List<Monitordata> getMonitorData(String container, String condition, String fields, String type, String pagination){
+			return monitordataRepository.findCustom(container, new PageRequest(0,20,new Sort(new Sort.Order(Sort.Direction.ASC,"@timestamp"))));
+		}
+
 }
