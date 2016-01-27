@@ -17,6 +17,7 @@ angular.module('cloudoptingApp')
             "PUBLISHED" : "PUBLISHED"
         },
         "STORAGE" : {
+            "CURRENT_USER" : "currentUser",
             "CURRENT_APP" : "currentApplication",
             "CURRENT_ORGANIZATION" : "currentOrganization",
             "CURRENT_INSTANCE" : "currentInstance",

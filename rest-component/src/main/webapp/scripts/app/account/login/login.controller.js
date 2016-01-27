@@ -5,7 +5,7 @@ angular.module('cloudoptingApp')
         $scope.user = {};
         $scope.errors = {};
 
-        $scope.rememberMe = true;
+        $scope.rememberMe = false;
         $timeout(function (){angular.element('[ng-model="username"]').focus();});
         $scope.login = function () {
             Auth.login({

@@ -3,7 +3,7 @@
 angular.module('cloudoptingApp')
     .controller('ListController', function (SERVICE, $rootScope, $scope, $state, $timeout, localStorageService, Principal, Auth, ApplicationService, $window) {
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
-        $scope.applicationList = null;
+        $scope.applicationList = [];
 
         //Depending on the role, give the user a different list
         if(Principal.isInRole(SERVICE.ROLE.ADMIN)) {
@@ -14,7 +14,12 @@ angular.module('cloudoptingApp')
         }
         else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)) {
             var callback = function (applications) {
-                $scope.applicationList = applications.content;
+                var user = localStorageService.get(SERVICE.STORAGE.CURRENT_USER);
+                for(var org in applications.content){
+                    if(user.organizationId.id == applications.content[org].organizationId.id){
+                        $scope.applicationList.push(applications.content[org]);
+                    }
+                }
             };
             ApplicationService.findAllUnpaginated(callback);
         }

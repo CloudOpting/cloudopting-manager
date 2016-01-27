@@ -8,8 +8,13 @@ angular.module('cloudoptingApp').filter('startFrom', function() {
 });
 
 angular.module('cloudoptingApp')
-    .controller('CatalogController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService) {
+    .controller('CatalogController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService, Principal) {
         //, ApplicationService
+        //Save user
+        Principal.identity().then(function(account) {
+            localStorageService.set(SERVICE.STORAGE.CURRENT_USER, account);
+        });
+
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
         $scope.applicationList = null;
 
