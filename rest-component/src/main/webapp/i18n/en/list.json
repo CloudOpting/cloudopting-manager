@@ -5,12 +5,12 @@
       "placeholder": "Search for..."
     },
     "button": {
-      "addservice": "+ Add New Service",
+      "addservice": "New Service",
       "search": "Search Service",
       "edit": "Edit",
-      "listinstances": "List instances",
+      "listinstances": "List Inst.",
       "delete": "Delete",
-      "createinstance": "Create Instance"
+      "createinstance": "New Inst."
     },
     "col": {
       "name": "Service Name",

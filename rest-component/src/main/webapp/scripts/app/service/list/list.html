@@ -1,3 +1,77 @@
+<section class="wizzard-modal" id="signin">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center">
+                        Service List
+                    </div>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger hide">
+                            <!-- FIXME: This do not have any sense -->
+                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <!--<button class="btn btn-success pull-right" type="button" ng-click="goToPublish()" translate="list.button.addservice">+ Add New Service</button>-->
+                                        <button type="button" class="btn btn-icon btn-block" ng-click="goToPublish()" ><i class="icon"><img src="assets/img/auth/icn_new.png" /></i>{{'list.button.addservice' | translate}}</button>
+                                    </span>
+                                </div><!-- /.col-lg-12 -->
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'list.search.placeholder' | translate}}" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th translate="list.col.name">Service name</th>
+                                                <th translate="list.col.status">Status</th>
+                                                <th translate="list.col.edit">Edit Service</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="app in applicationList">
+                                                <td>{{app.applicationName}}</td>
+                                                <td>{{app.statusId.status}}</td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-icon" ng-click="goToEdit(app)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'list.button.edit' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="goToInstanceList(app)" ><i class="icon"><img src="assets/img/auth/icn_list.png" /></i>{{'list.button.listinstances' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="goToDelete(app)" ><i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'list.button.delete' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="goToCreateInstance(app)" ><i class="icon"><img src="assets/img/auth/icn_new.png" /></i>{{'list.button.createinstance' | translate}}</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+<!--
+                            <div class="row row-actions">
+                                <div class="col-lg-12">
+                                    <button type="submit" class="btn btn-primary pull-right">Next</button>
+                                </div>
+                            </div>
+                            -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--
 <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="list.title">Services List</div>
@@ -7,7 +81,7 @@
                     <span class="input-group-btn">
                         <button class="btn btn-success pull-right" type="button" ng-click="goToPublish()" translate="list.button.addservice">+ Add New Service</button>
                     </span>
-                </div><!-- /.col-lg-12 -->
+                </div>
             </div>
             <br />
             <div class="row">
@@ -17,8 +91,8 @@
                         <span class="input-group-btn">
                             <button class="btn btn-success" type="button" translate="list.button.search">Search Service</button>
                         </span>
-                    </div><!-- /input-group -->
-                </div><!-- /.col-lg-12 -->
+                    </div>
+                </div>
             </div>
             <br />
 
@@ -44,3 +118,4 @@
         </div>
     </div>
 </div>
+-->
