@@ -91,6 +91,8 @@ public class CustomizationController {
 		newC.setCustomizationDecommission(new Date());
 		newC.setStatusId(new Long(100));
 		//TODO Check this is correct
+		log.debug(formData);
+		log.debug(jsonData.toString());
 		newC.setCustomizationFormValue(formData);
 		
 		customizationService.create(newC);

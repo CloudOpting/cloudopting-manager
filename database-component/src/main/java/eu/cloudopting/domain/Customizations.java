@@ -60,7 +60,7 @@ public class Customizations implements BaseEntity {
 	//See: http://stackoverflow.com/questions/28588311/correct-jpa-annotation-for-postgresqls-text-type-without-hibernate-annotations
 	//and  http://stackoverflow.com/questions/3868096/jpa-how-do-i-persist-a-string-into-a-database-field-type-mysql-text
 	//Executed the following SQL Command on the db: ALTER TABLE customizations ADD COLUMN customization_form_value text;
-	@Lob
+//	@Lob
 	@Column(name = "customization_form_value")
     private String customizationFormValue;
 
