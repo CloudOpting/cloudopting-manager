@@ -21,7 +21,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
-                        $log.error(data);
+                        $log.error("MonitoringService.findAllObjectsByInstance error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
 
@@ -37,7 +38,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
-                        $log.error(data);
+                        $log.error("MonitoringService.findObject error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
 
@@ -47,11 +49,12 @@ angular.module('cloudoptingApp')
                     {},
                     { headers: header }
                 )
-                    .success(function (data) {
-                        if(callback) { callback(data); }
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
-                        //TODO: Do something if it fails
+                        $log.error("MonitoringService.getMonitoringData error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
 
@@ -62,10 +65,22 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
-                        $log.error(data);
+                        $log.error("MonitoringService.findOneDataById error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
+            },
+
+            //New endpoint to retriebe the data
+            findByCustomizationId: function(instanceId, callback) {
+                return $http.get(baseURI + SERVICE.SEPARATOR + "elastic/info/list" + SERVICE.SEPARATOR + instanceId)
+                    .success(function(data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error("MonitoringService.findByCustomizationId error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             }
-
         };
     }
 );
