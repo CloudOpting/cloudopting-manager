@@ -76,6 +76,14 @@ public class DatabaseConfiguration implements EnvironmentAware {
         dataSource.setMaxActive(100);
         dataSource.setMaxIdle(8);
         dataSource.setMaxWait(30000);
+        //Start Issue #104 Fix
+        //See http://stackoverflow.com/questions/29620265/postgres-connection-has-been-closed-error-in-spring-boot
+        dataSource.setTestOnBorrow(Boolean.valueOf(propertyResolver.getProperty("test-on-borrow")));
+        dataSource.setRemoveAbandoned(Boolean.valueOf(propertyResolver.getProperty("remove-abandoned")));
+        dataSource.setTestWhileIdle(Boolean.valueOf(propertyResolver.getProperty("test-while-idle")));
+        dataSource.setTestOnReturn(Boolean.valueOf(propertyResolver.getProperty("test-on-return")));
+        dataSource.setValidationQuery(propertyResolver.getProperty("validation-query"));
+        //End Issue #104 Fix
        /* List<String> sqls=new ArrayList<String>();
         sqls.add("SET SCHEMA = '" + propertyResolver.getProperty("databaseName") + "'");*/
 //        dataSource.setConnectionInitSqls(sqls);
