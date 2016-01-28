@@ -16,6 +16,11 @@ spring:
         serverName: lab1.cloudopting.org
         username: postgres
         password: 1qaz2wsx
+        test-on-borrow: true
+        test-while-idle: true
+        test-on-return: true
+        remove-abandoned: true
+        validation-query: SELECT 1;
 
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect
