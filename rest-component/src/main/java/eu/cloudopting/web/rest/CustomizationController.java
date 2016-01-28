@@ -102,15 +102,17 @@ public class CustomizationController {
 		
 		// here we need to create the mail and send it to the SP and sub.
 		// Here I need mail of the sub
-		String mailSub = user.getEmail();
+		String mailSub = user.getOrganizationId().getEmail();
 		
 		// than the mail of the organization
-		String mailSp = application.getOrganizationId().getOrganizationName();
+		String mailSp = application.getOrganizationId().getEmail());
 		
 		HashMap<String, Object> mailData = new HashMap<String, Object>();
 		mailData.put("serviceName", application.getApplicationName());
 		mailData.put("serviceOrganization", application.getOrganizationId().getOrganizationName());
 		mailData.put("serviceProviderMail", mailSp);
+		mailData.put("serviceOrganizationContact", application.getOrganizationId().getContactRepresentative());
+		mailData.put("serviceOrganizationContactPhone", application.getOrganizationId().getContactPhone());
 		mailData.put("subscriberFirstName", user.getFirstName());
 		mailData.put("subscriberLastName", user.getLastName());
 		mailData.put("subscriberMail", mailSub);
