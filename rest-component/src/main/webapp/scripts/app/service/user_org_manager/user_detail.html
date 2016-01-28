@@ -8,27 +8,31 @@
             <form name="user_form" novalidate ng-submit="submitUserForm(user.id)" show-validation>
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="darkgreen" name="alias" translate="user_org_manager.col.login">Alias:</label>
-                        <input type="text" class="form-control" ng-model="user.login"
-                               ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                        <label class="darkgreen" translate="user_org_manager.col.login">Alias:</label>
+                        <input type="text" class="form-control" ng-model="user.login" name="alias"
+                               ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/" required maxlength="50">
                         <div ng-show="user_form.alias.$dirty && user_form.alias.$invalid">
                             <p class="help-block"
-                               ng-show="user_form.alias.$error.required" translate="settings.messages.validate.firstname.required">
-                                Your first name is required.
+                               ng-show="user_form.alias.$error.required" translate="settings.messages.validate.alias.required">
+                                Your alias is required.
                             </p>
                             <p class="help-block"
-                               ng-show="user_form.alias.$error.minlength" translate="settings.messages.validate.firstname.minlength">
-                                Your first name is required to be at least 1 character
+                               ng-show="user_form.alias.$error.minlength" translate="settings.messages.validate.alias.minlength">
+                                Your alias is required to be at least 1 character
                             </p>
                             <p class="help-block"
-                               ng-show="user_form.alias.$error.maxlength" translate="settings.messages.validate.firstname.maxlength">
-                                Your first name cannot be longer than 50 characters
+                               ng-show="user_form.alias.$error.maxlength" translate="settings.messages.validate.alias.maxlength">
+                                Your alias cannot be longer than 50 characters
+                            </p>
+                            <p class="help-block"
+                               ng-show="user_form.alias.$error.pattern" translate="settings.messages.validate.alias.pattern">
+                                Your alias can only contain lower-case letters and digits
                             </p>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="darkgreen" name="firstName" translate="user_org_manager.col.firstName">First Name:</label>
-                        <input type="text" class="form-control" ng-model="user.firstName"
+                        <label class="darkgreen" translate="user_org_manager.col.firstName">First Name:</label>
+                        <input type="text" class="form-control" ng-model="user.firstName" name="firstName"
                                ng-minlength=1 ng-maxlength=50 required maxlength="50">
                         <div ng-show="user_form.firstName.$dirty && user_form.firstName.$invalid">
                             <p class="help-block"
@@ -46,28 +50,28 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="darkgreen" name="lastName" translate="user_org_manager.col.lastName">Last Name:</label>
-                        <input type="text" class="form-control" ng-model="user.lastName"
+                        <label class="darkgreen" translate="user_org_manager.col.lastName">Last Name:</label>
+                        <input type="text" class="form-control" ng-model="user.lastName" name="lastName"
                                ng-minlength=1 ng-maxlength=50 required maxlength="50">
                         <div ng-show="user_form.lastName.$dirty && user_form.lastName.$invalid">
                             <p class="help-block"
-                               ng-show="user_form.lastName.$error.required" translate="settings.messages.validate.firstname.required">
-                                Your first name is required.
+                               ng-show="user_form.lastName.$error.required" translate="settings.messages.validate.lastname.required">
+                                Your last name is required.
                             </p>
                             <p class="help-block"
-                               ng-show="user_form.lastName.$error.minlength" translate="settings.messages.validate.firstname.minlength">
-                                Your first name is required to be at least 1 character
+                               ng-show="user_form.lastName.$error.minlength" translate="settings.messages.validate.lastname.minlength">
+                                Your last name is required to be at least 1 character
                             </p>
                             <p class="help-block"
-                               ng-show="user_form.lastName.$error.maxlength" translate="settings.messages.validate.firstname.maxlength">
-                                Your first name cannot be longer than 50 characters
+                               ng-show="user_form.lastName.$error.maxlength" translate="settings.messages.validate.lastname.maxlength">
+                                Your last name cannot be longer than 50 characters
                             </p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <!-- add email validation -->
-                        <label class="darkgreen" name="email" translate="user_org_manager.col.email">Email:</label>
-                        <input type="email" class="form-control" ng-model="user.email"
+                        <label class="darkgreen" translate="user_org_manager.col.email">Email:</label>
+                        <input type="email" class="form-control" ng-model="user.email" name="email"
                                ng-minlength=5 ng-maxlength=100 required maxlength="100">
                         <div ng-show="user_form.email.$dirty && user_form.email.$invalid">
                             <p class="help-block"
