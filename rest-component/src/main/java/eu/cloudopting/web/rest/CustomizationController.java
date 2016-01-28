@@ -105,7 +105,7 @@ public class CustomizationController {
 		String mailSub = user.getOrganizationId().getEmail();
 		
 		// than the mail of the organization
-		String mailSp = application.getOrganizationId().getEmail());
+		String mailSp = application.getOrganizationId().getEmail();
 		
 		HashMap<String, Object> mailData = new HashMap<String, Object>();
 		mailData.put("serviceName", application.getApplicationName());
