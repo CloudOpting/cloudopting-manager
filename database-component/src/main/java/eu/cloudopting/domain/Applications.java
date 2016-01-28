@@ -3,10 +3,13 @@ package eu.cloudopting.domain;
 import eu.cloudopting.events.api.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+
 import java.util.List;
 import java.util.Set;
 
@@ -144,6 +147,25 @@ public class Applications implements BaseEntity {
 	@Column(name = "application_version", length = 10)
     private String applicationVersion;
 
+	@Column(name = "short_description")
+    private String shortDescription;
+	
+    @Email
+    @Size(max = 100)
+    @Column(name = "application_subscriber_mail", length = 100)
+    private String applicationSubscriberMail;
+	
+    @Email
+    @Size(max = 100)
+    @Column(name = "application_sp_mail", length = 100)
+    private String applicationSpMail;
+    
+    @Column(name = "application_is_tryable")
+    private Boolean applicationIsTryable;
+    
+	@Column(name = "terms")
+    private String terms;
+	
     @OneToMany(mappedBy = "applicationId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Customizations> customizationss;
 
@@ -222,5 +244,45 @@ public class Applications implements BaseEntity {
 
 	public void setApplicationToscaName(String applicationToscaName) {
 		this.applicationToscaName = applicationToscaName;
+	}
+
+	public String getShortDescription() {
+		return shortDescription;
+	}
+
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+
+	public String getApplicationSubscriberMail() {
+		return applicationSubscriberMail;
+	}
+
+	public void setApplicationSubscriberMail(String applicationSubscriberMail) {
+		this.applicationSubscriberMail = applicationSubscriberMail;
+	}
+
+	public String getApplicationSpMail() {
+		return applicationSpMail;
+	}
+
+	public void setApplicationSpMail(String applicationSpMail) {
+		this.applicationSpMail = applicationSpMail;
+	}
+
+	public Boolean getApplicationIsTryable() {
+		return applicationIsTryable;
+	}
+
+	public void setApplicationIsTryable(Boolean applicationIsTryable) {
+		this.applicationIsTryable = applicationIsTryable;
+	}
+
+	public String getTerms() {
+		return terms;
+	}
+
+	public void setTerms(String terms) {
+		this.terms = terms;
 	}
 }

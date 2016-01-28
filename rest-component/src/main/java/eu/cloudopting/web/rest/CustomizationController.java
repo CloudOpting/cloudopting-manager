@@ -23,6 +23,7 @@ import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CustomizationService;
+import eu.cloudopting.service.CustomizationStatusService;
 import eu.cloudopting.service.MailService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.tosca.ToscaService;
@@ -43,6 +44,9 @@ public class CustomizationController {
 
 	@Autowired
 	CustomizationService customizationService;
+
+	@Autowired
+	CustomizationStatusService customizationStatusService;
 
 	@Autowired
 	MailService mailService;
@@ -102,7 +106,7 @@ public class CustomizationController {
 		newC.setCustomizationActivation(new Date());
 		newC.setCustomizationCreation(new Date());
 		newC.setCustomizationDecommission(new Date());
-		newC.setStatusId(new Long(100));
+		newC.setStatusId(customizationStatusService.findOne(100));
 		// TODO Check this is correct
 		log.debug(formData);
 		log.debug(jsonData.toString());

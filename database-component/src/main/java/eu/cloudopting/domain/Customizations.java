@@ -50,10 +50,10 @@ public class Customizations implements BaseEntity {
     @DateTimeFormat(style = "M-")
     private Date customizationDecommission;
 
-	@Column(name = "status_id")
-    @NotNull
-    private Long statusId;
-
+	@ManyToOne
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
+    private CustomizationStatus statusId;
+	
 	@Column(name = "process_id", length = 64)
     private String processId;
 	
@@ -64,6 +64,20 @@ public class Customizations implements BaseEntity {
 	@Column(name = "customization_form_value")
     private String customizationFormValue;
 
+    @Column(name = "pay_service")
+    private Boolean payService;
+    
+    @Column(name = "pay_platform")
+    private Boolean payPlatform;
+    
+    @Column(name = "is_trial")
+    private Boolean isTrial;
+    
+	@Column(name = "trial_end_date")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(style = "M-")
+    private Date trialEndDate;
+	
 	public Organizations getCustomerOrganizationId() {
         return customerOrganizationId;
     }
@@ -112,11 +126,11 @@ public class Customizations implements BaseEntity {
         this.customizationDecommission = customizationDecommission;
     }
 
-	public Long getStatusId() {
+	public CustomizationStatus getStatusId() {
         return statusId;
     }
 
-	public void setStatusId(Long statusId) {
+	public void setStatusId(CustomizationStatus statusId) {
         this.statusId = statusId;
     }
 
@@ -246,5 +260,37 @@ public class Customizations implements BaseEntity {
 
 	public void setCustomizationFormValue(String customizationFormValue) {
 		this.customizationFormValue = customizationFormValue;
+	}
+
+	public Boolean getPayService() {
+		return payService;
+	}
+
+	public void setPayService(Boolean payService) {
+		this.payService = payService;
+	}
+
+	public Boolean getPayPlatform() {
+		return payPlatform;
+	}
+
+	public void setPayPlatform(Boolean payPlatform) {
+		this.payPlatform = payPlatform;
+	}
+
+	public Boolean getIsTrial() {
+		return isTrial;
+	}
+
+	public void setIsTrial(Boolean isTrial) {
+		this.isTrial = isTrial;
+	}
+
+	public Date getTrialEndDate() {
+		return trialEndDate;
+	}
+
+	public void setTrialEndDate(Date trialEndDate) {
+		this.trialEndDate = trialEndDate;
 	}
 }
