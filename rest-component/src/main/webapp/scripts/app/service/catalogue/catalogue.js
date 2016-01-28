@@ -3,24 +3,24 @@
 angular.module('cloudoptingApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('catalog', {
+            .state('catalogue', {
                 parent: 'service',
-                url: '/catalog',
+                url: '/catalogue',
                 data: {
                     roles: []
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/service/catalog/catalog.html',
-                        controller: 'CatalogController'
+                        templateUrl: 'scripts/app/service/catalogue/catalogue.html',
+                        controller: 'CatalogueController'
                     },
                     'header@': {
-                        templateUrl: 'scripts/app/service/catalog/header_catalog.html'
+                        templateUrl: 'scripts/app/service/catalogue/header_catalogue.html'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('catalog');
+                        $translatePartialLoader.addPart('catalogue');
                         $translatePartialLoader.addPart('contact');
                         return $translate.refresh();
                     }]

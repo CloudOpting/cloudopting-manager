@@ -9,6 +9,6 @@ angular.module('cloudoptingApp')
         $scope.logout = function () {
             Auth.logout();
             //$state.go('home');
-            $state.go('catalog');
+            $state.go('catalogue');
         };
     });

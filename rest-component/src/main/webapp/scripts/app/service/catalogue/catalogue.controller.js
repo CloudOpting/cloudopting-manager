@@ -8,7 +8,7 @@ angular.module('cloudoptingApp').filter('startFrom', function() {
 });
 
 angular.module('cloudoptingApp')
-    .controller('CatalogController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService, Principal) {
+    .controller('CatalogueController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService, Principal) {
         //, ApplicationService
         //Save user
         Principal.identity().then(function(account) {

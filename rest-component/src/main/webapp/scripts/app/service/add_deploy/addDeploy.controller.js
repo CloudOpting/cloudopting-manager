@@ -15,8 +15,8 @@ angular.module('cloudoptingApp')
         }
         else
         {
-            //If not application go to catalog.
-            $state.go('catalog');
+            //If not application go to catalogue.
+            $state.go('catalogue');
         }
 
         $scope.saveTemplate = function(service) {

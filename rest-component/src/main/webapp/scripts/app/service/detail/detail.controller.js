@@ -9,9 +9,9 @@ angular.module('cloudoptingApp')
         //IF the status of the services is "UNFINISHED" we have to set the button "GO TO EDIT" if it is the Publisher
 
 
-        //If not application go to catalog.
+        //If not application go to catalogue.
         if($scope.currentApp == undefined || $scope.currentApp == null ){
-            $state.go('catalog');
+            $state.go('catalogue');
         }
         if(!Principal.isAuthenticated()) {
             $scope.detail_function = function() {
