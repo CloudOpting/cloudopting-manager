@@ -35,28 +35,37 @@ angular.module('cloudoptingApp')
 
         //TODO: Implement button "Search Service" functionality.
 
+        //This function sets the organization id to 1.
         $scope.testapp1 = function(instance) {
+
             //Save the organization in order to retrieve later the clouds accounts.
-            var callback = function (data) {
-                window.alert("Test requested.");
-                call_b();
+            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            currentApp.id = 1;
+            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
+
+            var func = function (cloudAccount, call_b) {
+                var callback = function (data, status, headers, config) {
+                    window.alert("Test requested.");
+                    call_b();
+                };
+                cloudAccount.id = 1;
+                ProcessService.test(instance, cloudAccount, callback);
             };
-            var cloudAccount = {};
-            cloudAccount.id = 1;
-            ProcessService.test(instance, cloudAccount, callback);
+
+            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
 
             $state.go('chooseaccount');
 
         };
 
-        $scope.test = function(instance) {
+        $scope.demo = function(instance) {
             //Save the organization in order to retrieve later the clouds accounts.
             var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp.organizationId);
+            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
 
             var func = function (cloudAccount, call_b) {
-                var callback = function (data) {
-                    window.alert("Test requested.");
+                var callback = function (data, status, headers, config) {
+                    window.alert("Demo requested.");
                     call_b();
                 };
                 ProcessService.test(instance, cloudAccount, callback);
@@ -73,7 +82,7 @@ angular.module('cloudoptingApp')
             localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
 
             var func = function (cloudAccount, call_b) {
-                var callback = function (data) {
+                var callback = function (data, status, headers, config) {
                     window.alert("Deploy requested.");
                     call_b();
                 };

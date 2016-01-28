@@ -17,7 +17,7 @@ angular.module('cloudoptingApp')
                     {},
                     { headers: header }
                 )
-                    .success(function (data) {
+                    .success(function (data, status, headers, config) {
                        //Do we need to deal with the returned data here.
                         var a = data;
                     })
@@ -31,7 +31,7 @@ angular.module('cloudoptingApp')
                     {},
                     { headers: header }
                 )
-                    .success(function (data) {
+                    .success(function (data, status, headers, config) {
                         if(callback) { callback(data); }
                     })
                     .error(function(data, status, headers, config) {
@@ -44,7 +44,7 @@ angular.module('cloudoptingApp')
                     {},
                     { headers: header }
                 )
-                    .success(function (data) {
+                    .success(function (data, status, headers, config) {
                         if(callback) { callback(data); }
                     })
                     .error(function(data, status, headers, config) {
