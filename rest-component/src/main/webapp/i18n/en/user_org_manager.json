@@ -27,10 +27,8 @@
     },
     "button" : {
       "edit": "Edit",
-      "edit_user": "Edit User",
-      "create_user": "Create User",
-      "edit_organization":"Edit Organization",
-      "create_organization":"Create Organization",
+      "create": "Create",
+      "cancel": "Cancel",
       "delete": "Delete"
     }
   }

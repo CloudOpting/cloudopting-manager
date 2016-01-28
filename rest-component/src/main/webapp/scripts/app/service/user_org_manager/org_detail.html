@@ -29,10 +29,9 @@
                                 ng-options="s.id as s.status for s in status">
                         </select>
                     </div>
-
-                    <button ng-show="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit_organization">Edit Organization</button>
-                    <button ng-hide="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create_organization">Create Organization</button>
-
+                    <button ng-show="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit">Edit</button>
+                    <button ng-hide="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create">Create</button>
+                    <button type="submit" ng-click="cancel('org_manager')" class="btn btn-success" translate="user_org_manager.button.cancel">Cancel</button>
                 </div>
             </form>
         </div>

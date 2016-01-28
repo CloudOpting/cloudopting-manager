@@ -124,9 +124,9 @@
                         </select>
                         <a ui-sref="org_manager">Go to organization manager to create a new one.</a>
                     </div>
-                    <button ng-show="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit_user">Edit User</button>
-                    <button ng-hide="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create_user">Create User</button>
-
+                    <button ng-show="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit">Edit</button>
+                    <button ng-hide="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create">Create</button>
+                    <button type="submit" ng-click="cancel('user_manager')" class="btn btn-success" translate="user_org_manager.button.cancel">Cancel</button>
                 </div>
             </form>
         </div>

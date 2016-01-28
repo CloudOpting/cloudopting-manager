@@ -157,5 +157,9 @@ angular.module('cloudoptingApp')
         };
         //////////////////////////////////////////
 
+        $scope.cancel = function(string) {
+            $state.go(string);
+        }
+
     }
 );
