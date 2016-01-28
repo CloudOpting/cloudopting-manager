@@ -7,6 +7,7 @@ angular.module('cloudoptingApp')
     .factory('ProcessService', function ($http) {
 
         var baseURI = 'api/process';
+        var baseURITest = 'api/processTest';
         var header = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
 
         return {
@@ -23,7 +24,7 @@ angular.module('cloudoptingApp')
                     });
             },
             test: function(instance, callback) {
-                return $http.post( baseURI + '?customizationId='+instance.id+'&isDemo=false&isTesting=true', {}, { headers: header } )
+                return $http.post( baseURITest + '?customizationId='+instance.id+'&isDemo=false&isTesting=true', {}, { headers: header } )
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })

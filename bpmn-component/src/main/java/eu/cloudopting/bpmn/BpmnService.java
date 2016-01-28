@@ -151,6 +151,14 @@ public class BpmnService {
         return pi.getProcessInstanceId();
 
 	}
+	
+	public String returnZipPath(String pid){
+		String zipPath = null;
+		
+		runtimeService.getVariable(pid, "serviceHome");
+		
+		return zipPath;
+	}
 
 	public void configuredVM(String processInstanceId){
 		log.info("Before processing message");
