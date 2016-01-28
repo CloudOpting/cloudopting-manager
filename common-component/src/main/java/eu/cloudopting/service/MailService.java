@@ -117,7 +117,7 @@ public class MailService {
                 "<p>CloudOpting team.</p>" +
                 "</body>" +
                 "</html>";
-        String subject = "CloudOpting Catalog Activation Link";
+        String subject = "CloudOpting Catalogue Activation Link";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
@@ -132,7 +132,7 @@ public class MailService {
                 "<p>CloudOpting team.</p>" +
                 "</body>" +
                 "</html>";
-        String subject = "CloudOpting Catalog Reset Password Link";
+        String subject = "CloudOpting Catalogue Reset Password Link";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 }

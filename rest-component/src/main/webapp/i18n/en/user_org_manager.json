@@ -6,7 +6,7 @@
     },
     "title.user_detail": "User Detail",
     "title.org_detail": "Organization Detail",
-    "search": "Search:",
+    "search": "Search for...",
     "col": {
       "name": "Name",
       "description": "Description",
@@ -16,8 +16,8 @@
       "role": "Role",
       "langKey": "Language",
       "firstName" : "First Name",
-      "organizationKey": "Key",
       "lastName" : "Last Name",
+      "organizationKey": "Key",
       "email": "Email",
       "activated": "Activated",
       "organization": "Organization",

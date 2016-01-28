@@ -40,7 +40,7 @@ angular.module('cloudoptingApp')
 
                 $scope.logout = function(){
                     Auth.logout();
-                    $state.go("catalog");
+                    $state.go("catalogue");
                 };
             },
             true
@@ -51,17 +51,17 @@ angular.module('cloudoptingApp')
                 return true;
             }
             else if(Principal.isInRole(SERVICE.ROLE.OPERATOR)){
-                if(item=='catalog' || item=='detail' || item=='detail') {
+                if(item=='catalogue' || item=='detail' || item=='detail') {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
-                if(item=='catalog' || item=='detail' || item=='instances' || item=='publish' || item=='list') {
+                if(item=='catalogue' || item=='detail' || item=='instances' || item=='publish' || item=='list') {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)){
-                if(item=='catalog' || item=='detail' || item=='instances' || item=='subscriber' || item=='taylor') {
+                if(item=='catalogue' || item=='detail' || item=='instances' || item=='subscriber' || item=='taylor') {
                     return true;
                 }
             }

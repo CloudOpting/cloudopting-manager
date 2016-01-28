@@ -8,7 +8,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 <li ng-show="showMenu('publish')"><a ui-sref="publish">Publish Service</a></li>
-                <li ng-show="showMenu('catalog')"><a ui-sref="catalog">Service Catalog</a></li>
+                <li ng-show="showMenu('catalogue')"><a ui-sref="catalogue">Service Catalogue</a></li>
                 <li ng-show="showMenu('list')"><a ui-sref="list">Services List - Manager</a></li>
                 <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager">User Manager</a></li>
                 <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager">Org Manager</a></li>
@@ -35,7 +35,7 @@
 <div class="container" ng-controller="MenuController">
     <div class="row">
         <div class="col-md-2">
-            <a ui-sref="catalog">
+            <a ui-sref="catalogue">
                 <div class="cloudopting_logo" ></div>
             </a>
         </div>
@@ -45,7 +45,7 @@
                     <li ng-hide="logoutButton" class="pull-right"><a ui-sref="register">Join</a></li>
                     <li ng-hide="logoutButton" class="pull-right"><a>|</a></li>
                     <li ng-hide="logoutButton" class="pull-right"><a ui-sref="login"><strong><u>Sign in</u></strong></a></li>
-                    <li ng-show="isPublisher()"><a ui-sref="servicesCatalog">Dashboard</a></li>
+                    <li ng-show="isPublisher()"><a ui-sref="servicesCatalogue">Dashboard</a></li>
                     <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="logout()">Sign out</a></li>
                     <li ng-show="logoutButton" class="pull-right"><a>|</a></li>
                     <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="profile()">Name: {{name}}</a></li>
