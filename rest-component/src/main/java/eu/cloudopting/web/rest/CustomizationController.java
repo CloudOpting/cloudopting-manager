@@ -6,13 +6,11 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.validator.internal.util.privilegedactions.NewJaxbContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -105,7 +103,7 @@ public class CustomizationController {
 		String mailSub = user.getOrganizationId().getEmail();
 		
 		// than the mail of the organization
-		String mailSp = application.getOrganizationId().getEmail());
+		String mailSp = application.getOrganizationId().getEmail();
 		
 		HashMap<String, Object> mailData = new HashMap<String, Object>();
 		mailData.put("serviceName", application.getApplicationName());
