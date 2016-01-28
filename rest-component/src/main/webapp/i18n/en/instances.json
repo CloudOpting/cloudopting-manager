@@ -1,6 +1,6 @@
 {
   "instances": {
-    "title": "Instances Service Catalog",
+    "title": "Instances Service",
     "placeholder" : "Search for...",
     "col" : {
       "instanceof": "Instance of",
@@ -17,6 +17,7 @@
       "stopped": "Stopped"
     },
     "button" : {
+      "test": "Test",
       "demo" : "Demo",
       "search" : "Search Service",
       "go": "GO",

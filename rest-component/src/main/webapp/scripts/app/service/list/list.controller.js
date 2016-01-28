@@ -24,10 +24,6 @@ angular.module('cloudoptingApp')
             ApplicationService.findAllUnpaginated(callback);
         }
 
-        //TODO: Implement button "Search Service" functionality.
-
-        //TODO: Implement button go for each instance.
-
         //Function to get to publish a new service
         $scope.goToPublish = function () {
             //Redirect to publication
@@ -39,10 +35,12 @@ angular.module('cloudoptingApp')
             //Save the ID on a place where edit can get it.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
 
-            $window.alert("This functionality is not ready yet. For any inconvenience, contact cloudopting@gmail.com");
+            localStorageService.set(SERVICE.STORAGE.PUBLISH_EDITION, true);
+
+            //$window.alert("This functionality is not ready yet. For any inconvenience, contact cloudopting@gmail.com");
 
             //Redirect to instances
-            //$state.go('edit');
+            $state.go('publish');
         };
 
         //Function to go to the instances detail.

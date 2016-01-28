@@ -22,7 +22,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="{{'list.search.placeholder' | translate}}" />
+                                    <input type="text" class="form-control" ng-model="searchTextApplication" placeholder="{{'list.search.placeholder' | translate}}" />
                                     <span class="input-group-btn">
                                         <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
                                     </span>
@@ -40,7 +40,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="app in applicationList">
+                                            <tr ng-repeat="app in applicationList | filter:searchTextApplication">
                                                 <td>{{app.applicationName}}</td>
                                                 <td>{{app.statusId.status}}</td>
                                                 <td class="text-right">

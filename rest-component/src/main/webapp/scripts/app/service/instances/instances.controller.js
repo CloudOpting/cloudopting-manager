@@ -2,14 +2,15 @@
 
 angular.module('cloudoptingApp')
     .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService, $window) {
+
         $scope.instancesList = null;
+
         if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)) {
             //Get all instances of the user if it is a SUBSCRIBER.
             InstanceService.findAllUnpaginatedSubscriber()
                 .success(function (instances) {
                     $scope.instancesList = instances;
                 });
-
         } else if(Principal.isInRole(SERVICE.ROLE.ADMIN) || Principal.isInRole(SERVICE.ROLE.OPERATOR) ) {
             //If the user is an ADMIN or an OPERATOR and they comes from DETAIL screen
             //get only the instances of the current application.
@@ -33,67 +34,27 @@ angular.module('cloudoptingApp')
             })*/
         }
 
-        //TODO: Implement button "Search Service" functionality.
-
-        //This function sets the organization id to 1.
-        $scope.testapp1 = function(instance) {
-
-            //Save the organization in order to retrieve later the clouds accounts.
-            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-            currentApp.id = 1;
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
-
-            var func = function (cloudAccount, call_b) {
-                var callback = function (data, status, headers, config) {
-                    window.alert("Test requested.");
-                    call_b();
-                };
-                cloudAccount.id = 1;
-                ProcessService.test(instance, cloudAccount, callback);
+        $scope.test = function(instance) {
+            var callback = function (data, status, headers, config) {
+                checkStatusCallback(data, status, headers, config, "Test requested.");
             };
-
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
-
-            $state.go('chooseaccount');
-
+            ProcessService.test(instance, callback);
         };
 
         $scope.demo = function(instance) {
-            //Save the organization in order to retrieve later the clouds accounts.
-            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
-
-            var func = function (cloudAccount, call_b) {
-                var callback = function (data, status, headers, config) {
-                    window.alert("Demo requested.");
-                    call_b();
-                };
-                ProcessService.test(instance, cloudAccount, callback);
+            var callback = function (data, status, headers, config) {
+                checkStatusCallback(data, status, headers, config, "Demo requested.");
             };
-
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
-
-            $state.go('chooseaccount');
-
+            ProcessService.test(instance, callback);
         };
+
         $scope.deploy = function(instance) {
-            //Save the organization in order to retrieve later the clouds accounts.
-            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
-
-            var func = function (cloudAccount, call_b) {
-                var callback = function (data, status, headers, config) {
-                    window.alert("Deploy requested.");
-                    call_b();
-                };
-                ProcessService.deploy(instance, cloudAccount, callback);
+            var callback = function (data, status, headers, config) {
+                checkStatusCallback(data, status, headers, config, "Deploy requested.");
             };
-
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
-
-            $state.go('chooseaccount');
-
+            ProcessService.deploy(instance, callback);
         };
+
         $scope.stop = function(instance) {
             $window.alert('Not implemented yet');
             //InstanceService.stop(instance);
@@ -125,6 +86,31 @@ angular.module('cloudoptingApp')
         };
         $scope.showMonitor = function(str){
             return str === "Running";
+        };
+
+        $scope.errorMessage = null;
+        $scope.infoMessage = null;
+
+        //function to check possible outputs for the end user information.
+        var checkStatusCallback = function(data, status, headers, config, message){
+            if(status==401) {
+                //Unauthorised. Check if signed in.
+                if(Principal.isAuthenticated()){
+                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                } else {
+                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $timeout(function() {
+                        $state.go('login');
+                    }, 3000);
+                }
+            }else if(status!=200 && status!=201) {
+                //Show message
+                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+
+            } else {
+                //Return to the list
+                $scope.infoMessage = message + " Successfully done!";
+            }
         };
     }
 );
