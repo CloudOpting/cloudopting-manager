@@ -13,7 +13,7 @@ angular.module('cloudoptingApp')
             //FIXME: This function should be deleted together with the Button Screen.
             apiProcessOne: function () {
                 return $http.post(
-                    baseURI + '?customizationId=4308&cluodId=1&isTesting=true',
+                    baseURI + '?customizationId=4308&isDemo=false&isTesting=true',
                     {},
                     { headers: header }
                 )
@@ -27,7 +27,20 @@ angular.module('cloudoptingApp')
             },
             test: function(instance, cloudAccount, callback) {
                 return $http.post(
-                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudAccount.id+'isTesting=true',
+                    baseURI + '?customizationId='+instance.id+'&isDemo=false&isTesting=true',
+                    {},
+                    { headers: header }
+                )
+                    .success(function (data, status, headers, config) {
+                        if(callback) { callback(data); }
+                    })
+                    .error(function(data, status, headers, config) {
+                        //TODO: Do something if it fails
+                    });
+            },
+            demo: function(instance, cloudAccount, callback) {
+                return $http.post(
+                    baseURI + '?customizationId='+instance.id+'&isDemo=true&isTesting=false',
                     {},
                     { headers: header }
                 )
@@ -40,7 +53,7 @@ angular.module('cloudoptingApp')
             },
             deploy: function(instance, cloudAccount, callback) {
                 return $http.post(
-                    baseURI + '?customizationId='+instance.id+'&cluodId='+cloudAccount.id+'isTesting=false',
+                    baseURI + '?customizationId='+instance.id+'&isDemo=false&isTesting=false',
                     {},
                     { headers: header }
                 )

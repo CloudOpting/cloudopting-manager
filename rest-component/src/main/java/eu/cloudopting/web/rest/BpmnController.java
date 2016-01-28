@@ -23,9 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
+import eu.cloudopting.domain.CloudAccounts;
+import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.security.AuthoritiesConstants;
+import eu.cloudopting.service.ApplicationService;
+import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.UserService;
 
 
@@ -40,6 +44,11 @@ public class BpmnController {
     @Inject
     UserService userService;
 
+    @Inject
+    CustomizationService customizationService;
+    
+    @Inject
+    ApplicationService applicationService;
 
     public UserService getUserService() {
         return userService;
@@ -60,10 +69,23 @@ public class BpmnController {
 	@RequestMapping(value = "/process", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	public @ResponseBody String startProcessInstance(
 			@RequestParam(value = "customizationId", required = false) String customizationId,
-			@RequestParam(value = "cloudId", required = false) String cloudId, @RequestParam(value = "isTesting", required = false, defaultValue="true") boolean isTesting,HttpServletRequest request) {
+			@RequestParam(value = "isTesting", required = false, defaultValue="true") boolean isTesting, @RequestParam(value = "isDemo", required = false, defaultValue="false") boolean isDemo,HttpServletRequest request) {
 
         User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         user.getOrganizationId().getOrganizationKey();
+        Customizations customization = customizationService.findOne(new Long(customizationId));
+        long cloudId = 0;
+		// if is demo I choose the demo account of the service provider overriding the one in the customization
+        if (isDemo){
+        	Long appId = customization.getApplicationId();
+        	Set<CloudAccounts> spAccounts = applicationService.findOne(appId).getOrganizationId().getCloudAccountss();
+        	for(CloudAccounts acc : spAccounts){
+        		// here need to do the check on default
+        		cloudId = acc.getId();
+        	}
+        }else{
+        	cloudId = customization.getCloudAccount().getId();
+        }
 		String pid = bpmn.startDeployProcess(customizationId, cloudId, isTesting);
 		System.out.println("returning pid: " + pid);
 		return pid;

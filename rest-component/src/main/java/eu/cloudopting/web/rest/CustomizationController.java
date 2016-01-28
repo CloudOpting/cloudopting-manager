@@ -69,6 +69,7 @@ public class CustomizationController {
 		Applications application = applicationService.findOne(idApp);
 		String csarPath = application.getApplicationToscaTemplate();
 		JSONObject jret = toscaService.getCustomizationFormData(idApp, csarPath);
+		log.debug(jret.toString());
 		return jret.toString();
 
 	}
