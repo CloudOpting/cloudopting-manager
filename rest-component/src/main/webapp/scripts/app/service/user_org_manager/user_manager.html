@@ -1,3 +1,71 @@
+<section class="wizzard-modal" id="signin">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="user_org_manager.title.user">
+                        User Management
+                    </div>
+                    <div class="backend-box-content">
+                        <form class="form" role="form dropzone">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-icon btn-block" ng-click="createUserPage()" ><i class="icon"><img src="assets/img/auth/icn_new.png" /></i>{{'user_org_manager.button.create_user' | translate}}</button>
+                                    </span>
+                                </div><!-- /.col-lg-12 -->
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="searchTextUser" placeholder="{{'user_org_manager.search' | translate}}" />
+
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th translate="user_org_manager.col.login">Alias</th>
+                                                <th translate="user_org_manager.col.name">Name</th>
+                                                <th translate="user_org_manager.col.email">Email</th>
+                                                <th translate="user_org_manager.col.organization">Organization</th>
+                                                <th translate="user_org_manager.col.actions">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="user in users | filter:searchTextUser">
+                                                <td>{{user.login}}</td>
+                                                <td>{{user.firstName}} {{user.lastName}}</td>
+                                                <td>{{user.email}}</td>
+                                                <td>{{user.organizationId.organizationName}}</td>
+                                                <td class="text-right">
+                                                    <button type="button" ng-click="editUser(user)" class="btn btn-icon" >
+                                                        <i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'user_org_manager.button.edit' | translate}}
+                                                    </button>
+                                                    <button type="button" ng-click="deleteUser(user.id)" class="btn btn-icon" >
+                                                        <i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'user_org_manager.button.delete' | translate}}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--
 <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="user_org_manager.title.user">User Management</div>
@@ -34,3 +102,4 @@
         </div>
     </div>
 </div>
+-->

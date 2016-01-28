@@ -1,3 +1,65 @@
+<section class="wizzard-modal" id="signin">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="user_org_manager.title.org">
+                        Organization Management
+                    </div>
+                    <div class="backend-box-content">
+                        <form class="form" role="form dropzone">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-icon btn-block" ng-click="createOrganizationPage()" ><i class="icon"><img src="assets/img/auth/icn_new.png" /></i>{{'user_org_manager.button.create_organization' | translate}}</button>
+                                    </span>
+                                </div><!-- /.col-lg-12 -->
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="searchTextOrg" placeholder="{{'user_org_manager.search' | translate}}" />
+
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th translate="user_org_manager.col.name">Name</th>
+                                                <th translate="user_org_manager.col.status">Status</th>
+                                                <th translate="user_org_manager.col.type">Type</th>
+                                                <th translate="user_org_manager.col.actions">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="org in organizations | filter:searchTextOrg">
+                                                <td>{{org.organizationName}}</td>
+                                                <td>{{org.organizationStatus.status}}</td>
+                                                <td>{{org.organizationType.types}}</td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-icon" ng-click="editOrganization(org)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'user_org_manager.button.edit' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="deleteOrganization(org.id)" ><i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'user_org_manager.button.delete' | translate}}</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--
 <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="user_org_manager.title.org">Organization Management</div>
@@ -8,25 +70,28 @@
                 <button type="button" ng-click="createOrganizationPage()" class="btn btn-default"  translate="user_org_manager.button.create_organization">Create Organization</button>
                 <hr>
                 <table id="searchTextResults" cellspacing="1" cellpadding="1" class="table-responsive"  style="width: 100%;">
+                    <thead>
                     <tr>
-                        <th class="darkgreen" translate="user_org_manager.col.name">Name</th>
-                        <th class="darkgreen" translate="user_org_manager.col.status">Status</th>
-                        <th class="darkgreen" translate="user_org_manager.col.type">Type</th>
-                        <th class="darkgreen" translate="user_org_manager.col.actions">Actions</th>
+                        <th translate="user_org_manager.col.name">Name</th>
+                        <th translate="user_org_manager.col.status">Status</th>
+                        <th translate="user_org_manager.col.type">Type</th>
+                        <th translate="user_org_manager.col.actions">Actions</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <tr ng-repeat="org in organizations | filter:searchTextOrg">
                         <td>{{org.organizationName}}</td>
                         <td>{{org.organizationStatus.status}}</td>
                         <td>{{org.organizationType.types}}</td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <button type="button" ng-click="editOrganization(org)" class="btn btn-default"  translate="user_org_manager.button.edit">Edit</button>
-                                <button type="button" ng-click="deleteOrganization(org.id)" class="btn btn-default"  translate="user_org_manager.button.delete">Delete</button>
-                            </div>
+                        <td class="text-right">
+                            <button type="button" class="btn btn-icon" ng-click="editOrganization(org)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'user_org_manager.button.edit' | translate}}</button>
+                            <button type="button" class="btn btn-icon" ng-click="deleteOrganization(org.id)" ><img src="assets/img/auth/icn_delete.png" /></i>{{'user_org_manager.button.delete' | translate}}</button>
                         </td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+-->
