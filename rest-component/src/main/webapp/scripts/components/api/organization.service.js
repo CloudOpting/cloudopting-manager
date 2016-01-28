@@ -29,7 +29,7 @@ angular.module('cloudoptingApp')
                         orgs = organizations;
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.findAll error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.findAll error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                     });
             },
             /**
@@ -43,7 +43,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.findAllUnpaginated error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.findAllUnpaginated error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             findById: function (id) {
@@ -52,7 +53,7 @@ angular.module('cloudoptingApp')
                         org = organization;
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.findById error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.findById error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                     });
             },
             create: function (organization, callback) {
@@ -61,7 +62,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.create error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.create error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             update: function (organization, callback) {
@@ -70,7 +72,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.update error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.update error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             delete: function (idOrganization, callback) {
@@ -79,7 +82,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.delete error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.delete error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             getTypes: function () {
@@ -97,7 +101,7 @@ angular.module('cloudoptingApp')
                         status = statuss;
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.getStatus error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.getStatus error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                     });
             },
             getCloudAccount: function (idOrganization, callback) {
@@ -106,7 +110,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.getCloudAccount error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.getCloudAccount error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             createCloudAccount: function (idOrganization, cloudAccount, callback) {
@@ -115,7 +120,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.createCloudAccount error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.createCloudAccount error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             updateCloudAccount: function (idOrganization, cloudAccount, callback) {
@@ -124,7 +130,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.updateCloudAccount error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.updateCloudAccount error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             deleteCloudAccount: function (idOrganization, idCloudAccount, callback) {
@@ -133,7 +140,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("OrganizationService.deleteCloudAccount error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("OrganizationService.deleteCloudAccount error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             }
         }
