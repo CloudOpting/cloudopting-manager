@@ -61,7 +61,7 @@ public class ToscaService {
 
 	@Autowired
 	private CSARUtils csarUtils;
-	
+
 	@Value("${orchestrator.logger_address}")
 	private String logger_address;
 
@@ -431,7 +431,7 @@ public class ToscaService {
 	}
 
 	public HashMap getPropertiesForNode(String customizationId, String id) {
-		log.debug("in getPropertiesForNode");
+		log.debug("in getPropertiesForNode with id: " + id);
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
@@ -447,35 +447,45 @@ public class ToscaService {
 		}
 		HashMap myHash = new HashMap();
 		NodeList props = nodes.item(0).getChildNodes();
+		log.debug(props.toString());
+
 		for (int i = 0; i < props.getLength(); ++i) {
 			String[] keys = props.item(i).getNodeName().split(":");
-			String key = null;
+			String key = "";
+			log.debug("value of keys -----------");
+			log.debug(keys.toString());
 			if (keys.length > 1) {
 				key = keys[1];
 			}
-			if (props.item(i).getFirstChild().getNodeType() == Node.TEXT_NODE) {
-				log.debug("HAS CHILD TEXT NODES ----------------------*****");
-				myHash.put(key, props.item(i).getTextContent());
-			} else {
-				log.debug("HAS CHILD ELEMENT NODES *********++++++++++*****");
-				ArrayList myArrChild = null;
-				if (myHash.containsKey(key)) {
-					myArrChild = (ArrayList) myHash.get(key);
+			log.debug("props.item(i):");
+			log.debug(props.item(i).toString());
+			log.debug("props.item(i).getFirstChild():");
+			// log.debug(props.item(i).getFirstChild().toString());
+			if (props.item(i).getFirstChild() != null) {
+				if (props.item(i).getFirstChild().getNodeType() == Node.TEXT_NODE) {
+					log.debug("HAS CHILD TEXT NODES ----------------------*****");
+					myHash.put(key, props.item(i).getTextContent());
 				} else {
-					myArrChild = new ArrayList();
-				}
-				HashMap myHashChild = new HashMap<>();
-				for (int c = 0; c < props.item(i).getChildNodes().getLength(); c++) {
-					String[] keysChild = props.item(i).getChildNodes().item(c).getNodeName().split(":");
-					String keyChild = null;
-					if (keysChild.length > 1) {
-						keyChild = keysChild[1];
-						log.debug("keyChild:" + keyChild);
+					log.debug("HAS CHILD ELEMENT NODES *********++++++++++*****");
+					ArrayList myArrChild = null;
+					if (myHash.containsKey(key)) {
+						myArrChild = (ArrayList) myHash.get(key);
+					} else {
+						myArrChild = new ArrayList();
 					}
-					myHashChild.put(keyChild, props.item(i).getChildNodes().item(c).getTextContent());
+					HashMap myHashChild = new HashMap<>();
+					for (int c = 0; c < props.item(i).getChildNodes().getLength(); c++) {
+						String[] keysChild = props.item(i).getChildNodes().item(c).getNodeName().split(":");
+						String keyChild = null;
+						if (keysChild.length > 1) {
+							keyChild = keysChild[1];
+							log.debug("keyChild:" + keyChild);
+						}
+						myHashChild.put(keyChild, props.item(i).getChildNodes().item(c).getTextContent());
+					}
+					myArrChild.add(myHashChild);
+					myHash.put(key, myArrChild);
 				}
-				myArrChild.add(myHashChild);
-				myHash.put(key, myArrChild);
 			}
 
 		}
@@ -684,7 +694,7 @@ public class ToscaService {
 	}
 
 	public String getLogType(String customizationId, String id) {
-		log.debug("in getVolumes");
+		log.debug("in getLogType");
 		DocumentImpl theDoc = this.xdocHash.get(customizationId);
 		if (theDoc == null)
 			return null;
@@ -810,6 +820,7 @@ public class ToscaService {
 			String imageName = "cloudopting/" + organizationName + "_" + node.toLowerCase();
 			containerData.put("container", node);
 			containerData.put("image", imageName);
+			log.debug("dockerNodesList element working on: " + node);
 			String logType = getLogType(customizationId, node);
 			containerData.put("logtype", logType);
 			containerData.put("log_driver_address", logger_address);

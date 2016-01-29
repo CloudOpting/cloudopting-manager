@@ -129,6 +129,7 @@ public class BpmnController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			log.debug("FILE DOES NOT EXIST YET **********************************************************");
 		}
 		
 		ClassPathResource zipFile = new ClassPathResource(path);
