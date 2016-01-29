@@ -134,9 +134,9 @@ public class CustomizationController {
 			mailData.put("subscriberOrganization", user.getOrganizationId().getOrganizationName());
 
 			String subjectSub = "Thanks for subscribing to "+application.getApplicationName();
-			String templateSub = "Hallo ${subscriberOrganization}";
+			String templateSub = application.getApplicationSpMail();
 			String subjectProv = "You have a new subscription for "+application.getApplicationName();
-			String templateProv = "Hallo ${serviceOrganizationContact}";
+			String templateProv = application.getApplicationSubscriberMail();
 			// than getting the template
 
 			// compile the template
