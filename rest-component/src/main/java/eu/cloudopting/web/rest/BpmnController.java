@@ -1,5 +1,7 @@
 package eu.cloudopting.web.rest;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.bpmn.dto.BasicProcessInfo;
+import eu.cloudopting.domain.CloudAccounts;
+import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.security.AuthoritiesConstants;
+import eu.cloudopting.service.ApplicationService;
+import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.UserService;
 
 
@@ -40,6 +50,11 @@ public class BpmnController {
     @Inject
     UserService userService;
 
+    @Inject
+    CustomizationService customizationService;
+    
+    @Inject
+    ApplicationService applicationService;
 
     public UserService getUserService() {
         return userService;
@@ -60,14 +75,77 @@ public class BpmnController {
 	@RequestMapping(value = "/process", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	public @ResponseBody String startProcessInstance(
 			@RequestParam(value = "customizationId", required = false) String customizationId,
-			@RequestParam(value = "cloudId", required = false) String cloudId, @RequestParam(value = "isTesting", required = false, defaultValue="true") boolean isTesting,HttpServletRequest request) {
+			@RequestParam(value = "isTesting", required = false, defaultValue="false") boolean isTesting, @RequestParam(value = "isDemo", required = false, defaultValue="false") boolean isDemo,HttpServletRequest request) {
 
         User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         user.getOrganizationId().getOrganizationKey();
+        Customizations customization = customizationService.findOne(new Long(customizationId));
+        long cloudId = 0;
+		// if is demo I choose the demo account of the service provider overriding the one in the customization
+        if (isDemo){
+        	Long appId = customization.getApplicationId();
+        	Set<CloudAccounts> spAccounts = applicationService.findOne(appId).getOrganizationId().getCloudAccountss();
+        	for(CloudAccounts acc : spAccounts){
+        		// here need to do the check on default
+        		cloudId = acc.getId();
+        	}
+        }else{
+        	cloudId = customization.getCloudAccount().getId();
+        }
 		String pid = bpmn.startDeployProcess(customizationId, cloudId, isTesting);
 		System.out.println("returning pid: " + pid);
 		return pid;
 	}
+	
+	@RequestMapping(value = "/processTest", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded", produces = "application/zip")
+	public @ResponseBody ResponseEntity<InputStreamResource> testProcessInstance(
+			@RequestParam(value = "customizationId", required = false) String customizationId,
+			@RequestParam(value = "isTesting", required = false, defaultValue="true") boolean isTesting, @RequestParam(value = "isDemo", required = false, defaultValue="false") boolean isDemo,HttpServletRequest request) throws IOException {
+		User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        user.getOrganizationId().getOrganizationKey();
+        Customizations customization = customizationService.findOne(new Long(customizationId));
+        long cloudId = 0;
+		// if is demo I choose the demo account of the service provider overriding the one in the customization
+        if (isDemo){
+        	Long appId = customization.getApplicationId();
+        	Set<CloudAccounts> spAccounts = applicationService.findOne(appId).getOrganizationId().getCloudAccountss();
+        	for(CloudAccounts acc : spAccounts){
+        		// here need to do the check on default
+        		cloudId = acc.getId();
+        	}
+        }else{
+        	cloudId = customization.getCloudAccount().getId();
+        }
+		String pid = bpmn.startDeployProcess(customizationId, cloudId, isTesting);
+		// wait for a minute to leave run the process
+		
+		System.out.println("returning pid: " + pid);
+		String path = "/cloudOptingData/test.zip";
+		File f = new File(path);
+		while(!f.exists()){
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.debug("FILE DOES NOT EXIST YET **********************************************************");
+		}
+		
+		ClassPathResource zipFile = new ClassPathResource(path);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Pragma", "no-cache");
+		headers.add("Cache-Control", "no-cache");
+		headers.add("Expires", "0");
+		
+		return ResponseEntity.ok()
+				.headers(headers)
+				.contentLength(zipFile.contentLength())
+				.contentType(MediaType.parseMediaType("application/zip"))
+				.body(new InputStreamResource(zipFile.getInputStream()));
+	}
+
 	
 	@RequestMapping(value = "/bpmnunlock/configuredVM/{processInstanceId}", method = RequestMethod.POST)
 	public @ResponseBody void configuredVM(@PathVariable String processInstanceId){

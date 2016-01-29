@@ -7,18 +7,16 @@
                         Instances Service Catalogue
                     </div>
                     <div class="backend-box-content">
+                        <div class="alert alert-info" ng-show="infoMessage">
+                            {{infoMessage}}
+                        </div>
+                        <div class="alert alert-danger" ng-show="errorMessage">
+                            {{errorMessage}}
+                        </div>
                         <form class="form" role="form dropzone">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-icon btn-block" ng-click="testapp1(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>Test APP 1</button>
-                                    </span>
-                                </div><!-- /.col-lg-12 -->
-                            </div>
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="{{'instances.placeholder' | translate}}" />
+                                    <input type="text" class="form-control" ng-model="searchTextInstance" placeholder="{{'instances.placeholder' | translate}}" />
                                     <span class="input-group-btn">
                                         <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
                                     </span>
@@ -38,12 +36,13 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="instance in instancesList">
+                                            <tr ng-repeat="instance in instancesList | filter:searchTextInstance">
                                                 <td>{{instance.applicationName}}</td>
                                                 <td>{{instance.customerOrganizationId.organizationName}}</td>
                                                 <td>{{instance.customizationCreation}}</td>
-                                                <td>{{instance.statusId}}</td>
+                                                <td>{{instance.statusId.status}}</td>
                                                 <td class="text-right">
+                                                    <button type="button" class="btn btn-icon" ng-click="test(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.test' | translate}}</button>
                                                     <button type="button" class="btn btn-icon" ng-click="demo(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.demo' | translate}}</button>
                                                     <button type="button" class="btn btn-icon" ng-click="deploy(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.deploy' | translate}}</button>
                                                     <button type="button" class="btn btn-icon" ng-click="stop(instance)" ><i class="icon"><img src="" /></i>{{'instances.button.stop' | translate}}</button>

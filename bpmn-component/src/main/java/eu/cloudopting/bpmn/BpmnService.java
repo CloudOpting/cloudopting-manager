@@ -44,6 +44,7 @@ import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.CustomizationDTO;
 import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
+import eu.cloudopting.service.CloudAccountService;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.service.UserService;
@@ -84,12 +85,15 @@ public class BpmnService {
 	@Inject
     private UserService userService;
 
+	@Inject
+    private CloudAccountService cloudAccountService;
 
+	
     public UserService getUserService() {
         return userService;
     }
 
-	public String startDeployProcess(String customizationId, String cloudId, boolean isTesting){
+	public String startDeployProcess(String customizationId, long cloudId, boolean isTesting){
 		log.info("Before activating process");
 		log.info("customizationId: "+customizationId);
 		log.info("cloudId: "+cloudId);
@@ -107,7 +111,8 @@ public class BpmnService {
 		// We recover the Customization and chack if processId is null otherwise we need to throw exception since we cannot execute another deploy for the same Customization
 		Customizations theCust = customizationS.findOne(Long.parseLong(customizationId));
 		log.info("theCust: "+theCust.toString());
-		CloudAccounts account = theCust.getCloudAccount();
+//		CloudAccounts account = theCust.getCloudAccount();
+		CloudAccounts account = cloudAccountService.findOne(cloudId);
 		Applications app = applicationService.findOne(theCust.getApplicationId()); 
 
 		if(theCust.getProcessId()!= null){
@@ -145,6 +150,14 @@ public class BpmnService {
         System.out.println("ProcessID:"+pi.getProcessInstanceId());
         return pi.getProcessInstanceId();
 
+	}
+	
+	public String returnZipPath(String pid){
+		String zipPath = null;
+		
+		runtimeService.getVariable(pid, "serviceHome");
+		
+		return zipPath;
 	}
 
 	public void configuredVM(String processInstanceId){

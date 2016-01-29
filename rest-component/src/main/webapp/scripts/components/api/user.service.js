@@ -26,7 +26,7 @@ angular.module('cloudoptingApp')
                         usrs = users;
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.findAll error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("UserService.findAll error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                     });
             },
             /**
@@ -40,7 +40,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.findAllUnpaginated error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("UserService.findAllUnpaginated error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             findById: function (id) {
@@ -49,7 +50,7 @@ angular.module('cloudoptingApp')
                         usr = user;
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.findById error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("UserService.findById error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                     });
             },
             create: function (user, callback) {
@@ -58,7 +59,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.create error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("UserService.create error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             update: function (user, callback) {
@@ -67,7 +69,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.update error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("UserService.update error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             delete: function (idUser, callback) {
@@ -76,7 +79,8 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.delete error. Data:" + data + ", status" + status + ", headers" + headers + ", config" + config);
+                        $log.error("UserService.delete error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             }
         }

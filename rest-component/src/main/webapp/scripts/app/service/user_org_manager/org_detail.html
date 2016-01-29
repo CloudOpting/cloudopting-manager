@@ -2,6 +2,9 @@
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="user_org_manager.title.org_detail">Organization Detail</div>
         <div class="panel-body">
+            <div class="alert alert-danger" ng-show="errorMessage">
+                {{errorMessage}}
+            </div>
             <form name="org_form" novalidate ng-submit="submitOrganizationForm(org.id)" show-validation>
                 <div class="col-md-12">
                     <div class="form-group row">
