@@ -160,6 +160,16 @@ public class Applications implements BaseEntity {
 	@Column(name = "terms")
     private String terms;
 	
+	@Column(name = "service_price")
+    private String servicePrice;
+	
+	@Column(name = "platform_price")
+    private String platformPrice;
+	
+	@ManyToOne
+    @JoinColumn(name = "size_id", referencedColumnName = "id")
+	private ApplicationSize size;
+	
     @OneToMany(mappedBy = "applicationId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Customizations> customizationss;
 
@@ -278,5 +288,29 @@ public class Applications implements BaseEntity {
 
 	public void setTerms(String terms) {
 		this.terms = terms;
+	}
+
+	public String getServicePrice() {
+		return servicePrice;
+	}
+
+	public void setServicePrice(String servicePrice) {
+		this.servicePrice = servicePrice;
+	}
+
+	public String getPlatformPrice() {
+		return platformPrice;
+	}
+
+	public void setPlatformPrice(String platformPrice) {
+		this.platformPrice = platformPrice;
+	}
+
+	public ApplicationSize getSize() {
+		return size;
+	}
+
+	public void setSize(ApplicationSize size) {
+		this.size = size;
 	}
 }
