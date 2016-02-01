@@ -79,7 +79,7 @@ public class CustomizationController {
 	}
 
 	@RequestMapping(value = "/application/{idApp}/sendCustomizationForm", method = RequestMethod.POST)
-	public String postCustomizationForm(@PathVariable("idApp") final Long idApp,
+	public Customizations postCustomizationForm(@PathVariable("idApp") final Long idApp,
 			@RequestParam(value = "formData") String formData, HttpServletRequest request,
 			HttpServletResponse response) {
 		log.debug("in postCustomizationForm");
@@ -148,6 +148,6 @@ public class CustomizationController {
 		}
 
 		response.setStatus(HttpServletResponse.SC_OK);
-		return "Customization successfully saved";
+		return newC;
 	}
 }
