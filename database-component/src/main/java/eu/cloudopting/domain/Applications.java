@@ -3,12 +3,10 @@ package eu.cloudopting.domain;
 import eu.cloudopting.events.api.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 import java.util.List;
 import java.util.Set;
@@ -150,14 +148,10 @@ public class Applications implements BaseEntity {
 	@Column(name = "short_description")
     private String shortDescription;
 	
-    @Email
-    @Size(max = 100)
-    @Column(name = "application_subscriber_mail", length = 100)
+    @Column(name = "application_subscriber_mail")
     private String applicationSubscriberMail;
 	
-    @Email
-    @Size(max = 100)
-    @Column(name = "application_sp_mail", length = 100)
+    @Column(name = "application_sp_mail")
     private String applicationSpMail;
     
     @Column(name = "application_is_tryable")
