@@ -24,7 +24,7 @@ angular.module('cloudoptingApp')
                     });
             },
             test: function(instance, callback) {
-                return $http.post( baseURITest + '?customizationId='+instance.id+'&isDemo=false&isTesting=true', {}, { headers: header } )
+                return $http.post( baseURITest + '?customizationId='+instance.id+'&isDemo=false&isTesting=true', {}, { headers: header , responseType: "blob"} )
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
