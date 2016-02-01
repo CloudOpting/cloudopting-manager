@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService, $window) {
+    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService, $window, Blob, FileSaver) {
 
         $scope.instancesList = null;
 
@@ -36,7 +36,14 @@ angular.module('cloudoptingApp')
 
         $scope.test = function(instance) {
             var callback = function (data, status, headers, config) {
-            	checkStatusDownloadCallback(data, status, headers, config, "Test requested.");
+                checkStatusCallback(data, status, headers, config, "Test requested.");
+                if($scope.errorMessage==null) {
+                    if(data) {
+                        var zip = new Blob([data], {type: 'application/zip'});
+                        var fileName = 'TOSCA_Archive_Test.zip';
+                        FileSaver.saveAs(zip, fileName);
+                    }
+                }
             };
             ProcessService.test(instance, callback);
         };
@@ -111,35 +118,6 @@ angular.module('cloudoptingApp')
                 //Return to the list
                 $scope.infoMessage = message + " Successfully done!";
             }
-        };
-        
-        var checkStatusDownloadCallback = function(data, status, headers, config, message){
-            if(status==401) {
-                //Unauthorised. Check if signed in.
-                if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
-                } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
-                    $timeout(function() {
-                        $state.go('login');
-                    }, 3000);
-                }
-            }else if(status!=200 && status!=201) {
-                //Show message
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
-
-            } else {
-                //Return to the list
-                $scope.infoMessage = message + " Successfully done!";
-            }
-            var zip = null;
-            if(data){
-            	zip = new Blob([data],{type: 'application/zip'});
-            	
-            }
-            var fileName = 'test.zip';
-            window.saveAs(zip, fileName);
-            
         };
     }
 );
