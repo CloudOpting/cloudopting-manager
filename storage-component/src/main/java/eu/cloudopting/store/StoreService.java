@@ -128,16 +128,16 @@ public class StoreService {
     
     /**
      * Creates a hierarchy of Nodes by splitting the input String on occurrences of File.pathSeparator
-     * @param localFileAbsolutePath the path whose matching nodes have to be created
+     * @param jackRabbitRemotePath the path whose matching nodes have to be created
      * @return The last (deepest) created node for the provided path
      * @throws RepositoryException
      */
-    public Node createNodesForPath(String localFileAbsolutePath) throws RepositoryException{
-    	String splitRegex = Pattern.quote(File.separator);
-    	if (localFileAbsolutePath.startsWith(File.separator)){
-    		localFileAbsolutePath = localFileAbsolutePath.replaceFirst(splitRegex, "");
+    public Node createNodesForPath(String jackRabbitRemotePath) throws RepositoryException{
+    	String splitRegex = Pattern.quote("/");
+    	if (jackRabbitRemotePath.startsWith(File.separator)){
+    		jackRabbitRemotePath = jackRabbitRemotePath.replaceFirst(splitRegex, "");
     	}
-		String[] splittedFileName = localFileAbsolutePath.split(splitRegex);
+		String[] splittedFileName = jackRabbitRemotePath.split(splitRegex);
 		Node lastCreatedNode = session.getRootNode();
 		for (int i = 0; i < splittedFileName.length; i++) {
 			lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
