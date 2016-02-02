@@ -41,12 +41,10 @@ public class DockerComposer {
 	 */
 	public ResponseEntity<String> startDeployment(String sourceDockerComposeYml, String clusterToken) throws DockerError {
 		// Prepare files
-		if(clusterToken == null)
-			clusterToken = "";
 		
 		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
 		map.add("composefile", new FileSystemResource(sourceDockerComposeYml));
-		map.add("contextToken", new String(clusterToken));
+		map.add("clusterToken", new String(clusterToken));
 		
 		// Request
 		HttpHeaders headers = new HttpHeaders();
@@ -71,7 +69,8 @@ public class DockerComposer {
 	 */
 	public boolean isDeployed(String token) throws DockerError{
 		// TODO: retrieve the status, parse response.
-		return true;
+	//	return true;
+		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 	
 	/**
@@ -82,7 +81,8 @@ public class DockerComposer {
 	 */
 	public String getInfo(String token) throws DockerError{
 		// TODO 
-		return "Detailed information about the deployment.";
+	//	return "Detailed information about the deployment.";
+		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 
 	/**
@@ -92,6 +92,7 @@ public class DockerComposer {
 	 */
 	public void stopComposition(String token)  throws DockerError {
 		// TODO
+		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 
 
