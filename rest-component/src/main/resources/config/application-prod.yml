@@ -57,10 +57,16 @@ metrics:
         host: localhost
         port: 2003
         prefix: cloudopting
+
 zabbix:
     user: admin
     password: ENC(YL2EZjSFF6jGeJ4uAlGa0Q==)
     endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
+
+
+elasticsearch:
+    host: cloudoptingmaster.cloudopen.csipiemonte.it
+    port: 9300
 
 cloud:
     doDeploy: true

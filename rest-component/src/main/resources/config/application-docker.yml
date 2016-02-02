@@ -3,7 +3,7 @@ server:
 
 spring:
     profiles:
-        active: prod
+        active: docker
 
     jcr:
         repo_url: http://jcr:8080/server
@@ -15,7 +15,7 @@ spring:
         databaseName: cloudopting
         serverName: db
         username: postgres
-        password: 1qaz2wsx
+        password: ENC(i/xS2Pgo/o4VzMbL/t5WFS+81TDMHkdR)
         test-on-borrow: true
         test-while-idle: true
         test-on-return: true
@@ -45,6 +45,10 @@ spring:
     activiti:
         jobExecutorActivate: true
         restApiEnabled: true
+    data:
+        elasticsearch:
+            cluster-nodes: cloudoptingmaster.cloudopen.csipiemonte.it:9300
+            repositories.enabled: true
 
 metrics:
     jmx.enabled: true
@@ -57,10 +61,15 @@ metrics:
         host: localhost
         port: 2003
         prefix: cloudopting
+
 zabbix:
     user: admin
-    password: admin
+    password: ENC(YL2EZjSFF6jGeJ4uAlGa0Q==)
     endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
+
+elasticsearch:
+    host: cloudoptingmaster.cloudopen.csipiemonte.it
+    port: 9300
 
 cloud:
     doDeploy: true
