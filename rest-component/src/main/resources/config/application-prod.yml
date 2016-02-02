@@ -15,7 +15,7 @@ spring:
         databaseName: cloudopting
         serverName: lab1.cloudopting.org
         username: postgres
-        password: 1qaz2wsx
+        password: ENC(i/xS2Pgo/o4VzMbL/t5WFS+81TDMHkdR)
         test-on-borrow: true
         test-while-idle: true
         test-on-return: true
@@ -59,7 +59,7 @@ metrics:
         prefix: cloudopting
 zabbix:
     user: admin
-    password: admin
+    password: ENC(YL2EZjSFF6jGeJ4uAlGa0Q==)
     endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
 
 cloud:

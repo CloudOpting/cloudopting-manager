@@ -35,6 +35,9 @@
         <guava.version>18.0</guava.version>
         <jackrabbit-jcr.version>2.10.1</jackrabbit-jcr.version>
         <jackrabbit-ocm.version>1.5.3</jackrabbit-ocm.version>
+        <jasypt-spring-boot-starter.version>1.4-java7</jasypt-spring-boot-starter.version>
+        <jasypt-spring-boot.version>1.4-java7</jasypt-spring-boot.version>
+        <jasypt.version>1.9.2</jasypt.version>
         <javax.inject.version>1</javax.inject.version>
         <javax.jcr.version>2.0</javax.jcr.version>
         <jclouds.version>1.9.0</jclouds.version>
@@ -45,13 +48,25 @@
         <postgresql.version>9.3-1102-jdbc41</postgresql.version>
         <sonar-maven-plugin.version>2.2</sonar-maven-plugin.version>
         <spring-cloud.version>1.1.0.RELEASE</spring-cloud.version>
-        <!--<spring.version>4.1.6.RELEASE</spring.version>-->
+        <!--<spring.version>4.1.6.RELEASE</spring.version> -->
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- Properties file encryption: see issue 197 -->
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot</artifactId>
+                <version>${jasypt-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt-spring-boot-starter.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -103,6 +118,11 @@
                 <groupId>org.apache.jclouds.labs</groupId>
                 <artifactId>azurecompute</artifactId>
                 <version>2.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jasypt</groupId>
+                <artifactId>jasypt</artifactId>
+                <version>${jasypt.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.plugin</groupId>
@@ -238,24 +258,24 @@
                     <expandEmptyElements>false</expandEmptyElements>
                 </configuration>
             </plugin>
-            <!--             Re-enable after dependencies versions will have become more stable -->
-            <!--             <plugin> -->
-            <!--                 <groupId>org.apache.maven.plugins</groupId> -->
-            <!--                 <artifactId>maven-dependency-plugin</artifactId> -->
-            <!--                 <executions> -->
-            <!--                     <execution> -->
-            <!--                         <id>analyze</id> -->
-            <!--                         <phase>package</phase> -->
-            <!--                         <goals> -->
-            <!--                             <goal>analyze-dep-mgt</goal> -->
-            <!--                         </goals> -->
-            <!--                         <configuration> -->
-            <!--                             <failBuild>true</failBuild> -->
-            <!--                             <ignoreDirect>false</ignoreDirect> -->
-            <!--                         </configuration> -->
-            <!--                     </execution> -->
-            <!--                 </executions> -->
-            <!--             </plugin> -->
+            <!-- Re-enable after dependencies versions will have become more stable -->
+            <!-- <plugin> -->
+            <!-- <groupId>org.apache.maven.plugins</groupId> -->
+            <!-- <artifactId>maven-dependency-plugin</artifactId> -->
+            <!-- <executions> -->
+            <!-- <execution> -->
+            <!-- <id>analyze</id> -->
+            <!-- <phase>package</phase> -->
+            <!-- <goals> -->
+            <!-- <goal>analyze-dep-mgt</goal> -->
+            <!-- </goals> -->
+            <!-- <configuration> -->
+            <!-- <failBuild>true</failBuild> -->
+            <!-- <ignoreDirect>false</ignoreDirect> -->
+            <!-- </configuration> -->
+            <!-- </execution> -->
+            <!-- </executions> -->
+            <!-- </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>

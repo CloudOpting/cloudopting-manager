@@ -5,6 +5,11 @@ security.basic.enabled: false
 # Disable Jolokia - An http/json bridge for remote JMX access
 endpoints.jolokia.enabled: false
 
+#Get the Jasypt Encryptor Password from the environment
+jasypt:
+    encryptor:
+        password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+
 # security configuration (this key should be unique for your application, and kept secret)
 cloudopting.security.rememberme.key: e092330a3cdcf60699bf5128db337ead7e18f363
 #spring.freemarker.checkTemplateLocation: true
