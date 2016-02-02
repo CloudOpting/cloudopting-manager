@@ -87,10 +87,13 @@ public class CustomizationController {
 		log.debug(idApp.toString());
 		log.debug(formData);
 		JSONObject jsonData = null;
-		
+		Boolean isTrial = false;
+		Boolean payPlatform = false;
 		try {
 			jsonData = new JSONObject(formData);
 			log.debug("co_buy_platform: "+jsonData.getString("co_buy_platform"));
+			isTrial = Boolean.valueOf(jsonData.getString("co_is_trial"));
+			payPlatform = Boolean.valueOf(jsonData.getString("co_buy_platform"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,6 +113,9 @@ public class CustomizationController {
 		newC.setCustomizationCreation(new Date());
 		newC.setCustomizationDecommission(new Date());
 		newC.setStatusId(customizationStatusService.findOne(100));
+		newC.setIsTrial(isTrial);
+		
+		newC.setPayPlatform(payPlatform);
 		// TODO Check this is correct
 		log.debug(formData);
 		log.debug(jsonData.toString());
