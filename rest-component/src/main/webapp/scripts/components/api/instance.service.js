@@ -98,6 +98,16 @@ angular.module('cloudoptingApp')
                         $log.error("InstanceService.delete error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
+            },
+            update: function(instance, callback) {
+                return $http.put(baseURI + SERVICE.SEPARATOR, angular.toJson(instance))
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.update error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
             }
         };
     }

@@ -3,8 +3,8 @@
         <div class="panel-heading darkgreen" translate="form_generation.title">Form Generation Screen</div>
         <div class="panel-body">
 
-            <div class="alert alert-danger" ng-show="showAlertMessage()">
-                <strong>Network error: </strong> Please check the data and try again.
+            <div class="alert alert-danger" ng-show="errorMessage">
+                {{errorMessage}}
             </div>
 
             <div class="col-md-12 webuiPanel">
