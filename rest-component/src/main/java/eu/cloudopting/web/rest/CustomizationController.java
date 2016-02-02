@@ -87,9 +87,10 @@ public class CustomizationController {
 		log.debug(idApp.toString());
 		log.debug(formData);
 		JSONObject jsonData = null;
-		;
+		
 		try {
 			jsonData = new JSONObject(formData);
+			log.debug("co_buy_platform: "+jsonData.getString("co_buy_platform"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,6 +101,7 @@ public class CustomizationController {
 		String csarPath = application.getApplicationToscaTemplate();
 		String theTosca = toscaService.generateCustomizedTosca(idApp, csarPath, jsonData);
 
+		
 		Customizations newC = new Customizations();
 		newC.setApplicationId(idApp);
 		newC.setCustomizationToscaFile(theTosca);
