@@ -1,0 +1,120 @@
+<section class="wizzard-modal" id="signin">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="instances.title">
+                        Instances Service Catalogue
+                    </div>
+                    <div class="backend-box-content">
+                        <div class="alert alert-info" ng-show="infoMessage">
+                            {{infoMessage}}
+                        </div>
+                        <div class="alert alert-danger" ng-show="errorMessage">
+                            {{errorMessage}}
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="searchTextInstance" placeholder="{{'instances.placeholder' | translate}}" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th translate="instances.col.instanceof">Instance of</th>
+                                                <th translate="instances.col.author">Author</th>
+                                                <th translate="instances.col.date">Date</th>
+                                                <th translate="instances.col.status">Status</th>
+                                                <th translate="instances.col.actions">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="instance in instancesList | filter:searchTextInstance">
+                                                <td>{{instance.applicationName}}</td>
+                                                <td>{{instance.customerOrganizationId.organizationName}}</td>
+                                                <td>{{instance.customizationCreation}}</td>
+                                                <td>{{instance.statusId.status}}</td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-icon" ng-click="test(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.test' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="demo(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.demo' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="deploy(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.deploy' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="stop(instance)" ><i class="icon"><img src="" /></i>{{'instances.button.stop' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="delete(instance)" ><i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'instances.button.delete' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="start(instance)" ><i class="icon"><img src="" /></i>{{'instances.button.start' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="monitor(instance)" ><i class="icon"><img src="assets/img/auth/icn_list.png" /></i>{{'instances.button.monitor' | translate}}</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="row row-actions">
+                                <div class="col-lg-12">
+                                    <button type="submit" class="btn btn-primary pull-right">Next</button>
+                                </div>
+                            </div>
+                            -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--
+<div class="row">
+    <div class="bs-example col-md-offset-1 col-md-10">
+        <div class="panel-heading darkgreen" translate="instances.title">Instances Service Catalogue</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="{{'instances.placeholder' | translate}}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="button" translate="instances.button.search">Search Service</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <table cellspacing="1" cellpadding="1" class="table-responsive"  style="width: 100%;">
+                <tr>
+                    <th class="darkgreen" translate="instances.col.instanceof">Instance of</th>
+                    <th class="darkgreen" translate="instances.col.author">Author</th>
+                    <th class="darkgreen" translate="instances.col.date">Date</th>
+                    <th class="darkgreen" translate="instances.col.status">Status</th>
+                    <th class="darkgreen" translate="instances.col.actions">Actions</th>
+                </tr>
+                <tr ng-repeat="instance in instancesList">
+                    <td>{{instance.applicationName}}</td>
+                    <td>{{instance.customerOrganizationId.organizationName}}</td>
+                    <td>{{instance.customizationCreation}}</td>
+                    <td>{{instance.statusId}}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                            <button type="button" ng-click="testapp1(instance)" class="btn btn-default">Test APP 1</button>
+                            <button type="button" ng-click="test(instance)" class="btn btn-default"  translate="instances.button.test">Test</button>
+                            <button type="button" ng-click="deploy(instance)" class="btn btn-default"  translate="instances.button.deploy">Deploy</button>
+                            <button type="button" ng-disabled="true" ng-click="stop(instance)" class="btn btn-default" translate="instances.button.stop">Stop</button>
+                            <button type="button" ng-disabled="true" ng-click="delete(instance)" class="btn btn-default" translate="instances.button.delete">Delete</button>
+                            <button type="button" ng-disabled="true" ng-click="start(instance)" class="btn btn-default" translate="instances.button.start">Start</button>
+                            <button type="button" ng-click="monitor(instance)" class="btn btn-default" translate="instances.button.monitor">Monitoring</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+-->

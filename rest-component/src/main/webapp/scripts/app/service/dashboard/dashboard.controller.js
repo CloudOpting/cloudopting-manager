@@ -1,40 +1,20 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService, $window, Blob, FileSaver) {
+    .controller('DashboardController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService, $window, Blob, FileSaver) {
 
         $scope.instancesList = null;
 
-        if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)) {
+        if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER) || Principal.isInRole(SERVICE.ROLE.ADMIN)) {
             //Get all instances of the user if it is a SUBSCRIBER.
             var callback = function(data, status, headers, config){
                 $log.info(data);
             };
+
             InstanceService.findAll(callback)
                 .success(function (instances) {
                     $scope.instancesList = instances;
                 });
-        } else if(Principal.isInRole(SERVICE.ROLE.ADMIN) || Principal.isInRole(SERVICE.ROLE.OPERATOR) ) {
-            //If the user is an ADMIN or an OPERATOR and they comes from DETAIL screen
-            //get only the instances of the current application.
-            $scope.currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-
-            $scope.instancesList = $scope.currentApp.customizationss;
-
-            angular.forEach($scope.instancesList, function(instance, key) {
-                instance.applicationName = $scope.currentApp.applicationName;
-            });
-
-/*
-            angular.forEach(instancesList, function(instancesList, key) {
-                $scope.instancesList.push({
-                    "service_name": $scope.currentApp.applicationName,
-                    "author": customization.customerOrganizationId,
-                    "date": customization.customizationCreation,
-                    "status": customization.statusId
-
-                })
-            })*/
         }
 
         $scope.test = function(instance) {
@@ -70,14 +50,14 @@ angular.module('cloudoptingApp')
             var callback = function(data, status, headers, config){
                 $log.info(data);
             };
-            //InstanceService.stop(instance);
+            //InstanceService.stop(instance, callback);
         };
         $scope.delete = function(instance) {
             $window.alert('Not implemented yet');
             var callback = function(data, status, headers, config){
                 $log.info(data);
             };
-            //InstanceService.delete(instance);
+            //InstanceService.delete(instance, callback);
         };
         $scope.monitor = function(instance) {
             localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, instance);
@@ -88,7 +68,7 @@ angular.module('cloudoptingApp')
             var callback = function(data, status, headers, config){
                 $log.info(data);
             };
-            //InstanceService.start(instance);
+            //InstanceService.start(instance, callback);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){
