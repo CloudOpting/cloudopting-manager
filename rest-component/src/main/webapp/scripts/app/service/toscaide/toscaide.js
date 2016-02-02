@@ -3,21 +3,21 @@
 angular.module('cloudoptingApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('dashboard', {
+            .state('toscaide', {
                 parent: 'service',
-                url: '/dashboard',
+                url: '/toscaide',
                 data: {
-                    roles: ['ROLE_USER']
+                    roles: []
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/service/dashboard/dashboard.html',
-                        controller: 'DashboardController'
+                        templateUrl: 'scripts/app/service/toscaide/toscaide.html',
+                        controller: 'ToscaideController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('dashboard');
+                        $translatePartialLoader.addPart('toscaide');
                         return $translate.refresh();
                     }]
                 }

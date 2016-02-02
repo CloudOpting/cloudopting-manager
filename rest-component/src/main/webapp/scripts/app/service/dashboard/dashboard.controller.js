@@ -5,6 +5,24 @@ angular.module('cloudoptingApp')
 
         $scope.instancesList = null;
 
+        $scope.isSubscriber = function(){
+            if(Principal.isInRole(SERVICE.ROLE.ADMIN) || Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)){
+                return true;
+            }
+            return false;
+        };
+
+        $scope.isPublisher = function(){
+            if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
+                return true;
+            }
+            return false;
+        };
+
+        $scope.toscaide = function(){
+            $state.go('toscaide');
+        }
+
         if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER) || Principal.isInRole(SERVICE.ROLE.ADMIN)) {
             //Get all instances of the user if it is a SUBSCRIBER.
             var callback = function(data, status, headers, config){

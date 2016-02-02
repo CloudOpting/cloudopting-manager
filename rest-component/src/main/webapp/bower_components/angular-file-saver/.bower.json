@@ -34,6 +34,6 @@
     "commit": "8bbd85576c0e7172a261de10e55c07a74c48df3b"
   },
   "_source": "git://github.com/alferov/angular-file-saver.git",
-  "_target": "*",
+  "_target": "1.0.2",
   "_originalSource": "angular-file-saver"
 }

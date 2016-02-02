@@ -71,11 +71,5 @@ angular.module('cloudoptingApp')
             }
         };
 
-        $scope.isSubscriber = function(){
-            if(Principal.isInRole(SERVICE.ROLE.ADMIN) || Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)){
-                return true;
-            }
-            return false;
-        }
     }
 );
