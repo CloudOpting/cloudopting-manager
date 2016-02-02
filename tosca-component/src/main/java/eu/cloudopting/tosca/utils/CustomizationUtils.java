@@ -139,6 +139,11 @@ public class CustomizationUtils {
 			 * );
 			 */
 			jret = new JSONObject("{\"type\": \"object\",\"title\": \"Compute\"}");
+			log.debug("the shall of the json");
+			log.debug(jret.toString());
+			log.debug("the props");
+			log.debug(properties.toString());
+			
 			jret.put("properties", properties);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

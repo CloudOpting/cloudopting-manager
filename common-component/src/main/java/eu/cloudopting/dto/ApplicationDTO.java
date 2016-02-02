@@ -2,6 +2,8 @@ package eu.cloudopting.dto;
 
 import java.io.Serializable;
 
+import eu.cloudopting.domain.ApplicationSize;
+
 /**
  * Created by danielpo on 09/07/2015.
  */
@@ -22,7 +24,10 @@ public class ApplicationDTO implements Serializable{
     String applicationSpMail;
     Boolean applicationIsTryable;
     String terms;
-    
+    String servicePrice;
+    String platformPrice;
+	ApplicationSize size;
+	
     public Long getId() {
 		return id;
 	}
@@ -141,6 +146,30 @@ public class ApplicationDTO implements Serializable{
 
 	public void setTerms(String terms) {
 		this.terms = terms;
+	}
+
+	public String getServicePrice() {
+		return servicePrice;
+	}
+
+	public void setServicePrice(String servicePrice) {
+		this.servicePrice = servicePrice;
+	}
+
+	public String getPlatformPrice() {
+		return platformPrice;
+	}
+
+	public void setPlatformPrice(String platformPrice) {
+		this.platformPrice = platformPrice;
+	}
+
+	public ApplicationSize getSize() {
+		return size;
+	}
+
+	public void setSize(ApplicationSize size) {
+		this.size = size;
 	}
 }
 

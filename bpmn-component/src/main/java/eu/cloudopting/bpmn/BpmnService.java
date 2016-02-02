@@ -41,7 +41,6 @@ import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.Status;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
-import eu.cloudopting.dto.CustomizationDTO;
 import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CloudAccountService;
@@ -406,17 +405,17 @@ public class BpmnService {
 		return activitiDTO;
 	}
 	
-	
-	public ActivitiDTO createCustomization(CustomizationDTO customizationDTO) {
-		HashMap<String, Object> v = new HashMap<>();
-		v.put("customization",customizationDTO);
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("createCustomization",v);
-		ActivitiDTO activitiDTO = new ActivitiDTO();
-		Map map = ((ExecutionEntity) pi).getVariableInstances();
-		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
-		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
-		return activitiDTO;
-	}
+	//Method is not used
+//	public ActivitiDTO createCustomization(CustomizationDTO customizationDTO) {
+//		HashMap<String, Object> v = new HashMap<>();
+//		v.put("customization",customizationDTO);
+//		ProcessInstance pi = runtimeService.startProcessInstanceByKey("createCustomization",v);
+//		ActivitiDTO activitiDTO = new ActivitiDTO();
+//		Map map = ((ExecutionEntity) pi).getVariableInstances();
+//		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
+//		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+//		return activitiDTO;
+//	}
 
 	public ActivitiDTO deleteCustomization(String customizationId) {
 		HashMap<String, Object> v = new HashMap<>();
@@ -429,15 +428,15 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
-	public ActivitiDTO updateCustomization(CustomizationDTO customizationDTO) {
-		HashMap<String, Object> v = new HashMap<>();
-		v.put("customization",customizationDTO);
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateCustomization",v);
-		ActivitiDTO activitiDTO = new ActivitiDTO();
-		Map map = ((ExecutionEntity) pi).getVariableInstances();
-		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
-		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
-		return activitiDTO;
-	}
-	
+	//Method is not used
+//	public ActivitiDTO updateCustomization(CustomizationDTO customizationDTO) {
+//		HashMap<String, Object> v = new HashMap<>();
+//		v.put("customization",customizationDTO);
+//		ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateCustomization",v);
+//		ActivitiDTO activitiDTO = new ActivitiDTO();
+//		Map map = ((ExecutionEntity) pi).getVariableInstances();
+//		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
+//		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+//		return activitiDTO;
+//	}
 }
