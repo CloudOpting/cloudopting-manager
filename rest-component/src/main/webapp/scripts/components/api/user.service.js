@@ -14,7 +14,7 @@ angular.module('cloudoptingApp')
              * Method to get the users applying filters, and with pagination
              * @returns {*}
              */
-            findAll: function (page, size, sortBy, sortOrder, filter) {
+            findAll: function (page, size, sortBy, sortOrder, filter, callback) {
                 var endpoint = baseURI +
                     '?page=' + page +
                     '&size=' + size +
@@ -27,6 +27,7 @@ angular.module('cloudoptingApp')
                     })
                     .error(function (data, status, headers, config) {
                         $log.error("UserService.findAll error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             /**

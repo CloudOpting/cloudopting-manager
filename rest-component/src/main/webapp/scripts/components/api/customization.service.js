@@ -59,7 +59,7 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
-                        console.error("CustomizationService.sendCustomizationForm error. " +
+                        $log.error("CustomizationService.sendCustomizationForm error. " +
                             "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });

@@ -10,7 +10,6 @@ angular.module('cloudoptingApp')
         var baseURI = 'api/application';
 
         function upload(idApplication, processID, files, type, callback) {
-            //headers: { 'Authorization' : 'Basic YWRtaW46YWRtaW4=' },
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
@@ -23,10 +22,11 @@ angular.module('cloudoptingApp')
                         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                         $log.debug('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                     }).success(function (data, status, headers, config) {
-                        callback(data);
                         $log.debug('Application ID: ' + data);
+                        callback(data, status, headers, config);
                     }).error(function (data, status, headers, config) {
                         $log.error('Error uploading a file for Application ID: ' + data);
+                        callback(data, status, headers, config);
                     });
                 }
             }
@@ -47,6 +47,11 @@ angular.module('cloudoptingApp')
                 return $http.get(endpoint)
                     .success(function (applications) {
                         apps = applications;
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.findAll error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             /**
@@ -58,34 +63,56 @@ angular.module('cloudoptingApp')
                 //return $http.get('mocks/applications.js')
                 return $http.get(baseURI + SERVICE.SEPARATOR + 'unpaginated')
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("Something went wrong" + data);
+                        $log.error("ApplicationService.findAllUnpaginated error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
-            findById: function (id) {
+            findById: function (id, callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + id)
                     .success(function (application) {
                         app = application;
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.findById error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             create: function (application, callback) {
                 return $http.post(baseURI, application)
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.create error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             update: function (idApplication, processId, application, callback) {
                 return $http.put(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR + processId, application)
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.update error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             delete: function (idApplication, callback) {
                 return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication)
                     .success(function (data, status, headers, config) {
-                        callback(data);
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.delete error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             addPromotionalImage: function (idApplication, processID, files, callback) {
@@ -99,7 +126,15 @@ angular.module('cloudoptingApp')
             },
             deleteAppFile: function (idApplication, processID, fileId) {
                 return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR
-                    + processID + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId);
+                    + processID + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.deleteAppFile error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
             }
 
         }
