@@ -7,7 +7,10 @@ angular.module('cloudoptingApp')
 
         if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)) {
             //Get all instances of the user if it is a SUBSCRIBER.
-            InstanceService.findAllUnpaginatedSubscriber()
+            var callback = function(data, status, headers, config){
+                $log.info(data);
+            };
+            InstanceService.findAll(callback)
                 .success(function (instances) {
                     $scope.instancesList = instances;
                 });
@@ -64,10 +67,16 @@ angular.module('cloudoptingApp')
 
         $scope.stop = function(instance) {
             $window.alert('Not implemented yet');
+            var callback = function(data, status, headers, config){
+                $log.info(data);
+            };
             //InstanceService.stop(instance);
         };
         $scope.delete = function(instance) {
             $window.alert('Not implemented yet');
+            var callback = function(data, status, headers, config){
+                $log.info(data);
+            };
             //InstanceService.delete(instance);
         };
         $scope.monitor = function(instance) {
@@ -76,6 +85,9 @@ angular.module('cloudoptingApp')
         };
         $scope.start = function(instance) {
             $window.alert('Not implemented yet');
+            var callback = function(data, status, headers, config){
+                $log.info(data);
+            };
             //InstanceService.start(instance);
         };
         //Checks for showing the buttons.

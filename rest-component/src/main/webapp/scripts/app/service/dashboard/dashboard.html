@@ -1,0 +1,80 @@
+<section class="wizzard-modal" id="signin">
+    <div class="container">
+        <div class="row" ng-show="isSubscriber()">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="instances.title">
+                        Instances Service
+                    </div>
+                    <div class="backend-box-content">
+                        <div class="alert alert-info" ng-show="infoMessage">
+                            {{infoMessage}}
+                        </div>
+                        <div class="alert alert-danger" ng-show="errorMessage">
+                            {{errorMessage}}
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="searchTextInstance" placeholder="{{'instances.placeholder' | translate}}" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th translate="instances.col.instanceof">Instance of</th>
+                                                <th translate="instances.col.author">Author</th>
+                                                <th translate="instances.col.date">Date</th>
+                                                <th translate="instances.col.status">Status</th>
+                                                <th translate="instances.col.actions">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="instance in instancesList | filter:searchTextInstance">
+                                                <td>{{instance.applicationName}}</td>
+                                                <td>{{instance.customerOrganizationId.organizationName}}</td>
+                                                <td>{{instance.customizationCreation}}</td>
+                                                <td>{{instance.statusId.status}}</td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-icon" ng-click="test(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.test' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="demo(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.demo' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="deploy(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.deploy' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="stop(instance)" ><i class="icon"><img src="" /></i>{{'instances.button.stop' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="delete(instance)" ><i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'instances.button.delete' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="start(instance)" ><i class="icon"><img src="" /></i>{{'instances.button.start' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="monitor(instance)" ><i class="icon"><img src="assets/img/auth/icn_list.png" /></i>{{'instances.button.monitor' | translate}}</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="row row-actions">
+                                <div class="col-lg-12">
+                                    <button type="submit" class="btn btn-primary pull-right">Next</button>
+                                </div>
+                            </div>
+                            -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row" ng-show="isPublisher()">
+            <br/><br/>
+            <br/><br/>
+            <button ng-click="toscaide()" class="btn btn-large center-block" >Go to TOSCA IDE</button>
+        </div>
+    </div>
+</section>

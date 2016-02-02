@@ -16,8 +16,9 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
 
-            findAll: function (page, size, sortBy, sortOrder, filter, owner) {
+            findAll: function (callback/*page, size, sortBy, sortOrder, filter, owner*/) {
                 //TODO: This endpoint should be "/api/customization" to be RESTFul.
+                /*
                 var endpoint = baseURI +
                     '?page='+ page +
                     '&size=' + size +
@@ -25,72 +26,78 @@ angular.module('cloudoptingApp')
                     '&sortOrder=' + sortOrder +
                     '&filter=' + filter +
                     '&owner=' + owner;
-                return $http.get(endpoint)
+                */
+                return $http.get(baseURI )
                     .success(function(instances) {
                         insts = instances;
-                    });
-            },
-            /**
-             * FIXME: DELETE THIS METHOD
-             * Method to get the instances list without pagination
-             * @returns {*}
-             */
-            findAllUnpaginated: function () {
-                //return $http.get(baseURI+'/listunpaginated')
-                return $http.get('mocks/instances.js')
-                    .success(function(instances){
-                        insts = instances;
-                    });
-            },
-            /**
-             * FIXME: DELETE THIS METHOD
-             * Method to get the instances list without pagination
-             * This method should be replaced by findAll with the owner filter.
-             * @returns {*}
-             */
-            findAllUnpaginatedSubscriber: function () {
-                //return $http.get(baseURI+'/listunpaginated')
-                return $http.get('mocks/instancesSubscriber.js')
-                    .success(function(instances){
-                        insts = instances;
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.findAll error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             findById: function (id) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + id)
                     .success(function (instance) {
                         inst = instance;
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.findById error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
-            create: function(instance) {
+            create: function(instance, callback) {
                 return $http.post(baseURI, angular.toJson(instance))
-                    .success(function (data) {
-                        //TODO: Do something if all went ok.
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.create error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
-            start: function(instance) {
+            start: function(instance, callback) {
                 instance.status = "start";
                 return $http.put(baseURI, angular.toJson(instance))
-                    .success(function (data) {
-                        //TODO: Do something if all went ok.
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.start error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
-            stop: function(instance) {
+            stop: function(instance, callback) {
                 instance.status = "stop";
                 return $http.put(baseURI, angular.toJson(instance))
-                    .success(function (data) {
-                        //TODO: Do something if all went ok.
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.stop error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
             deploy: function(instance, callback) {
-                //TODO: Ask for the cloud account needed.
                 instance.status = "deploy";
                 $http.put(baseURI, angular.toJson(instance))
-                    .success(function (data) {
-                        if(callback) { callback(data); }
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.deploy error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
-            delete: function(instance) {
-                return $http.delete(baseURI + SERVICE.SEPARATOR + instance.id);
+            delete: function(instance, callback) {
+                return $http.delete(baseURI + SERVICE.SEPARATOR + instance.id)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("InstanceService.delete error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
             }
         };
     }

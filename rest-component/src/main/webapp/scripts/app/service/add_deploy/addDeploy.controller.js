@@ -26,7 +26,10 @@ angular.module('cloudoptingApp')
 
         $scope.uploadTemplate = function(service) {
             //Save the template temporarily
-            InstanceService.create(service);
+            var callback = function(data, status, headers, config){
+                $log.info(data);
+            };
+            InstanceService.create(service, callback);
             //$scope.message = "Service send successfully!";
         };
     }

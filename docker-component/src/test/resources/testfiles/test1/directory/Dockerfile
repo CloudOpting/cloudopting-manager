@@ -6,7 +6,7 @@ RUN apt-get install -y puppet
 
 VOLUME containerLogs /tmp/logs
 
-ADD manifest.pp /tmp/manifest.pp
+ADD ./directorymanifest.pp /tmp/manifest.pp
 
 RUN puppet apply /tmp/manifest.pp
 

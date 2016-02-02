@@ -20,6 +20,10 @@ angular.module('cloudoptingApp')
             $state.go("profile");
         };
 
+        $scope.dashboard = function(){
+            $state.go("dashboard");
+        };
+
         $scope.$watch(
             function() {
                 return Principal.isAuthenticated();
@@ -66,5 +70,6 @@ angular.module('cloudoptingApp')
                 }
             }
         };
+
     }
 );
