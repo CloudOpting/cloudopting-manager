@@ -1,12 +1,12 @@
 webconsumer:
-  image: testfull/webconsumer
+  image: test3/webconsumer
   links:
     - db
   command: python /usr/src/app/app.py
 webproducer:
-  image: testfull/webproducer
+  image: test3/webproducer
   links:
     - db
   command: python /usr/src/app/app.py
 db:
-  image: testfull/redis
+  image: test3/redis

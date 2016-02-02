@@ -63,13 +63,16 @@ public class DockerBuilder {
 	 *            Path to the puppetfile where the needed modules are listed
 	 * @return API response
 	 */
-	public ResponseEntity<String> newContext(String name,
+	public ResponseEntity<String> newContext(
 			String pathToPuppetfile) {
 		// Prepare files
-		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();		
+		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+		/*
 		if (name != "") {
 			map.add("group", new String(name));
 		}
+		*/
+		/// again no chenges without having had a call on these
 		if (pathToPuppetfile != "") {
 			map.add("puppetfile", new FileSystemResource(pathToPuppetfile));
 		}
@@ -268,18 +271,20 @@ public class DockerBuilder {
 	 *            built.
 	 * @return API response
 	 */
-	public ResponseEntity<String> newImage(String name, String baseName, String pathToDockerfile, String pathToPuppetManifest, String contextToken) {
+	public ResponseEntity<String> newImage(String name, String pathToDockerfile, String pathToPuppetManifest, String contextToken) {
 		
 		// Prepare files
 		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
 		if (name != ""){
 			map.add("imageName", new String(name));
 		}
-
+/// What this base represent??????????
+		// you cannot alter the method signature without talking with the team
+		/*
 		if (baseName != ""){
 			map.add("base", new String(baseName));
 		}
-
+*/
 		if (pathToDockerfile != ""){
 			map.add("dockerfile", new FileSystemResource(pathToDockerfile));
 		}
