@@ -18,6 +18,8 @@ import eu.cloudopting.monitoring.MonitoringService;
 import eu.cloudopting.monitoring.elastic.MonitordataService;
 import eu.cloudopting.monitoring.elastic.data.Monitordata;
 import eu.cloudopting.web.rest.dto.Data;
+import eu.cloudopting.web.rest.dto.ElasticData;
+import eu.cloudopting.web.rest.dto.ElasticGraphDTO;
 import eu.cloudopting.web.rest.dto.GraphDTO;
 
 /**
@@ -128,7 +130,7 @@ public class MonitoringController {
 	
 	@RequestMapping(value = "/monitoring/elastic", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	@ResponseBody
-	public GraphDTO getMonitoringData(
+	public ElasticGraphDTO getMonitoringData(
 			@RequestParam(value = "container", required = false) String container,
 			@RequestParam(value = "condition", required = false) String condition, 
 			@RequestParam(value = "fields", required = false) String fields,
@@ -138,19 +140,19 @@ public class MonitoringController {
 		List<Monitordata> listret = monitordataService.getMonitorData(container, condition, fields, type, pagination);
 		log.debug(listret.toString());
 		
-		GraphDTO gdto = new GraphDTO();
-		Data[] dataarr = new Data[listret.size()];
+		ElasticGraphDTO gdto = new ElasticGraphDTO();
+		ElasticData[] dataarr = new ElasticData[listret.size()];
 		
 		for(int i=0; i<listret.size();i++){
 			log.debug(listret.get(i).getHost());
-			Data el = new Data(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(listret.get(i).getTimestamp()),"1","0","0");
+			ElasticData el = new ElasticData(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(listret.get(i).getTimestamp()),"1");
 			dataarr[i] = el;
 		}
 		gdto.setData(dataarr);
 		gdto.setXkey("time");
-		gdto.setYkeys(new String[] {"disk", "cpu", "ram"});
-		gdto.setLabels(new String[] {"Disk", "CPU", "RAM"});
-		gdto.setLineColors(new String[] {"green", "blue", "orange"});
+		gdto.setYkeys(new String[] {"occurrence"});
+		gdto.setLabels(new String[] {"Occurrence"});
+		gdto.setLineColors(new String[] {"green"});
 		return gdto;
 	}
 
