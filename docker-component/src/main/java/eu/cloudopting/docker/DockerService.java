@@ -61,9 +61,32 @@ public class DockerService {
 		return true;
 	}
 
+	/**
+	 * Check if Crane docker engine is alive.
+	 * @return true if yes, false if no.
+	 */
+	public boolean checkCraneEngine(){
+		ResponseEntity<String> response = extra.checkCrane();
+		if(!response.getStatusCode().is2xxSuccessful())
+			return false;
+		return true;
+	}
+	/**
+	 * get information about endpoint doker daemon
+	 * @param machine machine with docker engine
+	 * @return API body response
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String dockerInfo(String hostname, int dockerPort) throws DockerError{
+		log.debug("in dockerInfo with hostname:port'"+hostname+":"+dockerPort+"' and calling the API");
+		ResponseEntity<String> response = extra.dockerInfo(new Machine(hostname, dockerPort));
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		return response.getBody();
+	}
 	
 	// Building
-
 
 	/**
 	 * Create a new context
@@ -78,17 +101,6 @@ public class DockerService {
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
 		return map.get("token").toString();
-	}
-	
-
-	/**
-	 * Create a new context (with no name)
-	 * @param pathToPuppetfile Path to the source puppetfile where the needed modules are listed
-	 * @return Token that references the context
-	 * @throws DockerError If API returns error when starting the process.
-	 */
-	public String newContext(String pathToPuppetfile) throws DockerError{
-		return newContext("", pathToPuppetfile);
 	}
 	
 	
@@ -107,7 +119,7 @@ public class DockerService {
 		if(aux.equals("finished"))
 			return true;
 		else if(aux.equals("error"))
-			throw new DockerError(map.get("description").toString() + "\n" + map.get("log").toString());
+			throw new DockerError(map.get("description").toString());
 		else
 			return false;
 	}
@@ -120,6 +132,21 @@ public class DockerService {
 	 */
 	public String getContextInfo(String token) throws DockerError{
 		ResponseEntity<String> response = builder.getContextInfo(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		
+		return response.getBody();
+	}
+
+	/**
+	 * Retrieves information about the context creation.
+	 * @param token Token that identifies the context
+	 * @return Response from API in JSON format.
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public String contextDetail(String token) throws DockerError{
+		ResponseEntity<String> response = builder.getContextDetail(token);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
@@ -139,19 +166,76 @@ public class DockerService {
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
 	}
+
+
+	/**
+	 * Starts build process for an image base.
+	 * @param baseName base name
+	 * @param dockerFilePath Dockerfile path
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public String buildBase(String baseName, String dockerFilePath) throws DockerError{
+		log.debug("in buildBase and calling the API");
+		log.debug("executing: docker build -t "+ baseName + " -f " + dockerFilePath );
+		ResponseEntity<String> response = builder.newBase(baseName, dockerFilePath);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		
+		return response.getBody();
+	}
+
+	/**
+	 * Checks if the build process for an image is finished.
+	 * @param baseName Name that identifies the image base
+	 * @return true if build finished, false if not.
+	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 */
+	public boolean isBuiltBase(String baseName) throws DockerError{
+		log.debug("in isBuiltBase and calling the API");
+		
+		ResponseEntity<String> response = builder.getBaseInfo(baseName);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		String status = map.get("status").toString();
+		if(!response.getStatusCode().is2xxSuccessful() || status.equals("error"))
+			throw new DockerError(map.get("description").toString());
+		
+		if(status.equals("finished"))
+			return true;
+		else
+			return false;
+	}
 	
+	/**
+	 * Retrieves detailed information about the build process of an image base.
+	 * @param baseName Name that identifies the image base
+	 * @return Response from API in JSON format.
+	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 */
+	public String getBuildBaseInfo(String baseName) throws DockerError{
+		log.debug("in getBuildInfo and calling the API");
+		
+		ResponseEntity<String> response = builder.getBaseInfo(baseName);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		
+		return response.getBody();
+	}
 	
 	/**
 	 * Starts build process for an image.
 	 * @param image Image name
+	 * @param base Base name
 	 * @param dockerFile Dockerfile path
-	 * @param executionPath Puppet manifests path
+	 * @param puppetManifestPath Puppet manifests path
+	 * @param contextReference ContextToken
 	 * @throws DockerError If API returns error when starting the process.
 	 */
-	public String buildDockerImage(String image, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
+	public String buildDockerImage(String image, String base, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
 		log.debug("in buildDockerImage and calling the API");
-		log.debug("executing: docker build -t "+ image + " -f " + dockerFilePath );
-		ResponseEntity<String> response = builder.newImage(image, dockerFilePath, puppetManifestPath, contextReference);
+	//	log.debug("executing: docker build -t "+ image + " -f " + dockerFilePath );
+		ResponseEntity<String> response = builder.newImage(image, base, dockerFilePath, puppetManifestPath, contextReference);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
@@ -160,6 +244,7 @@ public class DockerService {
 		return aux;
 	}
 	
+
 	/**
 	 * Checks if the build process for an image is finished.
 	 * @return true if build finished, false if not.
@@ -196,6 +281,23 @@ public class DockerService {
 		
 		return response.getBody();
 	}
+
+	/**
+	 * Retrieves detailed information about the build process of an image.
+	 * @param token Operation token
+	 * @return Response from API in JSON format.
+	 * @throws DockerError Throws this when the builder returns any non successful response.
+	 */
+	public String imageDetail(String token) throws DockerError{
+		log.debug("in getBuildInfo and calling the API");
+		
+		ResponseEntity<String> response = builder.getImageDetail(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		
+		return response.getBody();
+	}
 	
 	/**
 	 * Tries to stop the build process and destroy the related data (images, temporal containers, etc)
@@ -214,11 +316,9 @@ public class DockerService {
 		throw new UnsupportedOperationException("Invalid operation. Commiting is now done in the same step that building.");
 	}
 	
-	public boolean isCommitted(String tocken){
+	public boolean isCommitted(String token){
 		throw new UnsupportedOperationException("Invalid operation. Commiting is now done in the same step that building.");
 	}
-	
-	
 	
 	// Clustering
 	
@@ -289,6 +389,7 @@ public class DockerService {
 		//cluster.addToCluster(new Machine(hostname, dockerPort), clusterToken);
 		throw new UnsupportedOperationException("Not implemented yet.");
 	}
+
 	
 	
 	/**
@@ -309,8 +410,6 @@ public class DockerService {
 			return true;
 		else
 			return false;
-		
-
 	}
 	
 	/**
@@ -329,7 +428,22 @@ public class DockerService {
 		
 		return response.getBody();
 	}
-	
+	/**
+	 * Retrieves detailed information about docker cluster.
+	 * @param token Operation token
+	 * @return Status information about the cluster in a human-readable format.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String clusterDetail(String clusterToken) throws DockerError{
+		log.debug("in getClusterInfo and calling the API");
+		
+		ResponseEntity<String> response = cluster.getClusterDetail(clusterToken);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		
+		return response.getBody();
+	}
 	/**
 	 * Tries to stop the cluster (destroy containers, and unlink machines from master)
 	 * @param token Operation token
@@ -339,15 +453,7 @@ public class DockerService {
 		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 	
-	
 	// Composing
-	
-	/**
-	 * Start the deployment of a docker composition
-	 * @param machines List of machines that will compose the cluster.
-	 * @return Operation token that also identifies the cluster in the Docker Crane.
-	 * @throws DockerError Throws this when the API returns a non successful response.
-	 */
 	
 	/**
 	 * Starts the deployment of a docker composition.
@@ -366,18 +472,15 @@ public class DockerService {
 		return map.get("token").toString();
 	}
 	
-	public String deployComposition(String composerFilePath) throws DockerError{
-		return deployComposition(composerFilePath, null);
-	}
-	
 	/**
 	 * Checks if the composition has been deployed successfully.
 	 * @return true if it is ready, false if not.
 	 * @throws DockerError Throws this when the API returns a non successful response. If error in occur in the deployment this will be raised.
 	 */
 	public boolean isCompositionDeployed(String token) throws DockerError{
-		log.debug("in isCompositionDeployed and calling the API");
-		return this.composer.isDeployed(token);
+	//	log.debug("in isCompositionDeployed and calling the API");
+	//	return this.composer.isDeployed(token);
+		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 	
 	/**
@@ -387,8 +490,9 @@ public class DockerService {
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public String getDeploymentInfo(String token) throws DockerError{
-		log.debug("in getDeploymentInfo and calling the API");
-		return this.composer.getInfo(token);
+	//	log.debug("in getDeploymentInfo and calling the API");
+	//	return this.composer.getInfo(token);
+		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 	
 	/**
@@ -397,8 +501,9 @@ public class DockerService {
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public void stopComposition(String token) throws DockerError{
-		log.debug("in stopComposition and calling the API");
-		this.composer.stopComposition(token);
+	//	log.debug("in stopComposition and calling the API");
+	//	this.composer.stopComposition(token);
+		throw new UnsupportedOperationException("Operation not supported for the moment.");
 	}
 	
 }
