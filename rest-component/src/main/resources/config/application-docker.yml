@@ -1,0 +1,69 @@
+server:
+    port: 8080
+
+spring:
+    profiles:
+        active: prod
+
+    jcr:
+        repo_url: http://jcr:8080/server
+
+    datasource:
+        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
+        driver: org.postgresql.Driver
+        url: jdbc:postgresql://db:5432/cloudopting
+        databaseName: cloudopting
+        serverName: db
+        username: postgres
+        password: 1qaz2wsx
+        test-on-borrow: true
+        test-while-idle: true
+        test-on-return: true
+        remove-abandoned: true
+        validation-query: SELECT 1;
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+        database: POSTGRESQL
+        openInView: false
+        show_sql: true
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+
+    mail:
+        baseUrl: http://localhost:8080
+
+    thymeleaf:
+        mode: XHTML
+        cache: false
+    activiti:
+        jobExecutorActivate: true
+        restApiEnabled: true
+
+metrics:
+    jmx.enabled: true
+    spark:
+        enabled: false
+        host: localhost
+        port: 9999
+    graphite:
+        enabled: false
+        host: localhost
+        port: 2003
+        prefix: cloudopting
+zabbix:
+    user: admin
+    password: admin
+    endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
+
+cloud:
+    doDeploy: true
+    ip: 127.0.0.1
+    templateId: 1a74adaa-845d-4fec-a12c-cc26026b38b7
+    diskId: ec700372-e694-45a1-b3a8-30a636c5a747
