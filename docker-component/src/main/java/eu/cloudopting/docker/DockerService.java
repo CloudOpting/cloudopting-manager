@@ -95,8 +95,8 @@ public class DockerService {
 	 * @return Token that references the context
 	 * @throws DockerError If API returns error when starting the process.
 	 */
-	public String newContext(String pathToPuppetfile) throws DockerError{
-		ResponseEntity<String> response = builder.newContext(pathToPuppetfile);
+	public String newContext(String name, String pathToPuppetfile) throws DockerError{
+		ResponseEntity<String> response = builder.newContext(name, pathToPuppetfile);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
@@ -232,10 +232,10 @@ public class DockerService {
 	 * @param contextReference ContextToken
 	 * @throws DockerError If API returns error when starting the process.
 	 */
-	public String buildDockerImage(String image, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
+	public String buildDockerImage(String image, String base, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
 		log.debug("in buildDockerImage and calling the API");
 	//	log.debug("executing: docker build -t "+ image + " -f " + dockerFilePath );
-		ResponseEntity<String> response = builder.newImage(image, dockerFilePath, puppetManifestPath, contextReference);
+		ResponseEntity<String> response = builder.newImage(image, base, dockerFilePath, puppetManifestPath, contextReference);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
