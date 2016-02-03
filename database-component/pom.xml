@@ -87,6 +87,11 @@
             <artifactId>usertype.core</artifactId>
             <version>${usertype-core.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt-hibernate4</artifactId>
+            <version>${jasypt.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>

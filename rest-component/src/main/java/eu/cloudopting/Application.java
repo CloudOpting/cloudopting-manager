@@ -23,11 +23,12 @@ import eu.cloudopting.config.Constants;
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 public class Application {
-
     private final Logger log = LoggerFactory.getLogger(Application.class);
 
     @Inject
     private Environment env;
+    
+    
 
     /**
      * Initializes cloudopting.
