@@ -1,53 +1,16 @@
 <div class="row">
     <div class="bs-example col-md-10 col-md-offset-1">
         <div class="panel-heading darkgreen" translate="monitoring.title">Service Monitoring</div>
+        <div class="alert alert-danger" ng-show="errorMessage">
+            {{errorMessage}}
+        </div>
         <div class="panel-body" id="space-for-charts">
 
             <div class="col-md-12" ng-repeat="graph in graphsList">
                 <h3>{{graph.title}}</h3>
                 <div id="{{graph.chartId}}"></div>
             </div>
-            <!--
-            <div class="col-md-12">
-                <h3>My First Char Bar</h3>
-                <div id="chart_bar"></div>
-            </div>
-            <div class="col-md-12">
-                <h3>Elastic Chart Line</h3>
-                <div id="elasticchart_line"></div>
-            </div>
-            <div class="col-md-12">
-                <h3>Elastic Chart Bar</h3>
-                <div id="elasticchart_bar"></div>
-            </div>
-            <div class="col-md-12">
-                <h3>Elastic Chart Line</h3>
-                <div id="newelasticchart_line"></div>
-            </div>
-            <div class="col-md-12">
-                <h3>Elastic Chart Bar</h3>
-                <div id="newelasticchart_bar"></div>
-            </div>
-            -->
-            <!--
-            <div class="col-md-4 webuiPanel">
-                <span class="mo_text darkgreen" translate="monitoring.titles.alerts">Service Alerts</span>
-                <div class="row">
-                    <div class="btn btn-primary btn-circle"></div>
-                    <label class="darkgreen" translate="monitoring.cpu">CPU Usage</label>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="btn btn-success btn-circle"></div>
-                    <label class="darkgreen" translate="monitoring.disk">Disk Space</label>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="btn btn-warning btn-circle"></div>
-                    <label class="darkgreen" translate="monitoring.ram">RAM Usage</label>
-                </div>
-            </div>
-            -->
+
         </div>
     </div>
 </div>

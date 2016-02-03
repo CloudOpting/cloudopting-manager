@@ -70,7 +70,7 @@ angular.module('cloudoptingApp')
                     });
             },
 
-            //New endpoint to retriebe the data
+            //New endpoint to retrieve the data
             findByCustomizationId: function(instanceId, callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + "elastic/info/list" + SERVICE.SEPARATOR + instanceId)
                     .success(function(data, status, headers, config) {

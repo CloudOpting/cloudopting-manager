@@ -21,20 +21,13 @@ angular.module('cloudoptingApp')
             getCustomizationForm: function(idApp, callback) {
                 return $http.get(baseURI + SERVICE.SEPARATOR + idApp + SERVICE.SEPARATOR + "getCustomizationForm")
                     .success(function (data, status, headers, config) {
-                        callback(data);
-                        /*        return {
-                         type: "object",
-                         properties: {
-                         name: { type: "string", minLength: 2, title: "Name", description: "Name or alias" },
-                         title: {
-                         type: "string",
-                         enum: ['dr','jr','sir','mrs','mr','NaN','dj']
-                         }
-                         }
-                         };
-                         */
-                    }
-                )
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error("CustomizationService.getCustomizationForm error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
             },
 
             /**

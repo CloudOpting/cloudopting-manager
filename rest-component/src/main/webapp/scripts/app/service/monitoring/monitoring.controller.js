@@ -1,78 +1,74 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('MonitoringController', function (SERVICE, $scope, $state, $log, localStorageService, InstanceService, MonitoringService, $timeout) {
+    .controller('MonitoringController', function ($scope, localStorageService, SERVICE, $state, $log, MonitoringService, $timeout, Principal) {
+
+        var instance = localStorageService.get(SERVICE.STORAGE.CURRENT_INSTANCE);
 
         //Add the dives to the page dynamically.
         $scope.graphsList = [];
 
-        var callback_line = function(graph) {
-            $scope.graphsList.push({
-                title: "My First Char Line",
-                chartId: "chart_line"
-            });
-            $timeout(function() {
-                lineChart(graph, "chart_line");
-            }, 1000);
+        var callback = function(data, status, headers, config) {
+            checkStatusCallback(data, status, headers, config);
+            if(data){
+                var graph = data;
+                $scope.graphsList.push({
+                    title: "findObject Char Line (ID:1)",
+                    chartId: "chart_line"
+                });
+                $scope.graphsList.push({
+                    title: "findObject Char Bar (ID:1)",
+                    chartId: "chart_bar"
+                });
+                $timeout(function() {
+                    lineChart(graph, "chart_line");
+                    barChart(graph, "chart_bar");
+                }, 1000);
+            }
         };
-        MonitoringService.findObject(1, 1, callback_line);
+        MonitoringService.findObject(1, 1, callback);
 
-        var callback_bar = function(graph) {
-            $scope.graphsList.push({
-                title: "My First Char Bar",
-                chartId: "chart_bar"
-            });
-            $timeout(function() {
-                barChart(graph, "chart_bar");
-            }, 1000);
-        };
-        MonitoringService.findObject(1, 1, callback_bar);
-
-        var elasticcallback_line = function(graph) {
-            $scope.graphsList.push({
-                title: "Elastic Chart Line",
-                chartId: "elasticchart_line"
-            });
-            $timeout(function() {
-                lineChart(graph, "elasticchart_line");
-            }, 1000);
+        var elasticcallback =  function(data, status, headers, config) {
+            checkStatusCallback(data, status, headers, config);
+            if(data) {
+                var graph = data;
+                $scope.graphsList.push({
+                    title: "Elastic Chart Line (dynamic)",
+                    chartId: "elasticchart_line"
+                });
+                $scope.graphsList.push({
+                    title: "Elastic Chart Bar (dynamic)",
+                    chartId: "elasticchart_bar"
+                });
+                $timeout(function () {
+                    lineChart(graph, "elasticchart_line");
+                    barChart(graph, "elasticchart_bar");
+                }, 1000);
+            }
         };
         
-        MonitoringService.findOneDataById(1,elasticcallback_line);
+        MonitoringService.findOneDataById(instance.id, elasticcallback);
 
-        var elasticcallback_bar = function(graph) {
-            $scope.graphsList.push({
-                title: "Elastic Chart Bar",
-                chartId: "elasticchart_bar"
-            });
-            $timeout(function() {
-                barChart(graph, "elasticchart_bar");
-            }, 1000);
+        var newelasticcallback =  function(data, status, headers, config) {
+            checkStatusCallback(data, status, headers, config);
+            if(data) {
+                var graph = data;
+                $scope.graphsList.push({
+                    title: "New Elastic Chart Line (ID:1)",
+                    chartId: "newelasticchart_line"
+                });
+                $scope.graphsList.push({
+                    title: "New Elastic Chart Bar (ID:1)",
+                    chartId: "newelasticchart_bar"
+                });
+                $timeout(function () {
+                    lineChart(graph, "newelasticchart_line");
+                    barChart(graph, "newelasticchart_bar");
+                }, 1000);
+            }
         };
-        MonitoringService.findOneDataById(1,elasticcallback_bar);
+        MonitoringService.findByCustomizationId(1,newelasticcallback);
 
-        var newelasticcallback_line = function(graph) {
-            $scope.graphsList.push({
-                title: "New Elastic Chart Line",
-                chartId: "newelasticchart_line"
-            });
-            $timeout(function() {
-                lineChart(graph, "newelasticchart_line");
-            }, 1000);
-        };
-
-        MonitoringService.findByCustomizationId(1,newelasticcallback_line);
-
-        var newelasticcallback_bar = function(graph) {
-            $scope.graphsList.push({
-                title: "New Elastic Chart Bar",
-                chartId: "newelasticchart_bar"
-            });
-            $timeout(function() {
-                barChart(graph, "newelasticchart_bar");
-            }, 1000);
-        };
-        MonitoringService.findByCustomizationId(1,newelasticcallback_bar);
 
 
         var lineChart = function(graph, chart_name) {
@@ -125,6 +121,30 @@ angular.module('cloudoptingApp')
                 labels: graph.labels, /*['Disk', 'CPU', 'RAM'],*/
                 barColors: graph.lineColors/*['green', 'blue', 'orange']*/
             });
+        };
+
+        $scope.errorMessage = null;
+        $scope.infoMessage = null;
+
+        //function to check possible outputs for the end user information.
+        var checkStatusCallback = function(data, status, headers, config){
+            if(status==401) {
+                //Unauthorised. Check if signed in.
+                if(Principal.isAuthenticated()){
+                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                } else {
+                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $timeout(function() {
+                        $state.go('login');
+                    }, 3000);
+                }
+            }else if(status!=200 && status!=201) {
+                //Show message
+                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+
+            } else {
+                $log.info("Successful.");
+            }
         };
     }
 );
