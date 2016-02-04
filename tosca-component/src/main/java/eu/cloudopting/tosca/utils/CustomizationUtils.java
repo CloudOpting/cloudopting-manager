@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -39,6 +40,9 @@ public class CustomizationUtils {
 
 	@Autowired
 	private CSARUtils csarUtils;
+	
+	@Value("${spring.jcr.repo_http}")
+	private String jackHttp;
 
 	private HashMap<Long, DocumentImpl> xToscaHash = new HashMap<Long, DocumentImpl>();
 
@@ -60,7 +64,7 @@ public class CustomizationUtils {
 		}
 	}
 
-	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
+	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data, String organizationkey, String serviceName) {
 
 		log.debug("generateCustomizedTosca");
 		DocumentImpl theDoc = new DocumentImpl();
@@ -122,7 +126,7 @@ public class CustomizationUtils {
 			
 			
 		}
-		theDoc = getServUrl(theDoc);
+		theDoc = getServUrl(theDoc, organizationkey, serviceName);
 		log.debug(theDoc.saveXML(null));
 		log.debug("ORIGINAL---------------");
 		log.debug(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
@@ -213,7 +217,7 @@ public class CustomizationUtils {
 		return properties;
 	}
 
-	private DocumentImpl getServUrl(DocumentImpl theDoc) {
+	private DocumentImpl getServUrl(DocumentImpl theDoc, String organizationkey, String serviceName) {
 		log.debug("getServUrl");
 		log.debug(theDoc.saveXML(null));
 		JSONObject properties = new JSONObject();
@@ -237,7 +241,7 @@ public class CustomizationUtils {
 				String fileName = new String(nodes.item(i).getNodeValue());
 log.debug("the file we want:"+fileName);
 				father.removeChild(nodes.item(i));
-				father.setTextContent("http://jackrabbit/organizatoinkey/service/template/"+fileName);
+				father.setTextContent(jackHttp+organizationkey+"/"+serviceName+"/"+fileName);
 			} catch (DOMException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

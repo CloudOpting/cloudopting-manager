@@ -102,7 +102,9 @@ public class CustomizationController {
 		// Long orgId = user.getOrganizationId().getId()
 		Applications application = applicationService.findOne(idApp);
 		String csarPath = application.getApplicationToscaTemplate();
-		String theTosca = toscaService.generateCustomizedTosca(idApp, csarPath, jsonData);
+		String serviceName = application.getApplicationToscaName();
+		String organizationKey = application.getOrganizationId().getOrganizationKey();
+		String theTosca = toscaService.generateCustomizedTosca(idApp, csarPath, jsonData, organizationKey, serviceName);
 
 		
 		Customizations newC = new Customizations();
