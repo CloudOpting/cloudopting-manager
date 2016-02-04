@@ -122,6 +122,7 @@ public class CustomizationUtils {
 			
 			
 		}
+		theDoc = getServUrl(theDoc);
 		log.debug(theDoc.saveXML(null));
 		log.debug("ORIGINAL---------------");
 		log.debug(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
@@ -210,6 +211,40 @@ public class CustomizationUtils {
 
 		}
 		return properties;
+	}
+
+	private DocumentImpl getServUrl(DocumentImpl theDoc) {
+		log.debug("getServUrl");
+		log.debug(theDoc.saveXML(null));
+		JSONObject properties = new JSONObject();
+		DTMNodeList nodes = null;
+		String xPathProcInt = "//processing-instruction('servUrl')";
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			log.debug(e.getMessage());
+			e.printStackTrace();
+		}
+		log.debug("nodes with PI");
+		log.debug(new Integer(nodes.getLength()).toString());
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			log.debug(nodes.item(i).getNodeValue());
+			log.debug(nodes.item(i).getNodeName());
+			Node father = nodes.item(i).getParentNode();
+			log.debug(father.getNodeName());
+			try {
+				String fileName = new String(nodes.item(i).getNodeValue());
+log.debug("the file we want:"+fileName);
+				father.removeChild(nodes.item(i));
+				father.setTextContent("http://jackrabbit/organizatoinkey/service/template/"+fileName);
+			} catch (DOMException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return theDoc;
 	}
 
 	private DocumentImpl getToscaTemplateDesc(Long idApp, String csarPath) {
