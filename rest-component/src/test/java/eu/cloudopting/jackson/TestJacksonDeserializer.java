@@ -1,10 +1,12 @@
 package eu.cloudopting.jackson;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.cloudopting.domain.Applications;
+import java.io.IOException;
+
 import org.junit.Test;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import eu.cloudopting.domain.Applications;
 
 /**
  * @author Daniel P

@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.commons.io.FileUtils;
@@ -33,6 +34,9 @@ public class PublishToscaUploadTask implements JavaDelegate {
 	
 	@Inject
 	private ApplicationService applicationService;
+	
+	@Autowired
+    private RuntimeService runtimeService;
 	
 	/**
 	 * Sets the "Application Tosca Template" attribute on an Application entity
@@ -97,6 +101,7 @@ public class PublishToscaUploadTask implements JavaDelegate {
 			} else {
 				log.debug("Invalid Tosca Archive!");
 			};
+			
 		} catch (ToscaException e) {
 			throw e;
 		} finally {

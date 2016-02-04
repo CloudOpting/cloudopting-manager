@@ -1,7 +1,11 @@
 package eu.cloudopting.bpmn.tasks.publish;
 
 import java.io.File;
+import java.util.Set;
 
+import javax.inject.Inject;
+
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.commons.io.FileUtils;
@@ -11,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.bpmn.BpmnService;
+import eu.cloudopting.domain.ApplicationMedia;
+import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
-import eu.cloudopting.exception.ToscaException;
+import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.store.StoreService;
 
 @Service
@@ -21,6 +28,32 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(PublishArtifactStorageTask.class);
 	@Autowired(required=true)
 	StoreService storeService;
+	
+	@Inject
+	private ApplicationService applicationService;
+	
+	@Autowired
+    private RuntimeService runtimeService;
+	
+	/**
+	 * Adds an entry to the set of Artifacts associated to this Application
+	 * according to the format for JackRabbit
+	 * @param execution
+	 * @param orgKey
+	 * @param toscaName
+	 * @param remoteFileNameReduced
+	 */
+	private void addArtifactPath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
+		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
+        Applications application = applicationService.findOne(applicationSource.getId());
+        Set<ApplicationMedia> medias = application.getApplicationMedias();
+        ApplicationMedia newMedium = new ApplicationMedia();
+        newMedium.setApplicationId(application);
+        newMedium.setMediaContent(StoreService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
+        medias.add(newMedium);
+        application.setApplicationMedias(medias);
+        applicationService.update(application);
+	}
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -56,14 +89,13 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 						remoteFileNameReduced
 				);
 				log.debug("Artifact UPLOAD performed");
+				//Add entry in referring persistent here
+				this.addArtifactPath(execution, org.getOrganizationKey(), uploadToscaName, remoteFileNameReduced);
 		} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
 			log.error("Error in storing Artifact File");
 			e.printStackTrace();
-		} catch (ToscaException e) {
-			throw e;
 		} finally {
 			FileUtils.deleteQuietly(fileToDelete);
-//			IOUtils.closeQuietly(in);
 		}
 	}
 

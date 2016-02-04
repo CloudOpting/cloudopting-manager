@@ -1,8 +1,14 @@
 package eu.cloudopting.domain;
 
+import eu.cloudopting.domain.util.DatabaseEncryptionConfiguration;
 import eu.cloudopting.events.api.entity.BaseEntity;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.jasypt.hibernate4.type.EncryptedStringType;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,12 +16,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(schema = "public",name = "cloud_accounts")
 @Configurable
+@TypeDef(
+	    name="encryptedString", 
+	    typeClass=EncryptedStringType.class, 
+	    parameters= {
+	        @Parameter(name="encryptorRegisteredName", value=DatabaseEncryptionConfiguration.STRING_ENCRYPTOR_NAME)
+	    }
+	)
 public class CloudAccounts implements BaseEntity {
 
 	@PersistenceContext
@@ -141,10 +155,12 @@ public class CloudAccounts implements BaseEntity {
 
 	@Column(name = "api_key", length = 50)
     @NotNull
+    //@Type(type="encryptedString")
     private String apiKey;
 
 	@Column(name = "secret_key", length = 50)
     @NotNull
+    //@Type(type="encryptedString")
     private String secretKey;
 
 	@Column(name = "endpoint", length = 100)

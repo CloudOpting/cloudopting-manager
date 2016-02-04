@@ -1,5 +1,7 @@
 package eu.cloudopting.domain.util;
 
+import java.util.Map;
+
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.hibernate4.encryptor.HibernatePBEEncryptorRegistry;
@@ -38,6 +40,8 @@ public class DatabaseEncryptionConfiguration  implements EnvironmentAware{
      */
     public PBEStringEncryptor encryptor(){
     	String pwd = propertyResolver.getProperty("password");
+    	Map<String, String> environment = System.getenv();
+    	pwd = environment.get("JASYPT_ENCRYPTOR_PASSWORD");		
     	if (pwd!=null){
     		encryptor.setPassword(pwd);
     	}else{

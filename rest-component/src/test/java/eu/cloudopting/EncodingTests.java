@@ -1,7 +1,7 @@
 package eu.cloudopting;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+
 import sun.misc.BASE64Encoder;
 
 /**

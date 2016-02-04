@@ -64,7 +64,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @NotNull
     @Size(min = 5, max = 100)
     @Column(length = 100)
-    @Type(type="encryptedString")
+    //@Type(type="encryptedString")
     private String password;
 
     @Size(max = 50)

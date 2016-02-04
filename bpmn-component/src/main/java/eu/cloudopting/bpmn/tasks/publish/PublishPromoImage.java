@@ -5,8 +5,7 @@ package eu.cloudopting.bpmn.tasks.publish;
 */
 import java.io.File;
 
-import javax.inject.Inject;
-
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.commons.io.FileUtils;
@@ -16,14 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.bpmn.BpmnService;
-import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
-import eu.cloudopting.domain.User;
-import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.exception.ToscaException;
-import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.store.StoreService;
-import eu.cloudopting.tosca.ToscaService;
 
 @Service
 public class PublishPromoImage implements JavaDelegate {
@@ -31,6 +25,9 @@ public class PublishPromoImage implements JavaDelegate {
 
 	@Autowired(required = true)
 	StoreService storeService;
+	
+	@Autowired
+    private RuntimeService runtimeService;
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -73,7 +70,6 @@ public class PublishPromoImage implements JavaDelegate {
 			throw e;
 		} finally {
 			FileUtils.deleteQuietly(fileToDelete);
-//			IOUtils.closeQuietly(in);
 		}
 	}
 }
