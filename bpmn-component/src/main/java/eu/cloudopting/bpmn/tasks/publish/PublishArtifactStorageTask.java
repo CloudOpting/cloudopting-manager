@@ -20,6 +20,7 @@ import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.service.ApplicationMediaService;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.store.StoreService;
 
@@ -31,6 +32,10 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 	
 	@Inject
 	private ApplicationService applicationService;
+	
+	@Inject
+	private  ApplicationMediaService applicationMediaService;
+	
 	
 	@Autowired
     private RuntimeService runtimeService;
@@ -51,8 +56,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
         newMedium.setApplicationId(application);
         newMedium.setMediaContent(StoreService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
         medias.add(newMedium);
-        application.setApplicationMedias(medias);
-        applicationService.update(application);
+        applicationMediaService.create(newMedium);
 	}
 
 	@Override

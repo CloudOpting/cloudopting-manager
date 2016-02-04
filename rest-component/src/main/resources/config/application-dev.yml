@@ -9,7 +9,7 @@ spring:
         repo_url: http://lab1.cloudopting.org:8083/server
         repo_http: http://lab1.cloudopting.org:8083/repository/default/
         user: admin
-        password: admin
+        password: ENC(qwbz5bEyjdJBU2+qsDUC3g==)
 
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource

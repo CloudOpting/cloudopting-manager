@@ -38,7 +38,8 @@ public class JcrConfig implements EnvironmentAware{
     public Repository repository() {
         Repository repository;
         try {
-            repository = JcrUtils.getRepository(propertyResolver.getProperty(JcrConfig.repoUrlProperty));
+        	String repo = propertyResolver.getProperty(JcrConfig.repoUrlProperty);
+            repository = JcrUtils.getRepository(repo);
         } catch (RepositoryException e) {
             throw new CommonException(e);
         }
@@ -49,7 +50,9 @@ public class JcrConfig implements EnvironmentAware{
     @Bean
     public Session session(Repository repository){
         try {
-            return repository.login(new SimpleCredentials(propertyResolver.getProperty(JcrConfig.repoUserProperty), propertyResolver.getProperty(JcrConfig.repoPasswordProperty).toCharArray()));
+        	String u = propertyResolver.getProperty(JcrConfig.repoUserProperty);
+        	String pwd = propertyResolver.getProperty(JcrConfig.repoPasswordProperty);
+            return repository.login(new SimpleCredentials(u, pwd.toCharArray()));
         } catch (RepositoryException e) {
             throw new CommonException(e);
         }
