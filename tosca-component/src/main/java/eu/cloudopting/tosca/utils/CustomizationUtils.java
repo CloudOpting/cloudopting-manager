@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -39,6 +40,9 @@ public class CustomizationUtils {
 
 	@Autowired
 	private CSARUtils csarUtils;
+	
+	@Value("${spring.jcr.repo_http}")
+	private String jackHttp;
 
 	private HashMap<Long, DocumentImpl> xToscaHash = new HashMap<Long, DocumentImpl>();
 
@@ -60,7 +64,7 @@ public class CustomizationUtils {
 		}
 	}
 
-	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data) {
+	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data, String organizationkey, String serviceName) {
 
 		log.debug("generateCustomizedTosca");
 		DocumentImpl theDoc = new DocumentImpl();
@@ -122,6 +126,7 @@ public class CustomizationUtils {
 			
 			
 		}
+		theDoc = getServUrl(theDoc, organizationkey, serviceName);
 		log.debug(theDoc.saveXML(null));
 		log.debug("ORIGINAL---------------");
 		log.debug(getToscaTemplateDesc(idApp, csarPath).saveXML(null));
@@ -210,6 +215,40 @@ public class CustomizationUtils {
 
 		}
 		return properties;
+	}
+
+	private DocumentImpl getServUrl(DocumentImpl theDoc, String organizationkey, String serviceName) {
+		log.debug("getServUrl");
+		log.debug(theDoc.saveXML(null));
+		JSONObject properties = new JSONObject();
+		DTMNodeList nodes = null;
+		String xPathProcInt = "//processing-instruction('servUrl')";
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			log.debug(e.getMessage());
+			e.printStackTrace();
+		}
+		log.debug("nodes with PI");
+		log.debug(new Integer(nodes.getLength()).toString());
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			log.debug(nodes.item(i).getNodeValue());
+			log.debug(nodes.item(i).getNodeName());
+			Node father = nodes.item(i).getParentNode();
+			log.debug(father.getNodeName());
+			try {
+				String fileName = new String(nodes.item(i).getNodeValue());
+log.debug("the file we want:"+fileName);
+				father.removeChild(nodes.item(i));
+				father.setTextContent(jackHttp+organizationkey+"/"+serviceName+"/"+fileName);
+			} catch (DOMException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return theDoc;
 	}
 
 	private DocumentImpl getToscaTemplateDesc(Long idApp, String csarPath) {

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.tosca.ToscaService;
@@ -30,6 +31,12 @@ public class ToscaOperationImpl {
 	
 	@Autowired
 	CloudOptingNodeImpl cloudOptingNodeImpl;
+	
+	@Value("${spring.jcr.user}")
+	String co_jack_user;
+	
+	@Value("${spring.jcr.password}")
+	String co_jack_password;
 	
 	public String compilePuppetTemplateHierarchy(HashMap<String, String> data){
 		String id = data.get("id");
@@ -59,6 +66,8 @@ public class ToscaOperationImpl {
 		Map nodeData = tfm.getPropertiesForNode(customizationId,id);
 		// nodeData.put("hostname", id+"."+customer+".local");
 		nodeData.put("childtemplates", templateChunks);
+		nodeData.put("co_jack_user", this.co_jack_user);
+		nodeData.put("co_jack_password", this.co_jack_password);
 		return compilePuppetTemplate(null, null , myTemplate, toscaPath, nodeData);
 
 	}

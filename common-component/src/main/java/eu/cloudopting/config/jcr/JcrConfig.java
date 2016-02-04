@@ -25,6 +25,8 @@ public class JcrConfig implements EnvironmentAware{
     private Environment env;
 
     private static final String repoUrlProperty = "repo_url";
+    private static final String repoUserProperty = "user";
+    private static final String repoPasswordProperty = "password";
 
     @Override
     public void setEnvironment(Environment env) {
@@ -47,7 +49,7 @@ public class JcrConfig implements EnvironmentAware{
     @Bean
     public Session session(Repository repository){
         try {
-            return repository.login(new SimpleCredentials("admin", "admin".toCharArray()));
+            return repository.login(new SimpleCredentials(propertyResolver.getProperty(JcrConfig.repoUserProperty), propertyResolver.getProperty(JcrConfig.repoPasswordProperty).toCharArray()));
         } catch (RepositoryException e) {
             throw new CommonException(e);
         }
