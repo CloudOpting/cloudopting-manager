@@ -4,6 +4,9 @@ package eu.cloudopting.bpmn.tasks.publish;
 * @author Claudio
 */
 import java.io.File;
+import java.util.Set;
+
+import javax.inject.Inject;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -15,8 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.bpmn.BpmnService;
+import eu.cloudopting.domain.ApplicationMedia;
+import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
+import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.exception.ToscaException;
+import eu.cloudopting.service.ApplicationMediaService;
+import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.store.StoreService;
 
 @Service
@@ -28,6 +36,31 @@ public class PublishPromoImage implements JavaDelegate {
 	
 	@Autowired
     private RuntimeService runtimeService;
+	
+	@Inject
+	private ApplicationService applicationService;
+	
+	@Inject
+	private  ApplicationMediaService applicationMediaService;
+	
+	/**
+	 * Adds an entry to the set of Artifacts associated to this Application
+	 * according to the format for JackRabbit
+	 * @param execution
+	 * @param orgKey
+	 * @param toscaName
+	 * @param remoteFileNameReduced
+	 */
+	private void addArtifactPath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
+		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
+        Applications application = applicationService.findOne(applicationSource.getId());
+        Set<ApplicationMedia> medias = application.getApplicationMedias();
+        ApplicationMedia newMedium = new ApplicationMedia();
+        newMedium.setApplicationId(application);
+        newMedium.setMediaContent(StoreService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
+        medias.add(newMedium);
+        applicationMediaService.create(newMedium);
+	}
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -63,6 +96,8 @@ public class PublishPromoImage implements JavaDelegate {
 						remoteFileNameReduced
 				);
 				log.debug("promoImage UPLOAD performed");
+				//Add entry in referring persistent here
+				this.addArtifactPath(execution, org.getOrganizationKey(), uploadToscaName, remoteFileNameReduced);
 		} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
 			log.error("Error in storing promoImage");
 			e.printStackTrace();
