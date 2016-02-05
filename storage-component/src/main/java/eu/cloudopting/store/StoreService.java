@@ -175,8 +175,8 @@ public class StoreService {
 			session.save();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			log.error("Repository Exception", e);
-			e.printStackTrace();
+			log.error("Repository Exception: "+e.getLocalizedMessage());
+			//e.printStackTrace();
 		}
     }  
     

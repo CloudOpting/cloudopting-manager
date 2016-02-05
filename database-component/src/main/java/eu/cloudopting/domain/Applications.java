@@ -138,6 +138,12 @@ public class Applications implements BaseEntity {
 
 	@Column(name = "application_description")
     private String applicationDescription;
+	
+	/**
+	 * The path in JackRabbit where the Application Logo is saved
+	 */
+	@Column(name = "application_logo_ref")
+    private String applicationLogoReference;
 
 	@Column(name = "application_tosca_template")
     private String applicationToscaTemplate;
@@ -312,5 +318,13 @@ public class Applications implements BaseEntity {
 
 	public void setSize(ApplicationSize size) {
 		this.size = size;
+	}
+
+	public String getApplicationLogoReference() {
+		return applicationLogoReference;
+	}
+
+	public void setApplicationLogoReference(String applicationLogoReference) {
+		this.applicationLogoReference = applicationLogoReference;
 	}
 }

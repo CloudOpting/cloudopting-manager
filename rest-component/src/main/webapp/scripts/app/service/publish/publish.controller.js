@@ -63,31 +63,6 @@ angular.module('cloudoptingApp')
         /**
          * Function to create an application with a 'name', 'description' and 'promoImage'
          * with status 'Draft'
-         * FIXME: At the moment it is not used.
-         */
-        /*
-        $scope.saveConfigurationWizardOne = function () {
-            var callback = function(activiti){
-                localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
-                savePromotionalImage();
-            };
-            var application = {};
-            application.applicationName = $scope.name;
-            application.applicationDescription=$scope.description;
-
-            //Save the current app in order to use it in the future.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
-
-            //Create the applicaiton.
-            ApplicationService.create(application, callback);
-
-            //Move to Step 2 of wizard - Add content library
-            $state.go('publish2');
-        };
-        */
-        /**
-         * Function to create an application with a 'name', 'description' and 'promoImage'
-         * with status 'Draft'
          */
         $scope.saveWizardOne = function() {
             var callback = function(activiti){
@@ -105,6 +80,7 @@ angular.module('cloudoptingApp')
 
             //Create
             ApplicationService.create($scope.application, callback);
+            
             $scope.disableUpdate = false;
             $scope.disableSave = true;
             $scope.disableNextOne = false;
@@ -113,6 +89,7 @@ angular.module('cloudoptingApp')
         $scope.updateWizardOne = function() {
             var callback = function(activiti){
                 localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
+                savePromotionalImage();
             };
 
             //TODO: Fix a bit
@@ -122,7 +99,6 @@ angular.module('cloudoptingApp')
 
             //Save the current app in order to use it in the future.
             localStorageService.set(SERVICE.STORAGE.CURRENT_APP, $scope.application);
-
             ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
         };
 
