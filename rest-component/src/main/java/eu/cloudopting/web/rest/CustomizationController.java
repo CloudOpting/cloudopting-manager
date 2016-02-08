@@ -108,7 +108,7 @@ public class CustomizationController {
 
 		
 		Customizations newC = new Customizations();
-		newC.setApplicationId(idApp);
+		newC.setApplicationId(application);
 		newC.setCustomizationToscaFile(theTosca);
 		newC.setCustomerOrganizationId(user.getOrganizationId());
 		newC.setCustomizationActivation(new Date());
