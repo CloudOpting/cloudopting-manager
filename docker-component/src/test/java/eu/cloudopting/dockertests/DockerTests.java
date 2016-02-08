@@ -42,7 +42,7 @@ public class DockerTests {
     	String token = "";
     	
     	try {
-			token = dockerService.newContext("","src/test/resources/testfiles/test1/Puppetfile");
+			token = dockerService.newContext("src/test/resources/testfiles/test1/Puppetfile");
 		} catch (DockerError e) {
 		}
     	
@@ -90,7 +90,7 @@ public class DockerTests {
         String token = "";
         
         try {
-            token = dockerService.newContext("","");
+            token = dockerService.newContext("");
         } catch (DockerError e) {
         }
         
@@ -105,7 +105,7 @@ public class DockerTests {
        	boolean correct = false;
     	
     	try {
-    		String token = dockerService.newContext("","src/test/resources/testfiles/test1/Puppetfile");
+    		String token = dockerService.newContext("src/test/resources/testfiles/test1/Puppetfile");
 			dockerService.isContextReady(token);
 			correct = true;
 		} catch (DockerError e) {
@@ -119,7 +119,7 @@ public class DockerTests {
        	boolean correct = false;
     	
     	try {
-    		String token = dockerService.newContext("","src/test/resources/testfiles/test1/Puppetfile");
+    		String token = dockerService.newContext("src/test/resources/testfiles/test1/Puppetfile");
 			String response = dockerService.getContextInfo(token);
 			
 			BasicJsonParser parser = new BasicJsonParser();
@@ -140,7 +140,7 @@ public class DockerTests {
         boolean correct = false;
         
         try {
-            String token = dockerService.newContext("","src/test/resources/testfiles/test1/Puppetfile");
+            String token = dockerService.newContext("src/test/resources/testfiles/test1/Puppetfile");
             String response = dockerService.contextDetail(token);
             
             BasicJsonParser parser = new BasicJsonParser();
@@ -162,7 +162,7 @@ public class DockerTests {
     	String token;
     	
     	try {
-    		token = dockerService.newContext("","src/test/resources/testfiles/test1/Puppetfile");
+    		token = dockerService.newContext("src/test/resources/testfiles/test1/Puppetfile");
 			dockerService.removeContext(token);
 			
 			try{
@@ -183,14 +183,14 @@ public class DockerTests {
        	
     	try {
     		// Prepare context
-    		String contextToken = dockerService.newContext("","src/test/resources/testfiles/test1/Puppetfile");
+    		String contextToken = dockerService.newContext("src/test/resources/testfiles/test1/Puppetfile");
 			
     		Thread.sleep(1500);
     		while(dockerService.isContextReady(contextToken)!=true)
     			Thread.sleep(2000);
 
 			// Launch image builder
-    		String imageToken = dockerService.buildDockerImage("directory","", "src/test/resources/testfiles/test1/directory/Dockerfile", "src/test/resources/testfiles/test1/directory/directorymanifest.pp", contextToken);
+    		String imageToken = dockerService.buildDockerImage("directory", "src/test/resources/testfiles/test1/directory/Dockerfile", "src/test/resources/testfiles/test1/directory/directorymanifest.pp", contextToken);
     		
     		assertNotNull("No token returned by image builder.", imageToken);
     		
@@ -218,7 +218,6 @@ public class DockerTests {
     	
         assertTrue("Error while building image.", correct);
     }
-        
 
     @Test
     public void testStopBuild() {   
@@ -233,7 +232,7 @@ public class DockerTests {
                 Thread.sleep(2000);
 
             // Launch image builder
-            String imageToken = dockerService.buildDockerImage("directory","", "src/test/resources/testfiles/test1/directory/Dockerfile", "src/test/resources/testfiles/test1/directory/directorymanifest.pp", contextToken);
+            String imageToken = dockerService.buildDockerImage("directory", "src/test/resources/testfiles/test1/directory/Dockerfile", "src/test/resources/testfiles/test1/directory/directorymanifest.pp", contextToken);
             
             assertNotNull("No token returned by image builder.", imageToken);
             
@@ -275,6 +274,48 @@ public class DockerTests {
         assertTrue("Error while building image.", correct);
     }
     
+@Test
+    public void testBuildWithoutPuppet(){
+    boolean correct = false;
+        
+        try {
+            // Prepare context
+            String contextToken = dockerService.newContext("withoutpuppet","");
+            
+            Thread.sleep(1500);
+            while(dockerService.isContextReady(contextToken)!=true)
+                Thread.sleep(2000);
+              
+            // Launch image builder
+            String imageToken1 = dockerService.buildDockerImage("redis", "src/test/resources/testfiles/test3/img/redis/Dockerfile", "", contextToken);
+            
+            assertNotNull("No token returned by image builder.", imageToken1);
+            
+            // Wait for image
+            Thread.sleep(1500);
+            while(dockerService.isBuilt(imageToken1)!=true)
+                Thread.sleep(2000);
+            
+            String response1 = dockerService.getBuildInfo(imageToken1);
+            
+            assertNotNull("No response returned when asking information about the process.", response1);
+            
+            // Check response
+            BasicJsonParser parser1 = new BasicJsonParser();
+            Map<String, Object> map1 = parser1.parseMap(response1);
+            
+            assertTrue("Can't build image", map1.get("status").toString().equals("finished"));
+            
+        } catch (DockerError e) {
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        
+        correct = true;
+        
+        assertTrue("Error while building image.", correct);
+    }
+
     @Test
     public void testDeployCompositionLocally(){
 	boolean correct = false;
@@ -288,7 +329,7 @@ public class DockerTests {
     			Thread.sleep(2000);
 
 			// Launch image builder
-    		String imageToken = dockerService.buildDockerImage("apache","", "src/test/resources/testfiles/test1/apache/Dockerfile", "src/test/resources/testfiles/test1/apache/apache.pp", contextToken);
+    		String imageToken = dockerService.buildDockerImage("apache", "src/test/resources/testfiles/test1/apache/Dockerfile", "src/test/resources/testfiles/test1/apache/apache.pp", contextToken);
     		
     		assertNotNull("No token returned by image builder.", imageToken);
     		
@@ -344,48 +385,6 @@ public class DockerTests {
     }
 
 @Test
-    public void testBuildWhitoutPuppet(){
-    boolean correct = false;
-        
-        try {
-            // Prepare context
-            String contextToken = dockerService.newContext("whithoutpuppet","");
-            
-            Thread.sleep(1500);
-            while(dockerService.isContextReady(contextToken)!=true)
-                Thread.sleep(2000);
-              
-            // Launch image builder
-            String imageToken1 = dockerService.buildDockerImage("redis","", "src/test/resources/testfiles/test3/img/redis/Dockerfile", "", contextToken);
-            
-            assertNotNull("No token returned by image builder.", imageToken1);
-            
-            // Wait for image
-            Thread.sleep(1500);
-            while(dockerService.isBuilt(imageToken1)!=true)
-                Thread.sleep(2000);
-            
-            String response1 = dockerService.getBuildInfo(imageToken1);
-            
-            assertNotNull("No response returned when asking information about the process.", response1);
-            
-            // Check response
-            BasicJsonParser parser1 = new BasicJsonParser();
-            Map<String, Object> map1 = parser1.parseMap(response1);
-            
-            assertTrue("Can't build image", map1.get("status").toString().equals("finished"));
-            
-        } catch (DockerError e) {
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        
-        correct = true;
-        
-        assertTrue("Error while building image.", correct);
-    }
-
-@Test
     public void testFull(){
     boolean correct = false;
         
@@ -418,7 +417,7 @@ public class DockerTests {
             assertTrue("Can't build image base", mapBase.get("status").toString().equals("finished"));
             
             // Launch image builder
-            String imageToken1 = dockerService.buildDockerImage("redis","", "src/test/resources/testfiles/test3/img/redis/Dockerfile", "", contextToken);
+            String imageToken1 = dockerService.buildDockerImage("redis", "src/test/resources/testfiles/test3/img/redis/Dockerfile", "", contextToken);
             
             assertNotNull("No token returned by image builder.", imageToken1);
             
@@ -438,7 +437,7 @@ public class DockerTests {
             assertTrue("Can't build image", map1.get("status").toString().equals("finished"));
 
             //Launch image builder
-            String imageToken2 = dockerService.buildDockerImage("webconsumer","", "src/test/resources/testfiles/test3/img/webconsumer/Dockerfile", "src/test/resources/testfiles/test3/img/webconsumer/consumer.pp", contextToken);
+            String imageToken2 = dockerService.buildDockerImage("webconsumer", "src/test/resources/testfiles/test3/img/webconsumer/Dockerfile", "src/test/resources/testfiles/test3/img/webconsumer/consumer.pp", contextToken);
             
             assertNotNull("No token returned by image builder.", imageToken2);
             

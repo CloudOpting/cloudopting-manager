@@ -95,14 +95,23 @@ public class DockerService {
 	 * @return Token that references the context
 	 * @throws DockerError If API returns error when starting the process.
 	 */
-	public String newContext(String pathToPuppetfile) throws DockerError{
-		ResponseEntity<String> response = builder.newContext(pathToPuppetfile);
+	public String newContext(String name, String pathToPuppetfile) throws DockerError{
+		ResponseEntity<String> response = builder.newContext(name, pathToPuppetfile);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
 		return map.get("token").toString();
 	}
-	
+
+	/**
+	 * Create a new context (with no name)
+	 * @param pathToPuppetfile Path to the source puppetfile where the needed modules are listed
+	 * @return Token that references the context
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public String newContext(String pathToPuppetfile) throws DockerError{
+		return newContext("", pathToPuppetfile);
+	}
 	
 	/**
 	 * Checks if a context is ready to start to build images.
@@ -154,7 +163,6 @@ public class DockerService {
 		return response.getBody();
 	}
 	
-	
 	/**
 	 * Sends the order to remove a context and the related data.
 	 * @param token Token that identifies the context
@@ -166,7 +174,6 @@ public class DockerService {
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
 	}
-
 
 	/**
 	 * Starts build process for an image base.
@@ -232,10 +239,10 @@ public class DockerService {
 	 * @param contextReference ContextToken
 	 * @throws DockerError If API returns error when starting the process.
 	 */
-	public String buildDockerImage(String image, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
+	public String buildDockerImage(String image, String base, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
 		log.debug("in buildDockerImage and calling the API");
 	//	log.debug("executing: docker build -t "+ image + " -f " + dockerFilePath );
-		ResponseEntity<String> response = builder.newImage(image, dockerFilePath, puppetManifestPath, contextReference);
+		ResponseEntity<String> response = builder.newImage(image, base, dockerFilePath, puppetManifestPath, contextReference);
 		Map<String, Object> map = parser.parseMap(response.getBody());
 		if(!response.getStatusCode().is2xxSuccessful())
 			throw new DockerError(map.get("description").toString());
@@ -243,8 +250,19 @@ public class DockerService {
 		String aux = map.get("token").toString(); 
 		return aux;
 	}
-	
 
+	/**
+	 * Starts build process for an image.
+	 * @param image Image name
+	 * @param dockerFile Dockerfile path
+	 * @param puppetManifestPath Puppet manifests path
+	 * @param contextReference ContextToken
+	 * @throws DockerError If API returns error when starting the process.
+	 */
+	public String buildDockerImage(String image, String dockerFilePath, String puppetManifestPath, String contextReference) throws DockerError{
+		return buildDockerImage(image, "", dockerFilePath, puppetManifestPath, contextReference);
+	}
+	
 	/**
 	 * Checks if the build process for an image is finished.
 	 * @return true if build finished, false if not.
@@ -357,7 +375,6 @@ public class DockerService {
 	public String createCluster(ArrayList<Machine> machines) throws DockerError{
 		throw new UnsupportedOperationException("Cluster creation from list of machines is not supported for the moment. Use 'addMachine'.");
 	}
-
 	
 	/**
 	 * Start cluster with machine.
@@ -366,7 +383,6 @@ public class DockerService {
 	 */
 	public String addMachine(String hostname, int dockerPort) throws DockerError{
 		log.debug("in addMachine with hostname:port'"+hostname+":"+dockerPort+"' and calling the API");
-		
 		
 		ResponseEntity<String> response = cluster.initCluster(new Machine(hostname, dockerPort));
 		Map<String, Object> map = parser.parseMap(response.getBody());
@@ -377,7 +393,6 @@ public class DockerService {
 		
 		return aux;
 	}
-	
 	
 	/**
 	 * Add Machine to Cluster.
@@ -390,8 +405,6 @@ public class DockerService {
 		throw new UnsupportedOperationException("Not implemented yet.");
 	}
 
-	
-	
 	/**
 	 * Checks if the cluster is ready to deploy containers and has all his nodes joined.
 	 * @return true if it is ready, false if not.
@@ -428,6 +441,7 @@ public class DockerService {
 		
 		return response.getBody();
 	}
+
 	/**
 	 * Retrieves detailed information about docker cluster.
 	 * @param token Operation token
@@ -444,6 +458,7 @@ public class DockerService {
 		
 		return response.getBody();
 	}
+
 	/**
 	 * Tries to stop the cluster (destroy containers, and unlink machines from master)
 	 * @param token Operation token
@@ -504,6 +519,5 @@ public class DockerService {
 	//	log.debug("in stopComposition and calling the API");
 	//	this.composer.stopComposition(token);
 		throw new UnsupportedOperationException("Operation not supported for the moment.");
-	}
-	
+	}	
 }
