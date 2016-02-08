@@ -241,7 +241,7 @@ public class CustomizationUtils {
 				String fileName = new String(nodes.item(i).getNodeValue());
 log.debug("the file we want:"+fileName);
 				father.removeChild(nodes.item(i));
-				father.setTextContent(jackHttp+organizationkey+"/"+serviceName+"/"+fileName);
+				father.setTextContent(jackHttp+organizationkey+"/"+serviceName+"/template/"+fileName);
 			} catch (DOMException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
