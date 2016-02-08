@@ -112,7 +112,7 @@ public class BpmnService {
 		log.info("theCust: "+theCust.toString());
 //		CloudAccounts account = theCust.getCloudAccount();
 		CloudAccounts account = cloudAccountService.findOne(cloudId);
-		Applications app = applicationService.findOne(theCust.getApplicationId()); 
+		Applications app = theCust.getApplicationId(); 
 
 		if(theCust.getProcessId()!= null){
 			log.debug("Customization "+customizationId+" has already a deployment process");

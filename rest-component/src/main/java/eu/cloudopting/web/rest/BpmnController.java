@@ -85,8 +85,7 @@ public class BpmnController {
 		// if is demo I choose the demo account of the service provider
 		// overriding the one in the customization
 		if (isDemo) {
-			Long appId = customization.getApplicationId();
-			Set<CloudAccounts> spAccounts = applicationService.findOne(appId).getOrganizationId().getCloudAccountss();
+			Set<CloudAccounts> spAccounts = customization.getApplicationId().getOrganizationId().getCloudAccountss();
 			for (CloudAccounts acc : spAccounts) {
 				// here need to do the check on default
 				cloudId = acc.getId();
@@ -120,8 +119,7 @@ public class BpmnController {
 		// if is demo I choose the demo account of the service provider
 		// overriding the one in the customization
 		if (isDemo) {
-			Long appId = customization.getApplicationId();
-			Set<CloudAccounts> spAccounts = applicationService.findOne(appId).getOrganizationId().getCloudAccountss();
+			Set<CloudAccounts> spAccounts = customization.getApplicationId().getOrganizationId().getCloudAccountss();
 			for (CloudAccounts acc : spAccounts) {
 				// here need to do the check on default
 				cloudId = acc.getId();

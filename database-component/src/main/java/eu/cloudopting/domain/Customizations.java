@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import eu.cloudopting.jsonserializer.ApplicationSummarySerializer;
 
 @Configurable
 @Entity
@@ -26,9 +29,11 @@ public class Customizations implements BaseEntity {
     @JoinColumn(name = "cloud_account_id", referencedColumnName = "id")
     private CloudAccounts cloudAccount;
 
-	@Column(name = "application_id")
     @NotNull
-    private Long applicationId;
+    @ManyToOne
+    @JoinColumn(name = "application_id", referencedColumnName = "id")
+    @JsonSerialize(using = ApplicationSummarySerializer.class)
+    private Applications applicationId;
 
 	@Column(name = "customization_tosca_file")
     @NotNull
@@ -86,11 +91,11 @@ public class Customizations implements BaseEntity {
         this.customerOrganizationId = customerOrganizationId;
     }
 
-	public Long getApplicationId() {
+	public Applications getApplicationId() {
         return applicationId;
     }
 
-	public void setApplicationId(Long applicationId) {
+	public void setApplicationId(Applications applicationId) {
         this.applicationId = applicationId;
     }
 
