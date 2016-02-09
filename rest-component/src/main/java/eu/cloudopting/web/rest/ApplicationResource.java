@@ -200,7 +200,7 @@ public class ApplicationResource extends AbstractController<Applications> {
         User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         Organizations org = user.getOrganizationId();
         String orgKey = org.getOrganizationKey();
-        String path = StoreService.getTemplatePath(orgKey, toscaName);
+        String path = storeService.getTemplatePath(orgKey, toscaName);
         StoreService ss = this.getStoreService(); 
         return ss.getFilesStartingFromPath(path);
     }
