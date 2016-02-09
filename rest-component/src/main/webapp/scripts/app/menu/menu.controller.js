@@ -38,6 +38,7 @@ angular.module('cloudoptingApp')
                     });
                 }
 
+                //TODO: Wrong. Check uses and delete it.
                 $scope.isPublisher = function (){
                     return Principal.isInRole(SERVICE.ROLE.SUBSCRIBER);
                 };
