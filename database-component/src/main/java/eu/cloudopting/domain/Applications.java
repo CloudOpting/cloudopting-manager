@@ -166,6 +166,9 @@ public class Applications implements BaseEntity {
 	@Column(name = "platform_price")
     private String platformPrice;
 	
+	@Column(name = "image_ref")
+    private String imageRef;
+	
 	@ManyToOne
     @JoinColumn(name = "size_id", referencedColumnName = "id")
 	private ApplicationSize size;
@@ -312,5 +315,13 @@ public class Applications implements BaseEntity {
 
 	public void setSize(ApplicationSize size) {
 		this.size = size;
+	}
+
+	public String getImageRef() {
+		return imageRef;
+	}
+
+	public void setImageRef(String imageRef) {
+		this.imageRef = imageRef;
 	}
 }
