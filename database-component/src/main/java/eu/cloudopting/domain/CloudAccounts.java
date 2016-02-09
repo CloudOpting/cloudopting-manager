@@ -167,6 +167,9 @@ public class CloudAccounts implements BaseEntity {
     @NotNull
     private String endpoint;
 
+    @Column(name = "is_trial")
+    private Boolean isTrial;
+    
 	public Organizations getOrganizationId() {
         return organizationId;
     }
@@ -222,4 +225,12 @@ public class CloudAccounts implements BaseEntity {
     public void setCustomizationss(Set<Customizations> customizationss) {
         this.customizationss = customizationss;
     }
+
+	public Boolean getIsTrial() {
+		return isTrial;
+	}
+
+	public void setIsTrial(Boolean isTrial) {
+		this.isTrial = isTrial;
+	}
 }
