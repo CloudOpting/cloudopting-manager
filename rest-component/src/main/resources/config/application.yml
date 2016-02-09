@@ -47,3 +47,4 @@ swagger:
 flyway:
     baseline-on-migrate: true
     baseline-description: Flyway init
+    validate-on-migrate: false
