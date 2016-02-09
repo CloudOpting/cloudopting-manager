@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.domain.ApplicationMedia;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.service.ApplicationMediaService;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.store.StoreService;
 
@@ -18,6 +20,8 @@ public class DeleteServiceTask implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeleteServiceTask.class);
 	@Autowired
 	ApplicationService applicationService;
+	@Autowired
+	ApplicationMediaService applicationMediaService;
 	@Autowired(required = true)
 	StoreService storeService;
 	
@@ -32,6 +36,9 @@ public class DeleteServiceTask implements JavaDelegate {
 		//     AS SOON AS THE DATABASE COMES BACK UP
 		Applications a = applicationService.findOne(app.getId());
 		storeService.deletePath(a.getOrganizationId().getOrganizationKey(), a.getApplicationToscaName());
+		for (ApplicationMedia m : a.getApplicationMedias()) {
+			applicationMediaService.delete(m.getId());
+		}
 		applicationService.delete(app.getId());
 		execution.setVariable("applicationdeletedid", app.getId());
 	}

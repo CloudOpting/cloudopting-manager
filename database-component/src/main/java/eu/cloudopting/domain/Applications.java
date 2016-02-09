@@ -1,15 +1,31 @@
 package eu.cloudopting.domain;
 
-import eu.cloudopting.events.api.entity.BaseEntity;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
-
-import java.util.List;
-import java.util.Set;
+import eu.cloudopting.events.api.entity.BaseEntity;
 
 @Configurable
 @Entity
@@ -138,6 +154,12 @@ public class Applications implements BaseEntity {
 
 	@Column(name = "application_description")
     private String applicationDescription;
+	
+	/**
+	 * The path in JackRabbit where the Application Logo is saved
+	 */
+	@Column(name = "application_logo_ref")
+    private String applicationLogoReference;
 
 	@Column(name = "application_tosca_template")
     private String applicationToscaTemplate;
@@ -323,5 +345,13 @@ public class Applications implements BaseEntity {
 
 	public void setImageRef(String imageRef) {
 		this.imageRef = imageRef;
+	}
+
+	public String getApplicationLogoReference() {
+		return applicationLogoReference;
+	}
+
+	public void setApplicationLogoReference(String applicationLogoReference) {
+		this.applicationLogoReference = applicationLogoReference;
 	}
 }

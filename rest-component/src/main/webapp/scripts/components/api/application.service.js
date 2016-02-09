@@ -22,10 +22,10 @@ angular.module('cloudoptingApp')
                         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                         $log.debug('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                     }).success(function (data, status, headers, config) {
-                        $log.debug('Application ID: ' + data);
                         callback(data, status, headers, config);
                     }).error(function (data, status, headers, config) {
-                        $log.error('Error uploading a file for Application ID: ' + data);
+                        $log.error("ApplicationService.upload error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
                 }
@@ -37,7 +37,7 @@ angular.module('cloudoptingApp')
              * Method to get the applications applying filters, and with pagination
              * @returns {*}
              */
-            findAll: function (page, size, sortBy, sortOrder, filter) {
+            findAll: function (page, size, sortBy, sortOrder, filter, callback) {
                 var endpoint = baseURI +
                     '?page=' + page +
                     '&size=' + size +
@@ -124,7 +124,7 @@ angular.module('cloudoptingApp')
             addToscaArchive: function (idApplication, processID, toscaFile, callback) {
                 return upload(idApplication, processID, toscaFile, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, callback);
             },
-            deleteAppFile: function (idApplication, processID, fileId) {
+            deleteAppFile: function (idApplication, processID, fileId, callback) {
                 return $http.delete(baseURI + SERVICE.SEPARATOR + idApplication + SERVICE.SEPARATOR
                     + processID + SERVICE.SEPARATOR + 'file' + SERVICE.SEPARATOR + fileId)
                     .success(function (data, status, headers, config) {
