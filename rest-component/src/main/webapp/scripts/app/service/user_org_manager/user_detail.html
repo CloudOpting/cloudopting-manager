@@ -129,7 +129,7 @@
                         <select class="form-control" ng-model="user.organizationId.id"
                                 ng-options="o.id as o.organizationName for o in organizations">
                         </select>
-                        <a ui-sref="org_manager">Go to organization manager to create a new one.</a>
+                        <a ui-sref="org_manager" data-target="#org_manager">Go to organization manager to create a new one.</a>
                     </div>
                     <button ng-show="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit">Edit</button>
                     <button ng-hide="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create">Create</button>
