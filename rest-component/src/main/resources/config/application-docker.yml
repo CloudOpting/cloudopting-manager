@@ -79,3 +79,6 @@ cloud:
 
 orchestrator:
     logger_address: 84.240.187.4:4044
+    
+flyway:
+    baseline-on-migrate: false
