@@ -7,6 +7,9 @@ spring:
 
     jcr:
         repo_url: http://jcr:8080/server
+        repo_http: http://jcr:8080/repository/default/
+        user: admin
+        password: ENC(qwbz5bEyjdJBU2+qsDUC3g==)
 
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
