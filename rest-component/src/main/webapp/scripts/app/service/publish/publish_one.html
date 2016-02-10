@@ -159,7 +159,7 @@
                                 <!--
                                 <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
                                 -->
-                                <div  ng-repeat="file in files">
+                                <div ng-repeat="file in files">
                                     <div class="input-group">
                                         <span class="input-group-addon" translate="publish.content.file">File</span>
                                         <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
@@ -176,11 +176,6 @@
                                     <button type="button" class="btn btn-secondary" ng-disabled="form_publish.$invalid || disableUpdate" ng-click="updateWizardOne()">Update</button>
                                 </div>
                                 <div class="col-xs-3">
-                                    <!--
-                                    <button type="submit" class="btn btn-primary btn-block">Next</button>
-                                    -->
-                                    <!-- for demo change button by link -->
-                                    <!--<a href="step2.html" class="btn btn-primary pull-right">Next</a>-->
                                     <button type="button" class="btn btn-primary btn-block" ng-disabled="disableNextOne" ng-click="nextWizardOne()">Next</button>
                                 </div>
                             </div>

@@ -203,7 +203,7 @@ angular.module('cloudoptingApp')
 
         $scope.addToscaArchive = function(toscaArchive) {
             if(toscaArchive) {
-                $scope.toscaFiles.push.apply($scope.toscaFiles, toscaArchive);
+                $scope.toscaFiles = toscaArchive;
             }
         };
 
