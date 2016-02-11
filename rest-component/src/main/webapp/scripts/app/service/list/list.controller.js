@@ -37,8 +37,6 @@ angular.module('cloudoptingApp')
 
             localStorageService.set(SERVICE.STORAGE.PUBLISH_EDITION, true);
 
-            //$window.alert("This functionality is not ready yet. For any inconvenience, contact cloudopting@gmail.com");
-
             //Redirect to instances
             $state.go('publish');
         };
