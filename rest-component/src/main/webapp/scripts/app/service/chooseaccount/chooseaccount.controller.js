@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ChooseAccountController', function (SERVICE, Principal, $rootScope, $scope, $state, $timeout, localStorageService, OrganizationService, InstanceService) {
+    .controller('ChooseAccountController',
+    function (SERVICE, Principal, $rootScope, $scope, $state, $timeout, $log,
+              localStorageService, OrganizationService, InstanceService) {
 
         var instance = localStorageService.get(SERVICE.STORAGE.CURRENT_INSTANCE);
 
