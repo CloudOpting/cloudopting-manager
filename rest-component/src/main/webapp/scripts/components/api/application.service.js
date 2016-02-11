@@ -8,6 +8,7 @@ angular.module('cloudoptingApp')
         var apps = null;
         var app = null;
         var baseURI = 'api/application';
+        var baseURISize = 'api/applicationSize';
 
         function upload(idApplication, processID, files, type, callback) {
             if (files && files.length) {
@@ -135,8 +136,18 @@ angular.module('cloudoptingApp')
                             "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
+            },
+            findAllSizes: function (callback) {
+                return $http.get(baseURISize)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.findAllSizes error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
             }
-
         }
     }
 );

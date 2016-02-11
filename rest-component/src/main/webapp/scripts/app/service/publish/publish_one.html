@@ -30,7 +30,7 @@
                             <!-- TODO: This messages has no sense!! -->
                             <strong>Authentication failed!</strong> Please check your credentials and try again.
                         </div>
-                        <form class="form" role="form dropzone">
+                        <form class="form" role="form dropzone" name="form_publish">
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <img src="assets/img/auth/icn_help.png" />
@@ -86,6 +86,107 @@
                                        ng-show="form_publish.toscaname.$error.pattern"
                                        translate="publish.messages.validate.toscaname.pattern">
                                         The Service TOSCA Name cannot contain spaces.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="termsAndConditions">Terms and conditions link</label>
+                                <input type="text" class="form-control" id="termsAndConditions" placeholder="{{'publish.service.termsAndConditions' | translate}}"
+                                          autocomplete="off" name="termsAndConditions" ng-model="application.terms"
+                                          required/>
+
+                                <div ng-show="form_publish.termsAndConditions.$dirty && form_publish.termsAndConditions.$invalid || form_publish.termsAndConditions.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.termsAndConditions.$error.required"
+                                       translate="publish.messages.validate.termsAndConditions.required">
+                                        The terms and conditions link is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="servicePrice">Service Price</label>
+                                <input type="number" class="form-control" id="servicePrice" placeholder="{{'publish.service.servicePrice' | translate}}"
+                                       autocomplete="off" name="servicePrice" ng-model="application.servicePrice"
+                                       required/>
+
+                                <div ng-show="form_publish.servicePrice.$dirty && form_publish.servicePrice.$invalid || form_publish.servicePrice.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.servicePrice.$error.required"
+                                       translate="publish.messages.validate.servicePrice.required">
+                                        The service price is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="platformPrice">Platform Price</label>
+                                <input type="number" class="form-control" id="platformPrice" placeholder="{{'publish.service.platformPrice' | translate}}"
+                                       autocomplete="off" name="platformPrice" ng-model="application.platformPrice"
+                                       required/>
+
+                                <div ng-show="form_publish.platformPrice.$dirty && form_publish.platformPrice.$invalid || form_publish.platformPrice.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.platformPrice.$error.required"
+                                       translate="publish.messages.validate.platformPrice.required">
+                                        The platform price is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <!-- FIXME: Deleted sr-only class -->
+                                <label for="sizeId">Size</label>
+                                <select class="form-control" id="sizeId" placeholder="{{'publish.service.sizeId' | translate}}"
+                                        autocomplete="off" name="sizeId" ng-model="application.size"
+                                        ng-options="appSize as appSize.size for appSize in applicationSizes"
+                                        required>
+                                </select>
+
+                                <div ng-show="form_publish.sizeId.$dirty && form_publish.sizeId.$invalid || form_publish.sizeId.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.sizeId.$error.required"
+                                       translate="publish.messages.validate.sizeId.required">
+                                        The size is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="applicationSubscriberMail">Subscriber mail template</label>
+                                <textarea class="form-control" id="applicationSubscriberMail" placeholder="{{'publish.service.applicationSubscriberMail' | translate}}"
+                                          autocomplete="off" name="applicationSubscriberMail" ng-model="application.applicationSubscriberMail" rows="3"
+                                          required/>
+
+                                <div ng-show="form_publish.applicationSubscriberMail.$dirty && form_publish.applicationSubscriberMail.$invalid || form_publish.applicationSubscriberMail.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.applicationSubscriberMail.$error.required"
+                                       translate="publish.messages.validate.applicationSubscriberMail.required">
+                                        The subscriber mail template is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="applicationSpMail">Provider mail template</label>
+                                <textarea class="form-control" id="applicationSpMail" placeholder="{{'publish.service.applicationSpMail' | translate}}"
+                                          autocomplete="off" name="applicationSpMail" ng-model="application.applicationSpMail" rows="3"
+                                          required/>
+
+                                <div ng-show="form_publish.applicationSpMail.$dirty && form_publish.applicationSpMail.$invalid || form_publish.applicationSpMail.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.applicationSpMail.$error.required"
+                                       translate="publish.messages.validate.applicationSpMail.required">
+                                        The provider mail template is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="shortDescription">Short Description</label>
+                                <textarea class="form-control" id="shortDescription" placeholder="{{'publish.service.shortDescription' | translate}}"
+                                          autocomplete="off" name="shortDescription" ng-model="application.shortDescription" rows="3"
+                                          required/>
+
+                                <div ng-show="form_publish.shortDescription.$dirty && form_publish.shortDescription.$invalid || form_publish.shortDescription.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_publish.shortDescription.$error.required"
+                                       translate="publish.messages.validate.shortDescription.required">
+                                        The short description is required.
                                     </p>
                                 </div>
                             </div>
@@ -147,7 +248,10 @@
                                 </div>
                             </div>
 
+                            <!--FIXME: We should delete the BR -->
                             <br/>
+
+
                             <div class="form-group">
                                 <label class="darkgreen" translate="publish.service.image">Service Image</label>
                                 <!--ngf-multiple="multiple"-->
@@ -170,9 +274,17 @@
                                 </div>
                             </div>
 
+
+                            <div class="form-group">
+                                <!-- FIXME: Deleted sr-only class -->
+                                <label for="applicationIsTryable">Can the platform be tried</label>
+                                <input type="checkbox" class="form-control" id="applicationIsTryable" placeholder="{{'publish.service.applicationIsTryable' | translate}}"
+                                       autocomplete="off" name="applicationIsTryable" ng-model="application.applicationIsTryable"/>
+                            </div>
+
                             <div class="row row-actions">
                                 <div class="col-xs-9">
-                                    <button type="button" class="btn" ng-hide="isEdition" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()">Save</button>
+                                    <button type="button" class="btn" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()">Save</button>
                                     <button type="button" class="btn btn-secondary" ng-disabled="form_publish.$invalid || disableUpdate" ng-click="updateWizardOne()">Update</button>
                                 </div>
                                 <div class="col-xs-3">

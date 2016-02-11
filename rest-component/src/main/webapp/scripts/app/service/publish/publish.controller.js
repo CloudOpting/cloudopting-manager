@@ -34,6 +34,15 @@ angular.module('cloudoptingApp')
         /*
          * WIZARD - SCREEN ONE
          */
+
+        //Find all sizes for the combo.
+        var callbackSizes = function(data, status, headers, config) {
+            if(checkStatusCallback(data, status, headers, config, "")){
+                $scope.applicationSizes = data;
+            }
+        };
+
+        ApplicationService.findAllSizes(callbackSizes);
         /**
          * Function to save the promotional image into the $scope list
          * @param images
