@@ -33,7 +33,8 @@
     "textAngular": "1.5.0",
     "angular-file-saver" : "1.0.2",
     "moment" : "2.11.2",
-    "bootstrap-daterangepicker" : "2.1.17"
+    "bootstrap-daterangepicker" : "2.1.17",
+    "angular-recaptcha" : "2.4.1"
   },
   "devDependencies": {
     "angular-mocks": "1.3.11",
