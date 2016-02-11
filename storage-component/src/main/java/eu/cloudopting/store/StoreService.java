@@ -229,4 +229,8 @@ public class StoreService {
 		return resultSet;
 	}
 
+	public String getJrHttp() {
+		return jrHttp;
+	}
+
 }
