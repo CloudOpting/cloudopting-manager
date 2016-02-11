@@ -1,12 +1,12 @@
 package eu.cloudopting.web.rest;
 
 import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,21 +21,27 @@ import eu.cloudopting.store.StoreService;
 
 
 @RestController
-@RequestMapping("/api")
+@Component
+@RequestMapping("/jr")
 public class JcrImageResource {
 	private final Logger log = LoggerFactory.getLogger(JcrImageResource.class);
 
 	@Autowired(required=true)
 	private StoreService storeService;
 	
-	@RequestMapping(value = "/jcrimage", method = RequestMethod.GET)
+	@RequestMapping(value = "/img", method = RequestMethod.GET)
 	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
 	public final String getJcrImage(@RequestParam("jcrPath") String jcrPath) {
 		String jrRepositoryBase = "http://lab1.cloudopting.org:8083/repository/default/";
 		if (storeService!=null){
 			jrRepositoryBase = storeService.getJrHttp();
 		}else{
-			log.error("Store Service NOT injected!");
+			String s = "Store Service NOT injected!";
+			if (log!=null){
+				log.error(s);
+			}else{
+				System.out.println(s);
+			}
 		}
 		String relativePath = StringUtils.removeStart(jcrPath, jrRepositoryBase); 
 		return relativePath;
