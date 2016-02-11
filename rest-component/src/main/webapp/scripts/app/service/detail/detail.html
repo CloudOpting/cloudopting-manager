@@ -16,60 +16,39 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group">
-                <!-- FIXME: Deleted sr-only class -->
-                <label for="termsAndConditions">Agree with Terms and Conditions</label>
-                <input type="checkbox" class="form-control" id="termsAndConditions" placeholder="{{'detail.termsAndConditions' | translate}}"
-                       autocomplete="off" name="termsAndConditions" required/>
-                <a href="{{currentApp.terms}}">Terms &amp; conditions</a>
+            <form ng-show="showButton && showSubscribe" class="form" role="form dropzone" name="form_subscribe">
+                <div class="form-group">
+                    <label for="termsAndConditions">Agree with Terms and Conditions</label>
+                    <input type="checkbox" class="form-control" id="termsAndConditions" placeholder="{{'detail.termsAndConditions' | translate}}"
+                           autocomplete="off" name="termsAndConditions" ng-model="currentApp.terms" required/>
+                    <a href="{{currentApp.terms}}">Terms &amp; conditions</a>
 
-                <div ng-show="form_publish.termsAndConditions.$dirty && form_publish.termsAndConditions.$invalid || form_publish.termsAndConditions.$touched">
-                    <p class="help-block"
-                       ng-show="form_publish.termsAndConditions.$error.required"
-                       translate="publish.messages.validate.termsAndConditions.required">
-                        Accept terms and conditions is required.
-                    </p>
+                    <div ng-show="form_subscribe.termsAndConditions.$dirty && form_subscribe.termsAndConditions.$invalid || form_subscribe.termsAndConditions.$touched">
+                        <p class="help-block"
+                           ng-show="form_subscribe.termsAndConditions.$error.required"
+                           translate="detail.messages.validate.termsAndConditions.required">
+                            Accept terms and conditions is required.
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-lg-4 col-lg-offset-4">
-                <input type="button" class="hvr-rectangle-out" ng-show="showButton" ng-click="detail_function()" value="{{buttonValue}}" />
+                <div class="col-lg-4 col-lg-offset-4">
+                    <input type="button" class="hvr-rectangle-out" ng-disabled="form_subscribe.$invalid" ng-click="goToSubscribe()"
+                           value="{{'detail.button.subscribe' | translate}}" />
+                </div>
+            </form>
+            <div ng-show="showButton && showInstances" class="col-lg-4 col-lg-offset-4">
+                <input type="button" class="hvr-rectangle-out" ng-click="goToInstances()"
+                       value="{{'detail.button.instances' | translate}}" />
+            </div>
+            <div ng-show="showButton && showRegister" class="col-lg-4 col-lg-offset-4">
+                <input type="button" class="hvr-rectangle-out" ng-click="goToRegister()"
+                       value="{{'detail.button.register_subscribe' | translate}}" />
+            </div>
+            <div ng-show="showButton && showEditService" class="col-lg-4 col-lg-offset-4">
+                <input type="button" class="hvr-rectangle-out" ng-click="goToPublish()"
+                       value="{{'detail.button.completepublish' | translate}}" />
             </div>
         </div>
     </div>
 </section>
-
-<!--
-<div class="row">
-    <div class="bs-example">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="thumbnail">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="text-uppercase darkgreen">{{currentApp.applicationName}} (Status: {{currentApp.statusId.status}})</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <img src="{{currentApp.applicationImage}}" width="100%">
-                        </div>
-                        <div class="col-md-7">
-                            <div class="caption">
-                                <h4 class="darkgreen">{{currentApp.applicationName}}</h4>
-                                <hr>
-                                <p>{{currentApp.applicationDescription}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-md-offset-5">
-                            <input type="button" class="btn btn-success" ng-show="showButton" ng-click="detail_function()" value="{{buttonValue}}" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
