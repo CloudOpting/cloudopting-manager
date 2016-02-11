@@ -3,10 +3,18 @@
     "title": "Service Detail",
     "service": "\"{{service_name}}\" Service",
     "status": "Status: {{service_status}}",
+    "termsAndConditions": "Agree with Terms and Conditions",
     "button" : {
       "subscribe": "Subscribe Now",
       "instances": "See Instances",
       "completepublish": "COMPLETE PUBLISH"
+    },
+    "messages": {
+      "validate": {
+        "termsAndConditions": {
+          "required": "Accept terms and conditions is required."
+        }
+      }
     }
   }
 }

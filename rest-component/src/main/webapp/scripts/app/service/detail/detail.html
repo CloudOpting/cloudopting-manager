@@ -5,13 +5,33 @@
                 <div class="modal-body">
                     <!-- Project Details Go Here -->
                     <h2>{{currentApp.applicationName}}</h2>
-                    <p class="item-intro text-muted">{{currentApp.applicationDescription}}</p>
+                    <p class="item-intro text-muted">{{currentApp.shortDescription}}</p>
                     <img class="img-responsive img-centered" src="{{currentApp.applicationLogoReference}}" alt="" />
                     <p><div ta-bind ng-model="currentApp.applicationDescription"></div></p>
+                    <p>SERVICE PRICE: {{currentApp.servicePrice}}</p>
+                    <p>PLATFORM PRICE: {{currentApp.platformPrice}}</p>
+                    <p>SIZE: {{currentApp.size.size}}</p>
+                    <h4 ng-show="currentApp.applicationIsTryable">NEW SECTION: The application can BE TESTED!!!</h4>
                 </div>
             </div>
         </div>
         <div class="row">
+            <div class="form-group">
+                <!-- FIXME: Deleted sr-only class -->
+                <label for="termsAndConditions">Agree with Terms and Conditions</label>
+                <input type="checkbox" class="form-control" id="termsAndConditions" placeholder="{{'detail.termsAndConditions' | translate}}"
+                       autocomplete="off" name="termsAndConditions" required/>
+                <a href="{{currentApp.terms}}">Terms &amp; conditions</a>
+
+                <div ng-show="form_publish.termsAndConditions.$dirty && form_publish.termsAndConditions.$invalid || form_publish.termsAndConditions.$touched">
+                    <p class="help-block"
+                       ng-show="form_publish.termsAndConditions.$error.required"
+                       translate="publish.messages.validate.termsAndConditions.required">
+                        Accept terms and conditions is required.
+                    </p>
+                </div>
+            </div>
+
             <div class="col-lg-4 col-lg-offset-4">
                 <input type="button" class="hvr-rectangle-out" ng-show="showButton" ng-click="detail_function()" value="{{buttonValue}}" />
             </div>
