@@ -38,7 +38,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="org in organizations | filter:searchTextOrg">
+                                            <tr ng-repeat="org in organizations | filter:searchTextOrg | startFrom:currentPageO*pageSizeO | limitTo:pageSizeO">
                                                 <td>{{org.organizationName}}</td>
                                                 <td>{{org.organizationStatus.status}}</td>
                                                 <td>{{org.organizationType.types}}</td>
@@ -50,6 +50,15 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- PAGINATION BUTTONS -->
+                            <div class="form-group">
+                                <div class="input-group text-center" style="display: block">
+                                    <button type="button" ng-disabled="currentPageO == 0" ng-click="currentPageO=currentPageO-1" >&lt;&lt;</button>
+                                    {{currentPageO+1}}/{{numberOfPagesO()}}
+                                    <button type="button" ng-disabled="currentPageO >= dataLengthO()/pageSizeO - 1" ng-click="currentPageO=currentPageO+1" >&gt;&gt;</button>
                                 </div>
                             </div>
                         </form>

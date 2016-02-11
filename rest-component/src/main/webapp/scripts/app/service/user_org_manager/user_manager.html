@@ -39,7 +39,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="user in users | filter:searchTextUser">
+                                            <tr ng-repeat="user in users | filter:searchTextUser | startFrom:currentPageU*pageSizeU | limitTo:pageSizeU">
                                                 <td>{{user.login}}</td>
                                                 <td>{{user.firstName}} {{user.lastName}}</td>
                                                 <td>{{user.email}}</td>
@@ -56,6 +56,15 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- PAGINATION BUTTONS -->
+                            <div class="form-group">
+                                <div class="input-group text-center" style="display: block">
+                                    <button type="button" ng-disabled="currentPageU == 0" ng-click="currentPageU=currentPageU-1" >&lt;&lt;</button>
+                                    {{currentPageU+1}}/{{numberOfPagesU()}}
+                                    <button type="button" ng-disabled="currentPageU >= dataLengthU()/pageSizeU - 1" ng-click="currentPageU=currentPageU+1" >&gt;&gt;</button>
                                 </div>
                             </div>
                         </form>
