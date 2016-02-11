@@ -1,10 +1,10 @@
 package eu.cloudopting.storage;
 
-import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Date;
+
+import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
 
 /**
  * Base class for storage tests.
