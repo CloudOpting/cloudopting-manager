@@ -22,7 +22,7 @@ angular.module('cloudoptingApp')
             var instanceWithAccount = {};
             instanceWithAccount.id = instance.id;
             instanceWithAccount.cloudAccountId = cloudAccount.id;
-            InstanceService(instanceWithAccount, callback);
+            InstanceService.update(instanceWithAccount, callback);
         };
 
         //Error handling
