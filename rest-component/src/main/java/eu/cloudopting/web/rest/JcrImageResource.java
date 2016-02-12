@@ -30,7 +30,6 @@ public class JcrImageResource {
 
 	private final Logger log = LoggerFactory.getLogger(JcrImageResource.class);
 	
-	@Autowired(required = true)
 	private StoreService storeService;
 	
 	@Inject 
@@ -49,6 +48,7 @@ public class JcrImageResource {
 	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
 	public final String getJcrImage(@RequestParam("jcrPath") String jcrPath) {
 		String jrRepositoryBase = "http://lab1.cloudopting.org:8083/repository/default/";
+		StoreService ss = this.getStoreService();
 		if (storeService!=null){
 			jrRepositoryBase = jrHttp;
 		}else{
@@ -71,7 +71,6 @@ public class JcrImageResource {
 		return storeService;
 	}
 
-	@Required
 	public void setStoreService(StoreService storeService) {
 		this.storeService = storeService;
 	}
