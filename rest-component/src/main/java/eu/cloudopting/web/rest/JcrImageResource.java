@@ -1,16 +1,25 @@
 package eu.cloudopting.web.rest;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.jcr.Node;
 import javax.jcr.Repository;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +38,8 @@ import eu.cloudopting.store.StoreService;
 public class JcrImageResource {
 
 	private final Logger log = LoggerFactory.getLogger(JcrImageResource.class);
-	
+
+	@Inject
 	private StoreService storeService;
 	
 	@Inject 
@@ -43,14 +53,13 @@ public class JcrImageResource {
      */
     @Value("${spring.jcr.repo_http}")
 	private String jrHttp;
-	
-	@RequestMapping(value = "/img", method = RequestMethod.GET)
-	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
-	public final String getJcrImage(@RequestParam("jcrPath") String jcrPath) {
-		String jrRepositoryBase = "http://lab1.cloudopting.org:8083/repository/default/";
+    
+    private String getRelativePathForNode(String jcrPath){
+    	String result = null;
+    	String jrRepositoryBase = "http://lab1.cloudopting.org:8083/repository/default/";
 		StoreService ss = this.getStoreService();
-		if (storeService!=null){
-			jrRepositoryBase = jrHttp;
+		if (ss!=null){
+			jrRepositoryBase = ss.getJrHttp();
 		}else{
 			String s = "Store Service NOT injected!";
 			if (log!=null){
@@ -59,8 +68,47 @@ public class JcrImageResource {
 				System.out.println(s);
 			}
 		}
-		String relativePath = StringUtils.removeStart(jcrPath, jrRepositoryBase); 
-		return relativePath;
+		result = StringUtils.removeStart(jcrPath, jrRepositoryBase); 
+		if (!result.startsWith("/")){
+			result = "/"+result;
+		}
+		return result;
+    }
+	
+	@RequestMapping(value = "/img", method = RequestMethod.GET)
+	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
+	public final ResponseEntity<InputStreamResource> getJcrImage(@RequestParam("jcrPath") String jcrPath) {
+		ResponseEntity<InputStreamResource> result = null;
+		String relativePath = this.getRelativePathForNode(jcrPath);
+		InputStream is = null;
+		try {
+			Session s = this.getSession();
+			Node n = JcrUtils.getNodeIfExists(relativePath, s);
+			is = JcrUtils.readFile(n);
+			Node jcrContent = n.getNode("jcr:content");
+			String fileName = n.getName();
+			long size = jcrContent.getProperty("jcr:data").getBinary().getSize();
+			HttpHeaders respHeaders = new HttpHeaders();
+			String mType = jcrContent.getProperty("jcr:mimeType").getString();
+			respHeaders.setContentType(MediaType.parseMediaType(mType));
+			respHeaders.setContentLength(size);
+			respHeaders.setContentDispositionFormData("attachment", fileName);
+			InputStreamResource isr = new InputStreamResource(is);
+			result = new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			log.error("Repository Exception", e);
+			result = new ResponseEntity<InputStreamResource>(new InputStreamResource(is), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			try {
+				if (is!=null)
+					is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				log.warn("Repository Exception", e);
+			}
+		}
+	    return result;
 	}
 	
 	public Logger getLog() {
@@ -70,9 +118,8 @@ public class JcrImageResource {
 	public StoreService getStoreService() {
 		return storeService;
 	}
-
-	public void setStoreService(StoreService storeService) {
-		this.storeService = storeService;
-	}
 	
+	public Session getSession() {
+		return session;
+	}
 }
