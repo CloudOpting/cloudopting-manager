@@ -4,7 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -31,7 +33,6 @@ import org.springframework.stereotype.Service;
 import eu.cloudopting.storagecomponent.StorageComponent;
 import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
 import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
-import eu.cloudopting.util.MimeTypeUtils;
 
 @Service
 public class StoreService {
@@ -131,15 +132,19 @@ public class StoreService {
 			log.debug("[Local]\tFile Path:"+filePath+" - File name:"+theFile);
 			log.debug("[Remote]\tFile Path:"+storePath+" - File name:"+storeFile);
 	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
-	        String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
+	        //String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
+	        String mimeType2 = URLConnection.guessContentTypeFromStream(stream);
 	        //Add the file separator to the local path, if missing
 	        filePath += filePath.endsWith(File.separator)?"":File.separator;
 	        folder = this.createNodesForPath(storePath);
-	        JcrUtils.putFile(folder, storeFile, mimeType, stream);
+	        JcrUtils.putFile(folder, storeFile, mimeType2, stream);
 	        session.save();
+	        stream.close();
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
     }

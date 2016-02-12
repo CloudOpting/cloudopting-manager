@@ -28,11 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.cloudopting.security.AuthoritiesConstants;
 import eu.cloudopting.store.StoreService;
 
-//http://lab1.cloudopting.org:8083/repository/default/organization_key/XVS_NEWT/template/go.png
-//http%3A%2F%2Flab1.cloudopting.org%3A8083%2Frepository%2Fdefault%2Forganization_key%2FXVS_NEWT%2Ftemplate%2Fgo.png
-//http://localhost:8080/jr/img?jcrPath=http%3A%2F%2Flab1.cloudopting.org%3A8083%2Frepository%2Fdefault%2Forganization_key%2FXVS_NEWT%2Ftemplate%2Fgo.png
-
-
 @RestController
 @RequestMapping("/jr")
 public class JcrImageResource {
@@ -92,7 +87,7 @@ public class JcrImageResource {
 			String mType = jcrContent.getProperty("jcr:mimeType").getString();
 			respHeaders.setContentType(MediaType.parseMediaType(mType));
 			respHeaders.setContentLength(size);
-			respHeaders.setContentDispositionFormData("attachment", fileName);
+			//respHeaders.setContentDispositionFormData("attachment", fileName);
 			InputStreamResource isr = new InputStreamResource(is);
 			result = new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 		} catch (RepositoryException e) {
