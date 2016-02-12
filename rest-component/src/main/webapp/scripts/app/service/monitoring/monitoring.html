@@ -5,10 +5,14 @@
             {{errorMessage}}
         </div>
         <div class="panel-body" id="space-for-zabbix-charts">
-        <select name="" id="hostSelect" ng-model="zabbixdata.hostSelect">
+        <select name="" id="hostSelect" ng-model="zabbixdata.hostSelect" ng-change="updateItems(id);">
         <option ng-repeat="optionHost in zabbixdata.hostOptions" value="{{optionHost.hostid}}">{{optionHost.host}}</option>
         </select>
         <p>{{zabbixdata.hostSelect}}</p>
+        <select name="" id="itemsSelect" ng-model="zabbixdata.itemsSelect" ng-change="updateChart(id);">
+        <option ng-repeat="optionItems in zabbixdata.itemsOptions" value="{{optionItems.itemid}}">{{optionItems.name}}</option>
+        </select>
+        <p>{{zabbixdata.itemsSelect}}</p>
         </div>
         <div class="panel-body" id="space-for-charts">
 

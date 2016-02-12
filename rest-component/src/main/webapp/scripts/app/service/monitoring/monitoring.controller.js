@@ -9,7 +9,10 @@ angular.module('cloudoptingApp')
         $scope.graphsList = [];
         $scope.zabbixdata = {
         		hostSelect: null,
-        		hostOptions: null  
+        		hostOptions: null ,
+        		itemsSelect: null,
+        		itemsOptions: null,
+        		
         }
 
         
@@ -19,9 +22,24 @@ angular.module('cloudoptingApp')
         	if(data){
         		$scope.zabbixdata.hostOptions = angular.fromJson(data);
         	}
-        }
+        };
+        
+        var zabitemscallback = function(data, status, headers, config) {
+        	checkStatusCallback(data, status, headers, config);
+        	if(data){
+        		$scope.zabbixdata.itemsOptions = angular.fromJson(data);
+        	}
+        };
         
         MonitoringService.findAllZabbixHosts(instance.id, zabhostcallback);
+        
+        var updateItems = function(id){
+        	MonitoringService.findAllZabbixItems(instance.id, id, zabitemscallback);
+        };
+        
+        var updateChart = function(id){
+        	
+        };
         
         var callback = function(data, status, headers, config) {
             checkStatusCallback(data, status, headers, config);

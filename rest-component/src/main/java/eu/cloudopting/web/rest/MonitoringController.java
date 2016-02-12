@@ -170,7 +170,17 @@ public class MonitoringController {
 		monitoringService.loginZabbix();
 		return new ResponseEntity<String>(monitoringService.getHostId(fqdn).toString(),HttpStatus.OK);
 	}
-//	
+	
+	@RequestMapping(value = "/monitoring/items/{instanceId}/{hostId}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> findItemss(@PathVariable("instanceId") final String instanceId,@PathVariable("hostId") final String hostId) {
+		// here I get the name of the host from the Db to get info from zabbix
+		// whti the instance id I get the Db fqdn
+		String fqdn = "corbyportal.cs8cloud.internal";
+		// need to login to zabbix
+		monitoringService.loginZabbix();
+		return new ResponseEntity<String>(monitoringService.getItems(hostId).toString(),HttpStatus.OK);
+	}
 
 		
 }
