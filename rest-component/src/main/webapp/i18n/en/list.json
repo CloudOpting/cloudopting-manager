@@ -15,7 +15,7 @@
     "col": {
       "name": "Service Name",
       "status": "Status",
-      "edit": "Edit Service"
+      "actions": "Actions"
     },
     "status": {
       "published": "Published",

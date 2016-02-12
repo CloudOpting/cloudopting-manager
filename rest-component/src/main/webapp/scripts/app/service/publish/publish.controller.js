@@ -3,16 +3,46 @@
 angular.module('cloudoptingApp')
     .controller('PublishController', function (SERVICE, $scope, $state, $log, localStorageService, ApplicationService) {
 
+        //If it is a modification we have to prepare everything to be edited.
+        var isEdition = localStorageService.get(SERVICE.STORAGE.PUBLISH_EDITION);
+        if(isEdition=="true"){
+            //Get the app to be modified.
+            $scope.application = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            $scope.disableUpdate = false;
+            $scope.disableSave = true;
+            $scope.disableNextOne = false;
+            var promoInDatabase = true;
+
+            //Prepare the name of the file
+            var tokensFile = $scope.application.applicationLogoReference.split('/');
+            var name = tokensFile[tokensFile.length-1];
+            $scope.files = [];
+            $scope.files.push({ name : name });
+
+            //Deleting evidences of edition in case user leaves the page.
+            localStorageService.set(SERVICE.STORAGE.PUBLISH_EDITION, false);
+            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
+        } else {
+            //If it is a new service we start with diferent parameters.
+            $scope.application = {};
+            $scope.disableUpdate = true;
+            $scope.disableSave = false;
+            $scope.disableNextOne = true;
+            var promoInDatabase = false;
+        }
+
         /*
          * WIZARD - SCREEN ONE
          */
 
-        $scope.disableUpdate = true;
-        $scope.disableSave = false;
-        $scope.disableNextOne = true;
-        $scope.application = {};
-        var promoInDatabase = false;
+        //Find all sizes for the combo.
+        var callbackSizes = function(data, status, headers, config) {
+            if(checkStatusCallback(data, status, headers, config, "")){
+                $scope.applicationSizes = data;
+            }
+        };
 
+        ApplicationService.findAllSizes(callbackSizes);
         /**
          * Function to save the promotional image into the $scope list
          * @param images

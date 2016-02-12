@@ -645,6 +645,9 @@ section h3.section-subheading {
     color: #31abac;
 }
 
+.wrapper-anchor {
+    padding: 150px 0;
+}
 
 #services {
     background-color: #F8F8F8;

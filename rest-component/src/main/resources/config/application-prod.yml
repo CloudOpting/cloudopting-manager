@@ -7,6 +7,9 @@ spring:
 
     jcr:
         repo_url: http://lab1.cloudopting.org:8082/server
+        repo_http: http://lab1.cloudopting.org:8082/repository/default/
+        user: admin
+        password: ENC(qwbz5bEyjdJBU2+qsDUC3g==)
 
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
@@ -45,6 +48,10 @@ spring:
     activiti:
         jobExecutorActivate: true
         restApiEnabled: true
+    data:
+        elasticsearch:
+            cluster-nodes: cloudoptingmaster.cloudopen.csipiemonte.it:9300
+            repositories.enabled: true
 
 metrics:
     jmx.enabled: true

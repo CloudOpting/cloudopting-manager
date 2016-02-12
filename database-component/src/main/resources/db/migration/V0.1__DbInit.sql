@@ -1,3 +1,48 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.5
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2016-02-02 15:23:20
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+
+--
+-- TOC entry 235 (class 3079 OID 11861)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2527 (class 0 OID 0)
+-- Dependencies: 235
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+
+--
+-- TOC entry 197 (class 1259 OID 16536)
+-- Name: application_media_media_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
 CREATE SEQUENCE application_media_media_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -698,7 +743,7 @@ INSERT INTO applications (id, application_name, application_description, applica
 -- Name: applications_application_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('applications_application_id_seq', 4, true);
+SELECT pg_catalog.setval('applications_application_id_seq', 4516, true);
 
 --
 -- TOC entry 2486 (class 0 OID 16559)
@@ -747,36 +792,13 @@ INSERT INTO customization_status (id, status) VALUES (104, 'Deleted');
 
 SELECT pg_catalog.setval('customization_status_id_seq', 104, true);
 
-
-
---
--- TOC entry 2538 (class 0 OID 0)
--- Dependencies: 206
--- Name: customizations_customization_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('customizations_customization_id_seq', 10, true);
-
-
 --
 -- TOC entry 2539 (class 0 OID 0)
 -- Dependencies: 208
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('hibernate_sequence', 4624, true);
-
-
---
--- TOC entry 2513 (class 0 OID 17162)
--- Dependencies: 230
--- Data for Name: monitoring_info_elastic; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO monitoring_info_elastic (id, customization_id, container, condition, fields, type, description, title, pagination) VALUES (1, 4067, '66.249.78.191', '/html', 'path', NULL, 'what this chart means', 'chart title', 50);
-INSERT INTO monitoring_info_elastic (id, customization_id, container, condition, fields, type, description, title, pagination) VALUES (2, 4067, '66.249.78.191', '/html', 'path', NULL, 'second chart', 'second', 50);
-
-
+SELECT pg_catalog.setval('hibernate_sequence', 5300, true);
 --
 -- TOC entry 2540 (class 0 OID 0)
 -- Dependencies: 229
@@ -796,6 +818,7 @@ INSERT INTO organization_status (id, status) VALUES (1, 'Pending');
 INSERT INTO organization_status (id, status) VALUES (2, 'Validated');
 INSERT INTO organization_status (id, status) VALUES (3, 'Retired');
 
+SELECT pg_catalog.setval('organizationstatus_organizationstatus_id_seq', 3, true);
 
 --
 -- TOC entry 2495 (class 0 OID 16591)
@@ -807,7 +830,7 @@ INSERT INTO organization_types (id, types) VALUES (1, 'Type 1');
 INSERT INTO organization_types (id, types) VALUES (2, 'Type 2');
 INSERT INTO organization_types (id, types) VALUES (3, 'Type 3');
 
-
+SELECT pg_catalog.setval('organizationtypes_organizationtype_id_seq', 3, true);
 --
 -- TOC entry 2497 (class 0 OID 16597)
 -- Dependencies: 214
@@ -835,25 +858,7 @@ INSERT INTO organizations (id, organization_creation, organization_activation, o
 -- Name: organizations_organization_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('organizations_organization_id_seq', 0, true);
-
-
---
--- TOC entry 2542 (class 0 OID 0)
--- Dependencies: 209
--- Name: organizationstatus_organizationstatus_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('organizationstatus_organizationstatus_id_seq', 3, true);
-
-
---
--- TOC entry 2543 (class 0 OID 0)
--- Dependencies: 211
--- Name: organizationtypes_organizationtype_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('organizationtypes_organizationtype_id_seq', 1, false);
+SELECT pg_catalog.setval('organizations_organization_id_seq', 4209, true);
 
 
 --
@@ -898,7 +903,7 @@ INSERT INTO status (id, status) VALUES (105, 'Draft');
 -- Name: status_status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('status_status_id_seq', 1, false);
+SELECT pg_catalog.setval('status_status_id_seq', 105, false);
 
 
 --
@@ -1089,7 +1094,7 @@ INSERT INTO t_user_authority (user_id, authority_name) VALUES (4367, 'ROLE_USER'
 -- Name: t_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('t_user_id_seq', 1, false);
+SELECT pg_catalog.setval('t_user_id_seq', 4367, false);
 
 
 --
@@ -1582,11 +1587,23 @@ ALTER TABLE ONLY t_user_authority
 ALTER TABLE ONLY t_persistent_token
     ADD CONSTRAINT fk_user_persistent_token FOREIGN KEY (user_id) REFERENCES t_user(id);
 
-
 alter table customizations add CONSTRAINT fk_custom_application FOREIGN KEY (application_id)
       REFERENCES applications (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
       
+ALTER TABLE applications ADD COLUMN application_logo_ref text;
+--
+-- TOC entry 2526 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
 -- Completed on 2016-02-02 15:24:40
 
 --
