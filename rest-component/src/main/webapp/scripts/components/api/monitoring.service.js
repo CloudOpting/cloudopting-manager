@@ -27,6 +27,38 @@ angular.module('cloudoptingApp')
             },
 
             /**
+             * The the list of monitored objects
+             * @param instanceId
+             * @param callback
+             */
+            findAllZabbixHosts: function(instanceId, callback) {
+                return $http.get(baseURI + SERVICE.SEPARATOR + "hosts" + SERVICE.SEPARATOR + instanceId)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error("MonitoringService.findAllZabbixHosts error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
+            },
+
+            /**
+             * The the list of monitored objects
+             * @param instanceId
+             * @param callback
+             */
+            findAllZabbixItems: function(instanceId, hostId, callback) {
+                return $http.get(baseURI + SERVICE.SEPARATOR + "items" + SERVICE.SEPARATOR + instanceId + SERVICE.SEPARATOR + hostId)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error("MonitoringService.findAllZabbixHosts error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
+            },
+
+            /**
              * Get an object fom a specific instance.
              * @param instanceId
              * @param objectId

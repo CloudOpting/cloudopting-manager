@@ -4,9 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -155,6 +159,18 @@ public class MonitoringController {
 		gdto.setLineColors(new String[] {"green"});
 		return gdto;
 	}
+	
+	@RequestMapping(value = "/monitoring/hosts/{instanceId}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> findHosts(@PathVariable("instanceId") final String instanceId) {
+		// here I get the name of the host from the Db to get info from zabbix
+		// whti the instance id I get the Db fqdn
+		String fqdn = "corbyportal.cs8cloud.internal";
+		// need to login to zabbix
+		monitoringService.loginZabbix();
+		return new ResponseEntity<String>(monitoringService.getHostId(fqdn).toString(),HttpStatus.OK);
+	}
+//	
 
 		
 }

@@ -4,6 +4,12 @@
         <div class="alert alert-danger" ng-show="errorMessage">
             {{errorMessage}}
         </div>
+        <div class="panel-body" id="space-for-zabbix-charts">
+        <select name="" id="hostSelect" ng-model="zabbixdata.hostSelect">
+        <option ng-repeat="optionHost in zabbixdata.hostOptions" value="{{optionHost.hostid}}">{{optionHost.host}}</option>
+        </select>
+        <p>{{zabbixdata.hostSelect}}</p>
+        </div>
         <div class="panel-body" id="space-for-charts">
 
             <div class="col-md-12" ng-repeat="graph in graphsList">
