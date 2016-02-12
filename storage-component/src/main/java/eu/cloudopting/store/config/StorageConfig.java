@@ -1,10 +1,10 @@
 package eu.cloudopting.store.config;
 
-import eu.cloudopting.store.StoreService;
-import eu.cloudopting.store.jackrabbit.JackrabbitBinaryStoreImpl;
-import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
-import eu.cloudopting.store.jackrabbit.JackrabbitStore;
-import eu.cloudopting.store.jackrabbit.JackrabbitOcmStoreImpl;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jcr.Session;
+
 import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.mapper.Mapper;
@@ -12,10 +12,11 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.jcr.Repository;
-import javax.jcr.Session;
-import java.util.ArrayList;
-import java.util.List;
+import eu.cloudopting.store.StoreService;
+import eu.cloudopting.store.jackrabbit.JackrabbitBinaryStoreImpl;
+import eu.cloudopting.store.jackrabbit.JackrabbitOcmStoreImpl;
+import eu.cloudopting.store.jackrabbit.JackrabbitStore;
+import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
 
 /**
  * Storage java config file
@@ -49,6 +50,4 @@ public class StorageConfig {
     public StoreService storeService(){
         return new StoreService();
     }
-
-
 }
