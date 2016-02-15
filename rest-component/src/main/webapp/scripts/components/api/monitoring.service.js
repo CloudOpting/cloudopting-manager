@@ -53,7 +53,23 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     })
                     .error(function(data, status, headers, config) {
-                        $log.error("MonitoringService.findAllZabbixHosts error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        $log.error("MonitoringService.findAllZabbixItems error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
+            },
+
+            /**
+             * The the list of monitored objects
+             * @param instanceId
+             * @param callback
+             */
+            findZabbixHistory: function(instanceId, hostId, itemId, callback) {
+                return $http.get(baseURI + SERVICE.SEPARATOR + "history" + SERVICE.SEPARATOR + instanceId + SERVICE.SEPARATOR + hostId + SERVICE.SEPARATOR + itemId)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error("MonitoringService.findZabbixHistory error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
             },

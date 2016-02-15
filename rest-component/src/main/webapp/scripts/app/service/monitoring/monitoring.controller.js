@@ -12,7 +12,7 @@ angular.module('cloudoptingApp')
         		hostOptions: null ,
         		itemsSelect: null,
         		itemsOptions: null,
-        		
+        		chartData: null,
         }
 
         
@@ -31,14 +31,24 @@ angular.module('cloudoptingApp')
         	}
         };
         
+        var zabhystcallback = function(data, status, headers, config) {
+        	checkStatusCallback(data, status, headers, config);
+        	if(data){
+        		$scope.zabbixdata.chartData = angular.fromJson(data);
+        		console.log($scope.zabbixdata.chartData);
+        	}
+        };
+
         MonitoringService.findAllZabbixHosts(instance.id, zabhostcallback);
         
-        var updateItems = function(id){
+        $scope.updateItems = function(id){
+        	console.log(id);
         	MonitoringService.findAllZabbixItems(instance.id, id, zabitemscallback);
         };
         
-        var updateChart = function(id){
-        	
+        $scope.updateChart = function(id){
+        	console.log(id);
+        	MonitoringService.findZabbixHistory(instance.id, $scope.zabbixdata.hostSelect.hostid, id, zabhystcallback);
         };
         
         var callback = function(data, status, headers, config) {
