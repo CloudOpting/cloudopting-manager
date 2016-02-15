@@ -26,6 +26,7 @@ public class ApplicationDTO implements Serializable{
     String terms;
     String servicePrice;
     String platformPrice;
+    String imageRef;
 	ApplicationSize size;
 	
     public Long getId() {
@@ -170,6 +171,14 @@ public class ApplicationDTO implements Serializable{
 
 	public void setSize(ApplicationSize size) {
 		this.size = size;
+	}
+
+	public String getImageRef() {
+		return imageRef;
+	}
+
+	public void setImageRef(String imageRef) {
+		this.imageRef = imageRef;
 	}
 }
 

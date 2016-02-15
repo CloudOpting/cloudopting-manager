@@ -34,12 +34,11 @@ angular.module('cloudoptingApp')
 
             //FIXME: Delete once a proper image is setted to the applications.
             for (var app in $scope.applicationList) {
-                var random=Math.random();
-                $scope.applicationList[app].applicationImage = "http://placehold.it/200x180";
-                if(random<=0.33) $scope.applicationList[app].applicationImage = "http://www.i2space.com/img/mobile_inner.jpg";
-                if(random>0.33 && random<0.66) $scope.applicationList[app].applicationImage = "http://kksoft.in/Images/Mobile-Application-Development.png";
-                if(random>0.66) $scope.applicationList[app].applicationImage = "http://community.nagra.com/images/nagra/icons/framework.jpg";
-
+                if ($scope.applicationList[app].applicationLogoReference == null
+                        || $scope.applicationList[app].applicationLogoReference == undefined
+                        || $scope.applicationList[app].applicationLogoReference == "") {
+                    $scope.applicationList[app].applicationLogoReference = "http://placehold.it/200x180";
+                }
             }
         };
 

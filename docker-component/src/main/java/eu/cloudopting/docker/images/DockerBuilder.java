@@ -146,7 +146,7 @@ public class DockerBuilder {
 		return responseEntity;
 	}
 
-		/**
+	/**
 	 * Requests information about a context.
 	 * 
 	 * @param token

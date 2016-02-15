@@ -44,7 +44,7 @@
                         <h4>{{app.applicationName}}</h4>
                         <p class="text-muted">{{ app.applicationDescription }}</p>
                     </div>
-                    <div class="portfolio-image" style="background-image:url({{app.applicationImage}});"></div>
+                    <div class="portfolio-image" style="background-image:url({{app.applicationLogoReference}});"></div>
                 </a>
             </div>
         </div>
@@ -127,49 +127,3 @@
         </div>
     </div>
 </section>
-
-
-<!--
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="catalogue.title">Services available in CloudOpting</div>
-        <div class="panel-body webuiPanel">
-            <div class="row">
-                <div class="col-md-6" ng-repeat="app in applicationList | startFrom:currentPage*pageSize | limitTo:pageSize">
-                    <div class="thumbnail">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5 class="text-uppercase darkgreen"><strong>{{app.applicationName}}</strong></h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img ng-src="{{app.applicationImage}}" width="100%">
-                            </div>
-                            <div class="col-md-6">
-                                <div class="caption">
-                                    <p>{{ app.applicationDescription | limitTo: 120 }}{{app.applicationDescription.length > 120 ? '...' : ''}}</p>
-                                </div>
-                                <div>
-                                    <button type="button" class="col-md-12 btn btn-success" ng-click="detail(app)"
-                                            translate="catalogue.button.choose">Service Info
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-md-offset-5">
-            <button class="btn-default small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-                Previous
-            </button>
-            {{currentPage+1}}/{{numberOfPages()}}
-            <button class="btn-default small" ng-disabled="nextDisable()" ng-click="currentPage=currentPage+1">
-                Next
-            </button>
-        </div>
-    </div>
-</div>
--->

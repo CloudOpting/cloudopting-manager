@@ -10,13 +10,11 @@ angular.module('cloudoptingApp')
         $scope.disableUpdate = true;
         $scope.disableSave = false;
         $scope.disableNextOne = true;
-
         $scope.application = {};
-
         var promoInDatabase = false;
 
         /**
-         * Function to save the promotional image.
+         * Function to save the promotional image into the $scope list
          * @param images
          */
         $scope.newPromoImage = function(images){
@@ -24,11 +22,11 @@ angular.module('cloudoptingApp')
         };
 
         /**
-         * Function to delete the promotional image.
+         * Function to delete the promotional image form the $scope and database list.
          * @param file
          */
         $scope.deletePromotionalImage = function (file){
-            console.log("delete " + file.name);
+            //Delete from the $scope
             var index = $scope.files.indexOf(file);
             if (index > -1) {
                 $scope.files.splice(index, 1);
@@ -36,92 +34,68 @@ angular.module('cloudoptingApp')
                     $scope.files = null;
                 }
             }
+
             //If already saved into database we have to delete it from there also.
             if(promoInDatabase){
-                //Send a REST call if it is already persisted in database.
                 var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file);
-                promoInDatabase = false;
+
+                var callback = function(data, status, headers, config) {
+                    if(checkStatusCallback(data, status, headers, config, "")){
+                        promoInDatabase = false;
+                    }
+                };
+
+                //FIXME: We do not have the file ID
+                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file, callback);
             }
 
         };
 
-        function savePromotionalImage() {
-            var callback = function(data) {
-                //TODO: Update the corresponding file with the corresponding id to keep track.
-                promoInDatabase = true;
+        function savePromotionalImage(activiti) {
+            var callback = function(data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config, "")){
+                    //TODO: We should update the file id in order to be able to update/delete it
+                    promoInDatabase = true;
+                }
             };
-            //Add content libraries
-            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            ApplicationService.addPromotionalImage(
-                activiti.applicationId,
-                activiti.processInstanceId,
-                $scope.files,
-                callback);
+
+            ApplicationService.addPromotionalImage(activiti.applicationId, activiti.processInstanceId, $scope.files, callback);
         }
 
         /**
          * Function to create an application with a 'name', 'description' and 'promoImage'
          * with status 'Draft'
-         * FIXME: At the moment it is not used.
-         */
-        /*
-        $scope.saveConfigurationWizardOne = function () {
-            var callback = function(activiti){
-                localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
-                savePromotionalImage();
-            };
-            var application = {};
-            application.applicationName = $scope.name;
-            application.applicationDescription=$scope.description;
-
-            //Save the current app in order to use it in the future.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
-
-            //Create the applicaiton.
-            ApplicationService.create(application, callback);
-
-            //Move to Step 2 of wizard - Add content library
-            $state.go('publish2');
-        };
-        */
-        /**
-         * Function to create an application with a 'name', 'description' and 'promoImage'
-         * with status 'Draft'
          */
         $scope.saveWizardOne = function() {
-            var callback = function(activiti){
-                localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
-                //FIXME: The processID is only for developmenent.
-                $scope.processID = activiti.processInstanceId;
-                var app = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-                app.id = activiti.applicationId;
-                localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
-                savePromotionalImage();
+            var callback = function(data, status, headers, config){
+                if(checkStatusCallback(data, status, headers, config, "")){
+                    localStorageService.set(SERVICE.STORAGE.ACTIVITI, data);
+                    //TODO: The processID is only for developmenent. Delete once it is done and validated.
+                    $scope.processID = data.processInstanceId;
+
+                    //Update the current app with the ID in order to use it in the future.
+                    $scope.application.id = data.applicationId;
+                    localStorageService.set(SERVICE.STORAGE.CURRENT_APP, $scope.application);
+
+                    savePromotionalImage(data);
+
+                    $scope.disableUpdate = false;
+                    $scope.disableSave = true;
+                    $scope.disableNextOne = false;
+                }
             };
 
-            //Save the current app in order to use it in the future.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, $scope.application);
-
-            //Create
             ApplicationService.create($scope.application, callback);
-            $scope.disableUpdate = false;
-            $scope.disableSave = true;
-            $scope.disableNextOne = false;
         };
 
         $scope.updateWizardOne = function() {
-            var callback = function(activiti){
-                localStorageService.set(SERVICE.STORAGE.ACTIVITI, activiti);
+            var callback = function(data, status, headers, config){
+                if(checkStatusCallback(data, status, headers, config, "")){
+                    localStorageService.set(SERVICE.STORAGE.ACTIVITI, data);
+                    //FIXME: We should check if we have to save the promotional images or not. Are they the same? If yes we are going to duplicate it.
+                    savePromotionalImage(data);
+                }
             };
-
-            //TODO: Fix a bit
-            //Create
-            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            $scope.application.id = activiti.applicationId;
-
-            //Save the current app in order to use it in the future.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, $scope.application);
 
             ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
         };
@@ -167,17 +141,18 @@ angular.module('cloudoptingApp')
          * Function to save the content files added by the user
          */
         $scope.saveConfigurationWizardTwo = function () {
-            var callback = function(data) {
-                //TODO: Update the corresponding file with the corresponding id to keep track.
-
-            };
-            //Add content libraries
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            ApplicationService.addContentLibrary(
-                activiti.applicationId,
-                activiti.processInstanceId,
-                $scope.libraryList,
-                callback);
+
+            var callback = function(data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config, "")){
+                    //TODO: We should update the file id in order to be able to update/delete it
+
+                    //Move to Step 3 of wizard - Add TOSCA Archive
+                    $state.go('publish3');
+                }
+            };
+
+            ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, $scope.libraryList, callback);
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
@@ -187,9 +162,6 @@ angular.module('cloudoptingApp')
              }
              }
              */
-
-            //Move to Step 3 of wizard - Add TOSCA Archive
-            $state.go('publish3');
         };
 
         /**
@@ -197,22 +169,33 @@ angular.module('cloudoptingApp')
          * @param file
          */
         $scope.deleteLib = function (file){
-            console.log("delete " + file.name);
+            //Delete from the $scope
             var index = $scope.libraryList.indexOf(file);
             if (index > -1) {
                 $scope.libraryList.splice(index, 1);
             }
-            //Send a REST call if it is already persisted in database.
+
+            //We do not need to delete from database. They are not saved yet.
+            /*
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file);
+
+            var callback = function(data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config, "")){
+                    promoInDatabase = false;
+                }
+            };
+
+            //FIXME: Here I do not have the file ID.
+            ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file, callback);
+            */
         };
 
         /*
          * WIZARD - SCREEN THREE
          */
         $scope.disablePublish = true;
-        var toscaArchiveInDatabase = false;
         $scope.toscaFiles = [];
+        var toscaArchiveInDatabase = false;
 
         $scope.isToscaFilesEmpty = function() {
             return $scope.toscaFiles.length==0;
@@ -220,7 +203,7 @@ angular.module('cloudoptingApp')
 
         $scope.addToscaArchive = function(toscaArchive) {
             if(toscaArchive) {
-                $scope.toscaFiles.push.apply($scope.toscaFiles, toscaArchive);
+                $scope.toscaFiles = toscaArchive;
             }
         };
 
@@ -228,21 +211,19 @@ angular.module('cloudoptingApp')
          * Function to send the TOSCA Archive to be saved.
          */
         $scope.saveConfiguration = function () {
-            var callback = function(data) {
-                //TODO: Show a message of completion.
-                $scope.disablePublish = false;
-                toscaArchiveInDatabase = true;
-                //TODO: Enable button of publication.
-
-            };
-            //Add content libraries
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            //Send the tosca file
-            ApplicationService.addToscaArchive(
-                activiti.applicationId,
-                activiti.processInstanceId,
-                $scope.toscaFiles,
-                callback);
+
+            var callback = function(data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config, "")){
+                    //TODO: Show a message of completion.
+                    $scope.disablePublish = false;
+                    toscaArchiveInDatabase = true;
+                    //TODO: Enable button of publication.
+
+                }
+            };
+
+            ApplicationService.addToscaArchive(activiti.applicationId, activiti.processInstanceId, $scope.toscaFiles, callback);
         };
 
         /**
@@ -250,17 +231,24 @@ angular.module('cloudoptingApp')
          * @param file
          */
         $scope.deleteToscaArchive = function (file){
-            console.log("delete " + file.name);
+            //Delete from $scope list
             var index = $scope.toscaFiles.indexOf(file);
             if (index > -1) {
                 $scope.toscaFiles.splice(index, 1);
             }
+
             //If already saved into database we have to delete it from there also.
             if(toscaArchiveInDatabase){
-                //Send a REST call if it is already persisted in database.
                 var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file);
-                toscaArchiveInDatabase = false;
+
+                var callback = function(data, status, headers, config) {
+                    if(checkStatusCallback(data, status, headers, config, "")){
+                        toscaArchiveInDatabase = false;
+                    }
+                };
+
+                //FIXME: We do not have the file ID
+                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file, callback);
             }
 
         };
@@ -269,15 +257,15 @@ angular.module('cloudoptingApp')
          * Function to request the publication of the current application.
          */
         $scope.publishService = function () {
-            console.log($scope.contentLib);
-            var callback = function (){
-                console.log("Publication Requested!!!");
-                $state.go('publish4');
-            };
-
-            //Request publication
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
             var application = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+
+            var callback = function (data, status, headers, config){
+                if(checkStatusCallback(data, status, headers, config, "")){
+                    $state.go('publish4');
+                }
+            };
+
             requestPublication(activiti, application, callback);
         };
 
@@ -289,8 +277,40 @@ angular.module('cloudoptingApp')
         var requestPublication = function (activiti, application, callback) {
             //activiti.processInstanceId, activiti.applicationId
             application.status = "Requested";
-            console.log("Requesting publication for application:"+angular.toJson(application, true));
+            $log.debug("Requesting publication for application: " + angular.toJson(application, true));
             ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
+        };
+
+        /*
+         * ERROR HANDLING.
+         */
+
+        $scope.errorMessage = null;
+        $scope.infoMessage = null;
+
+        //function to check possible outputs for the end user information.
+        var checkStatusCallback = function(data, status, headers, config, message){
+            if(status==401) {
+                //Unauthorised. Check if signed in.
+                if(Principal.isAuthenticated()){
+                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    return false;
+                } else {
+                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $timeout(function() {
+                        $state.go('login');
+                    }, 3000);
+                    return false;
+                }
+            }else if(status!=200 && status!=201) {
+                //Show message
+                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                return false;
+            } else {
+                //Return to the list
+                $scope.infoMessage = message + " Successfully done!";
+                return true;
+            }
         };
     }
 );

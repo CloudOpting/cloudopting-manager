@@ -54,7 +54,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
         Set<ApplicationMedia> medias = application.getApplicationMedias();
         ApplicationMedia newMedium = new ApplicationMedia();
         newMedium.setApplicationId(application);
-        newMedium.setMediaContent(StoreService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
+        newMedium.setMediaContent(storeService.getTemplatePath(orgKey,toscaName,true)+"/"+remoteFileNameReduced);
         medias.add(newMedium);
         applicationMediaService.create(newMedium);
 	}

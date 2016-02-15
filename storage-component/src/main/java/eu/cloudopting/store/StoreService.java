@@ -25,6 +25,7 @@ import javax.jcr.query.QueryResult;
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.storagecomponent.StorageComponent;
@@ -40,6 +41,12 @@ public class StoreService {
     Repository repository;
     @Inject
     Session session;
+    
+    /**
+     * JackRabbit Repository URL
+     */
+    @Value("${spring.jcr.repo_http}")
+	private String jrHttp;
 
 	@Inject
 	StorageComponent<JackrabbitStoreResult,JackrabbitStoreRequest> jackrabbitBinaryStore;
@@ -50,10 +57,21 @@ public class StoreService {
 	 * @param applicationToscaName The Tosca Name of the Template (no spaces and fancy chars)
 	 * @return The path to be passed as first parameter to the JackRabbitStoreRequest constructor.
 	 */
-	public static String getTemplatePath (String organizationKey, String applicationToscaName){
+	public String getTemplatePath (String organizationKey, String applicationToscaName){
+		return this.getTemplatePath(organizationKey, applicationToscaName, false);
+	}
+	
+	/**
+	 * Gets the path where to save Service Template files
+	 * @param organizationKey The Organization Key
+	 * @param applicationToscaName The Tosca Name of the Template (no spaces and fancy chars)
+	 * @param withAbsolutePath prefix the path with the http URL prefix
+	 * @return The path to be passed as first parameter to the JackRabbitStoreRequest constructor.
+	 */
+	public String getTemplatePath (String organizationKey, String applicationToscaName, boolean withAbsolutePath){
 		//TODO Uncomment once JackRabbit is able to create intermediate paths
-		return organizationKey + "/" + applicationToscaName + "/template";
-		
+		String prefix = withAbsolutePath?jrHttp:"";
+		return prefix + organizationKey + "/" + applicationToscaName + "/template";
 	}
 
 	/**
@@ -167,7 +185,7 @@ public class StoreService {
         Node folder,
              folderParent;
         try {
-			folder = session.getRootNode().getNode(StoreService.getTemplatePath(orgKey, toscaName));
+			folder = session.getRootNode().getNode(this.getTemplatePath(orgKey, toscaName));
 			log.debug("Folder->"+folder.getPath());
 			folderParent = folder.getParent();
 			log.debug("FolderParent->"+folderParent.getPath());
@@ -175,8 +193,8 @@ public class StoreService {
 			session.save();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			log.error("Repository Exception", e);
-			e.printStackTrace();
+			log.error("Repository Exception: "+e.getLocalizedMessage());
+			//e.printStackTrace();
 		}
     }  
     

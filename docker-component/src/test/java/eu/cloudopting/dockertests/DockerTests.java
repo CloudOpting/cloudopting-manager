@@ -491,6 +491,16 @@ public class DockerTests {
                 compositionToken = null;
             
             assertNotNull("Erroneous response for deploy composition.", compositionToken);
+
+            String responseCompose = dockerService.compositionDetail(compositionToken);
+            assertNotNull ("No response returned when asking information about the process.", responseCompose);
+            
+            // Wait for cluster
+            Thread.sleep(1500);
+            while(dockerService.isCompositionDeployed(compositionToken)!=true)
+                Thread.sleep(2000);
+
+
             
         } catch (DockerError e) {
         } catch(InterruptedException ex) {

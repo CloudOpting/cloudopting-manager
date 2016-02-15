@@ -27,6 +27,8 @@ public class CloudAccountDTO implements Serializable{
 	@NotNull
 	private Providers provider;
 
+	private Boolean isTrial;
+	
 	public Long getId() {
 		return id;
 	}
@@ -73,5 +75,13 @@ public class CloudAccountDTO implements Serializable{
 
 	public void setProvider(Providers provider) {
 		this.provider = provider;
+	}
+
+	public Boolean getIsTrial() {
+		return isTrial;
+	}
+
+	public void setIsTrial(Boolean isTrial) {
+		this.isTrial = isTrial;
 	}
 }

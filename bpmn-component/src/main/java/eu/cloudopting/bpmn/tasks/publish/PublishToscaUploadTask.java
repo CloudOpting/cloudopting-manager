@@ -49,7 +49,7 @@ public class PublishToscaUploadTask implements JavaDelegate {
 	private void setToscaTemplatePath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
 		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = applicationService.findOne(applicationSource.getId());
-        application.setApplicationToscaTemplate(StoreService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
+        application.setApplicationToscaTemplate(storeService.getTemplatePath(orgKey,toscaName,true)+"/"+remoteFileNameReduced);
         applicationService.update(application);
 	}
 
@@ -77,7 +77,7 @@ public class PublishToscaUploadTask implements JavaDelegate {
 					String 	localFileAbsolutePath 	= fileToDelete.getAbsolutePath(),
 							localFilePath = localFileAbsolutePath.substring(0,localFileAbsolutePath.lastIndexOf(File.separator)+1),
 							localFileName 	= fileToDelete.getName(), 
-							remoteFilePath 	= StoreService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
+							remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
 							remoteFileName	= fileToDelete.getName(),
 							remoteFileNameReduced	= remoteFileName.substring(0,remoteFileName.indexOf(BpmnService.TEMP_FILE_NAME_SEPARATOR));
 					log.debug("--- Local File Absolute Path:"+localFileAbsolutePath);

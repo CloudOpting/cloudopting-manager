@@ -494,8 +494,17 @@ public class DockerService {
 	 */
 	public boolean isCompositionDeployed(String token) throws DockerError{
 	//	log.debug("in isCompositionDeployed and calling the API");
-	//	return this.composer.isDeployed(token);
-		throw new UnsupportedOperationException("Operation not supported for the moment.");
+		ResponseEntity<String> response = composer.getInfo(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());
+		String aux = map.get("status").toString();
+		if(aux.equals("finished"))
+			return true;
+		else if(aux.equals("error"))
+			throw new DockerError(map.get("description").toString());
+		else
+			return false;
 	}
 	
 	/**
@@ -505,11 +514,29 @@ public class DockerService {
 	 * @throws DockerError Throws this when the API returns a non successful response.
 	 */
 	public String getDeploymentInfo(String token) throws DockerError{
-	//	log.debug("in getDeploymentInfo and calling the API");
-	//	return this.composer.getInfo(token);
-		throw new UnsupportedOperationException("Operation not supported for the moment.");
+		log.debug("in getDeploymentInfo and calling the API");	
+		ResponseEntity<String> response = composer.getInfo(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());	
+		return response.getBody();
 	}
 	
+	/**
+	 * Retrieves detailed information about deployment.
+	 * @param token Operation token
+	 * @return Status information about the deployment in a human-readable format.
+	 * @throws DockerError Throws this when the API returns a non successful response.
+	 */
+	public String compositionDetail(String token) throws DockerError{
+		log.debug("in getDeploymentDetail and calling the API");	
+		ResponseEntity<String> response = composer.getDetail(token);
+		Map<String, Object> map = parser.parseMap(response.getBody());
+		if(!response.getStatusCode().is2xxSuccessful())
+			throw new DockerError(map.get("description").toString());	
+		return response.getBody();
+	}
+
 	/**
 	 * Tries to stop the deployment and remove the containers.
 	 * @param token Operation token
