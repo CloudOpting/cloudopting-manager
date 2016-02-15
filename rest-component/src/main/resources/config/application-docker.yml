@@ -66,9 +66,9 @@ metrics:
         prefix: cloudopting
 
 zabbix:
-    user: admin
-    password: ENC(YL2EZjSFF6jGeJ4uAlGa0Q==)
-    endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
+    user: Admin
+    password: ENC(B3rDZgUuY1jL4vPQHpYwdw==)
+    endpoint: http://cloudoptingmaster.cloudopen.csipiemonte.it/zabbix/api_jsonrpc.php
 
 elasticsearch:
     host: cloudoptingmaster.cloudopen.csipiemonte.it
