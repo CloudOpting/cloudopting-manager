@@ -1,23 +1,37 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ListController', function (SERVICE, $rootScope, $scope, $state, $timeout, localStorageService, Principal, Auth, ApplicationService, $window) {
+    .controller('ListController', function (SERVICE, $rootScope, $scope, $state, $timeout, $log, $filter,
+                                            localStorageService, Principal, Auth, ApplicationService, $window) {
         //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
+        $scope.currentPage = 0;
+        $scope.pageSize = 8;
         $scope.applicationList = [];
+        $scope.searchTextApplication = '';
+        $scope.numberOfPages = function(){
+            return Math.ceil($scope.dataLength()/$scope.pageSize);
+        };
+        $scope.dataLength = function(){
+            return $filter('filter')($scope.applicationList, $scope.searchTextApplication).length;
+        };
 
         //Depending on the role, give the user a different list
         if(Principal.isInRole(SERVICE.ROLE.ADMIN)) {
-            var callback = function (applications) {
-                $scope.applicationList = applications.content;
+            var callback = function (data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config)) {
+                    $scope.applicationList = data.content;
+                }
             };
             ApplicationService.findAllUnpaginated(callback);
         }
         else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)) {
-            var callback = function (applications) {
-                var user = localStorageService.get(SERVICE.STORAGE.CURRENT_USER);
-                for(var org in applications.content){
-                    if(user.organizationId.id == applications.content[org].organizationId.id){
-                        $scope.applicationList.push(applications.content[org]);
+            var callback = function (data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config)) {
+                    var user = localStorageService.get(SERVICE.STORAGE.CURRENT_USER);
+                    for(var org in data.content){
+                        if(user.organizationId.id == data.content[org].organizationId.id){
+                            $scope.applicationList.push(data.content[org]);
+                        }
                     }
                 }
             };
@@ -37,8 +51,6 @@ angular.module('cloudoptingApp')
 
             localStorageService.set(SERVICE.STORAGE.PUBLISH_EDITION, true);
 
-            //$window.alert("This functionality is not ready yet. For any inconvenience, contact cloudopting@gmail.com");
-
             //Redirect to instances
             $state.go('publish');
         };
@@ -57,13 +69,14 @@ angular.module('cloudoptingApp')
         $scope.goToDelete = function (app) {
 
             if($window.confirm('Are you sure that you want to delete this service?')) {
-                var callback = function(data) {
-                    //Deleteing current service on storage.
-                    localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
+                var callback = function(data, status, headers, config) {
+                    if(checkStatusCallback(data, status, headers, config)) {
+                        //Deleteing current service on storage.
+                        localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
 
-                    //Reload page
-                    $state.go($state.current, {}, {reload: true});
-
+                        //Reload page
+                        $state.go($state.current, {}, {reload: true});
+                    }
                 };
                 //Deleting a service
                 ApplicationService.delete(app.id, callback);
@@ -79,6 +92,32 @@ angular.module('cloudoptingApp')
 
             //Redirect to instances
             $state.go('form_generation');
+        };
+
+        //////////////////////////////////////////
+        $scope.errorMessage = null;
+
+        //function to check possible outputs for the end user information.
+        var checkStatusCallback = function(data, status, headers, config){
+            if(status==401) {
+                //Unauthorised. Check if signed in.
+                if(Principal.isAuthenticated()){
+                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                } else {
+                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $timeout(function() {
+                        $state.go('login');
+                    }, 3000);
+                }
+                return false;
+            } else if(status!=200 && status!=201) {
+                //Show message
+                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                return false;
+            } else {
+                $log.info("Everything went ok!");
+                return true;
+            }
         };
     }
 );

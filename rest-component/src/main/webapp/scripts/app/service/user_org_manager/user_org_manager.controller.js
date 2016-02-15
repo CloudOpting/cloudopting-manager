@@ -1,9 +1,21 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('UserOrgManagerController', function (SERVICE, $scope, Principal, Auth, UserService, OrganizationService, $state, $log, localStorageService, $window, $timeout) {
+    .controller('UserOrgManagerController', function (SERVICE, $scope, Principal, Auth, UserService, $filter,
+                                                      OrganizationService, $state, $log, localStorageService, $window, $timeout) {
 
         /// USERS ////////////////////////////////
+        $scope.currentPageU = 0;
+        $scope.pageSizeU = 8;
+        $scope.users = [];
+        $scope.searchTextUser = '';
+        $scope.numberOfPagesU = function(){
+            return Math.ceil($scope.dataLengthU()/$scope.pageSizeU);
+        };
+        $scope.dataLengthU = function(){
+            return $filter('filter')($scope.users, $scope.searchTextUser).length;
+        };
+
         $scope.user = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_USER);
         $scope.users = null;
 
@@ -83,8 +95,18 @@ angular.module('cloudoptingApp')
 
 
         /// ORGANIZATIONS ////////////////////////
+        $scope.currentPageO = 0;
+        $scope.pageSizeO = 8;
+        $scope.organizations = [];
+        $scope.searchTextOrg = '';
+        $scope.numberOfPagesO = function(){
+            return Math.ceil($scope.dataLengthO()/$scope.pageSizeO);
+        };
+        $scope.dataLengthO = function(){
+            return $filter('filter')($scope.organizations, $scope.searchTextOrg).length;
+        };
+
         $scope.org = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_ORG);
-        $scope.organizations = null;
 
         $scope.status = null;
         $scope.types = null;

@@ -7,7 +7,40 @@ angular.module('cloudoptingApp')
 
         //Add the dives to the page dynamically.
         $scope.graphsList = [];
+        $scope.zabbixdata = {
+        		hostSelect: null,
+        		hostOptions: null ,
+        		itemsSelect: null,
+        		itemsOptions: null,
+        		
+        }
 
+        
+        
+        var zabhostcallback = function(data, status, headers, config) {
+        	checkStatusCallback(data, status, headers, config);
+        	if(data){
+        		$scope.zabbixdata.hostOptions = angular.fromJson(data);
+        	}
+        };
+        
+        var zabitemscallback = function(data, status, headers, config) {
+        	checkStatusCallback(data, status, headers, config);
+        	if(data){
+        		$scope.zabbixdata.itemsOptions = angular.fromJson(data);
+        	}
+        };
+        
+        MonitoringService.findAllZabbixHosts(instance.id, zabhostcallback);
+        
+        var updateItems = function(id){
+        	MonitoringService.findAllZabbixItems(instance.id, id, zabitemscallback);
+        };
+        
+        var updateChart = function(id){
+        	
+        };
+        
         var callback = function(data, status, headers, config) {
             checkStatusCallback(data, status, headers, config);
             if(data){

@@ -14,41 +14,25 @@ angular.module('cloudoptingApp')
             $state.go('catalogue');
         }
         if(!Principal.isAuthenticated()) {
-            $scope.detail_function = function() {
-                $state.go('subscriber');
-            };
-            $scope.buttonValue = $translate.instant('detail.button.subscribe');
+            $scope.showRegister = true;
         }
         else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
+            $scope.isPublisher = true;
             //TODO: Define all status possible for an APPLICATION.
             if($scope.currentApp.status === SERVICE.STATUS.UNFINISHED){
-                $scope.detail_function = function() {
-                    $state.go('publish');
-                    //TODO: Set the current application to the application service?
-                    //ApplicationService.currentApplication = appDetail;
-                };
-                $scope.buttonValue = $translate.instant('detail.button.completepublish');
+                //Edit application
+                $scope.showEditService = true;
             } else {
-                $scope.detail_function = function() {
-                    $state.go('instances');
-                };
-                $scope.buttonValue = $translate.instant('detail.button.instances');
+                $scope.showInstances = true;
             }
         }
         else if(Principal.isInAnyRole([SERVICE.ROLE.ADMIN, SERVICE.ROLE.OPERATOR]))
         {
-            $scope.detail_function = function() {
-                $state.go('instances');
-            };
-            $scope.buttonValue = $translate.instant('detail.button.instances');
+            $scope.showInstances = true;
         }
         else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER))
         {
-            $scope.detail_function = function() {
-                //Customize the service.
-                $state.go('form_generation');
-            };
-            $scope.buttonValue = $translate.instant('detail.button.subscribe');
+            $scope.showSubscribe = true;
         }
         else
         {
@@ -56,5 +40,23 @@ angular.module('cloudoptingApp')
             //If no detail_funtion is defined, the button will remain hidden.
             $scope.showButton = false;
         }
+
+        $scope.goToEditService = function(){
+            $state.go('publish');
+            //TODO: Set the current application to the application service?
+            //ApplicationService.currentApplication = appDetail;
+        };
+
+        $scope.goToInstances = function(){
+            $state.go('instances');
+        };
+
+        $scope.goToRegister = function(){
+            $state.go('register');
+        };
+
+        $scope.goToSubscribe = function(){
+            $state.go('form_generation');
+        };
     }
 );
