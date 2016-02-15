@@ -1,5 +1,5 @@
 web:
-  image: default/web
+  image: cloudopting/web
   links:
     - db
   ports:
@@ -7,4 +7,4 @@ web:
   command: python /usr/src/app/app.py
 
 db:
-  image: default/redis
+  image: cloudopting/redis
