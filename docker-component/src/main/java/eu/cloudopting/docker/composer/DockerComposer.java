@@ -63,26 +63,50 @@ public class DockerComposer {
 	}
 	
 	/**
-	 * Asks the API if the deploy process has finished
-	 * @return True if the process has finished or false.
-	 * @throws DockerError Throws this when the builder returns any non successful response or if there is any error in the deployment.
-	 */
-	public boolean isDeployed(String token) throws DockerError{
-		// TODO: retrieve the status, parse response.
-	//	return true;
-		throw new UnsupportedOperationException("Operation not supported for the moment.");
-	}
-	
-	/**
 	 * Retrieves detailed information about the deployment.
 	 * @param token Operation token
 	 * @return Detailed information about the deployment.
 	 * @throws DockerError Throws this when the builder returns any non successful response or if there is any error in the deployment.
 	 */
-	public String getInfo(String token) throws DockerError{
-		// TODO 
-	//	return "Detailed information about the deployment.";
-		throw new UnsupportedOperationException("Operation not supported for the moment.");
+	public ResponseEntity<String> getInfo(String token) throws DockerError{
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("",
+				genericHeaders);
+		ResponseEntity<String> responseEntity = null;
+		try {
+			responseEntity = rest.exchange(endPoint + "/composer/"
+					+ token, HttpMethod.GET, requestEntity, String.class);
+		} catch (HttpClientErrorException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND)
+				responseEntity = new ResponseEntity<String>(
+						e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+
+		return responseEntity;
+	}
+
+	/**
+	 * Requests information about a deployment.
+	 * 
+	 * @param token
+	 *            Token that identifies the compose
+	 * @return API response
+	 */
+	public ResponseEntity<String> getDetail(String token) {
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("",
+				genericHeaders);
+		ResponseEntity<String> responseEntity = null;
+		try {
+			responseEntity = rest.exchange(endPoint + "/composer/"
+					+ token + "/detail", HttpMethod.GET, requestEntity, String.class);
+		} catch (HttpClientErrorException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND)
+				responseEntity = new ResponseEntity<String>(
+						e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+
+		return responseEntity;
 	}
 
 	/**
