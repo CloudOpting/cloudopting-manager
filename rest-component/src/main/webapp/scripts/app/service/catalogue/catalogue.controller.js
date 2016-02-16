@@ -8,7 +8,7 @@ angular.module('cloudoptingApp').filter('startFrom', function() {
 });
 
 angular.module('cloudoptingApp')
-    .controller('CatalogueController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService, Principal) {
+    .controller('CatalogueController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService, Principal, JackrabbitService) {
         //, ApplicationService
         //Save user
         Principal.identity().then(function(account) {
@@ -32,12 +32,30 @@ angular.module('cloudoptingApp')
             //Do the pagination
             pagination();
 
-            //FIXME: Delete once a proper image is setted to the applications.
+            //Get the images for each application.
             for (var app in $scope.applicationList) {
                 if ($scope.applicationList[app].applicationLogoReference == null
                         || $scope.applicationList[app].applicationLogoReference == undefined
                         || $scope.applicationList[app].applicationLogoReference == "") {
-                    $scope.applicationList[app].applicationLogoReference = "http://placehold.it/200x180";
+                    //Set default image
+                    $scope.applicationList[app].applicationLogoReference = "http://placehold.it/350x150";
+                }
+                else {
+                    /*
+                    var callback = function(data, status, headers, config){
+                        if(checkStatusCallback(data, status, headers, config)){
+                            if(data){
+                                $scope.applicationList[app].applicationLogoReference = data;
+                            }
+                        }
+                    };
+
+                    JackrabbitService.findImage($scope.applicationList[app].applicationLogoReference, callback);
+                    */
+
+                    //Changeing the URL only instead of calling the rest API with AJAX
+                    $scope.applicationList[app].applicationLogoReference = "/api/jr/img?jcrPath="+$scope.applicationList[app].applicationLogoReference
+
                 }
             }
         };
@@ -77,6 +95,32 @@ angular.module('cloudoptingApp')
 
             //$scope.bigTotalItems = 175;
             //$scope.bigCurrentPage = 1;
-        }
+        };
+
+        //HANDLE ERRORS
+        $scope.errorMessage = null;
+
+        //function to check possible outputs for the end user information.
+        var checkStatusCallback = function(data, status, headers, config){
+            if(status==401) {
+                //Unauthorised. Check if signed in.
+                if(Principal.isAuthenticated()){
+                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                } else {
+                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $timeout(function() {
+                        $state.go('login');
+                    }, 3000);
+                }
+                return false;
+            }else if(status!=200 && status!=201) {
+                //Show message
+                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                return false;
+            } else {
+                //Return to the list
+                return true;
+            }
+        };
     }
 );

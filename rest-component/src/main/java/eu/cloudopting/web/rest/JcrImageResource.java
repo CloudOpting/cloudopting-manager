@@ -29,7 +29,7 @@ import eu.cloudopting.security.AuthoritiesConstants;
 import eu.cloudopting.store.StoreService;
 
 @RestController
-@RequestMapping("/jr")
+@RequestMapping("/api")
 public class JcrImageResource {
 
 	private final Logger log = LoggerFactory.getLogger(JcrImageResource.class);
@@ -70,7 +70,7 @@ public class JcrImageResource {
 		return result;
     }
 	
-	@RequestMapping(value = "/img", method = RequestMethod.GET)
+	@RequestMapping(value = "/jr/img", method = RequestMethod.GET)
 	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
 	public final ResponseEntity<InputStreamResource> getJcrImage(@RequestParam("jcrPath") String jcrPath) {
 		ResponseEntity<InputStreamResource> result = null;

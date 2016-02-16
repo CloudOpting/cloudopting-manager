@@ -5,7 +5,7 @@
     "status": "Status: {{service_status}}",
     "termsAndConditions": "Agree with Terms and Conditions",
     "button" : {
-      "regsiter_subscribe": "Register & Subscribe Now",
+      "register_subscribe": "Register & Subscribe Now",
       "subscribe": "Subscribe Now",
       "instances": "See Instances",
       "completepublish": "COMPLETE PUBLISH"
