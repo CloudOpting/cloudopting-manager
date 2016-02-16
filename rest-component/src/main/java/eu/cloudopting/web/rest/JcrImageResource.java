@@ -3,10 +3,8 @@ package eu.cloudopting.web.rest;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.jcr.Node;
-import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import eu.cloudopting.security.AuthoritiesConstants;
 import eu.cloudopting.store.StoreService;
 
 @RestController
@@ -37,9 +34,6 @@ public class JcrImageResource {
 	@Inject
 	private StoreService storeService;
 	
-	@Inject 
-	private Repository repo;
-		
 	@Inject
 	private Session session;
     
@@ -71,7 +65,6 @@ public class JcrImageResource {
     }
 	
 	@RequestMapping(value = "/jr/img", method = RequestMethod.GET)
-	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
 	public final ResponseEntity<InputStreamResource> getJcrImage(@RequestParam("jcrPath") String jcrPath) {
 		ResponseEntity<InputStreamResource> result = null;
 		String relativePath = this.getRelativePathForNode(jcrPath);
@@ -81,13 +74,11 @@ public class JcrImageResource {
 			Node n = JcrUtils.getNodeIfExists(relativePath, s);
 			is = JcrUtils.readFile(n);
 			Node jcrContent = n.getNode("jcr:content");
-			String fileName = n.getName();
 			long size = jcrContent.getProperty("jcr:data").getBinary().getSize();
 			HttpHeaders respHeaders = new HttpHeaders();
 			String mType = jcrContent.getProperty("jcr:mimeType").getString();
 			respHeaders.setContentType(MediaType.parseMediaType(mType));
 			respHeaders.setContentLength(size);
-			//respHeaders.setContentDispositionFormData("attachment", fileName);
 			InputStreamResource isr = new InputStreamResource(is);
 			result = new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 		} catch (RepositoryException e) {
@@ -103,6 +94,23 @@ public class JcrImageResource {
 				log.warn("Repository Exception", e);
 			}
 		}
+	    return result;
+	}
+	
+	@RequestMapping(value = "/jr/img", method = RequestMethod.DELETE)
+	public final Boolean deleteJcrImage(@RequestParam("jcrPath") String jcrPath) {
+		Boolean result = false;
+		String relativePath = this.getRelativePathForNode(jcrPath);
+		try {
+			Session s = this.getSession();
+			s.removeItem(relativePath);
+			s.save();
+			result = true;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			log.error("Repository Exception", e);
+			result = false;
+		} 
 	    return result;
 	}
 	
