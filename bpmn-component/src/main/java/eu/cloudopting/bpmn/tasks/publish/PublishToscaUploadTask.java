@@ -56,15 +56,9 @@ public class PublishToscaUploadTask implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		log.info("Publish - Tosca File Upload");
-		//String uploadName = (String) execution.getVariable("name");
-		//String uploadType = (String) execution.getVariable("type");
-		//String uploadFileId = (String) execution.getVariable("fileId");
 		String uploadFilePath = (String) execution.getVariable("filePath");
-		//String uploadIdApp = (String) execution.getVariable("appId");
 		String uploadToscaName = (String) execution.getVariable("toscaname");
-		//String uploadProcessId = (String) execution.getVariable("processId");
 		Organizations org = (Organizations) execution.getVariable("org");
-		//User user = (User) execution.getVariable("user");
 
 		File fileToDelete = FileUtils.getFile(uploadFilePath);
 		//TODO check the result of upload to JackRabbit
