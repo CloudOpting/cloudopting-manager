@@ -7,13 +7,22 @@ angular.module('cloudoptingApp')
 
         //Add the dives to the page dynamically.
         $scope.graphsList = [];
+        $scope.zabbixgraph = {
+        		data: null,
+        		labels: null,
+                xkey: 'clock',
+                ykeys: 'value',
+                lineColors: ['green'],
+                dataFormat: function(x){return new Date(x*1000).toString();}
+                };
+        
         $scope.zabbixdata = {
         		hostSelect: null,
         		hostOptions: null ,
         		itemsSelect: null,
         		itemsOptions: null,
         		chartData: null,
-        }
+        };
 
         
         
@@ -33,9 +42,26 @@ angular.module('cloudoptingApp')
         
         var zabhystcallback = function(data, status, headers, config) {
         	checkStatusCallback(data, status, headers, config);
+        	var propsToConvert = {
+        		clock: 1,
+        		value:1
+        	};
         	if(data){
-        		$scope.zabbixdata.chartData = angular.fromJson(data);
-        		console.log($scope.zabbixdata.chartData);
+//        		$scope.zabbixdata.chartData = angular.fromJson(data);
+//        		console.log($scope.zabbixdata.chartData);
+/*        		$scope.zabbixgraph.data =  JSON.parse(data, function(key, value){
+        			if(propsToConvert.hasOwnProperty(key)){
+        				return parseInt(value, 10);
+        			}
+        			return value;
+        		});
+        		*/
+            	$scope.zabbixgraph.data =  angular.fromJson(data);
+            	$scope.zabbixgraph.labels = [$scope.zabbixdata.itemsSelect.name];
+            	console.log($scope.zabbixgraph);
+                $timeout(function () {
+                	lineChartZabb($scope.zabbixgraph, $scope.zabbixdata.itemsSelect.itemid);
+                }, 1000);
         	}
         };
 
@@ -114,6 +140,25 @@ angular.module('cloudoptingApp')
 
 
 
+        var lineChartZabb = function(graph, chart_name) {
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: chart_name,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: graph.data,
+
+                xkey: 'clock', 
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['value'], /*['disk', 'cpu', 'ram'],*/
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: graph.labels, /*['Disk', 'CPU', 'RAM'],*/
+                lineColors: graph.lineColors,/*['green', 'blue', 'orange']*/
+                dateFormat: function(x){return new Date(x).toString();},
+            });
+        };
+
         var lineChart = function(graph, chart_name) {
             new Morris.Line({
                 // ID of the element in which to draw the chart.
@@ -136,7 +181,8 @@ angular.module('cloudoptingApp')
                 // Labels for the ykeys -- will be displayed when you hover over the
                 // chart.
                 labels: graph.labels, /*['Disk', 'CPU', 'RAM'],*/
-                lineColors: graph.lineColors/*['green', 'blue', 'orange']*/
+                lineColors: graph.lineColors,/*['green', 'blue', 'orange']*/
+                
             });
         };
 

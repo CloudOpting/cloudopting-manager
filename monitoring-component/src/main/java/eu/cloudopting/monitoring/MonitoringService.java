@@ -120,7 +120,7 @@ public class MonitoringService {
 	}
 	
 	public JSONArray getDataHistory(String itemid) {
-		return getDataHistory(itemid, "clock", "DESC", null);
+		return getDataHistory(itemid, "clock", "DESC", "100");
 	}
 
 	public JSONArray getDataHistory(String itemid, String sortfield, String sortorder, String limit) {
@@ -140,18 +140,25 @@ public class MonitoringService {
 		JSONObject getResponse = this.zabbixApi.call(getRequest);
 		System.err.println(getResponse);
 		JSONArray data = null;
+		JSONArray dataRet = new JSONArray();
 
 		try {
 			data = getResponse.getJSONArray("result");
 			for (int i = 0; i < data.length(); i++) {
-				JSONObject info = data.getJSONObject(i);
-				log.debug(info.getString("clock"));
+				JSONObject measure = new JSONObject();
+//				log.debug(measure.getString("clock"));
+				measure.put("clock", data.getJSONObject(i).optLong("clock")*1000);
+				measure.put("value", data.getJSONObject(i).optInt("value"));
+				dataRet.put(measure);
+//				data.getJSONObject(i).put("clock", data.getJSONObject(i).optLong("clock")*1000);
+//				data.getJSONObject(i).put("value", data.getJSONObject(i).optInt("value"));
+				log.debug(measure.toString());
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return data;
+		return dataRet;
 	}
 }

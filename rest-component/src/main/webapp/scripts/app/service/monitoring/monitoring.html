@@ -10,11 +10,10 @@
 				ng-options="optionHost as optionHost.host for optionHost in zabbixdata.hostOptions track by optionHost.hostid"></select>
 			<p>{{zabbixdata.hostSelect}}</p>
 			<select name="" id="itemsSelect" ng-model="zabbixdata.itemsSelect"
-				ng-change="updateChart(zabbixdata.itemsSelect.itemid);">
-				<option ng-repeat="optionItems in zabbixdata.itemsOptions"
-					value="{{optionItems.itemid}}">{{optionItems.name}}</option>
-			</select>
+			ng-options="optionItems as optionItems.name for optionItems in zabbixdata.itemsOptions track by optionItems.itemid"
+				ng-change="updateChart(zabbixdata.itemsSelect.itemid);"></select>
 			<p>{{zabbixdata.itemsSelect}}</p>
+			<div id="{{zabbixdata.itemsSelect.itemid}}"></div>
 		</div>
 		<div class="panel-body" id="space-for-charts">
 
