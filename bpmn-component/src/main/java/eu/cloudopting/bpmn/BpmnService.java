@@ -270,6 +270,25 @@ public class BpmnService {
 		return activitiDTO;
 	}
 	
+	/**
+	 * Starts the Application Update process
+	 * @param applicationId the DB id
+	 * @param org
+	 * @return
+	 */
+	public ActivitiDTO startUpdate(Long applicationId, Organizations org) {
+	    HashMap<String, Object> v = new HashMap<>();
+	    v.put("applicationId",applicationId);
+		v.put("org", org);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("ServiceUpdateProcess",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		String appId = applicationId.toString();
+		activitiDTO.setApplicationId(appId);
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
+	
+	
 	public static File stream2file (String uploadName, InputStream in) throws IOException {
         final File tempFile = File.createTempFile(uploadName+BpmnService.TEMP_FILE_NAME_SEPARATOR, "tmp");
         tempFile.deleteOnExit();
@@ -376,6 +395,10 @@ public class BpmnService {
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusRequested.getStatus())){
         	messageName = "PublishEventRef";
         }
+        if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusPublished.getStatus())){
+        	messageName = "updateMetadataEventRef";
+        }
+        
         Execution exec = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).messageEventSubscriptionName(messageName).singleResult();
         if (exec!=null){
         	log.debug("Update Execution:"+exec.toString()+", message:"+messageName);
