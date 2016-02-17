@@ -169,43 +169,43 @@ public class BpmnService {
 	}
 
 	
-	/**
-	 * Starts the process with the provided id and the provided initial input parameters.
-	 * <strong>For testing purposes, might be removed at any time</strong>.
-	 * @param processId the Identifier of the process (not null)
-	 * @param startParams the input variables (might be null)
-	 * @return the process instance id
-	 */
-	public String startGenericProcess(String processId, Map<String, Object> startParams){
-		log.debug("Starting Process with id:'"+processId+"'");
-		// TODO the process string has to go in a constant
-        ProcessInstance pi = runtimeService.startProcessInstanceByKey(processId, startParams);
-        System.out.println("ProcessID:"+pi.getProcessInstanceId());
-        return pi.getProcessInstanceId();
-
-	}
+//	/**
+//	 * Starts the process with the provided id and the provided initial input parameters.
+//	 * <strong>For testing purposes, might be removed at any time</strong>.
+//	 * @param processId the Identifier of the process (not null)
+//	 * @param startParams the input variables (might be null)
+//	 * @return the process instance id
+//	 */
+//	public String startGenericProcess(String processId, Map<String, Object> startParams){
+//		log.debug("Starting Process with id:'"+processId+"'");
+//		// TODO the process string has to go in a constant
+//        ProcessInstance pi = runtimeService.startProcessInstanceByKey(processId, startParams);
+//        System.out.println("ProcessID:"+pi.getProcessInstanceId());
+//        return pi.getProcessInstanceId();
+//
+//	}
 	
-	/**
-	 * Gets the list of active Process Definitions
-	 * For testing purposes, <strong>might be removed at any time</strong>.
-	 * @return
-	 */
-	public List<BasicProcessInfo> getAvailableProcessDefinitions(){
-		log.debug("Retrieving available process definitions");
-		RepositoryService rs = processEngine.getRepositoryService();
-		List<BasicProcessInfo> result = new LinkedList<BasicProcessInfo>();
-		for (ProcessDefinition currentDefinition : rs.createProcessDefinitionQuery().active().list()) {
-			BasicProcessInfo bpi = new BasicProcessInfo(
-						currentDefinition.getId(), 
-						currentDefinition.getName(), 
-						currentDefinition.getKey(), 
-						currentDefinition.getVersion(), 
-						currentDefinition.getDeploymentId()
-			);
-			result.add(bpi);
-		}
-        return result;
-	}
+//	/**
+//	 * Gets the list of active Process Definitions
+//	 * For testing purposes, <strong>might be removed at any time</strong>.
+//	 * @return
+//	 */
+//	public List<BasicProcessInfo> getAvailableProcessDefinitions(){
+//		log.debug("Retrieving available process definitions");
+//		RepositoryService rs = processEngine.getRepositoryService();
+//		List<BasicProcessInfo> result = new LinkedList<BasicProcessInfo>();
+//		for (ProcessDefinition currentDefinition : rs.createProcessDefinitionQuery().active().list()) {
+//			BasicProcessInfo bpi = new BasicProcessInfo(
+//						currentDefinition.getId(), 
+//						currentDefinition.getName(), 
+//						currentDefinition.getKey(), 
+//						currentDefinition.getVersion(), 
+//						currentDefinition.getDeploymentId()
+//			);
+//			result.add(bpi);
+//		}
+//        return result;
+//	}
 	
 	public void deleteDeploymentById(String deploymentId){
 		log.debug("Deleting Process Deployment with id:"+ deploymentId);
@@ -246,10 +246,10 @@ public class BpmnService {
 		log.debug("Unlocking Process with [processInstanceId:processExecutionId]=["+processInstanceId+":"+processExecutionId+"]");
 		Set<String> result = new HashSet<String>();
 		result.add(processInstanceId);
-		//runtimeService.setVariables(processExecutionId, variables);
-		//runtimeService.messageEventReceived(messageName, processExecutionId);
 		runtimeService.setVariables(processInstanceId, variables);
+		log.debug("---- Before Signaling "+messageName);
 		runtimeService.messageEventReceived(messageName, processExecutionId);
+		log.debug("---- After Signaling "+messageName);
 		return result;
 	}
 	
@@ -326,13 +326,13 @@ public class BpmnService {
         
         String messageName = "";
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_CONTENT_LIBRARY.toString())){
-        	messageName = "ArtifactsUploadEventRef";
+        	messageName = BpmnServiceConstants.MSG_START_ARTIFACTS_UPLOAD.toString();
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_TOSCA_ARCHIVE.toString())){
-        	messageName = "ToscaUploadEventRef";
+        	messageName = BpmnServiceConstants.MSG_START_TOSCAFILE_UPLOAD.toString();
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_PROMO_IMAGE.toString())){
-        	messageName = "PublishPromoImageUploadEventRef";
+        	messageName = BpmnServiceConstants.MSG_START_PROMOIMAGE_UPLOAD.toString();
         }
         
         Execution exec = runtimeService.createExecutionQuery().processInstanceId(uploadProcessId).messageEventSubscriptionName(messageName).singleResult();
@@ -348,6 +348,8 @@ public class BpmnService {
         ActivitiDTO activitiDTO = new ActivitiDTO();
 		activitiDTO.setApplicationId(uploadIdApp);
 		activitiDTO.setProcessInstanceId(uploadProcessId);
+//		Map map = ((ExecutionEntity) pi).getVariableInstances();
+//		activitiDTO.setJrPath(jrPath);
 		return activitiDTO;
 	}
 
@@ -390,13 +392,13 @@ public class BpmnService {
         
         String messageName = "";
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusDraft.getStatus())){
-        	messageName = "metadataRetrievalMsg";
+        	messageName = BpmnServiceConstants.MSG_START_META_RETRIEVAL.toString();
         }
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusRequested.getStatus())){
-        	messageName = "PublishEventRef";
+        	messageName = BpmnServiceConstants.MSG_START_PUBLISH.toString();
         }
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusPublished.getStatus())){
-        	messageName = "updateMetadataEventRef";
+        	messageName = BpmnServiceConstants.MSG_START_META_UPDATE.toString();
         }
         
         Execution exec = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).messageEventSubscriptionName(messageName).singleResult();
@@ -408,10 +410,10 @@ public class BpmnService {
         	log.warn("No Execution found for message:"+messageName);
         }
         
-        if (messageName.equalsIgnoreCase("metadataRetrievalMsg")){
+        if (messageName.equalsIgnoreCase(BpmnServiceConstants.MSG_START_META_RETRIEVAL.toString())){
         	application = (ApplicationDTO) runtimeService.getVariable(processInstanceId, "application");
         }
-        if (messageName.equalsIgnoreCase("PublishEventRef")){
+        if (messageName.equalsIgnoreCase(BpmnServiceConstants.MSG_START_PUBLISH.toString())){
         	application.setStatus(statusPublished.getStatus());
         }
 

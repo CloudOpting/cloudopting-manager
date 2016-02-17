@@ -134,6 +134,10 @@ public class StoreService {
 	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
 	        //String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
 	        String mimeType2 = URLConnection.guessContentTypeFromStream(stream);
+	        if (mimeType2==null){
+	        	mimeType2 = "application/octet-stream";
+	        	log.error("Unable to determine the correct MIME Type for "+storeFile+", using default value of 'application/octet-stream'");
+	        }
 	        //Add the file separator to the local path, if missing
 	        filePath += filePath.endsWith(File.separator)?"":File.separator;
 	        folder = this.createNodesForPath(storePath);
