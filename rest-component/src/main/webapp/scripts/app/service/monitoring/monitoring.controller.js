@@ -15,7 +15,8 @@ angular.module('cloudoptingApp')
                 xkey: 'clock',
                 ykeys: 'value',
                 lineColors: ['green'],
-                dateFormat: function(x){return new Date(x*1000).toString();}
+                postUnits: null,
+//                dateFormat: function(x){return new Date(x*1000).toString();}
                 };
         
         $scope.zabbixdata = {
@@ -64,9 +65,11 @@ angular.module('cloudoptingApp')
         			return value;
         		});
         		*/
+        		console.log($scope.zabbixdata.itemsSelect);
             	$scope.zabbixgraph.data =  angular.fromJson(data);
             	$scope.zabbixgraph.labels = [$scope.zabbixdata.itemsSelect.name];
                 $scope.zabbixGraphTitle = $scope.zabbixdata.itemsSelect.name;
+                $scope.zabbixgraph.postUnits = $scope.zabbixdata.itemsSelect.units;
             	console.log($scope.zabbixgraph);
                 $timeout(function () {
                     $("#itemSelected").empty();
@@ -152,6 +155,7 @@ angular.module('cloudoptingApp')
                 xkey: 'clock',
                 ykeys: ['value'],
                 labels: graph.labels,
+                postUnits: graph.postUnits,
                 lineColors: graph.lineColors,
                 dateFormat: function(x){return new Date(x).toString();}
             });
