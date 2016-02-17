@@ -98,8 +98,17 @@ public class MonitoringService {
 	}
 
 	public JSONArray getItems(String hostid) {
+
+		// just get integer values
+		JSONObject filter = new JSONObject();
+		try {
+			filter.put("value_type", "3");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Request getRequest = RequestBuilder.newBuilder().method("item.get").paramEntry("output", "extend")
-				.paramEntry("hostids", hostid).paramEntry("sortfield", "name").build();
+				.paramEntry("hostids", hostid).paramEntry("sortfield", "name").paramEntry("search", filter).build();
 
 		JSONObject getResponse = this.zabbixApi.call(getRequest);
 		System.err.println(getResponse);
