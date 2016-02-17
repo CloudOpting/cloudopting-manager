@@ -136,7 +136,7 @@
                                 <label for="sizeId">Size</label>
                                 <select class="form-control" id="sizeId" placeholder="{{'publish.service.sizeId' | translate}}"
                                         autocomplete="off" name="sizeId" ng-model="application.size"
-                                        ng-options="appSize as appSize.size for appSize in applicationSizes"
+                                        ng-options="appSize as appSize.size for appSize in applicationSizes track by appSize.id"
                                         required>
                                 </select>
 
