@@ -404,10 +404,6 @@ fieldset[disabled] .btn-xl.active {
     height: 30px;
 }
 
-header > .container {
-    padding-top: 150px;
-    padding-bottom: 20px;
-}
 section header {
     padding: 0;
 }
@@ -426,25 +422,50 @@ header .cabecera-wrapper .cabecera {
     margin-top: 5px;
 }
 
-body > section > .container {
-    padding: 150px 0;
-}
-body > section.portfolio-modal > .container {
-    padding: 0 0 100px 0;
-}
-@media (max-width: 768px) {
-    header > .container {
-        padding-top: 100px;
-        padding-bottom: 10px;
-    }
-    body > section > .container {
-        padding: 110px 0;
-    }
-    body > section.portfolio-modal > .container {
-        padding: 15px 0 25px 0;
-    }
+
+/* wrappers */
+.header-main {
+  min-height: 170px;
+  padding-top: 150px;
+  padding-bottom: 20px;
 }
 
+.padding-top-big {
+  padding-top: 150px;
+}
+.padding-bottom-big {
+  padding-bottom: 150px;
+}
+.padding-top-medium {
+  padding-top: 90px;
+}
+.padding-bottom-medium {
+  padding-bottom: 90px;
+}
+
+@media (max-width: 768px) {
+
+    .header-main {
+      min-height: 110px;
+      padding-top: 100px;
+      padding-bottom: 10px;
+    }
+    .padding-top-big {
+      padding-top: 110px;
+    }
+    .padding-bottom-big {
+      padding-top: 110px;
+    }
+    .padding-top-medium {
+      padding-top: 20px;
+    }
+    .padding-bottom-medium {
+      padding-top: 20px;
+    }
+
+}
+
+/* end wrappers */
 
 section h2.section-heading {
     margin-top: 0;
@@ -635,18 +656,10 @@ section h3.section-subheading {
   cursor: pointer;
 }
 
-
-
-
-
 .service-heading {
     margin: 15px 0;
     text-transform: none;
     color: #31abac;
-}
-
-.wrapper-anchor {
-    padding: 150px 0;
 }
 
 #services {
@@ -785,13 +798,12 @@ section h3.section-subheading {
 
 
 section#partners {
-    padding: 50px 0 100px 0;
     background-color: #485868;
     color: #FFF;
 }
 section#partners .container{
     background-color: transparent;
-    padding: 30px 0 0 0;
+    padding: 0;
 }
 aside.clients img {
     margin: 50px auto;
@@ -858,7 +870,6 @@ footer {
 }
 
 footer span.copyright {
-    text-transform: uppercase;
     text-transform: none;
     font-family: "Montserrat",Helvetica,Arial,sans-serif;
     line-height: 40px;
@@ -866,7 +877,6 @@ footer span.copyright {
 
 footer ul.quicklinks {
     margin-bottom: 0;
-    text-transform: uppercase;
     text-transform: none;
     font-family: "Montserrat",Helvetica,Arial,sans-serif;
     line-height: 40px;
@@ -879,24 +889,6 @@ footer ul.quicklinks {
     outline: 0;
 }
 
-.portfolio-modal h2 {
-    margin-bottom: 15px;
-    font-size: 3em;
-    color: #31abac;
-}
-
-.portfolio-modal p {
-    margin-bottom: 30px;
-    text-align: left;
-    text-align: left;
-}
-
-.portfolio-modal p.item-intro {
-    margin: 20px 0 30px;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-}
 
 /* Rectangle Out */
 .hvr-rectangle-out {
@@ -913,14 +905,16 @@ footer ul.quicklinks {
   transition-property: color;
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
-    text-align: center;
-    padding: 10px 20px;
-    font-size: 22px;
-    line-height: 24px;
-    background: #485868;
-    color: #FFF;
-    text-decoration: none;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 22px;
+  line-height: 24px;
+  background: #485868;
+  color: #FFF;
+  text-decoration: none;
+  border: none;
 }
+/*
 .hvr-rectangle-out:before {
   content: "";
   position: absolute;
@@ -941,20 +935,40 @@ footer ul.quicklinks {
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
+*/
 .hvr-rectangle-out:hover,
 .hvr-rectangle-out:focus,
 .hvr-rectangle-out:active {
     color: white;
+    background: #31abac;
     text-decoration: none;
 }
+/*
 .hvr-rectangle-out:hover:before,
 .hvr-rectangle-out:focus:before,
 .hvr-rectangle-out:active:before {
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
 }
+*/
 
+.portfolio-modal h2 {
+    margin-bottom: 15px;
+    font-size: 3em;
+    color: #31abac;
+}
 
+.portfolio-modal p {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.portfolio-modal p.item-intro {
+    margin: 20px 0 30px;
+    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
 
 .portfolio-modal img {
     margin-bottom: 30px;
