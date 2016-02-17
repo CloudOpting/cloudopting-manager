@@ -1,20 +1,29 @@
 <div class="row">
 	<div class="bs-example col-md-10 col-md-offset-1">
-		<div class="panel-heading darkgreen" translate="monitoring.title">Service
-			Monitoring</div>
+		<div class="panel-heading darkgreen" translate="monitoring.title">Service Monitoring</div>
 		<div class="alert alert-danger" ng-show="errorMessage">
-			{{errorMessage}}</div>
-		<div class="panel-body" id="space-for-zabbix-charts">
-			<select name="" id="hostSelect" ng-model="zabbixdata.hostSelect"
-				ng-change="updateItems(zabbixdata.hostSelect.hostid)"
-				ng-options="optionHost as optionHost.host for optionHost in zabbixdata.hostOptions track by optionHost.hostid"></select>
-			<p>{{zabbixdata.hostSelect}}</p>
-			<select name="" id="itemsSelect" ng-model="zabbixdata.itemsSelect"
-			ng-options="optionItems as optionItems.name for optionItems in zabbixdata.itemsOptions track by optionItems.itemid"
-				ng-change="updateChart(zabbixdata.itemsSelect.itemid);"></select>
-			<p>{{zabbixdata.itemsSelect}}</p>
-			<div id="{{zabbixdata.itemsSelect.itemid}}"></div>
+			{{errorMessage}}
 		</div>
+
+		<!-- Div that will contain all graphs for Zabbix -->
+		<div class="panel-body" id="space-for-zabbix-charts">
+			<p>Select the Host:</p>
+			<select name="" id="hostSelect" ng-model="zabbixdata.hostSelect"
+					ng-options="optionHost as optionHost.host for optionHost in zabbixdata.hostOptions track by optionHost.hostid"
+					ng-change="updateItems(zabbixdata.hostSelect.hostid)">
+			</select>
+			<p>{{zabbixdata.hostSelect}}</p>
+			<p>Select the item in Host:</p>
+			<select name="" id="itemsSelect" ng-model="zabbixdata.itemsSelect"
+					ng-options="optionItems as optionItems.name for optionItems in zabbixdata.itemsOptions track by optionItems.itemid"
+					ng-change="updateChart(zabbixdata.itemsSelect.itemid);">
+			</select>
+			<p>{{zabbixdata.itemsSelect}}</p>
+			<h3>{{zabbixGraphTitle}}</h3>
+			<div id="itemSelected"></div>
+		</div>
+
+		<!-- Div that will contain all graphs in the grpahsList -->
 		<div class="panel-body" id="space-for-charts">
 
 			<div class="col-md-12" ng-repeat="graph in graphsList">
