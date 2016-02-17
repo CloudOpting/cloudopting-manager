@@ -45,8 +45,6 @@ public class MonitoringController {
 	@Autowired
 	MonitordataService monitordataService;
 
-	@Autowired
-	CustomizationService customizationService;
 
 	/**
 	 * The the list of monitored objects
@@ -160,21 +158,12 @@ public class MonitoringController {
 	@ResponseBody
 	public ResponseEntity<String> findHosts(@PathVariable("instanceId") final Long instanceId) {
 		// here I get the name of the host from the Db to get info from zabbix
-		String fqdn = null;
-		Customizations theCust = customizationService.findOne(instanceId);
-		Set<CustomizationDeployInfo> dinfo = theCust.getDeployInfos();
-		String hosts[] = new String[dinfo.size()];
-	int idx = 0;
-		for (CustomizationDeployInfo di: dinfo){
-			fqdn = di.getFqdn();
-			hosts[idx] = fqdn;
-			idx++;
-		}
+		
 		// whti the instance id I get the Db fqdn
 		
 		// need to login to zabbix
 		monitoringService.loginZabbix();
-		return new ResponseEntity<String>(monitoringService.getHostId(hosts).toString(), HttpStatus.OK);
+		return new ResponseEntity<String>(monitoringService.getHostId(instanceId).toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/monitoring/items/{instanceId}/{hostId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
