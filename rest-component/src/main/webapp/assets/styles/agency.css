@@ -424,6 +424,14 @@ header .cabecera-wrapper .cabecera {
 
 
 /* wrappers */
+
+.wrapper-white {
+    background-color: #FFF;
+}
+section#services > .container {
+    position: relative;
+}
+
 .header-main {
   min-height: 170px;
   padding-top: 150px;
@@ -913,6 +921,7 @@ footer ul.quicklinks {
   color: #FFF;
   text-decoration: none;
   border: none;
+  width: 100%;
 }
 /*
 .hvr-rectangle-out:before {
@@ -1030,12 +1039,13 @@ footer ul.quicklinks {
 .backend-box,
 .auth-box {
     position: relative;
+    padding-bottom: 160px;
 }
 .backend-box:before,
 .auth-box:before{
     position:absolute;
     content: '';
-    bottom: -90px;
+    bottom: 70px;
     height: 0;
     background: rgba(0,0,0,.4);
     width: 80%;
@@ -1365,46 +1375,6 @@ footer ul.quicklinks {
 }
 
 
-
-
-
-
-
-
-
-
-
-::-moz-selection {
-    text-shadow: none;
-    background: #31abac;
-}
-
-::selection {
-    text-shadow: none;
-    background: #31abac;
-}
-
-img::selection {
-    background: 0 0;
-}
-
-img::-moz-selection {
-    background: 0 0;
-}
-
-body {
-    webkit-tap-highlight-color: #31abac;
-}
-
-body > nav > .container,
-body > header > .container,
-body > section > .container {
-    background-color: #FFF;
-}
-body > section#services > .container {
-    background-color: transparent;
-    position: relative;
-}
 
 @media (min-height: 768px) {
     .fixed-bottom {
