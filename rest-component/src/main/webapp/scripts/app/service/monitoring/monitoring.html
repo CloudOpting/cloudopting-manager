@@ -12,13 +12,13 @@
 					ng-options="optionHost as optionHost.host for optionHost in zabbixdata.hostOptions track by optionHost.hostid"
 					ng-change="updateItems(zabbixdata.hostSelect.hostid)">
 			</select>
-			<p>{{zabbixdata.hostSelect}}</p>
+			
 			<p>Select the item in Host:</p>
 			<select name="" id="itemsSelect" ng-model="zabbixdata.itemsSelect"
 					ng-options="optionItems as optionItems.name for optionItems in zabbixdata.itemsOptions track by optionItems.itemid"
 					ng-change="updateChart(zabbixdata.itemsSelect.itemid);">
 			</select>
-			<p>{{zabbixdata.itemsSelect}}</p>
+			
 			<h3>{{zabbixGraphTitle}}</h3>
 			<div id="itemSelected"></div>
 		</div>

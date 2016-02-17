@@ -1,6 +1,8 @@
 package eu.cloudopting.monitoring;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,13 +120,25 @@ public class MonitoringService {
 			items = getResponse.getJSONArray("result");
 			for (int i = 0; i < items.length(); i++) {
 				JSONObject info = items.getJSONObject(i);
-				log.debug(info.getString("description"));
+				Pattern theKey = Pattern.compile("^[0-9a-zA-Z_.-]+\\[(.*)\\]$");
+				String[] keys = theKey.split(info.getString("key_"));
+				Matcher match = theKey.matcher(info.getString("key_"));
+				while(match.find()){
+					if (match.groupCount() > 0){
+						String[] splitted = match.group(1).split(",");
+						String expanded_name = info.getString("name");
+						for (int s = 0; s< splitted.length; s++){
+							String search = "\\$"+(s+1);
+							expanded_name = expanded_name.replaceAll(search, splitted[s]);
+						}
+						items.getJSONObject(i).put("name", expanded_name);
+					}
+				}
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return items;
 	}
 	
