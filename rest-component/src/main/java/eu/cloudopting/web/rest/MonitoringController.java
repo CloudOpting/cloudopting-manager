@@ -3,6 +3,7 @@ package eu.cloudopting.web.rest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.slf4j.Logger;
@@ -18,9 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.cloudopting.domain.CustomizationDeployInfo;
+import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.monitoring.MonitoringService;
 import eu.cloudopting.monitoring.elastic.MonitordataService;
 import eu.cloudopting.monitoring.elastic.data.Monitordata;
+import eu.cloudopting.service.CustomizationDeployInfoService;
+import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.web.rest.dto.Data;
 import eu.cloudopting.web.rest.dto.ElasticData;
 import eu.cloudopting.web.rest.dto.ElasticGraphDTO;
@@ -39,6 +44,9 @@ public class MonitoringController {
 
 	@Autowired
 	MonitordataService monitordataService;
+
+	@Autowired
+	CustomizationService customizationService;
 
 	/**
 	 * The the list of monitored objects
@@ -150,13 +158,23 @@ public class MonitoringController {
 
 	@RequestMapping(value = "/monitoring/hosts/{instanceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> findHosts(@PathVariable("instanceId") final String instanceId) {
+	public ResponseEntity<String> findHosts(@PathVariable("instanceId") final Long instanceId) {
 		// here I get the name of the host from the Db to get info from zabbix
+		String fqdn = null;
+		Customizations theCust = customizationService.findOne(instanceId);
+		Set<CustomizationDeployInfo> dinfo = theCust.getDeployInfos();
+		String hosts[] = new String[dinfo.size()];
+	int idx = 0;
+		for (CustomizationDeployInfo di: dinfo){
+			fqdn = di.getFqdn();
+			hosts[idx] = fqdn;
+			idx++;
+		}
 		// whti the instance id I get the Db fqdn
-		String fqdn = "corbyportal.cs8cloud.internal";
+		
 		// need to login to zabbix
 		monitoringService.loginZabbix();
-		return new ResponseEntity<String>(monitoringService.getHostId(fqdn).toString(), HttpStatus.OK);
+		return new ResponseEntity<String>(monitoringService.getHostId(hosts).toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/monitoring/items/{instanceId}/{hostId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -164,6 +182,7 @@ public class MonitoringController {
 	public ResponseEntity<String> findItemss(@PathVariable("instanceId") final String instanceId,
 			@PathVariable("hostId") final String hostId) {
 		// here I get the name of the host from the Db to get info from zabbix
+		
 		// whti the instance id I get the Db fqdn
 		String fqdn = "corbyportal.cs8cloud.internal";
 		// need to login to zabbix

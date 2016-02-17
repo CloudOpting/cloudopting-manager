@@ -71,12 +71,12 @@ public class MonitoringService {
 		return login;
 	}
 
-	public JSONArray getHostId(String host) {
+	public JSONArray getHostId(String[] fqdns) {
 
 		JSONObject filter = new JSONObject();
 
 		try {
-			filter.put("host", new String[] { host });
+			filter.put("host", fqdns );
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
