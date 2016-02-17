@@ -54,16 +54,16 @@
         <!--
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
         -->
-        <div ui-view="navbar" ng-cloak=""></div>
+        <nav ui-view="navbar" ng-cloak="" class="navbar navbar-default navbar-fixed-top" role="navigation"></nav>
 
-        <div ui-view="menu" ng-cloak=""></div>
+        <!-- <div ui-view="menu" ng-cloak=""></div> -->
 
         <!-- Header -->
-        <header ui-view="header"></header>
+        <header ui-view="header" class="header-main"></header>
 
         <div ui-view="content"></div><!--class="well"-->
 
-        <footer ui-view="footer"></footer>
+        <footer ui-view="footer" class="fixed-bottom"></footer>
         <!-- TODO: Do something to fix the footer only in particular cases class="fixed-bottom" -->
 
         <!-- build:js scripts/vendor.js -->

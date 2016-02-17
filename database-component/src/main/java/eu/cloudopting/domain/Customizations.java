@@ -13,6 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import eu.cloudopting.jsonserializer.ApplicationSummarySerializer;
 
 @Configurable
@@ -82,6 +84,12 @@ public class Customizations implements BaseEntity {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(style = "M-")
     private Date trialEndDate;
+	
+	@OneToMany(mappedBy = "customization")
+    private Set<CustomizationZabbixMonitor> zabbixMonitors;
+	
+	@OneToMany(mappedBy = "customization")
+    private Set<CustomizationDeployInfo> deployInfos;
 	
 	public Organizations getCustomerOrganizationId() {
         return customerOrganizationId;
@@ -297,5 +305,21 @@ public class Customizations implements BaseEntity {
 
 	public void setTrialEndDate(Date trialEndDate) {
 		this.trialEndDate = trialEndDate;
+	}
+
+	public Set<CustomizationZabbixMonitor> getZabbixMonitors() {
+		return zabbixMonitors;
+	}
+
+	public void setZabbixMonitors(Set<CustomizationZabbixMonitor> zabbixMonitors) {
+		this.zabbixMonitors = zabbixMonitors;
+	}
+
+	public Set<CustomizationDeployInfo> getDeployInfos() {
+		return deployInfos;
+	}
+
+	public void setDeployInfos(Set<CustomizationDeployInfo> deployInfos) {
+		this.deployInfos = deployInfos;
 	}
 }
