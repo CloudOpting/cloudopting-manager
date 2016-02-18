@@ -14,9 +14,9 @@ angular.module('cloudoptingApp')
              * Method to get the users applying filters, and with pagination.
              * @param page Number of the page to be returned.
              * @param size Size of the page.
-             * @param sortBy Parameter of the application that will be used to sort the list.
+             * @param sortBy Parameter of the user that will be used to sort the list.
              * @param sortOrder It can be ascendant 'asc' or descendant 'desc'.
-             * @param filter Word that will be used in any field of application to filter.
+             * @param filter Word that will be used in any field of user to filter.
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */

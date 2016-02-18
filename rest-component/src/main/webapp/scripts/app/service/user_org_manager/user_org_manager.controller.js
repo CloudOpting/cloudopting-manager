@@ -114,20 +114,29 @@ angular.module('cloudoptingApp')
         $scope.types = null;
 
         //Get all organizations
-        OrganizationService.findAll()
-            .success(function (organizations) {
-                $scope.organizations = organizations;
-            });
+        var findAllOrgsCallback = function(data, status, headers, config){
+            checkStatusCallback(data, status, headers, config, null);
+            if(data){
+                $scope.organizations = data;
+            }
+        };
+        OrganizationService.findAll('', '', '', '', '', findAllOrgsCallback);
 
-        OrganizationService.getTypes()
-            .success(function (types) {
-                $scope.types = types;
-            });
+        var getTypesCallback = function(data, status, headers, config){
+            checkStatusCallback(data, status, headers, config, null);
+            if(data){
+                $scope.types = data;
+            }
+        };
+        OrganizationService.getTypes(getTypesCallback);
 
-        OrganizationService.getStatus()
-            .success(function (status) {
-                $scope.status = status;
-            });
+        var getStatusCallback = function(data, status, headers, config){
+            checkStatusCallback(data, status, headers, config, null);
+            if(data){
+                $scope.status = data;
+            }
+        };
+        OrganizationService.getStatus(getStatusCallback);
 
         $scope.createOrganizationPage = function() {
             $scope.org = null;
