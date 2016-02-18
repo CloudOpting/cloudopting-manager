@@ -82,14 +82,19 @@ angular.module('cloudoptingApp')
         };
 
         function savePromotionalImage(activiti) {
-            var callback = function(data, status, headers, config) {
-                if(checkStatusCallback(data, status, headers, config, "")){
-                    //TODO: We should update the file id in order to be able to update/delete it
-                    promoInDatabase = true;
-                }
-            };
+            if ($scope.files && $scope.files.length) {
+                for (var i = 0; i < $scope.files.length; i++) {
+                    var file = $scope.files[i];
+                    var callback = function(data, status, headers, config) {
+                        if(checkStatusCallback(data, status, headers, config, "")){
+                            //TODO: We should update the file id in order to be able to update/delete it
+                            promoInDatabase = true;
+                        }
+                    };
 
-            ApplicationService.addPromotionalImage(activiti.applicationId, activiti.processInstanceId, $scope.files, callback);
+                    ApplicationService.addPromotionalImage(activiti.applicationId, activiti.processInstanceId, file, callback);
+                }
+            }
         }
 
         /**
@@ -173,16 +178,22 @@ angular.module('cloudoptingApp')
         $scope.saveConfigurationWizardTwo = function () {
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
 
-            var callback = function(data, status, headers, config) {
-                if(checkStatusCallback(data, status, headers, config, "")){
-                    //TODO: We should update the file id in order to be able to update/delete it
+            if ($scope.libraryList && $scope.libraryList.length) {
+                for (var i = 0; i < $scope.libraryList.length; i++) {
+                    var file = $scope.libraryList[i];
 
-                    //Move to Step 3 of wizard - Add TOSCA Archive
-                    $state.go('publish3');
+                    var callback = function (data, status, headers, config) {
+                        if (checkStatusCallback(data, status, headers, config, "")) {
+                            //TODO: We should update the file id in order to be able to update/delete it
+
+                            //Move to Step 3 of wizard - Add TOSCA Archive
+                            $state.go('publish3');
+                        }
+                    };
+
+                    ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
                 }
-            };
-
-            ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, $scope.libraryList, callback);
+            }
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
@@ -243,17 +254,23 @@ angular.module('cloudoptingApp')
         $scope.saveConfiguration = function () {
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
 
-            var callback = function(data, status, headers, config) {
-                if(checkStatusCallback(data, status, headers, config, "")){
-                    //TODO: Show a message of completion.
-                    $scope.disablePublish = false;
-                    toscaArchiveInDatabase = true;
-                    //TODO: Enable button of publication.
+            if ($scope.toscaFiles && $scope.toscaFiles.length) {
+                for (var i = 0; i < $scope.toscaFiles.length; i++) {
+                    var file = $scope.toscaFiles[i];
 
+                    var callback = function (data, status, headers, config) {
+                        if (checkStatusCallback(data, status, headers, config, "")) {
+                            //TODO: Show a message of completion.
+                            $scope.disablePublish = false;
+                            toscaArchiveInDatabase = true;
+                            //TODO: Enable button of publication.
+
+                        }
+                    };
+
+                    ApplicationService.addToscaArchive(activiti.applicationId, activiti.processInstanceId, file, callback);
                 }
-            };
-
-            ApplicationService.addToscaArchive(activiti.applicationId, activiti.processInstanceId, $scope.toscaFiles, callback);
+            }
         };
 
         /**

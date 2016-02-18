@@ -17,7 +17,6 @@ angular.module('cloudoptingApp')
         };
 
         $scope.user = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_USER);
-        $scope.users = null;
 
         $scope.languages = [
             { langKey: "en", langName: "English" },
