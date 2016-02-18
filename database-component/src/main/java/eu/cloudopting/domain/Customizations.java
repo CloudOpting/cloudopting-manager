@@ -91,6 +91,9 @@ public class Customizations implements BaseEntity {
 	@OneToMany(mappedBy = "customization")
     private Set<CustomizationDeployInfo> deployInfos;
 	
+	@OneToMany(mappedBy = "customization")
+    private Set<MonitoringInfoElastic> elasticInfos;
+	
 	public Organizations getCustomerOrganizationId() {
         return customerOrganizationId;
     }
@@ -321,5 +324,13 @@ public class Customizations implements BaseEntity {
 
 	public void setDeployInfos(Set<CustomizationDeployInfo> deployInfos) {
 		this.deployInfos = deployInfos;
+	}
+
+	public Set<MonitoringInfoElastic> getElasticInfos() {
+		return elasticInfos;
+	}
+
+	public void setElasticInfos(Set<MonitoringInfoElastic> elasticInfos) {
+		this.elasticInfos = elasticInfos;
 	}
 }
