@@ -27,7 +27,7 @@
     </modules>
 
     <properties>
-        <activiti.version>5.18.0</activiti.version>
+        <activiti.version>5.19.0.2</activiti.version>
         <assertj-core.version>1.6.1</assertj-core.version>
         <common-dbcp.version>1.4</common-dbcp.version>
         <commons-io.version>2.4</commons-io.version>
