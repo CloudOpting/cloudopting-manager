@@ -9,17 +9,20 @@ angular.module('cloudoptingApp')
         var baseURI = 'api/application';
 
         return {
+
             /**
-             * BEGINNING of the integration for DYNAMIC FORMS
-             */
-            /**
-             * Get the custom form.
-             * @param idApp
-             * @param callback
+             * Method to get the custom form for the application with id 'applicationId'.
+             * @param applicationId Identification of the application.
+             * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            getCustomizationForm: function(idApp, callback) {
-                return $http.get(baseURI + SERVICE.SEPARATOR + idApp + SERVICE.SEPARATOR + "getCustomizationForm")
+            getCustomizationForm: function(applicationId, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'getCustomizationForm';
+                return $http.get(endpoint)
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
@@ -31,13 +34,14 @@ angular.module('cloudoptingApp')
             },
 
             /**
-             * in the post place the json in a request parameter called formData, as a string
-             * @param json
-             * @param callback
+             * Method to send and save the customization form retrieved with @getCustomizaitonForm method.
+             * @param applicationId Identification of the application.
+             * @param jsonFormData JSON representing a key/value object with the customized fields from @getCustomizaitonForm method.
+             * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            sendCustomizationForm: function(idApp, json, callback) {
-                var config =  {
+            sendCustomizationForm: function(applicationId, jsonFormData, callback) {
+                var config = {
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     transformRequest: function(obj) {
                         var str = [];
@@ -46,8 +50,13 @@ angular.module('cloudoptingApp')
                         return str.join("&");
                     }
                 };
-                console.debug(baseURI + SERVICE.SEPARATOR + idApp + SERVICE.SEPARATOR + 'sendCustomizationForm');
-                return $http.post(baseURI + SERVICE.SEPARATOR + idApp + SERVICE.SEPARATOR + 'sendCustomizationForm', {formData: angular.toJson(json)}, config)
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'sendCustomizationForm';
+                console.debug(endpoint);
+                return $http.post( endpoint, { formData: angular.toJson(jsonFormData) }, config )
                     .success(function(data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
