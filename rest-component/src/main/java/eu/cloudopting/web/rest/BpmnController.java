@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.bpmn.BpmnService;
-import eu.cloudopting.bpmn.dto.BasicProcessInfo;
+import eu.cloudopting.bpmn.BpmnServiceConstants;
 import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.User;
@@ -170,29 +169,12 @@ public class BpmnController {
 		bpmn.configuredVM(processInstanceId);
 	}
 
-	@RequestMapping(value = "/bpmn/startProcess/{id}", method = RequestMethod.POST)
-	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
-	@ResponseBody
-	String startProcessById(@PathVariable String id) {
-		log.info("REST request to start process with id : {}", id);
-		return bpmn.startGenericProcess(id, null);
-	}
-
-	@RequestMapping(value = "/bpmn/availableProcessDefinitions", method = RequestMethod.GET)
-	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
-	@ResponseBody
-	List<BasicProcessInfo> getAvailableProcessDefinitions() {
-		log.info("REST request to get processdefinitions");
-		return bpmn.getAvailableProcessDefinitions();
-	}
-
 	@RequestMapping(value = "/bpmn/deleteProcessDeployment", method = RequestMethod.GET)
 	@RolesAllowed(AuthoritiesConstants.ANONYMOUS)
 	@ResponseBody
 	void deleteProcessDeployment(@RequestParam(value = "deploymentId", required = true) String deploymentId) {
 		log.info("REST request to delete deployment by id");
 		bpmn.deleteDeploymentById(deploymentId);
-		;
 	}
 
 	@RequestMapping(value = "/bpmn/publish/updateMetadata/{processInstanceId}", method = RequestMethod.PUT)
@@ -204,7 +186,7 @@ public class BpmnController {
 		Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
 		params.put("application", application);
 		// Return the updated value of the model
-		return bpmn.unlockProcess(processInstanceId, "MetadataRetrievalEvent", params);
+		return bpmn.unlockProcess(processInstanceId, BpmnServiceConstants.MSG_START_META_RETRIEVAL.toString(), params);
 	}
 
 }

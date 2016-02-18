@@ -8,8 +8,9 @@
   <message id="ToscaUploadEventRef" name="ToscaUploadEventRef"></message>
   <message id="ArtifactsUploadEventRef" name="ArtifactsUploadEventRef"></message>
   <message id="PublishPromoImageUploadEventRef" name="PublishPromoImageUploadEventRef"></message>
-  <message id="updateMetadataEvent" name="updateMetadataEventRef"></message>
+  <message id="UpdateMetadataEventId" name="UpdateMetadataEventRef"></message>
   <message id="updateEventId" name="updateEventRef"></message>
+  <message id="updateMetadataEvent" name="updateMetadataEvent"></message>
   <process id="ServiceUpdateProcess" name="Service Update" isExecutable="true">
     <startEvent id="startevent" name="Start"></startEvent>
     <eventBasedGateway id="eventgateway2" name="Event Gateway"></eventBasedGateway>
@@ -43,7 +44,7 @@
     <serviceTask id="updateContextSetupTask" name="Update Context Setup" activiti:delegateExpression="${updateContextSetupTask}"></serviceTask>
     <sequenceFlow id="flow50" sourceRef="updateContextSetupTask" targetRef="eventgateway2"></sequenceFlow>
     <intermediateCatchEvent id="MetadataRetrievalIntermediateCatchEvent" name="metadataRetrievalEvent">
-      <messageEventDefinition messageRef="updateMetadataEvent"></messageEventDefinition>
+      <messageEventDefinition messageRef="UpdateMetadataEventId"></messageEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow54" sourceRef="MetadataRetrievalIntermediateCatchEvent" targetRef="updateMetadataTask"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="eventgateway2" targetRef="MetadataRetrievalIntermediateCatchEvent"></sequenceFlow>

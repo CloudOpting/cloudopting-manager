@@ -8,12 +8,14 @@ angular.module('cloudoptingApp')
         var instance = localStorageService.get(SERVICE.STORAGE.CURRENT_INSTANCE);
 
         //Get accounts for organization and show it.
-        OrganizationService.findById(instance.customerOrganizationId.id)
-            .success(function (organization) {
-                $scope.org = organization;
-                $scope.cloudAccountsList = organization.cloudAccountss;
-            });
-
+        var findByIdCallback = function(data, status, headers, config){
+            checkStatusCallback(data, status, headers, config);
+            if(data){
+                $scope.org = data;
+                $scope.cloudAccountsList = data.cloudAccountss;
+            }
+        };
+        OrganizationService.findById(instance.customerOrganizationId.id, findByIdCallback);
 
         //Selected organization, execute the function with the account selected.
         $scope.choose = function(cloudAccount) {

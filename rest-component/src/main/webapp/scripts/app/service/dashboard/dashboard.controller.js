@@ -36,7 +36,7 @@ angular.module('cloudoptingApp')
         if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER) || Principal.isInRole(SERVICE.ROLE.ADMIN)) {
             //Get all instances of the user if it is a SUBSCRIBER.
             var callback = function(data, status, headers, config){
-                if(checkStatusCallback(data, status, headers, config, "")){
+                if(checkStatusCallback(data, status, headers, config, null)){
                     //Do something here if all went ok.
                     $scope.instancesList = data;
                 }
@@ -54,7 +54,7 @@ angular.module('cloudoptingApp')
                     }
                 }
             };
-            ProcessService.test(instance, callback);
+            ProcessService.test(instance.id, callback);
         };
 
         $scope.demo = function(instance) {
@@ -63,7 +63,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.test(instance, callback);
+            ProcessService.demo(instance.id, callback);
         };
 
         $scope.deploy = function(instance) {
@@ -72,22 +72,26 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.deploy(instance, callback);
+            ProcessService.deploy(instance.id, callback);
         };
 
         $scope.stop = function(instance) {
             $window.alert('Not implemented yet');
             var callback = function(data, status, headers, config){
-                $log.info(data);
+                if(checkStatusCallback(data, status, headers, config, "Stop requested.")){
+                    //Do something here if all went ok.
+                }
             };
-            //InstanceService.stop(instance, callback);
+            //InstanceService.stop(instance);
         };
         $scope.delete = function(instance) {
             $window.alert('Not implemented yet');
             var callback = function(data, status, headers, config){
-                $log.info(data);
+                if(checkStatusCallback(data, status, headers, config, "Delete requested.")){
+                    //Do something here if all went ok.
+                }
             };
-            //InstanceService.delete(instance, callback);
+            //InstanceService.delete(instance.id, callback);
         };
         $scope.monitor = function(instance) {
             localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, instance);
@@ -96,9 +100,11 @@ angular.module('cloudoptingApp')
         $scope.start = function(instance) {
             $window.alert('Not implemented yet');
             var callback = function(data, status, headers, config){
-                $log.info(data);
+                if(checkStatusCallback(data, status, headers, config, "Start requested.")){
+                    //Do something here if all went ok.
+                }
             };
-            //InstanceService.start(instance, callback);
+            //InstanceService.start(instance);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){
@@ -139,7 +145,12 @@ angular.module('cloudoptingApp')
                 return false;
             } else {
                 //Return to the list
-                $scope.infoMessage = message + " Successfully done!";
+                if(message==null){
+                    $log.info("Successfully done!");
+                } else {
+                    $scope.infoMessage = message + " Successfully done!";
+                }
+
                 return true;
             }
         };

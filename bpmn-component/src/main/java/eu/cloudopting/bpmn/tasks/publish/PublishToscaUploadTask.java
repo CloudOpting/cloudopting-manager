@@ -1,6 +1,7 @@
 package eu.cloudopting.bpmn.tasks.publish;
 
 import java.io.File;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.bpmn.BpmnService;
+import eu.cloudopting.bpmn.BpmnServiceConstants;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.dto.ApplicationDTO;
@@ -49,8 +51,13 @@ public class PublishToscaUploadTask implements JavaDelegate {
 	private void setToscaTemplatePath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
 		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = applicationService.findOne(applicationSource.getId());
-        application.setApplicationToscaTemplate(storeService.getTemplatePath(orgKey,toscaName,true)+"/"+remoteFileNameReduced);
+        String path = storeService.getTemplatePath(orgKey,toscaName,true)+"/"+remoteFileNameReduced;
+        application.setApplicationToscaTemplate(path);
         applicationService.update(application);
+        //Unlock the process and update process variables
+        Map<String, Object> processVars = execution.getVariables();
+        processVars.put("latestUploadedToscaFilePath", path);
+        runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString(), execution.getId(), processVars);
 	}
 
 	@Override

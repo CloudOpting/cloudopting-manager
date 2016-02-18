@@ -4,12 +4,14 @@ package eu.cloudopting.bpmn.tasks.publish;
 * @author Claudio
 */
 import java.io.File;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti.engine.runtime.Execution;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.bpmn.BpmnService;
+import eu.cloudopting.bpmn.BpmnServiceConstants;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.dto.ApplicationDTO;
@@ -48,8 +51,14 @@ public class PublishPromoImage implements JavaDelegate {
 	private void addPromoImagePath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
 		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = applicationService.findOne(applicationSource.getId());
-        application.setApplicationLogoReference(storeService.getTemplatePath(orgKey,toscaName, true)+"/"+remoteFileNameReduced);
+        String path = storeService.getTemplatePath(orgKey,toscaName, true)+"/"+remoteFileNameReduced;
+        application.setApplicationLogoReference(path);
         applicationService.update(application);
+        //Unlock the process and update process variables
+        Map<String, Object> processVars = execution.getVariables();
+        processVars.put("latestUploadedPromoImagePath", path);
+        String executionId = execution.getProcessInstanceId();
+        runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_PROMOIMAGE_UPLOAD.toString(), executionId, processVars);
 	}
 	
 	@Override
