@@ -761,14 +761,6 @@ section h3.section-subheading {
     text-overflow: ellipsis;
 }
 
-#services .portfolio-item .portfolio-caption h4:before{
-    content:"\f107";
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    margin-left: -30px;
-}
-
 #services .portfolio-item .portfolio-caption p {
     font-size: 18px;
     line-height: 22px;
@@ -1285,13 +1277,16 @@ footer ul.quicklinks {
     }
 }
 .nav-wizard > li.done:hover > a,
+.nav-wizard > li > a:focus,
 .nav-wizard > li:hover > a {
     background-color: #485868;
 }
+.nav-wizard > li > a:focus:before,
 .nav-wizard > li.done:hover > a:before,
 .nav-wizard > li:hover > a:before {
     border-right-color: #485868;
 }
+.nav-wizard > li > a:focus:after,
 .nav-wizard > li.done:hover > a:after,
 .nav-wizard > li:hover > a:after {
     border-left-color: #485868;
