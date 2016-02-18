@@ -4,6 +4,10 @@ angular.module('cloudoptingApp')
     .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, $filter,
                                                  localStorageService, InstanceService, ProcessService, $window, Blob, FileSaver) {
 
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
+
         $scope.currentPage = 0;
         $scope.pageSize = 8;
         $scope.instancesList = [];
@@ -26,7 +30,7 @@ angular.module('cloudoptingApp')
         } else if(Principal.isInRole(SERVICE.ROLE.ADMIN) || Principal.isInRole(SERVICE.ROLE.OPERATOR) ) {
             //If the user is an ADMIN or an OPERATOR and they comes from DETAIL screen
             //get only the instances of the current application.
-            $scope.currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            $scope.currentApp = localStorageService.get(SERVICE.STORAGE.INSTANCES.APPLICATION);
 
             $scope.instancesList = $scope.currentApp.customizationss;
 
@@ -95,10 +99,12 @@ angular.module('cloudoptingApp')
             };
             //InstanceService.delete(instance.id, callback);
         };
+
         $scope.monitor = function(instance) {
-            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, instance);
+            localStorageService.set(SERVICE.STORAGE.MONITORING.INSTANCE, instance);
             $state.go('monitoring');
         };
+
         $scope.start = function(instance) {
             $window.alert('Not implemented yet');
             var callback = function(data, status, headers, config){

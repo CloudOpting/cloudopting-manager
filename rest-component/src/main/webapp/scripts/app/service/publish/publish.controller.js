@@ -1,27 +1,32 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('PublishController', function (SERVICE, $scope, $state, $log, localStorageService, ApplicationService) {
+    .controller('PublishController', function (SERVICE, localStorageService,
+                                               $scope, $state, $log,
+                                               Principal, ApplicationService) {
+
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
 
         //If it is a modification we have to prepare everything to be edited.
-        var isEdition = localStorageService.get(SERVICE.STORAGE.PUBLISH_EDITION);
+        var isEdition = localStorageService.get(SERVICE.STORAGE.PUBLISH.IS_EDITION);
         if(isEdition=="true"){
             //Get the app to be modified.
-            $scope.application = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            $scope.application = localStorageService.get(SERVICE.STORAGE.PUBLISH.APPLICATION);
             $scope.disableUpdate = false;
             $scope.disableSave = true;
             $scope.disableNextOne = false;
             var promoInDatabase = true;
 
             //Prepare the name of the file
-            var tokensFile = $scope.application.applicationLogoReference.split('/');
-            var name = tokensFile[tokensFile.length-1];
-            $scope.files = [];
-            $scope.files.push({ name : name });
+            if($scope.application.applicationLogoReference) {
+                var tokensFile = $scope.application.applicationLogoReference.split('/');
+                var name = tokensFile[tokensFile.length - 1];
+                $scope.files = [];
+                $scope.files.push({name: name});
+            }
 
-            //Deleting evidences of edition in case user leaves the page.
-            localStorageService.set(SERVICE.STORAGE.PUBLISH_EDITION, false);
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
         } else {
             //If it is a new service we start with diferent parameters.
             $scope.application = {};
@@ -67,7 +72,7 @@ angular.module('cloudoptingApp')
 
             //If already saved into database we have to delete it from there also.
             if(promoInDatabase){
-                var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+                var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
                     if(checkStatusCallback(data, status, headers, config, "")){
@@ -104,13 +109,13 @@ angular.module('cloudoptingApp')
         $scope.saveWizardOne = function() {
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "")){
-                    localStorageService.set(SERVICE.STORAGE.ACTIVITI, data);
+                    localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                     //TODO: The processID is only for developmenent. Delete once it is done and validated.
                     $scope.processID = data.processInstanceId;
 
                     //Update the current app with the ID in order to use it in the future.
                     $scope.application.id = data.applicationId;
-                    localStorageService.set(SERVICE.STORAGE.CURRENT_APP, $scope.application);
+                    localStorageService.set(SERVICE.STORAGE.PUBLISH.APPLICATION, $scope.application);
 
                     savePromotionalImage(data);
 
@@ -126,7 +131,7 @@ angular.module('cloudoptingApp')
         $scope.updateWizardOne = function() {
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "")){
-                    localStorageService.set(SERVICE.STORAGE.ACTIVITI, data);
+                    localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                     //FIXME: We should check if we have to save the promotional images or not. Are they the same? If yes we are going to duplicate it.
                     savePromotionalImage(data);
                 }
@@ -176,7 +181,7 @@ angular.module('cloudoptingApp')
          * Function to save the content files added by the user
          */
         $scope.saveConfigurationWizardTwo = function () {
-            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
             if ($scope.libraryList && $scope.libraryList.length) {
                 for (var i = 0; i < $scope.libraryList.length; i++) {
@@ -252,7 +257,7 @@ angular.module('cloudoptingApp')
          * Function to send the TOSCA Archive to be saved.
          */
         $scope.saveConfiguration = function () {
-            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
             if ($scope.toscaFiles && $scope.toscaFiles.length) {
                 for (var i = 0; i < $scope.toscaFiles.length; i++) {
@@ -286,7 +291,7 @@ angular.module('cloudoptingApp')
 
             //If already saved into database we have to delete it from there also.
             if(toscaArchiveInDatabase){
-                var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
+                var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
                     if(checkStatusCallback(data, status, headers, config, "")){
@@ -304,8 +309,8 @@ angular.module('cloudoptingApp')
          * Function to request the publication of the current application.
          */
         $scope.publishService = function () {
-            var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
-            var application = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
+            var application = localStorageService.get(SERVICE.STORAGE.PUBLISH.APPLICATION);
 
             var callback = function (data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "")){
@@ -328,9 +333,9 @@ angular.module('cloudoptingApp')
             ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
         };
 
-        /*
-         * ERROR HANDLING.
-         */
+        //////////
+        // ERROR HANDLING.
+        //////////
 
         $scope.errorMessage = null;
         $scope.infoMessage = null;

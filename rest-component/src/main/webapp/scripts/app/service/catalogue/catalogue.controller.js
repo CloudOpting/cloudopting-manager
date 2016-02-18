@@ -8,12 +8,9 @@ angular.module('cloudoptingApp').filter('startFrom', function() {
 });
 
 angular.module('cloudoptingApp')
-    .controller('CatalogueController', function (SERVICE, $scope, $log, $state, ApplicationService, localStorageService, Principal, JackrabbitService) {
-        //, ApplicationService
-        //Save user
-        Principal.identity().then(function(account) {
-            localStorageService.set(SERVICE.STORAGE.CURRENT_USER, account);
-        });
+    .controller('CatalogueController', function (SERVICE, localStorageService,
+                                                 $scope, $log, $state,
+                                                 ApplicationService, Principal, JackrabbitService) {
 
         $scope.applicationList = null;
 
@@ -75,10 +72,9 @@ angular.module('cloudoptingApp')
             return "/api/jr/img?jcrPath=" + path;
         };
 
+        //Save the current application & go to the detail
         $scope.detail = function(application){
-            //Save the current application
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, application);
-            //Go to the detail of the applicaiton.
+            localStorageService.set(SERVICE.STORAGE.DETAIL.APPLICATION, application);
             $state.go('detail');
         };
 

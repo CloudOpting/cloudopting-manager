@@ -1,7 +1,13 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('CloudAccountController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Contact, Providers, OrganizationService) {
+    .controller('CloudAccountController', function(SERVICE, localStorageService,
+                                                   $location, $translate, $scope, $log, $state,
+                                                   Principal, Contact, Providers, OrganizationService) {
+
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
 
         function resetMessages(){
             $scope.successNew = null;
@@ -11,8 +17,8 @@ angular.module('cloudoptingApp')
 
         resetMessages();
 
-        $scope.cloudAcc = localStorageService.get(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT);
-        $scope.organization = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_ORG);
+        $scope.cloudAcc = localStorageService.get(SERVICE.STORAGE.CLOUD_ACCOUNT.CLOUD_ACCOUNT);
+        $scope.organization = localStorageService.get(SERVICE.STORAGE.CLOUD_ACCOUNT.ORGANIZATION);
 
         Providers.get(function(providers) {
             $scope.providerList =  providers;
