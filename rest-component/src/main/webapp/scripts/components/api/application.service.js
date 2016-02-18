@@ -10,7 +10,7 @@ angular.module('cloudoptingApp')
         var baseURISize = 'api/applicationSize';
 
         /**
-         * Method to upload a file for the application with id 'applicationId'.
+         * Method to upload a file for the application with identification 'applicationId'.
          * @param applicationId Identification of the application.
          * @param processID Process id of the current publication flow.
          * @param file File to be uploaded.
@@ -94,7 +94,7 @@ angular.module('cloudoptingApp')
             },
 
             /**
-             * Method to get an application by the id.
+             * Method to get an application with identification 'applicationId'.
              * @param applicationId Identification of the application.
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
