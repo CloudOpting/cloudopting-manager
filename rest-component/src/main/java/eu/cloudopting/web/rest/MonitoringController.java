@@ -23,11 +23,12 @@ import eu.cloudopting.domain.CustomizationDeployInfo;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.monitoring.MonitoringService;
 import eu.cloudopting.monitoring.elastic.MonitordataService;
+import eu.cloudopting.monitoring.elastic.data.ElasticData;
+import eu.cloudopting.monitoring.elastic.data.ElasticGraphData;
 import eu.cloudopting.monitoring.elastic.data.Monitordata;
 import eu.cloudopting.service.CustomizationDeployInfoService;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.web.rest.dto.Data;
-import eu.cloudopting.web.rest.dto.ElasticData;
 import eu.cloudopting.web.rest.dto.ElasticGraphDTO;
 import eu.cloudopting.web.rest.dto.GraphDTO;
 
@@ -95,6 +96,17 @@ public class MonitoringController {
 
 	@RequestMapping(value = "/monitoring/elastic/{instanceId}", method = RequestMethod.GET)
 	@ResponseBody
+	public ArrayList<ElasticGraphData> findAllElasticDataById(@PathVariable("instanceId") final Long instanceId) {
+		// I get the id of the customization
+		log.debug(instanceId.toString());
+		ArrayList<ElasticGraphData> ret = monitordataService.getAllMonitorData(instanceId);
+		return ret;
+	}
+
+		
+	
+	@RequestMapping(value = "/monitoring/elastic_old/{instanceId}", method = RequestMethod.GET)
+	@ResponseBody
 	public GraphDTO findOneDataById(@PathVariable("instanceId") final String instanceId) {
 		Monitordata one = monitordataService.findOne("AVI6Z24UAx6YebBYGh3x");
 		log.debug(one.getHost());
@@ -132,7 +144,7 @@ public class MonitoringController {
 			@RequestParam(value = "condition", required = false) String condition,
 			@RequestParam(value = "fields", required = false) String fields,
 			@RequestParam(value = "type", required = false) String type,
-			@RequestParam(value = "pagination", required = false) String pagination) {
+			@RequestParam(value = "pagination", required = false) Long pagination) {
 
 		List<Monitordata> listret = monitordataService.getMonitorData(container, condition, fields, type, pagination);
 		log.debug(listret.toString());

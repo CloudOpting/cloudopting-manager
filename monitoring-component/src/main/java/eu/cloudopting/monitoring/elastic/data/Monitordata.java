@@ -25,6 +25,8 @@ public class Monitordata {
     @JsonProperty("@timestamp")
     @JsonFormat (shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd'T'HH:mm:ss'+01:00'", timezone="GMT")
 	private Date timestamp;
+    private String container_name;
+    private String container_id;
 	
 	public String getId() {
 		return id;
@@ -85,6 +87,18 @@ public class Monitordata {
 	}
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
+	}
+	public String getContainer_name() {
+		return container_name;
+	}
+	public void setContainer_name(String container_name) {
+		this.container_name = container_name;
+	}
+	public String getContainer_id() {
+		return container_id;
+	}
+	public void setContainer_id(String container_id) {
+		this.container_id = container_id;
 	}
 	
 	
