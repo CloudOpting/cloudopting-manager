@@ -56,7 +56,7 @@ angular.module('cloudoptingApp')
                     }
                 }
             };
-            ProcessService.test(instance, callback);
+            ProcessService.test(instance.id, callback);
         };
 
         $scope.demo = function(instance) {
@@ -65,7 +65,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.test(instance, callback);
+            ProcessService.demo(instance.id, callback);
         };
 
         $scope.deploy = function(instance) {
@@ -74,7 +74,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.deploy(instance, callback);
+            ProcessService.deploy(instance.id, callback);
         };
 
         $scope.stop = function(instance) {
