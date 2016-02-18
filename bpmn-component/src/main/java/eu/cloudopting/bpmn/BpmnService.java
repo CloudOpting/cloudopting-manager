@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +20,6 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -31,8 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//import scala.collection.concurrent.Debug;
-import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.CloudAccounts;
@@ -48,6 +44,7 @@ import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.service.util.StatusConstants;
+//import scala.collection.concurrent.Debug;
 
 
 @Service
@@ -206,6 +203,7 @@ public class BpmnService {
 //		}
 //        return result;
 //	}
+
 	
 	public void deleteDeploymentById(String deploymentId){
 		log.debug("Deleting Process Deployment with id:"+ deploymentId);
