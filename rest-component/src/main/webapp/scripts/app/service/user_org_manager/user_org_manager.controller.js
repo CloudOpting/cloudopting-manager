@@ -35,10 +35,13 @@ angular.module('cloudoptingApp')
 
 
         //Get all users
-        UserService.findAll()
-            .success(function (users) {
-                $scope.users = users;
-            });
+        var findAllCallback = function(data, status, headers, config){
+            checkStatusCallback(data, status, headers, config, null);
+            if(data){
+                $scope.users = data;
+            }
+        };
+        UserService.findAll('', '', '', '', '', findAllCallback);
 
         $scope.createUserPage = function() {
             $scope.user = null;
@@ -191,7 +194,9 @@ angular.module('cloudoptingApp')
 
             } else {
                 //Return to the list
-                $state.go(okpage, {}, {reload: true});
+                if(okpage!=null) {
+                    $state.go(okpage, {}, {reload: true});
+                }
             }
         };
 

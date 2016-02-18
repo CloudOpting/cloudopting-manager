@@ -5,13 +5,19 @@
 
 angular.module('cloudoptingApp')
     .factory('UserService', function (SERVICE, $http, $log) {
-        var usrs = null;
-        var usr = null;
+
         var baseURI = 'api/users';
 
         return {
+
             /**
-             * Method to get the users applying filters, and with pagination
+             * Method to get the users applying filters, and with pagination.
+             * @param page Number of the page to be returned.
+             * @param size Size of the page.
+             * @param sortBy Parameter of the application that will be used to sort the list.
+             * @param sortOrder It can be ascendant 'asc' or descendant 'desc'.
+             * @param filter Word that will be used in any field of application to filter.
+             * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
             findAll: function (page, size, sortBy, sortOrder, filter, callback) {
@@ -22,65 +28,90 @@ angular.module('cloudoptingApp')
                     '&sortOrder=' + sortOrder +
                     '&filter=' + filter;
                 return $http.get(endpoint)
-                    .success(function (users) {
-                        usrs = users;
-                    })
-                    .error(function (data, status, headers, config) {
-                        $log.error("UserService.findAll error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
-                        callback(data, status, headers, config);
-                    });
-            },
-            /**
-             * FIXME: DELETE THIS METHOD
-             * Method to get the users list without pagination
-             * @returns {*}
-             */
-            findAllUnpaginated: function (callback) {
-                return $http.get(baseURI + SERVICE.SEPARATOR + 'unpaginated')
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.findAllUnpaginated error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        $log.error("UserService.findAll error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
             },
-            findById: function (id) {
-                return $http.get(baseURI + SERVICE.SEPARATOR + id)
-                    .success(function (user) {
-                        usr = user;
+
+            /**
+             * Method to get a user with identification 'userId'.
+             * @param userId Identification of the user.
+             * @param callback Function that will take care of the returned objects.
+             * @returns {*}
+             */
+            findById: function (userId, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    userId;
+                return $http.get(endpoint)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.findById error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        $log.error("UserService.findById error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
                     });
             },
+
+            /**
+             *Method to create a user.
+             * @param user New user to be created.
+             * @param callback Function that will take care of the returned objects.
+             * @returns {*}
+             */
             create: function (user, callback) {
                 return $http.post(baseURI, user)
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.create error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        $log.error("UserService.create error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
             },
+
+            /**
+             * Method to update a user.
+             * @param user User with the fields to be modified.
+             * @param callback Function that will take care of the returned objects.
+             * @returns {*}
+             */
             update: function (user, callback) {
                 return $http.put(baseURI, user)
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.update error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        $log.error("UserService.update error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
             },
-            delete: function (idUser, callback) {
-                return $http.delete(baseURI + SERVICE.SEPARATOR + idUser)
+
+            /**
+             * Method to delete a user with identification 'userId'.
+             * @param userId Identification of the user.
+             * @param callback Function that will take care of the returned objects.
+             * @returns {*}
+             */
+            delete: function (userId, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    userId;
+                return $http.delete(endpoint)
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
                     .error(function (data, status, headers, config) {
-                        $log.error("UserService.delete error. Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        $log.error("UserService.delete error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
             }
