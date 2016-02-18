@@ -105,7 +105,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="servicePrice">Service Price</label>
-                                <input type="number" class="form-control" id="servicePrice" placeholder="{{'publish.service.servicePrice' | translate}}"
+                                <input type="text" class="form-control" id="servicePrice" placeholder="{{'publish.service.servicePrice' | translate}}"
                                        autocomplete="off" name="servicePrice" ng-model="application.servicePrice"
                                        required/>
 
@@ -119,7 +119,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="sr-only" for="platformPrice">Platform Price</label>
-                                <input type="number" class="form-control" id="platformPrice" placeholder="{{'publish.service.platformPrice' | translate}}"
+                                <input type="text" class="form-control" id="platformPrice" placeholder="{{'publish.service.platformPrice' | translate}}"
                                        autocomplete="off" name="platformPrice" ng-model="application.platformPrice"
                                        required/>
 
@@ -267,9 +267,9 @@
                                     <div class="input-group">
                                         <span class="input-group-addon" translate="publish.content.file">File</span>
                                         <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-danger" ng-click="deletePromotionalImage(file)" translate="publish.button.delete">Delete Item</button>
-                            </span>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-danger" ng-click="deletePromotionalImage(file)" translate="publish.button.delete">Delete Item</button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
