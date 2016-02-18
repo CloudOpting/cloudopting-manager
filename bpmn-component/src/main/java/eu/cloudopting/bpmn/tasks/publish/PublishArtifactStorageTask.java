@@ -1,6 +1,8 @@
 package eu.cloudopting.bpmn.tasks.publish;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -15,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.bpmn.BpmnService;
+import eu.cloudopting.bpmn.BpmnServiceConstants;
 import eu.cloudopting.domain.ApplicationMedia;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
-import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.service.ApplicationMediaService;
 import eu.cloudopting.service.ApplicationService;
@@ -54,23 +56,28 @@ public class PublishArtifactStorageTask implements JavaDelegate {
         Set<ApplicationMedia> medias = application.getApplicationMedias();
         ApplicationMedia newMedium = new ApplicationMedia();
         newMedium.setApplicationId(application);
-        newMedium.setMediaContent(storeService.getTemplatePath(orgKey,toscaName,true)+"/"+remoteFileNameReduced);
+        String path = storeService.getTemplatePath(orgKey,toscaName,true)+"/"+remoteFileNameReduced;
+        newMedium.setMediaContent(path);
         medias.add(newMedium);
         applicationMediaService.create(newMedium);
+        //Unlock the process and update process variables
+        Map<String, Object> processVars = execution.getVariables();
+        processVars.put("latestUploadedArtifactPath", path);
+        runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString(), execution.getId(), processVars);
 	}
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		log.info("Publish - Artifacts Storage");
 		String uploadName = (String) execution.getVariable("name");
-	    String uploadType = (String) execution.getVariable("type");
-	    String uploadFileId = (String) execution.getVariable("fileId");
+	    //String uploadType = (String) execution.getVariable("type");
+	    //String uploadFileId = (String) execution.getVariable("fileId");
 	    String uploadFilePath = (String) execution.getVariable("filePath");
-	    String uploadIdApp = (String) execution.getVariable("appId");
+	    //String uploadIdApp = (String) execution.getVariable("appId");
 	    String uploadToscaName = (String) execution.getVariable("toscaname");
-	    String uploadProcessId = (String) execution.getVariable("processId");
+	    //String uploadProcessId = (String) execution.getVariable("processId");
 	    Organizations org = (Organizations) execution.getVariable("org");
-	    User user = (User) execution.getVariable("user");
+	    //User user = (User) execution.getVariable("user");
 		log.debug("Artifact UPLOAD Name: "+uploadName);
 		File fileToDelete = FileUtils.getFile(uploadFilePath);
 	    try {
