@@ -253,8 +253,7 @@ public class ApplicationResource extends AbstractController<Applications> {
                                      @RequestParam("file") MultipartFile file) throws IOException {
     	User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         Organizations org = user.getOrganizationId();
-		
-        UploadDTO dto = new UploadDTO();
+		UploadDTO dto = new UploadDTO();
         dto.setName(request.getParameter("name"));
         dto.setType(request.getParameter("type"));
         dto.setProcessId(processId);

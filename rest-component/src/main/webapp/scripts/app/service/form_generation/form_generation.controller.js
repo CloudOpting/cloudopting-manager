@@ -1,11 +1,9 @@
 angular.module('cloudoptingApp')
-    .controller('FormGenerationController', function (SERVICE, localStorageService, $scope, $state, $log, CustomizationService, Principal, $timeout) {
+    .controller('FormGenerationController', function (SERVICE, localStorageService,
+                                                      $scope, $state, $log, $timeout,
+                                                      CustomizationService, Principal) {
 
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
-
-        var currentApp = localStorageService.get(SERVICE.STORAGE.FORM_GENERATION.APPLICAITON);
+        var currentApp = localStorageService.get(SERVICE.STORAGE.FORM_GENERATION.APPLICATION);
 
         var publishFormCallback = function(data, status, headers, config) {
             checkStatusCallback(data, status, headers, config);

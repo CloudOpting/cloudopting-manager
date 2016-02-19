@@ -5,10 +5,6 @@ angular.module('cloudoptingApp')
                                                $scope, $state, $log,
                                                Principal, ApplicationService) {
 
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
-
         //If it is a modification we have to prepare everything to be edited.
         var isEdition = localStorageService.get(SERVICE.STORAGE.PUBLISH.IS_EDITION);
         if(isEdition=="true"){
@@ -92,7 +88,7 @@ angular.module('cloudoptingApp')
                     var file = $scope.files[i];
                     var callback = function(data, status, headers, config) {
                         if(checkStatusCallback(data, status, headers, config, "")){
-                            //TODO: We should update the file id in order to be able to update/delete it
+                            localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                             promoInDatabase = true;
                         }
                     };

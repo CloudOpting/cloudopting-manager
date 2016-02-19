@@ -57,7 +57,8 @@ public class PublishToscaUploadTask implements JavaDelegate {
         //Unlock the process and update process variables
         Map<String, Object> processVars = execution.getVariables();
         processVars.put("latestUploadedToscaFilePath", path);
-        runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString(), execution.getId(), processVars);
+        runtimeService.setVariables(execution.getProcessInstanceId(), processVars);
+        //runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString(), execution.getId(), processVars);
 	}
 
 	@Override

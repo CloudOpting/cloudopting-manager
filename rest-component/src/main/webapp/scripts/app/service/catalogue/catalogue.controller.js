@@ -50,6 +50,9 @@ angular.module('cloudoptingApp')
                     list[app].applicationLogoReference = defaultImage;
                 }
                 else {
+                    //Changing the URL only instead of calling the rest API with AJAX
+                    list[app].applicationLogoReference = buildImagePath(list[app].applicationLogoReference);
+
                     /*
                      var callback = function(data, status, headers, config){
                         if(checkStatusCallback(data, status, headers, config)){
@@ -60,9 +63,6 @@ angular.module('cloudoptingApp')
                      };
                      JackrabbitService.findImage(list[app].applicationLogoReference, callback);
                      */
-
-                    //Changing the URL only instead of calling the rest API with AJAX
-                    list[app].applicationLogoReference = buildImagePath(list[app].applicationLogoReference);
 
                 }
             }

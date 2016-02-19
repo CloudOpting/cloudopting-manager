@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +20,6 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -31,8 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//import scala.collection.concurrent.Debug;
-import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.CloudAccounts;
@@ -48,12 +44,15 @@ import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.service.util.StatusConstants;
+import eu.cloudopting.store.StoreService;
+//import scala.collection.concurrent.Debug;
 
 
 @Service
 @Transactional
 public class BpmnService {
 	private final Logger log = LoggerFactory.getLogger(BpmnService.class);
+	private static final String gatewayActivityId = "eventgateway2";
 	
 	public static final String TEMP_FILE_NAME_SEPARATOR = "___";
 
@@ -77,6 +76,9 @@ public class BpmnService {
     
 	@Inject
 	private StatusService statusService;
+	
+	@Inject
+	private StoreService storeService;
 
 	@Inject
 	private ApplicationService applicationService;
@@ -168,44 +170,6 @@ public class BpmnService {
     	
 	}
 
-	
-//	/**
-//	 * Starts the process with the provided id and the provided initial input parameters.
-//	 * <strong>For testing purposes, might be removed at any time</strong>.
-//	 * @param processId the Identifier of the process (not null)
-//	 * @param startParams the input variables (might be null)
-//	 * @return the process instance id
-//	 */
-//	public String startGenericProcess(String processId, Map<String, Object> startParams){
-//		log.debug("Starting Process with id:'"+processId+"'");
-//		// TODO the process string has to go in a constant
-//        ProcessInstance pi = runtimeService.startProcessInstanceByKey(processId, startParams);
-//        System.out.println("ProcessID:"+pi.getProcessInstanceId());
-//        return pi.getProcessInstanceId();
-//
-//	}
-	
-//	/**
-//	 * Gets the list of active Process Definitions
-//	 * For testing purposes, <strong>might be removed at any time</strong>.
-//	 * @return
-//	 */
-//	public List<BasicProcessInfo> getAvailableProcessDefinitions(){
-//		log.debug("Retrieving available process definitions");
-//		RepositoryService rs = processEngine.getRepositoryService();
-//		List<BasicProcessInfo> result = new LinkedList<BasicProcessInfo>();
-//		for (ProcessDefinition currentDefinition : rs.createProcessDefinitionQuery().active().list()) {
-//			BasicProcessInfo bpi = new BasicProcessInfo(
-//						currentDefinition.getId(), 
-//						currentDefinition.getName(), 
-//						currentDefinition.getKey(), 
-//						currentDefinition.getVersion(), 
-//						currentDefinition.getDeploymentId()
-//			);
-//			result.add(bpi);
-//		}
-//        return result;
-//	}
 	
 	public void deleteDeploymentById(String deploymentId){
 		log.debug("Deleting Process Deployment with id:"+ deploymentId);
@@ -313,43 +277,62 @@ public class BpmnService {
 			log.error("Error while reading UPLOAD file.",e);
 		}
 	    String uploadIdApp = uploadDTO.getIdApp();
-	    String uploadProcessId = uploadDTO.getProcessId();
+	    String uploadProcessInstanceId = uploadDTO.getProcessId();
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("name",uploadName);
 		params.put("type",uploadType);
         params.put("fileId",uploadFileId);
         params.put("filePath",uploadTempFilePath);
         params.put("appId",uploadIdApp);
-        params.put("processId",uploadProcessId);
+        params.put("processId",uploadProcessInstanceId);
         params.put("org",uploadDTO.getOrg());
         params.put("user",uploadDTO.getUser());
         
-        String messageName = "";
+        String messageName = "",
+        	   postMessageName = "",
+        	   latestPathVariableName="";
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_CONTENT_LIBRARY.toString())){
         	messageName = BpmnServiceConstants.MSG_START_ARTIFACTS_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedArtifactPath";
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_TOSCA_ARCHIVE.toString())){
         	messageName = BpmnServiceConstants.MSG_START_TOSCAFILE_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedToscaFilePath";
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_PROMO_IMAGE.toString())){
         	messageName = BpmnServiceConstants.MSG_START_PROMOIMAGE_UPLOAD.toString();
-        }
-        
-        Execution exec = runtimeService.createExecutionQuery().processInstanceId(uploadProcessId).messageEventSubscriptionName(messageName).singleResult();
-        if (exec!=null){
-        	log.debug("Upload Execution:"+exec.toString()+", message:"+messageName);
-            //Perform the upload
-            unlockProcess(uploadProcessId, exec.getId(), messageName, params);
-        }else{
-        	log.warn("No Execution found for message:"+messageName);
+        	postMessageName = BpmnServiceConstants.MSG_DONE_PROMOIMAGE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedPromoImagePath";
         }
         
         //Return the updated value of the model
         ActivitiDTO activitiDTO = new ActivitiDTO();
-		activitiDTO.setApplicationId(uploadIdApp);
-		activitiDTO.setProcessInstanceId(uploadProcessId);
-//		Map map = ((ExecutionEntity) pi).getVariableInstances();
-//		activitiDTO.setJrPath(jrPath);
+		
+        Execution preUploadExec = runtimeService.createExecutionQuery().processInstanceId(uploadProcessInstanceId).activityId(BpmnService.gatewayActivityId)/*.messageEventSubscriptionName(messageName)*/.singleResult();
+        if (preUploadExec!=null){
+        	log.debug("ProcessInstanceId:"+uploadProcessInstanceId+", Upload Execution:"+preUploadExec.toString()+", message:"+messageName);
+        	String executionId = preUploadExec.getId();
+            //Perform the upload
+            runtimeService.messageEventReceived(messageName, executionId, params);
+        }else{
+        	log.warn("[Pre Upload] No Execution found for message:"+messageName);
+        }
+        //Release the process by calling the POST UPLOAD intermediate message
+        Map<String, Object> processVars = runtimeService.getVariables(uploadProcessInstanceId);
+        String latestUploadPath = (String) processVars.get(latestPathVariableName);
+        activitiDTO.setJrPath(latestUploadPath!=null?latestUploadPath:"");
+        Execution postUploadExecution = runtimeService.createExecutionQuery().processInstanceId(uploadProcessInstanceId).messageEventSubscriptionName(postMessageName).singleResult();
+        if (postUploadExecution!=null){
+            	String pueId = postUploadExecution.getId();
+            	log.debug("Post Upload Execution ID:"+pueId+".");
+            	runtimeService.messageEventReceived(postMessageName, pueId, processVars);
+        }else{
+        	log.warn("[Post Upload] No Execution found for message:"+postMessageName);
+        }
+        activitiDTO.setApplicationId(uploadIdApp);
+		activitiDTO.setProcessInstanceId(uploadProcessInstanceId);
 		return activitiDTO;
 	}
 
@@ -401,7 +384,7 @@ public class BpmnService {
         	messageName = BpmnServiceConstants.MSG_START_META_UPDATE.toString();
         }
         
-        Execution exec = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).messageEventSubscriptionName(messageName).singleResult();
+        Execution exec = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).activityId(BpmnService.gatewayActivityId)./*messageEventSubscriptionName(messageName).*/singleResult();
         if (exec!=null){
         	log.debug("Update Execution:"+exec.toString()+", message:"+messageName);
             //Perform the update

@@ -5,10 +5,6 @@ angular.module('cloudoptingApp')
                                                $scope, $state, $stateParams, $location,
                                                Principal, Auth, OrganizationService) {
 
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
-
         $scope.tab_selected = 'tab_settings';
         if($stateParams.tab!=null && $stateParams.tab!=undefined && $stateParams.tab!="") {
             $scope.tab_selected = $stateParams.tab;
