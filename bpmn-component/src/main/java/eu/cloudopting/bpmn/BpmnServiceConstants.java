@@ -31,7 +31,7 @@ public enum BpmnServiceConstants {
 	MSG_START_PUBLISH("PublishEventRef"),
 	MSG_DONE_TOSCAFILE_UPLOAD("ToscaFileUploadedMsgRef"),
 	MSG_DONE_PROMOIMAGE_UPLOAD("PromoImageUploadedMsgRef"),
-	MSG_DONE_ARTIFACTS_UPLOAD("ArtifactsUploadedMsgRef");
+	MSG_DONE_ARTIFACTS_UPLOAD("ArtifactUploadedMsgRef");
 	
 	private final String constantValue;
 	
