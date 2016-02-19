@@ -15,39 +15,58 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div>
             <form ng-show="showButton && showSubscribe" class="form" role="form dropzone" name="form_subscribe">
-                <div class="form-group">
-                    <label for="termsAndConditions">Agree with Terms and Conditions</label>
-                    <input type="checkbox" class="form-control" id="termsAndConditions" placeholder="{{'detail.termsAndConditions' | translate}}"
-                           autocomplete="off" name="termsAndConditions" ng-model="currentApp.terms" required/>
-                    <a href="{{currentApp.terms}}">Terms &amp; conditions</a>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <div class="checkbox">
+                                <label for="termsAndConditions">
+                                    <input type="checkbox" id="termsAndConditions" placeholder="{{'detail.termsAndConditions' | translate}}"
+                                           autocomplete="off" name="termsAndConditions" ng-model="currentApp.terms" required />
+                                    Agree with
+                                </label>
+                                <a href="{{currentApp.terms}}">Terms &amp; conditions</a>
 
-                    <div ng-show="form_subscribe.termsAndConditions.$dirty && form_subscribe.termsAndConditions.$invalid || form_subscribe.termsAndConditions.$touched">
-                        <p class="help-block"
-                           ng-show="form_subscribe.termsAndConditions.$error.required"
-                           translate="detail.messages.validate.termsAndConditions.required">
-                            Accept terms and conditions is required.
-                        </p>
+                                <div ng-show="form_subscribe.termsAndConditions.$dirty && form_subscribe.termsAndConditions.$invalid || form_subscribe.termsAndConditions.$touched">
+                                    <p class="help-block"
+                                       ng-show="form_subscribe.termsAndConditions.$error.required"
+                                       translate="detail.messages.validate.termsAndConditions.required">
+                                        Accept terms and conditions is required.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-md-4 col-md-offset-4">
-                    <input type="button" class="hvr-rectangle-out" ng-disabled="form_subscribe.$invalid" ng-click="goToSubscribe()"
-                           value="{{'detail.button.subscribe' | translate}}" />
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="form-group">
+                            <input type="button" class="hvr-rectangle-out" ng-disabled="form_subscribe.$invalid" ng-click="goToSubscribe()"
+                                   value="{{'detail.button.subscribe' | translate}}" />
+                        </div>
+                    </div>
                 </div>
             </form>
+        </div>
+        <div class="row">
             <div ng-show="showButton && showInstances" class="col-md-4 col-md-offset-4">
-                <input type="button" class="hvr-rectangle-out" ng-click="goToInstances()"
-                       value="{{'detail.button.instances' | translate}}" />
+                <div class="form-group">
+                    <input type="button" class="hvr-rectangle-out" ng-click="goToInstances()"
+                           value="{{'detail.button.instances' | translate}}" />
+                </div>
             </div>
             <div ng-show="showButton && showRegister" class="col-md-4 col-md-offset-4">
-                <input type="button" class="hvr-rectangle-out" ng-click="goToRegister()"
-                       value="{{'detail.button.register_subscribe' | translate}}" />
+                <div class="form-group">
+                    <input type="button" class="hvr-rectangle-out" ng-click="goToRegister()"
+                           value="{{'detail.button.register_subscribe' | translate}}" />
+                </div>
             </div>
             <div ng-show="showButton && showEditService" class="col-md-4 col-md-offset-4">
-                <input type="button" class="hvr-rectangle-out" ng-click="goToPublish()"
-                       value="{{'detail.button.completepublish' | translate}}" />
+                <div class="form-group">
+                    <input type="button" class="hvr-rectangle-out" ng-click="goToPublish()"
+                           value="{{'detail.button.completepublish' | translate}}" />
+                </div>
             </div>
         </div>
     </div>
