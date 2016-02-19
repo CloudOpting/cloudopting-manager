@@ -14,7 +14,7 @@
     <sequenceFlow id="flow27" sourceRef="startevent" targetRef="publishContextSetupTask"></sequenceFlow>
     <serviceTask id="publishMetadataTask" name="Metadata Retrieval" activiti:delegateExpression="${publishMetadataTask}"></serviceTask>
     <serviceTask id="publishPublishTask" name="Publish" activiti:delegateExpression="${publishPublishTask}"></serviceTask>
-    <sequenceFlow id="flow37" sourceRef="messageintermediatecatchevent3" targetRef="eventgateway2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="afterArtifactStorageCatchEventId" targetRef="eventgateway2"></sequenceFlow>
     <intermediateCatchEvent id="PublishIntermediateCatchEvent" name="PublishEvent">
       <messageEventDefinition messageRef="PublishEventId"></messageEventDefinition>
     </intermediateCatchEvent>
@@ -61,7 +61,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="publishMetadataTask" targetRef="eventgateway2"></sequenceFlow>
-    <sequenceFlow id="flow64" sourceRef="messageintermediatecatchevent1" targetRef="eventgateway2"></sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="afterToscaUploadCatchEventId" targetRef="eventgateway2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow66" sourceRef="publishPublishTask" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="publishPromoImage" name="Promo Image Upload" activiti:delegateExpression="${publishPromoImage}"></serviceTask>
@@ -70,19 +70,19 @@
     </intermediateCatchEvent>
     <sequenceFlow id="flow67" sourceRef="eventgateway2" targetRef="PromoImageUploadintermediatecatchevent"></sequenceFlow>
     <sequenceFlow id="flow68" name="Upload Available" sourceRef="PromoImageUploadintermediatecatchevent" targetRef="publishPromoImage"></sequenceFlow>
-    <sequenceFlow id="flow70" sourceRef="messageintermediatecatchevent2" targetRef="eventgateway2"></sequenceFlow>
-    <intermediateCatchEvent id="messageintermediatecatchevent1" name="MessageCatchEvent">
+    <sequenceFlow id="flow70" sourceRef="afterPromoImageCatchEventId" targetRef="eventgateway2"></sequenceFlow>
+    <intermediateCatchEvent id="afterToscaUploadCatchEventId" name="MessageCatchEvent">
       <messageEventDefinition messageRef="ToscaFileUploadedMsgId"></messageEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow71" sourceRef="publishToscaUploadTask" targetRef="messageintermediatecatchevent1"></sequenceFlow>
-    <intermediateCatchEvent id="messageintermediatecatchevent2" name="MessageCatchEvent">
+    <sequenceFlow id="flow71" sourceRef="publishToscaUploadTask" targetRef="afterToscaUploadCatchEventId"></sequenceFlow>
+    <intermediateCatchEvent id="afterPromoImageCatchEventId" name="MessageCatchEvent">
       <messageEventDefinition messageRef="PromoImageUploadedMsgId"></messageEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow72" sourceRef="publishPromoImage" targetRef="messageintermediatecatchevent2"></sequenceFlow>
-    <intermediateCatchEvent id="messageintermediatecatchevent3" name="MessageCatchEvent">
+    <sequenceFlow id="flow72" sourceRef="publishPromoImage" targetRef="afterPromoImageCatchEventId"></sequenceFlow>
+    <intermediateCatchEvent id="afterArtifactStorageCatchEventId" name="MessageCatchEvent">
       <messageEventDefinition messageRef="ArtifactUploadedMsgId"></messageEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow73" sourceRef="publishArtifactStorageTask" targetRef="messageintermediatecatchevent3"></sequenceFlow>
+    <sequenceFlow id="flow73" sourceRef="publishArtifactStorageTask" targetRef="afterArtifactStorageCatchEventId"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ServicePublishingProcess">
     <bpmndi:BPMNPlane bpmnElement="ServicePublishingProcess" id="BPMNPlane_ServicePublishingProcess">
@@ -137,13 +137,13 @@
       <bpmndi:BPMNShape bpmnElement="PromoImageUploadintermediatecatchevent" id="BPMNShape_PromoImageUploadintermediatecatchevent">
         <omgdc:Bounds height="35.0" width="35.0" x="312.0" y="244.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="messageintermediatecatchevent1" id="BPMNShape_messageintermediatecatchevent1">
+      <bpmndi:BPMNShape bpmnElement="afterToscaUploadCatchEventId" id="BPMNShape_afterToscaUploadCatchEventId">
         <omgdc:Bounds height="35.0" width="35.0" x="719.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="messageintermediatecatchevent2" id="BPMNShape_messageintermediatecatchevent2">
+      <bpmndi:BPMNShape bpmnElement="afterPromoImageCatchEventId" id="BPMNShape_afterPromoImageCatchEventId">
         <omgdc:Bounds height="35.0" width="35.0" x="719.0" y="244.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="messageintermediatecatchevent3" id="BPMNShape_messageintermediatecatchevent3">
+      <bpmndi:BPMNShape bpmnElement="afterArtifactStorageCatchEventId" id="BPMNShape_afterArtifactStorageCatchEventId">
         <omgdc:Bounds height="35.0" width="35.0" x="719.0" y="383.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">

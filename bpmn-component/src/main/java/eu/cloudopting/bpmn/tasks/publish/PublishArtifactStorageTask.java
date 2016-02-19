@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -49,6 +50,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 	 * @param toscaName
 	 * @param remoteFileNameReduced
 	 */
+	@Transactional
 	private void addArtifactPath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
 		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = applicationService.findOne(applicationSource.getId());
@@ -60,9 +62,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
         medias.add(newMedium);
         applicationMediaService.create(newMedium);
         //Unlock the process and update process variables
-        Map<String, Object> processVars = execution.getVariables();
-        processVars.put("latestUploadedArtifactPath", path);
-        runtimeService.setVariables(execution.getProcessInstanceId(), processVars);
+        runtimeService.setVariable(execution.getProcessInstanceId(), "latestUploadedArtifactPath", path);
         //runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString(), execution.getId(), processVars);
 	}
 
