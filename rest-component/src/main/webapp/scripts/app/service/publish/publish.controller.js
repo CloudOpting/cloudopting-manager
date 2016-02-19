@@ -72,12 +72,13 @@ angular.module('cloudoptingApp')
 
                 var callback = function(data, status, headers, config) {
                     if(checkStatusCallback(data, status, headers, config, "")){
+                        localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                         promoInDatabase = false;
                     }
                 };
 
                 //FIXME: We do not have the file ID
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file, callback);
+                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
         };
@@ -125,10 +126,11 @@ angular.module('cloudoptingApp')
         };
 
         $scope.updateWizardOne = function() {
+            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
+
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "")){
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
-                    //FIXME: We should check if we have to save the promotional images or not. Are they the same? If yes we are going to duplicate it.
                     savePromotionalImage(data);
                 }
             };
@@ -185,9 +187,7 @@ angular.module('cloudoptingApp')
 
                     var callback = function (data, status, headers, config) {
                         if (checkStatusCallback(data, status, headers, config, "")) {
-                            //TODO: We should update the file id in order to be able to update/delete it
-
-                            //Move to Step 3 of wizard - Add TOSCA Archive
+                            localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                             $state.go('publish3');
                         }
                     };
@@ -223,12 +223,13 @@ angular.module('cloudoptingApp')
 
             var callback = function(data, status, headers, config) {
                 if(checkStatusCallback(data, status, headers, config, "")){
+                    localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                     promoInDatabase = false;
                 }
             };
 
             //FIXME: Here I do not have the file ID.
-            ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file, callback);
+            ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             */
         };
 
@@ -261,6 +262,7 @@ angular.module('cloudoptingApp')
 
                     var callback = function (data, status, headers, config) {
                         if (checkStatusCallback(data, status, headers, config, "")) {
+                            localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                             //TODO: Show a message of completion.
                             $scope.disablePublish = false;
                             toscaArchiveInDatabase = true;
@@ -291,12 +293,12 @@ angular.module('cloudoptingApp')
 
                 var callback = function(data, status, headers, config) {
                     if(checkStatusCallback(data, status, headers, config, "")){
+                        localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                         toscaArchiveInDatabase = false;
                     }
                 };
 
-                //FIXME: We do not have the file ID
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, file, callback);
+                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
         };
@@ -310,6 +312,8 @@ angular.module('cloudoptingApp')
 
             var callback = function (data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "")){
+                    localStorageService.set(SERVICE.STORAGE.PUBLISH.APPLICATION, null);
+                    localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, null);
                     $state.go('publish4');
                 }
             };
