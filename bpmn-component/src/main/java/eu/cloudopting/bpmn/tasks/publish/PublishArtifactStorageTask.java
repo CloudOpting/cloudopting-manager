@@ -62,6 +62,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
         //Unlock the process and update process variables
         Map<String, Object> processVars = execution.getVariables();
         processVars.put("latestUploadedArtifactPath", path);
+        runtimeService.setVariables(execution.getProcessInstanceId(), processVars);
         //runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString(), execution.getId(), processVars);
 	}
 

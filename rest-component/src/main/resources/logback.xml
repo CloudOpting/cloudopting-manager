@@ -26,7 +26,8 @@
         <appender-ref ref="FILE"/>
     </appender>
 -->
-
+	
+	<logger name="org.activiti.engine" level="ERROR"/>
     <logger name="eu.cloud.cloudopting" level="TRACE"/>
     <logger name="eu.cloudopting" level="TRACE"/>
 	<logger name="sun.net.www.protocol.http" level="TRACE"/>
