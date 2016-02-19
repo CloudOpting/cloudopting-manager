@@ -1,4 +1,4 @@
-package eu.cloudopting.web.rest.dto;
+package eu.cloudopting.monitoring.elastic.data;
 
 import java.io.Serializable;
 
@@ -8,14 +8,14 @@ import java.io.Serializable;
 public class ElasticData implements Serializable {
 
     private String time;
-    private String occurrence;
+    private String value;
 
     public ElasticData() {
     }
 
-    public ElasticData(String time, String occurrence) {
+    public ElasticData(String time, String value) {
         this.time = time;
-        this.occurrence = occurrence;
+        this.value = value;
     }
 
     public ElasticData(String time) {
@@ -30,17 +30,17 @@ public class ElasticData implements Serializable {
         this.time = time;
     }
 
-    public String getOccurence () {
-        return occurrence;
+    public String getValue () {
+        return value;
     }
 
-    public void setOccurence (String occurrence){
-        this.occurrence = occurrence;
+    public void setvalue (String value){
+        this.value = value;
     }
 
 
     @Override
     public String toString() {
-        return "ClassPojo [time = "+time+", occurrence = "+occurrence+"]";
+        return "ClassPojo [time = "+time+", value = "+value+"]";
     }
 }

@@ -114,19 +114,26 @@ angular.module('cloudoptingApp')
         var elasticcallback =  function(data, status, headers, config) {
             checkStatusCallback(data, status, headers, config);
             if(data) {
-                var graph = data;
-                $scope.graphsList.push({
-                    title: "Elastic Chart Line (dynamic)",
-                    chartId: "elasticchart_line"
-                });
-                $scope.graphsList.push({
-                    title: "Elastic Chart Bar (dynamic)",
-                    chartId: "elasticchart_bar"
-                });
-                $timeout(function () {
-                    lineChart(graph, "elasticchart_line");
-                    barChart(graph, "elasticchart_bar");
-                }, 1000);
+                var graphs = data;
+                console.log(data);
+                for(var i in graphs){
+                	$scope.graphsList.push({
+                        title: graphs[i].title,
+                        chartId: "elasticchart"+i
+                    });
+                	$timeout(function () {
+                		switch (graphs[i].type) {
+						case bar:
+							barChart(graphs[i], "elasticchart"+i);	
+							break;
+						default:
+							lineChart(graphs[i], "elasticchart"+i);
+							break;
+						}
+                    }, 1000);
+                	
+                }
+
             }
         };
         MonitoringService.findOneDataById(instance.id, elasticcallback);
