@@ -48,7 +48,7 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
 
         $urlRouterProvider.otherwise('/catalogue');
         $stateProvider.state('site', {
-            'abstract': true,
+            abstract: true,
             views: {
                 'navbar@': {
                     templateUrl: 'scripts/components/navbar/navbar.html',
@@ -75,7 +75,7 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
                 }]
             }
         });
-        
+
 
         // Initialize angular-translate
         $translateProvider.useLoader('$translatePartialLoader', {

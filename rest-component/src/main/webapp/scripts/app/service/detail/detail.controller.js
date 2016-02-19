@@ -3,14 +3,10 @@
 angular.module('cloudoptingApp')
     .controller('DetailController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Principal) {
 
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
         $scope.currentApp = localStorageService.get(SERVICE.STORAGE.DETAIL.APPLICATION);
         $scope.showButton = true;
 
-        //IF the status of the services is "UNFINISHED" we have to set the button "GO TO EDIT" if it is the Publisher
-
+        //TODO: If the status of the services is "UNFINISHED" we have to set the button "GO TO EDIT" if it is the Publisher
 
         //If not application go to catalogue.
         if($scope.currentApp == undefined || $scope.currentApp == null ){
