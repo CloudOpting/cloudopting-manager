@@ -1,7 +1,6 @@
 package eu.cloudopting.bpmn.tasks.publish;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -63,7 +62,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
         //Unlock the process and update process variables
         Map<String, Object> processVars = execution.getVariables();
         processVars.put("latestUploadedArtifactPath", path);
-        runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString(), execution.getId(), processVars);
+        //runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString(), execution.getId(), processVars);
 	}
 
 	@Override

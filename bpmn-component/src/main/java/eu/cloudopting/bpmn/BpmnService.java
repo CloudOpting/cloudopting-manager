@@ -44,6 +44,7 @@ import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.service.util.StatusConstants;
+import eu.cloudopting.store.StoreService;
 //import scala.collection.concurrent.Debug;
 
 
@@ -74,6 +75,9 @@ public class BpmnService {
     
 	@Inject
 	private StatusService statusService;
+	
+	@Inject
+	private StoreService storeService;
 
 	@Inject
 	private ApplicationService applicationService;
@@ -164,45 +168,6 @@ public class BpmnService {
     	//Debug.log(executionIds.toString());
     	
 	}
-
-	
-//	/**
-//	 * Starts the process with the provided id and the provided initial input parameters.
-//	 * <strong>For testing purposes, might be removed at any time</strong>.
-//	 * @param processId the Identifier of the process (not null)
-//	 * @param startParams the input variables (might be null)
-//	 * @return the process instance id
-//	 */
-//	public String startGenericProcess(String processId, Map<String, Object> startParams){
-//		log.debug("Starting Process with id:'"+processId+"'");
-//		// TODO the process string has to go in a constant
-//        ProcessInstance pi = runtimeService.startProcessInstanceByKey(processId, startParams);
-//        System.out.println("ProcessID:"+pi.getProcessInstanceId());
-//        return pi.getProcessInstanceId();
-//
-//	}
-	
-//	/**
-//	 * Gets the list of active Process Definitions
-//	 * For testing purposes, <strong>might be removed at any time</strong>.
-//	 * @return
-//	 */
-//	public List<BasicProcessInfo> getAvailableProcessDefinitions(){
-//		log.debug("Retrieving available process definitions");
-//		RepositoryService rs = processEngine.getRepositoryService();
-//		List<BasicProcessInfo> result = new LinkedList<BasicProcessInfo>();
-//		for (ProcessDefinition currentDefinition : rs.createProcessDefinitionQuery().active().list()) {
-//			BasicProcessInfo bpi = new BasicProcessInfo(
-//						currentDefinition.getId(), 
-//						currentDefinition.getName(), 
-//						currentDefinition.getKey(), 
-//						currentDefinition.getVersion(), 
-//						currentDefinition.getDeploymentId()
-//			);
-//			result.add(bpi);
-//		}
-//        return result;
-//	}
 
 	
 	public void deleteDeploymentById(String deploymentId){
@@ -322,29 +287,44 @@ public class BpmnService {
         params.put("org",uploadDTO.getOrg());
         params.put("user",uploadDTO.getUser());
         
-        String messageName = "";
+        String messageName = "",
+        	   postMessageName = "",
+        	   latestPathVariableName="";
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_CONTENT_LIBRARY.toString())){
         	messageName = BpmnServiceConstants.MSG_START_ARTIFACTS_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedArtifactPath";
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_TOSCA_ARCHIVE.toString())){
         	messageName = BpmnServiceConstants.MSG_START_TOSCAFILE_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedToscaFilePath";
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_PROMO_IMAGE.toString())){
         	messageName = BpmnServiceConstants.MSG_START_PROMOIMAGE_UPLOAD.toString();
-        }
-        
-        Execution exec = runtimeService.createExecutionQuery().processInstanceId(uploadProcessId).messageEventSubscriptionName(messageName).singleResult();
-        if (exec!=null){
-        	log.debug("Upload Execution:"+exec.toString()+", message:"+messageName);
-            //Perform the upload
-            unlockProcess(uploadProcessId, exec.getId(), messageName, params);
-        }else{
-        	log.warn("No Execution found for message:"+messageName);
+        	postMessageName = BpmnServiceConstants.MSG_DONE_PROMOIMAGE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedPromoImagePath";
         }
         
         //Return the updated value of the model
         ActivitiDTO activitiDTO = new ActivitiDTO();
-		activitiDTO.setApplicationId(uploadIdApp);
+		
+        Execution exec = runtimeService.createExecutionQuery().processInstanceId(uploadProcessId).messageEventSubscriptionName(messageName).singleResult();
+        if (exec!=null){
+        	log.debug("Upload Execution:"+exec.toString()+", message:"+messageName);
+        	String executionId = exec.getId();
+            //Perform the upload
+            unlockProcess(uploadProcessId, executionId , messageName, params);
+            //Release the process by calling the intermediate message
+            Map<String, Object> processVars = runtimeService.getVariables(exec.getId());
+            String latestUploadPath = (String) processVars.get(latestPathVariableName);
+            activitiDTO.setJrPath(latestUploadPath);
+            runtimeService.messageEventReceived(postMessageName, uploadProcessId, processVars);
+        }else{
+        	log.warn("No Execution found for message:"+messageName);
+        }
+        
+        activitiDTO.setApplicationId(uploadIdApp);
 		activitiDTO.setProcessInstanceId(uploadProcessId);
 //		Map map = ((ExecutionEntity) pi).getVariableInstances();
 //		activitiDTO.setJrPath(jrPath);

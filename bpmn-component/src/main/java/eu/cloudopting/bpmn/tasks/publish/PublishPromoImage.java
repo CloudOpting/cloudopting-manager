@@ -58,7 +58,7 @@ public class PublishPromoImage implements JavaDelegate {
         Map<String, Object> processVars = execution.getVariables();
         processVars.put("latestUploadedPromoImagePath", path);
         String executionId = execution.getProcessInstanceId();
-        runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_PROMOIMAGE_UPLOAD.toString(), executionId, processVars);
+        //runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_PROMOIMAGE_UPLOAD.toString(), executionId, processVars);
 	}
 	
 	@Override
