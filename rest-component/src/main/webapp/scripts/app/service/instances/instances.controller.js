@@ -1,12 +1,9 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, $filter,
-                                                 localStorageService, InstanceService, ProcessService, $window, Blob, FileSaver) {
-
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
+    .controller('InstancesController', function (SERVICE, localStorageService,
+                                                 $scope, $state, $log, $location, $window, $filter,
+                                                 Principal, InstanceService, ProcessService, Blob, FileSaver) {
 
         $scope.currentPage = 0;
         $scope.pageSize = 8;

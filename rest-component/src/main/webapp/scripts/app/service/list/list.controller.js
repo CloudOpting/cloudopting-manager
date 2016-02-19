@@ -5,10 +5,6 @@ angular.module('cloudoptingApp')
                                             $rootScope, $scope, $state, $timeout, $log, $filter, $window,
                                             Principal, Auth, ApplicationService) {
 
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
-
         $scope.currentPage = 0;
         $scope.pageSize = 8;
         $scope.applicationList = [];

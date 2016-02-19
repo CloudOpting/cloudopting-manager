@@ -5,10 +5,6 @@ angular.module('cloudoptingApp')
                                                    $location, $translate, $scope, $log, $state,
                                                    Principal, Contact, Providers, OrganizationService) {
 
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
-
         function resetMessages(){
             $scope.successNew = null;
             $scope.successUpdate = null;

@@ -5,10 +5,6 @@ angular.module('cloudoptingApp')
                                                   $scope, $state, $log, $timeout,
                                                   MonitoringService, Principal) {
 
-        if(!Principal.isAuthenticated()){
-            $state.go('login');
-        }
-
         var instance = localStorageService.get(SERVICE.STORAGE.MONITORING.INSTANCE);
 
         //Add the dives to the page dynamically.
