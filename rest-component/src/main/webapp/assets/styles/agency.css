@@ -1033,7 +1033,6 @@ footer ul.quicklinks {
     position: relative;
     padding-bottom: 160px;
 }
-.backend-box:before,
 .auth-box:before{
     position:absolute;
     content: '';
@@ -1044,7 +1043,7 @@ footer ul.quicklinks {
     box-shadow: 0 0 50px 3px rgba(0,0,0,.4);
     left: 10%;
 }
-.backend-box .backend-box-cabecera,
+.backend-box-cabecera,
 .auth-box .auth-box-cabecera {
     position: relative;
     padding: 20px 0 20px 0;

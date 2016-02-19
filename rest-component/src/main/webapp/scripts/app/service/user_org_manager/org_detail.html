@@ -1,42 +1,56 @@
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="user_org_manager.title.org_detail">Organization Detail</div>
-        <div class="panel-body">
-            <div class="alert alert-danger" ng-show="errorMessage">
-                {{errorMessage}}
-            </div>
-            <form name="org_form" novalidate ng-submit="submitOrganizationForm(org.id)" show-validation>
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <label class="darkgreen"translate="user_org_manager.col.name">Name:</label>
-                        <input type="text" class="form-control" ng-model="org.organizationName">
+<section>
+    <div class="container wrapper-white">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="user_org_manager.title.org_detail">
+                        Organization Detail
                     </div>
-                    <div class="form-group row">
-                        <label class="darkgreen"translate="user_org_manager.col.description">Description:</label>
-                        <input type="text" class="form-control" ng-model="org.description">
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger" ng-show="errorMessage">
+                            {{errorMessage}}
+                        </div>
+                        <form class="form" name="org_form" novalidate ng-submit="submitOrganizationForm(org.id)" show-validation>
+
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.name">Name:</label>
+                                    <input type="text" class="form-control" ng-model="org.organizationName" />
+                                </div>
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.description">Description:</label>
+                                    <input type="text" class="form-control" ng-model="org.description" />
+                                </div>
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.organizationKey">Organization key:</label>
+                                    <input type="text" class="form-control" ng-model="org.organizationKey" />
+                                </div>
+                                <div class="form-group">
+                                    <!-- This will be useful for organizations -->
+                                    <label translate="user_org_manager.col.type">Type:</label>
+                                    <select class="form-control" ng-model="org.organizationType.id"
+                                            ng-options="t.id as t.types for t in types">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.status">Status:</label>
+                                    <select class="form-control" ng-model="org.organizationStatus.id"
+                                            ng-options="s.id as s.status for s in status">
+                                    </select>
+                                </div>
+
+                                <div class="row row-actions">
+                                    <div class="col-xs-6">
+                                        <button ng-show="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.edit">Edit</button>
+                                        <button ng-hide="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.create">Create</button>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button type="submit" ng-click="cancel('org_manager')" class="btn btn-secondary pull-right" translate="user_org_manager.button.cancel">Cancel</button>
+                                    </div>
+                                </div>
+                        </form>
                     </div>
-                    <div class="form-group row">
-                        <label class="darkgreen"translate="user_org_manager.col.organizationKey">Organization key:</label>
-                        <input type="text" class="form-control" ng-model="org.organizationKey">
-                    </div>
-                    <div class="form-group row">
-                        <!-- This will be useful for organizations -->
-                        <label class="darkgreen" translate="user_org_manager.col.type">Type:</label>
-                        <select class="form-control" ng-model="org.organizationType.id"
-                                ng-options="t.id as t.types for t in types">
-                        </select>
-                    </div>
-                    <div class="form-group row">
-                        <label class="darkgreen" translate="user_org_manager.col.status">Status:</label>
-                        <select class="form-control" ng-model="org.organizationStatus.id"
-                                ng-options="s.id as s.status for s in status">
-                        </select>
-                    </div>
-                    <button ng-show="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit">Edit</button>
-                    <button ng-hide="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create">Create</button>
-                    <button type="submit" ng-click="cancel('org_manager')" class="btn btn-success" translate="user_org_manager.button.cancel">Cancel</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</section>
