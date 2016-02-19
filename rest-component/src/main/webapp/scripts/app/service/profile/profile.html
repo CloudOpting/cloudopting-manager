@@ -1,8 +1,7 @@
-<div class="row">
-
-
+<div class="container wrapper-white">
+  <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
-        <h3>Profile</h3>
+        <h3 class="sr-only">Profile</h3>
 
         <ul class="nav nav-tabs">
             <li ng-class="{'active': tab_selected === 'tab_settings'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')">Settings</a></li>
@@ -10,10 +9,10 @@
             <li ng-class="{'active': tab_selected === 'tab_organization'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_organization')">Organization</a></li>
             <li ng-class="{'active': tab_selected === 'tab_cloudaccounts'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')">Cloud Accounts</a></li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content backend-box-content">
             <div id="tab_settings" class="tab-pane" ng-class="{active: tab_selected == 'tab_settings'}">
 
-                <h2 translate="settings.title" translate-values="{username: '{{settingsAccount.login}}'}">User settings for [<b>{{settingsAccount.login}}</b>]</h2>
+                <!-- <h3 translate="settings.title" translate-values="{username: '{{settingsAccount.login}}'}">User settings for {{settingsAccount.login}}</h3> -->
 
                 <div class="alert alert-success" ng-show="settingsSuccess" translate="settings.messages.success">
                     <strong>Settings saved!</strong>
@@ -91,14 +90,19 @@
                         </div>
                     </div>
 
-                    <button type="submit" ng-disabled="form_settings.$invalid" class="btn btn-primary" translate="settings.form.button">Save</button>
+                    <div class="row row-actions">
+                        <div class="col-lg-12">
+                            <button type="submit" ng-disabled="form_settings.$invalid" class="btn btn-primary" translate="settings.form.button">Save</button>
+                        </div>
+                    </div>
+
                 </form>
 
 
             </div>
             <div id="tab_password" class="tab-pane" ng-class="{active: tab_selected == 'tab_password'}">
 
-                <h2 translate="password.title" translate-values="{username: '{{passAccount.login}}'}">Password for [<b>{{passAccount.login}}</b>]</h2>
+                <!-- <h3 translate="password.title" translate-values="{username: '{{passAccount.login}}'}">Password for {{passAccount.login}}</h3> -->
 
                 <div class="alert alert-success" ng-show="passSuccess" translate="password.messages.success">
                     <strong>Password changed!</strong>
@@ -131,7 +135,7 @@
                                 Your password cannot be longer than 50 characters
                             </p>
                         </div>
-                        <password-strength-bar password-to-check="password"></password-strength-bar>
+                        <password-strength-bar password-to-check="password" class="strength-bar"></password-strength-bar>
                     </div>
                     <div class="form-group">
                         <label translate="global.form.confirmpassword">New password confirmation</label>
@@ -152,14 +156,18 @@
                             </p>
                         </div>
                     </div>
+                    <div class="row row-actions">
+                        <div class="col-lg-12">
+                            <button type="submit" ng-disabled="form_pass.$invalid" class="btn btn-primary" translate="password.form.button">Save</button>
+                        </div>
+                    </div>
 
-                    <button type="submit" ng-disabled="form_pass.$invalid" class="btn btn-primary" translate="password.form.button">Save</button>
                 </form>
 
             </div>
             <div id="tab_organization" class="tab-pane" ng-class="{active: tab_selected == 'tab_organization'}">
 
-                <h2 translate="password.title" translate-values="{username: '{{passAccount.login}}'}">Organization [<b>{{passAccount.login}}</b>]</h2>
+                <!-- <h3 translate="password.title" translate-values="{username: '{{passAccount.login}}'}">Organization {{passAccount.login}}</h3> -->
 
                 <form name="form_org" novalidate ng-submit="updateOrganization()" show-validation>
 
@@ -186,37 +194,54 @@
                                ng-model="org_type" ng-minlength=5 ng-maxlength=50 required>
 
                     </div>
+                    <div class="row row-actions">
+                        <div class="col-lg-12">
+                            <button type="submit" ng-disabled="form_org.$invalid" class="btn btn-primary" translate="profile.form_org.button">Update</button>
+                        </div>
+                    </div>
 
-                    <button type="submit" ng-disabled="form_org.$invalid" class="btn btn-primary" translate="profile.form_org.button">Update</button>
                 </form>
 
             </div>
             <div id="tab_cloudaccounts" class="tab-pane" ng-class="{active: tab_selected == 'tab_cloudaccounts'}">
 
-                <h2 translate="cloudaccount.title">Cloud Accounts</h2>
+                <!-- <h3 translate="cloudaccount.title">Cloud Accounts</h3> -->
 
-                <button type="button" class="btn btn-default" ng-click="goToAdd()" translate="cloudaccount.button.add">Add</button>
-                <table cellspacing="1" cellpadding="1" class="table-responsive" style="width: 100%;">
-                    <tr>
-                        <th class="darkgreen" translate="cloudaccount.col.name">Cloud Account Name</th>
-                        <th class="darkgreen" translate="cloudaccount.col.provider">Provider</th>
-                        <th class="darkgreen" translate="cloudaccount.col.actions">Actions</th>
-                    </tr>
-                    <tr ng-repeat="cloudAcc in cloudAccList">
-                        <td>{{cloudAcc.name}}</td>
-                        <td>{{cloudAcc.providerId.provider}}</td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                <button type="button" class="btn btn-default" ng-click="goToEdit(cloudAcc)" translate="cloudaccount.button.edit">Edit</button>
-                                <button type="button" class="btn btn-default" ng-click="deleteCloudAccount(cloudAcc)" translate="cloudaccount.button.delete">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                <div class="form-group">
+                  <button type="button" class="btn btn-reverse" ng-click="goToAdd()" translate="cloudaccount.button.add">+ Add</button>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="darkgreen" translate="cloudaccount.col.name">Cloud Account Name</th>
+                                        <th class="darkgreen" translate="cloudaccount.col.provider">Provider</th>
+                                        <th class="darkgreen" translate="cloudaccount.col.actions">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cloudAcc in cloudAccList">
+                                        <td>{{cloudAcc.name}}</td>
+                                        <td>{{cloudAcc.providerId.provider}}</td>
+                                        <td class="text-right">
+                                            <button type="button" class="btn btn-icon" ng-click="goToEdit(cloudAcc)"><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'cloudaccount.button.edit' | translate}}</button>
+                                            <button type="button" class="btn btn-icon" ng-click="deleteCloudAccount(cloudAcc)"><i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'cloudaccount.button.delete' | translate}}</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
 
     </div>
 
+  </div>
 </div>

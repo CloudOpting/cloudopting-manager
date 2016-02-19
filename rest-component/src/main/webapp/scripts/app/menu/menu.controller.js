@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('MenuController', function (SERVICE, $state, $scope, Principal, Auth) {
+    .controller('MenuController', function (SERVICE,
+                                            $state, $scope,
+                                            Principal, Auth) {
 
         $scope.logoutButton = Principal.isAuthenticated();
         //$scope.name = Principal.isAuthenticated ? Principal.identity().login : '';

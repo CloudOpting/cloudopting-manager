@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ManagementController', function (SERVICE, $scope, $state, $log, localStorageService, ApplicationService, InstanceService) {
+    .controller('ManagementController', function ($scope) {
         $scope.startService = function() {
 
         };

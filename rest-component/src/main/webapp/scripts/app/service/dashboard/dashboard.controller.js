@@ -93,10 +93,12 @@ angular.module('cloudoptingApp')
             };
             //InstanceService.delete(instance.id, callback);
         };
+
         $scope.monitor = function(instance) {
-            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, instance);
+            localStorageService.set(SERVICE.STORAGE.MONITORING.INSTANCE, instance);
             $state.go('monitoring');
         };
+
         $scope.start = function(instance) {
             $window.alert('Not implemented yet');
             var callback = function(data, status, headers, config){
@@ -106,6 +108,7 @@ angular.module('cloudoptingApp')
             };
             //InstanceService.start(instance);
         };
+
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){
             return str === "Requested";

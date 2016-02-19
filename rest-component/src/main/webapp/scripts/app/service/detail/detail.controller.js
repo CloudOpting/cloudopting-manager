@@ -3,7 +3,10 @@
 angular.module('cloudoptingApp')
     .controller('DetailController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Principal) {
 
-        $scope.currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
+        $scope.currentApp = localStorageService.get(SERVICE.STORAGE.DETAIL.APPLICATION);
         $scope.showButton = true;
 
         //IF the status of the services is "UNFINISHED" we have to set the button "GO TO EDIT" if it is the Publisher
@@ -42,12 +45,12 @@ angular.module('cloudoptingApp')
         }
 
         $scope.goToEditService = function(){
+            localStorageService.set(SERVICE.STORAGE.PUBLISH.APPLICATION, $scope.currentApp);
             $state.go('publish');
-            //TODO: Set the current application to the application service?
-            //ApplicationService.currentApplication = appDetail;
         };
 
         $scope.goToInstances = function(){
+            localStorageService.set(SERVICE.STORAGE.INSTANCES.APPLICATION, $scope.currentApp);
             $state.go('instances');
         };
 
@@ -56,6 +59,7 @@ angular.module('cloudoptingApp')
         };
 
         $scope.goToSubscribe = function(){
+            localStorageService.set(SERVICE.STORAGE.FORM_GENERATION.APPLICATION, $scope.currentApp);
             $state.go('form_generation');
         };
     }

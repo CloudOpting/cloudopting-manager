@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('MonitoringController', function ($scope, localStorageService, SERVICE, $state, $log,
-                                                  MonitoringService, $timeout, Principal) {
+    .controller('MonitoringController', function (SERVICE, localStorageService,
+                                                  $scope, $state, $log, $timeout,
+                                                  MonitoringService, Principal) {
 
-        var instance = localStorageService.get(SERVICE.STORAGE.CURRENT_INSTANCE);
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
+
+        var instance = localStorageService.get(SERVICE.STORAGE.MONITORING.INSTANCE);
 
         //Add the dives to the page dynamically.
         $scope.graphsList = [];
@@ -37,47 +42,48 @@ angular.module('cloudoptingApp')
         MonitoringService.findAllZabbixHosts(instance.id, zabbixHostCallback);
 
         //Update all zabbix items depending on the host
-        var zabbixItemsCallback = function(data, status, headers, config) {
-        	checkStatusCallback(data, status, headers, config);
-        	if(data){
-        		$scope.zabbixdata.itemsOptions = angular.fromJson(data);
-        	}
-        };
         $scope.updateItems = function(hostid){
+            var zabbixItemsCallback = function(data, status, headers, config) {
+                checkStatusCallback(data, status, headers, config);
+                if(data){
+                    $scope.zabbixdata.itemsOptions = angular.fromJson(data);
+                }
+            };
             console.log(hostid);
             MonitoringService.findAllZabbixItems(instance.id, hostid, zabbixItemsCallback);
         };
 
         //Update the chart depending on the zabbix item
-        var zabbixHistoryCallback = function(data, status, headers, config) {
-        	checkStatusCallback(data, status, headers, config);
-        	var propsToConvert = {
-        		clock: 1,
-        		value:1
-        	};
-        	if(data){
+        $scope.updateChart = function(itemid){
+            var zabbixHistoryCallback = function(data, status, headers, config) {
+                checkStatusCallback(data, status, headers, config);
+                var propsToConvert = {
+                    clock: 1,
+                    value:1
+                };
+                if(data){
 //        		$scope.zabbixdata.chartData = angular.fromJson(data);
 //        		console.log($scope.zabbixdata.chartData);
-/*        		$scope.zabbixgraph.data =  JSON.parse(data, function(key, value){
-        			if(propsToConvert.hasOwnProperty(key)){
-        				return parseInt(value, 10);
-        			}
-        			return value;
-        		});
-        		*/
-        		console.log($scope.zabbixdata.itemsSelect);
-            	$scope.zabbixgraph.data =  angular.fromJson(data);
-            	$scope.zabbixgraph.labels = [$scope.zabbixdata.itemsSelect.name];
-                $scope.zabbixGraphTitle = $scope.zabbixdata.itemsSelect.name;
-                $scope.zabbixgraph.postUnits = $scope.zabbixdata.itemsSelect.units;
-            	console.log($scope.zabbixgraph);
-                $timeout(function () {
-                    $("#itemSelected").empty();
-                	lineChartZabb($scope.zabbixgraph, "itemSelected");
-                }, 1000);
-        	}
-        };
-        $scope.updateChart = function(itemid){
+                    /*        		$scope.zabbixgraph.data =  JSON.parse(data, function(key, value){
+                     if(propsToConvert.hasOwnProperty(key)){
+                     return parseInt(value, 10);
+                     }
+                     return value;
+                     });
+                     */
+                    console.log($scope.zabbixdata.itemsSelect);
+                    $scope.zabbixgraph.data =  angular.fromJson(data);
+                    $scope.zabbixgraph.labels = [$scope.zabbixdata.itemsSelect.name];
+                    $scope.zabbixGraphTitle = $scope.zabbixdata.itemsSelect.name;
+                    $scope.zabbixgraph.postUnits = $scope.zabbixdata.itemsSelect.units;
+                    console.log($scope.zabbixgraph);
+                    $timeout(function () {
+                        $("#itemSelected").empty();
+                        lineChartZabb($scope.zabbixgraph, "itemSelected");
+                    }, 1000);
+                }
+            };
+
         	console.log(itemid);
         	MonitoringService.findZabbixHistory(instance.id, $scope.zabbixdata.hostSelect.hostid, itemid, zabbixHistoryCallback);
         };
@@ -108,19 +114,26 @@ angular.module('cloudoptingApp')
         var elasticcallback =  function(data, status, headers, config) {
             checkStatusCallback(data, status, headers, config);
             if(data) {
-                var graph = data;
-                $scope.graphsList.push({
-                    title: "Elastic Chart Line (dynamic)",
-                    chartId: "elasticchart_line"
-                });
-                $scope.graphsList.push({
-                    title: "Elastic Chart Bar (dynamic)",
-                    chartId: "elasticchart_bar"
-                });
-                $timeout(function () {
-                    lineChart(graph, "elasticchart_line");
-                    barChart(graph, "elasticchart_bar");
-                }, 1000);
+                var graphs = data;
+                console.log(data);
+                for(var i in graphs){
+                	$scope.graphsList.push({
+                        title: graphs[i].title,
+                        chartId: "elasticchart"+i
+                    });
+                	$timeout(function () {
+                		switch (graphs[i].type) {
+						case bar:
+							barChart(graphs[i], "elasticchart"+i);	
+							break;
+						default:
+							lineChart(graphs[i], "elasticchart"+i);
+							break;
+						}
+                    }, 1000);
+                	
+                }
+
             }
         };
         MonitoringService.findOneDataById(instance.id, elasticcallback);

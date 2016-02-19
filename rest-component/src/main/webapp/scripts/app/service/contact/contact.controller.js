@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ContactController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Contact) {
+    .controller('ContactController', function($scope, Contact) {
 
         $scope.success = null;
         $scope.error = null;

@@ -5,7 +5,7 @@ angular.module('cloudoptingApp')
     function (SERVICE, Principal, $rootScope, $scope, $state, $timeout, $log,
               localStorageService, OrganizationService, InstanceService) {
 
-        var instance = localStorageService.get(SERVICE.STORAGE.CURRENT_INSTANCE);
+        var instance = localStorageService.get(SERVICE.STORAGE.CHOOSE_ACCOUNT.INSTANCE);
 
         //Get accounts for organization and show it.
         var findByIdCallback = function(data, status, headers, config){

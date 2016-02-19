@@ -1,7 +1,11 @@
 angular.module('cloudoptingApp')
     .controller('FormGenerationController', function (SERVICE, localStorageService, $scope, $state, $log, CustomizationService, Principal, $timeout) {
 
-        var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
+
+        var currentApp = localStorageService.get(SERVICE.STORAGE.FORM_GENERATION.APPLICAITON);
 
         var publishFormCallback = function(data, status, headers, config) {
             checkStatusCallback(data, status, headers, config);
@@ -35,7 +39,7 @@ angular.module('cloudoptingApp')
                 var callback = function(data, status, headers, config) {
                     checkStatusCallback(data, status, headers, config);
                     if(data) {
-                        localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, data);
+                        localStorageService.set(SERVICE.STORAGE.CHOOSE_ACCOUNT.INSTANCE, data);
                         $state.go('chooseaccount');
                     }
                 };

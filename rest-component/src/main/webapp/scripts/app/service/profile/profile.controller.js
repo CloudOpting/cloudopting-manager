@@ -1,8 +1,13 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ProfileController', function (SERVICE, $scope, $state, $stateParams, $location, Principal, Auth, localStorageService, OrganizationService) {
+    .controller('ProfileController', function (SERVICE, localStorageService,
+                                               $scope, $state, $stateParams, $location,
+                                               Principal, Auth, OrganizationService) {
 
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
 
         $scope.tab_selected = 'tab_settings';
         if($stateParams.tab!=null && $stateParams.tab!=undefined && $stateParams.tab!="") {
@@ -84,17 +89,16 @@ angular.module('cloudoptingApp')
 */
 
         //CLOUD ACCOUNTS
-        localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, null);
+        localStorageService.set(SERVICE.STORAGE.PROFILE.CLOUD_ACCOUNT, null);
 
         $scope.$watch( "$scope.settingsAccount" , function(){
 
-            OrganizationService.getCloudAccount($scope.settingsAccount.organizationId.id,
-                function(data) {
-                    $scope.cloudAccList = data;
-                });
+            var callback = function(data) {
+                $scope.cloudAccList = data;
+            };
+            OrganizationService.getCloudAccount($scope.settingsAccount.organizationId.id, callback);
 
-
-        },true);
+        }, true);
 
         /*
         $scope.cloudAccList = [
@@ -141,8 +145,8 @@ angular.module('cloudoptingApp')
 
         $scope.goToEdit = function(cloudAccount){
             //Save the cloudAccount on a place where edit can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, cloudAccount);
-            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_ORG, $scope.settingsAccount.organizationId);
+            localStorageService.set(SERVICE.STORAGE.CLOUD_ACCOUNT.CLOUD_ACCOUNT, cloudAccount);
+            localStorageService.set(SERVICE.STORAGE.CLOUD_ACCOUNT.ORGANIZATION, $scope.settingsAccount.organizationId);
             $state.go('cloudaccount');
 
         };
@@ -150,8 +154,8 @@ angular.module('cloudoptingApp')
 
         $scope.goToAdd = function(){
             //Save the cloudAccount on a place where edit can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT, null);
-            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_ORG, $scope.settingsAccount.organizationId);
+            localStorageService.set(SERVICE.STORAGE.CLOUD_ACCOUNT.CLOUD_ACCOUNT, null);
+            localStorageService.set(SERVICE.STORAGE.CLOUD_ACCOUNT.ORGANIZATION, $scope.settingsAccount.organizationId);
             $state.go('cloudaccount');
 
         };

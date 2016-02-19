@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('AddDeployController', function (SERVICE, $scope, $state, $log, localStorageService, ApplicationService, InstanceService) {
+    .controller('AddDeployController', function (SERVICE, localStorageService,
+                                                 $scope, $state, $log,
+                                                 ApplicationService, InstanceService) {
         $scope.cloudNodeList = null;
         $scope.osList = null;
         $scope.skinList = null;
 
-        var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
+        var currentApp = localStorageService.get(SERVICE.STORAGE.ADD_DEPLOY.APPLICATION);
         if(currentApp !== undefined && currentApp !== null)
         {
             $scope.cloudNodeList = currentApp.cloudNodeList;

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('UserOrgManagerController', function (SERVICE, $scope, Principal, Auth, UserService, $filter,
-                                                      OrganizationService, $state, $log, localStorageService, $window, $timeout) {
+    .controller('UserOrgManagerController', function (SERVICE, localStorageService,
+                                                      $scope, $filter, $state, $log, $window, $timeout,
+                                                      Principal, Auth, UserService, OrganizationService) {
 
         /// USERS ////////////////////////////////
         $scope.currentPageU = 0;
@@ -16,7 +17,7 @@ angular.module('cloudoptingApp')
             return $filter('filter')($scope.users, $scope.searchTextUser).length;
         };
 
-        $scope.user = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_USER);
+        $scope.user = localStorageService.get(SERVICE.STORAGE.USER_MANAGER.USER);
 
         $scope.languages = [
             { langKey: "en", langName: "English" },
@@ -45,7 +46,7 @@ angular.module('cloudoptingApp')
 
         $scope.createUserPage = function() {
             $scope.user = null;
-            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_USER, null);
+            localStorageService.set(SERVICE.STORAGE.USER_MANAGER.USER, null);
             $state.go('user_detail_manager');
         };
 
@@ -71,7 +72,7 @@ angular.module('cloudoptingApp')
         };
 
         $scope.editUser = function(user) {
-            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_USER, user);
+            localStorageService.set(SERVICE.STORAGE.USER_MANAGER.USER, user);
             $state.go('user_detail_manager');
         };
 
@@ -79,11 +80,6 @@ angular.module('cloudoptingApp')
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'user_manager');
             };
-/*
-            for(var r in $scope.user.roles) {
-                $scope.user.roles.push(r);
-            }*/
-            //$scope.user.roles = [ '"' + $scope.user.roles + '"' ];
             UserService.create($scope.user, callback);
         };
 
@@ -108,7 +104,7 @@ angular.module('cloudoptingApp')
             return $filter('filter')($scope.organizations, $scope.searchTextOrg).length;
         };
 
-        $scope.org = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_ORG);
+        $scope.org = localStorageService.get(SERVICE.STORAGE.ORG_MANAGER.ORGANIZATION);
 
         $scope.status = null;
         $scope.types = null;
@@ -140,7 +136,7 @@ angular.module('cloudoptingApp')
 
         $scope.createOrganizationPage = function() {
             $scope.org = null;
-            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_ORG, null);
+            localStorageService.set(SERVICE.STORAGE.ORG_MANAGER.ORGANIZATION, null);
             $state.go('org_detail_manager');
         };
 
@@ -165,7 +161,7 @@ angular.module('cloudoptingApp')
         };
 
         $scope.editOrganization = function(organization) {
-            localStorageService.set(SERVICE.STORAGE.CURRENT_EDIT_ORG, organization);
+            localStorageService.set(SERVICE.STORAGE.ORG_MANAGER.ORGANIZATION, organization);
             $state.go('org_detail_manager');
         };
 
@@ -182,7 +178,11 @@ angular.module('cloudoptingApp')
             };
             OrganizationService.update($scope.org, callback);
         };
-        //////////////////////////////////////////
+
+        /////////////////
+        // ERROR HANDLING
+        /////////////////
+
         $scope.errorMessage = null;
 
         //function to check possible outputs for the end user information.

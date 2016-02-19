@@ -1,9 +1,14 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ListController', function (SERVICE, $rootScope, $scope, $state, $timeout, $log, $filter,
-                                            localStorageService, Principal, Auth, ApplicationService, $window) {
-        //TODO: Change applicationListUnpaginated to applicationList once it is developed properly
+    .controller('ListController', function (SERVICE, localStorageService,
+                                            $rootScope, $scope, $state, $timeout, $log, $filter, $window,
+                                            Principal, Auth, ApplicationService) {
+
+        if(!Principal.isAuthenticated()){
+            $state.go('login');
+        }
+
         $scope.currentPage = 0;
         $scope.pageSize = 8;
         $scope.applicationList = [];
@@ -27,74 +32,68 @@ angular.module('cloudoptingApp')
         else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)) {
             var callback = function (data, status, headers, config) {
                 if(checkStatusCallback(data, status, headers, config)) {
-                    var user = localStorageService.get(SERVICE.STORAGE.CURRENT_USER);
-                    for(var org in data.content){
-                        if(user.organizationId.id == data.content[org].organizationId.id){
-                            $scope.applicationList.push(data.content[org]);
+
+                    //Check the organization id of the user to filter the list.
+                    Principal.identity().then(function(user) {
+                        for(var org in data.content){
+                            if(user.organizationId.id == data.content[org].organizationId.id){
+                                $scope.applicationList.push(data.content[org]);
+                            }
                         }
-                    }
+                    });
+
                 }
             };
+            //FIXME: Change findAllUnpaginated for findAll.
             ApplicationService.findAllUnpaginated(callback);
         }
 
         //Function to get to publish a new service
         $scope.goToPublish = function () {
-            //Redirect to publication
+            localStorageService.set(SERVICE.STORAGE.PUBLISH.APPLICATION, null);
+            localStorageService.set(SERVICE.STORAGE.PUBLISH.IS_EDITION, false);
             $state.go('publish');
         };
 
-        //Function to go to the instances detail.
+        //Function to go to edit the service.
         $scope.goToEdit = function (app) {
-            //Save the ID on a place where edit can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
-
-            localStorageService.set(SERVICE.STORAGE.PUBLISH_EDITION, true);
-
-            //Redirect to instances
+            localStorageService.set(SERVICE.STORAGE.PUBLISH.APPLICATION, app);
+            localStorageService.set(SERVICE.STORAGE.PUBLISH.IS_EDITION, true);
             $state.go('publish');
         };
 
-        //Function to go to the instances detail.
+        //Function to go to the instances list.
         $scope.goToInstanceList = function (app) {
-            //Save the ID on a place where instances can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
-            //FIXME: Do we have to set it as a TESTING deployment?
-
-            //Redirect to instances
+            localStorageService.set(SERVICE.STORAGE.INSTANCES.APPLICATION, app);
             $state.go('instances');
         };
 
-        //Function to delete a service.
+        //Function to delete a service after confirmation of the user.
         $scope.goToDelete = function (app) {
 
             if($window.confirm('Are you sure that you want to delete this service?')) {
                 var callback = function(data, status, headers, config) {
                     if(checkStatusCallback(data, status, headers, config)) {
-                        //Deleteing current service on storage.
-                        localStorageService.set(SERVICE.STORAGE.CURRENT_APP, null);
-
                         //Reload page
                         $state.go($state.current, {}, {reload: true});
                     }
                 };
-                //Deleting a service
                 ApplicationService.delete(app.id, callback);
             } else {
-            //Nothing to do.
+                //Nothing to do.
             }
         };
 
-        //Function to go to the instances detail.
+        //Function to go to the form generation screen.
         $scope.goToCreateInstance = function (app) {
-            //Save the ID on a place where createinstance can get it.
-            localStorageService.set(SERVICE.STORAGE.CURRENT_APP, app);
-
-            //Redirect to instances
+            localStorageService.set(SERVICE.STORAGE.FORM_GENERATION.APPLICATION, app);
             $state.go('form_generation');
         };
 
-        //////////////////////////////////////////
+        //////////////////
+        // HANDLE ERRORS
+        //////////////////
+
         $scope.errorMessage = null;
 
         //function to check possible outputs for the end user information.
