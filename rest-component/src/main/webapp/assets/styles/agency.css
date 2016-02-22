@@ -56,7 +56,12 @@ h6 {
     font-family: "Montserrat",Helvetica,Arial,sans-serif;
     font-weight: 700;
 }
-
+.form-control:focus {
+    border-color: #DDD;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(221, 221, 221, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(221, 221, 221, .6);
+}
 .img-centered {
     margin: 0 auto;
 }
@@ -1113,22 +1118,24 @@ footer ul.quicklinks {
 .btn.btn-icon {
     border: 1px solid transparent;
     background-color: #FFF;
-    padding: 1px;
+    padding: 2px 4px;
     color: #485868;
     font-size: 10px;
     line-height: 12px;
     text-align: center;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
 }
 .btn.btn-icon i {
-    width: 30px;
-    height: 30px;
     display: block;
     margin: 0 auto 2px auto;
+    line-height: 25px;
+    font-size: 18px;
 }
 .btn.btn-icon:hover {
     border: 1px solid transparent;
     background-color: #FFF;
-    padding: 1px;
     color: #31abac;
 }
 .btn.btn-icon:hover i {
@@ -1277,22 +1284,24 @@ footer ul.quicklinks {
 }
 
 .nav-wizard > li.done > .nav-wizard-content {
-    background-color: #31abac;
-    color: #485868;
+    background-color: #e6e6e2;
+    color: #999999;
 }
 .nav-wizard > li.done .nav-wizard-content .badge{
-    color: #485868;
-    border: 1px solid #485868;
+    color: #999999;
+    border: 1px solid #999999;
 }
-
+.nav-wizard > li.done .nav-wizard-content:after,
 .nav-wizard > li.disabled .nav-wizard-content:before,
 .nav-wizard > li.done .nav-wizard-content:before {
-    border-right-color: #31abac;
+    border-right-color: #e6e6e2;
+}
+.nav-wizard > li.done:not(:last-child) .nav-wizard-content:after {
+    border-left: 20px solid #e6e6e2;
 }
 
 .nav-wizard > li.active .nav-wizard-content:after,
-.nav-wizard > li.disabled .nav-wizard-content:after,
-.nav-wizard > li.done .nav-wizard-content:after {
+.nav-wizard > li.disabled .nav-wizard-content:after {
     border-left-color: #31abac;
 }
 .nav-wizard > li.active .nav-wizard-content {
@@ -1396,12 +1405,15 @@ footer ul.quicklinks {
   justify-content: center;
   align-content: center;
   align-items: center;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  transition: all .3s;
 }
 
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
-  background-color: #31abac;
-  color: #485868;
+  background-color: #32414f;
+  color: #FFF;
 }
 
 .nav-tabs > li.active > a,
@@ -1410,7 +1422,9 @@ footer ul.quicklinks {
   color: #FFF;
   background-color: #31abac;
 }
-
+.nav-tabs > li > a:hover {
+    border-color: #32414f;
+}
 .tab-content {
   min-height: 300px;
 }
@@ -1724,3 +1738,59 @@ ul.bxslider {
 }
 
 /* strength-bar password */
+
+
+
+/* wrapper-wysiwyg */
+.wrapper-wysiwyg {
+    background-color: #FFF;
+    min-height: 465px;
+}
+.wrapper-wysiwyg .btn-default.disabled,
+.wrapper-wysiwyg .btn-default[disabled],
+.wrapper-wysiwyg fieldset[disabled] .btn-default,
+.wrapper-wysiwyg .btn-default.disabled:hover,
+.wrapper-wysiwyg .btn-default[disabled]:hover,
+.wrapper-wysiwyg fieldset[disabled] .btn-default:hover,
+.wrapper-wysiwyg .btn-default.disabled:focus,
+.wrapper-wysiwyg .btn-default[disabled]:focus,
+.wrapper-wysiwyg fieldset[disabled] .btn-default:focus,
+.wrapper-wysiwyg .btn-default.disabled.focus,
+.wrapper-wysiwyg .btn-default[disabled].focus,
+.wrapper-wysiwyg fieldset[disabled] .btn-default.focus,
+.wrapper-wysiwyg .btn-default.disabled:active,
+.wrapper-wysiwyg .btn-default[disabled]:active,
+.wrapper-wysiwyg fieldset[disabled] .btn-default:active,
+.wrapper-wysiwyg .btn-default.disabled.active,
+.wrapper-wysiwyg .btn-default[disabled].active,
+.wrapper-wysiwyg fieldset[disabled] .btn-default.active {
+    background-color: #485868;
+    color: #FFF;
+}
+.wrapper-wysiwyg .btn {
+    background-color: #485868;
+    color: #FFF;
+}
+.wrapper-wysiwyg .btn:hover,
+.wrapper-wysiwyg .btn:focus,
+.wrapper-wysiwyg .btn.active {
+    background-color: #31abac;
+    color: #FFF;
+}
+
+/* add generic styling for the editor */
+.wrapper-wysiwyg .ta-root.focussed > .ta-scroll-window.form-control {
+	border-color: #DDD;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(221, 221, 211, 0.6);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(221, 221, 221, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(221, 221, 221, 0.6);
+}
+
+.wrapper-wysiwyg .ta-toolbar {
+    padding: 10px 0;
+}
+.wrapper-wysiwyg .ta-scroll-window > .ta-bind {
+    outline: none;
+}
+/* end wrapper-wysiwyg */

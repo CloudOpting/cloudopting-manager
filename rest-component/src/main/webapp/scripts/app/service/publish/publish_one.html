@@ -37,11 +37,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="processID">Process ID</label>
+                                <label for="processID">Process ID</label>
                                 <input type="text" class="form-control" id="processID" autocomplete="off" ng-model="processID" disabled placeholder="Process ID"/>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="serviceName">Service Name</label>
+                                <label for="serviceName">Service Name</label>
                                 <input type="text" class="form-control" id="serviceName" placeholder="{{'publish.service.name' | translate}}"
                                        autocomplete="off" name="name" ng-model="application.applicationName"
                                        ng-minlength=1 required/>
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="toscaName">Tosca Name</label>
+                                <label for="toscaName">Tosca Name</label>
                                 <input type="text" class="form-control" id="toscaName" placeholder="{{'publish.service.toscaname' | translate}}"
                                        autocomplete="off" name="toscaname" ng-model="application.applicationToscaName"
                                        ng-pattern="/^[a-zA-Z0-9\-_]{0,10}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10"/>
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="termsAndConditions">Terms and conditions link</label>
+                                <label for="termsAndConditions">Terms and conditions link</label>
                                 <input type="text" class="form-control" id="termsAndConditions" placeholder="{{'publish.service.termsAndConditions' | translate}}"
                                           autocomplete="off" name="termsAndConditions" ng-model="application.terms"
                                           required/>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="servicePrice">Service Price</label>
+                                <label for="servicePrice">Service Price</label>
                                 <input type="text" class="form-control" id="servicePrice" placeholder="{{'publish.service.servicePrice' | translate}}"
                                        autocomplete="off" name="servicePrice" ng-model="application.servicePrice"
                                        required/>
@@ -122,7 +122,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="platformPrice">Platform Price</label>
+                                <label for="platformPrice">Platform Price</label>
                                 <input type="text" class="form-control" id="platformPrice" placeholder="{{'publish.service.platformPrice' | translate}}"
                                        autocomplete="off" name="platformPrice" ng-model="application.platformPrice"
                                        required/>
@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="applicationSubscriberMail">Subscriber mail template</label>
+                                <label for="applicationSubscriberMail">Subscriber mail template</label>
                                 <textarea class="form-control" id="applicationSubscriberMail" placeholder="{{'publish.service.applicationSubscriberMail' | translate}}"
                                           autocomplete="off" name="applicationSubscriberMail" ng-model="application.applicationSubscriberMail" rows="3"
                                           required/>
@@ -170,7 +170,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="applicationSpMail">Provider mail template</label>
+                                <label for="applicationSpMail">Provider mail template</label>
                                 <textarea class="form-control" id="applicationSpMail" placeholder="{{'publish.service.applicationSpMail' | translate}}"
                                           autocomplete="off" name="applicationSpMail" ng-model="application.applicationSpMail" rows="3"
                                           required/>
@@ -185,7 +185,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="shortDescription">Short Description</label>
+                                <label for="shortDescription">Short Description</label>
                                 <textarea class="form-control" id="shortDescription" placeholder="{{'publish.service.shortDescription' | translate}}"
                                           autocomplete="off" name="shortDescription" ng-model="application.shortDescription" rows="3"
                                           required/>
@@ -200,10 +200,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-lg-12">
                                     <!-- FIXME: ADDED NEW STYLE IN ORDER TO SOLVE VISIBILITY PROBLEMS -->
-                                    <div class="form-group" style="height: 600px">
-                                        <div class="form-control textarea-lg">
+                                    <div class="form-group">
+                                        <div class="textarea-lg wrapper-wysiwyg">
                                             <!-- FIXME: ADDED SOME KIND OF TEMPLATE. FIX THIS -->
                                             <div text-angular placeholder="{{'publish.service.description' | translate}}"
                                                  rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
@@ -249,47 +249,48 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+
                                     <div class="form-group">
                                         <div accept="image/*,audio/*,video/*" class="drop-box">
                                             <span class="">Drag and drop to upload (Not working yet)</span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!--FIXME: We should delete the BR -->
-                            <br/>
+                                    <div class="form-group">
+                                        <label translate="publish.service.image">Service Image</label>
+                                        <!--ngf-multiple="multiple"-->
+                                        <div class="btn btn-info" ngf-select ngf-multiple="false" ngf-change="newPromoImage($files)" translate="publish.select.file">Select File</div>
+                                    </div>
+
+                                    <div class="form-group row" ng-show="files">
+                                        <label translate="publish.selectedfile">Selected File</label>
+                                        <!--
+                                        <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
+                                        -->
+                                        <div ng-repeat="file in files">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" translate="publish.content.file">File</span>
+                                                <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-danger" ng-click="deletePromotionalImage(file)" translate="publish.button.delete">Delete Item</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
-                            <div class="form-group">
-                                <label class="darkgreen" translate="publish.service.image">Service Image</label>
-                                <!--ngf-multiple="multiple"-->
-                                <div class="btn btn-info" ngf-select ngf-multiple="false" ngf-change="newPromoImage($files)" translate="publish.select.file">Select File</div>
-                            </div>
-
-                            <div class="form-group row" ng-show="files">
-                                <label translate="publish.selectedfile">Selected File</label>
-                                <!--
-                                <input ng-repeat="file in files" class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
-                                -->
-                                <div ng-repeat="file in files">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" translate="publish.content.file">File</span>
-                                        <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled />
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-danger" ng-click="deletePromotionalImage(file)" translate="publish.button.delete">Delete Item</button>
-                                        </span>
+                                    <div class="checkbox">
+                                        <!-- FIXME: Deleted sr-only class -->
+                                        <label for="applicationIsTryable">
+                                            <input type="checkbox" id="applicationIsTryable" placeholder="{{'publish.service.applicationIsTryable' | translate}}"
+                                                    autocomplete="off" name="applicationIsTryable" ng-model="application.applicationIsTryable" />
+                                        Can the platform be tried</label>
                                     </div>
                                 </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <!-- FIXME: Deleted sr-only class -->
-                                <label for="applicationIsTryable">Can the platform be tried</label>
-                                <input type="checkbox" class="form-control" id="applicationIsTryable" placeholder="{{'publish.service.applicationIsTryable' | translate}}"
-                                       autocomplete="off" name="applicationIsTryable" ng-model="application.applicationIsTryable"/>
                             </div>
 
                             <div class="row row-actions">

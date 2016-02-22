@@ -48,12 +48,12 @@
 
                             <div class="row row-actions">
                                 <div class="col-xs-6">
-                                    <button ng-hide="cloudAcc.id" type="submit" ng-disabled="form.$invalid" class="btn btn-success" translate="cloudaccount.form.button.save">Save</button>
-                                    <button ng-show="cloudAcc.id" ng-disabled="form.$invalid" class="btn btn-success" ng-click="updateCloudAccount()" translate="cloudaccount.form.button.update">Update</button>
-                                    <button ng-show="cloudAcc.id" class="btn btn-success" ng-click="deleteCloudAccount()" translate="cloudaccount.form.button.delete">Delete</button>
+                                    <button ng-hide="cloudAcc.id" type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="cloudaccount.form.button.save">Save</button>
+                                    <button ng-show="cloudAcc.id" ng-disabled="form.$invalid" class="btn btn-primary" ng-click="updateCloudAccount()" translate="cloudaccount.form.button.update">Update</button>
+                                    <button ng-show="cloudAcc.id" class="btn btn-secondary" ng-click="deleteCloudAccount()" translate="cloudaccount.form.button.delete">Delete</button>
                                 </div>
                                 <div class="col-xs-6">
-                                    <button ng-click="goToProfile()" class="btn btn-primary pull-right" translate="cloudaccount.form.button.back">Back</button>
+                                    <button ng-click="goToProfile()" class="btn btn-secondary pull-right" translate="cloudaccount.form.button.back">Back</button>
                                 </div>
                             </div>
                         </form>
