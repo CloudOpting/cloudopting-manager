@@ -1118,10 +1118,10 @@ footer ul.quicklinks {
 .btn.btn-icon {
     border: 1px solid transparent;
     background-color: #FFF;
-    padding: 2px 4px;
+    padding: 3px 6px;
     color: #485868;
     font-size: 10px;
-    line-height: 12px;
+    line-height: 1;
     text-align: center;
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
@@ -1129,8 +1129,8 @@ footer ul.quicklinks {
 }
 .btn.btn-icon i {
     display: block;
-    margin: 0 auto 2px auto;
-    line-height: 25px;
+    margin: 3px auto 3px auto;
+    line-height: 1;
     font-size: 18px;
 }
 .btn.btn-icon:hover {
@@ -1794,3 +1794,14 @@ ul.bxslider {
     outline: none;
 }
 /* end wrapper-wysiwyg */
+
+/* pagination */
+.pagination-number {
+    display: inline-block;
+    padding: 3px 6px;
+    background-color: #FFF;
+    text-align: center;
+    font-size: 16px;
+    vertical-align: middle;
+    line-height: 1.6;
+}

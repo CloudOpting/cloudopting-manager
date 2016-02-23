@@ -41,12 +41,8 @@
                                                 <td>{{user.email}}</td>
                                                 <td>{{user.organizationId.organizationName}}</td>
                                                 <td class="text-right">
-                                                    <button type="button" ng-click="editUser(user)" class="btn btn-icon" >
-                                                        <i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'user_org_manager.button.edit' | translate}}
-                                                    </button>
-                                                    <button type="button" ng-click="deleteUser(user.id)" class="btn btn-icon" >
-                                                        <i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'user_org_manager.button.delete' | translate}}
-                                                    </button>
+                                                    <button type="button" ng-click="editUser(user)" class="btn btn-icon" ><i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate}}</button>
+                                                    <button type="button" ng-click="deleteUser(user.id)" class="btn btn-icon" ><i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate}}</button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -58,9 +54,9 @@
                             <!-- PAGINATION BUTTONS -->
                             <div class="form-group">
                                 <div class="input-group text-center" style="display: block">
-                                    <button type="button" ng-disabled="currentPageU == 0" ng-click="currentPageU=currentPageU-1" >&lt;&lt;</button>
-                                    {{currentPageU+1}}/{{numberOfPagesU()}}
-                                    <button type="button" ng-disabled="currentPageU >= dataLengthU()/pageSizeU - 1" ng-click="currentPageU=currentPageU+1" >&gt;&gt;</button>
+                                    <button class="btn btn-icon" type="button" ng-disabled="currentPageU == 0" ng-click="currentPageU=currentPageU-1" ><i class="fa fa-chevron-left"></i></button>
+                                    <span class="pagination-number">{{currentPageU+1}}/{{numberOfPagesU()}}</span>
+                                    <button class="btn btn-icon" type="button" ng-disabled="currentPageU >= dataLengthU()/pageSizeU - 1" ng-click="currentPageU=currentPageU+1" ><i class="fa fa-chevron-right"></i></button>
                                 </div>
                             </div>
                         </form>
