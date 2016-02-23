@@ -69,18 +69,18 @@ public class MonitordataService {
 			List<Monitordata> eData = this.getMonitorData(ei.getContainer(), ei.getCondition(), ei.getFields(),
 					ei.getType(), ei.getPagination());
 
-			ArrayList<ElasticData> graphData = new ArrayList<ElasticData>();
-			for (Monitordata md : eData) {
-				ElasticData ed = new ElasticData(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(md.getTimestamp()),
+			ElasticData graphData[] = new ElasticData[eData.size()];
+			for (int k=0; k< eData.size(); k++) {
+				ElasticData ed = new ElasticData(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(eData.get(k).getTimestamp()),
 						"1");
 				log.debug(ed.toString());
-				graphData.add(ed);
+				graphData[k] = ed;
 			}
 			ElasticGraphData egd = new ElasticGraphData();
-			log.debug(new Integer(graphData.size()).toString());
-			if (!graphData.isEmpty()) {
-				egd.setData((ElasticData[]) graphData.toArray());
-			}
+//			log.debug(new Integer(graphData.size()).toString());
+//			if (!graphData.isEmpty()) {
+				egd.setData( graphData);
+//			}
 			egd.setTitle(ei.getTitle());
 			egd.setDescription(ei.getDescription());
 			egd.setType(ei.getType());

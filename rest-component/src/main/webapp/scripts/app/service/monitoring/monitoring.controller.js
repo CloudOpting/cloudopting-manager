@@ -119,7 +119,7 @@ angular.module('cloudoptingApp')
                     });
                 	$timeout(function () {
                 		switch (graphs[i].type) {
-						case bar:
+						case "bar":
 							barChart(graphs[i], "elasticchart"+i);	
 							break;
 						default:

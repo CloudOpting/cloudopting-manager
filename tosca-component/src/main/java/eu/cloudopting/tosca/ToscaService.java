@@ -1,44 +1,77 @@
 package eu.cloudopting.tosca;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.text.AbstractDocument.Content;
+import javax.xml.bind.JAXBException;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.xalan.extensions.XPathFunctionResolverImpl;
 import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 import org.apache.xerces.jaxp.DocumentBuilderImpl;
+
+import org.apache.xerces.xs.XSModel;
 import org.apache.xml.dtm.ref.DTMNodeList;
 import org.apache.xpath.jaxp.XPathFactoryImpl;
 import org.apache.xpath.jaxp.XPathImpl;
+import org.eclipse.persistence.dynamic.DynamicEntity;
+import org.eclipse.persistence.dynamic.DynamicType;
+import org.eclipse.persistence.exceptions.DynamicException;
+import org.eclipse.persistence.internal.oxm.Marshaller;
+import org.eclipse.persistence.jaxb.JAXBMarshaller;
+import org.eclipse.persistence.jaxb.dynamic.DynamicJAXBContext;
+import org.eclipse.persistence.jaxb.dynamic.DynamicJAXBContextFactory;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import eu.cloudopting.exception.ToscaException;
 import eu.cloudopting.tosca.utils.CSARUtils;
 import eu.cloudopting.tosca.utils.CustomizationUtils;
 import eu.cloudopting.tosca.utils.R10kResultHandler;
 import eu.cloudopting.tosca.utils.ToscaUtils;
+import jlibs.xml.sax.XMLDocument;
+import jlibs.xml.xsd.XSInstance;
+import jlibs.xml.xsd.XSParser;
+import scala.annotation.meta.getter;
 
 @Service
 public class ToscaService {
