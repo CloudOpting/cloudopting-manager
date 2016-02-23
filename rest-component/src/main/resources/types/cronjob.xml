@@ -1,0 +1,23 @@
+<NodeType name="CronJob" shape="ellipse" color="#ffffff" image="cron-jobs.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="CronJobProperties"
+		type="tCronJobProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="CronJob"
+	name="CronJobImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="CronJobPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="CronJobPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="CronJobPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/CronJobPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

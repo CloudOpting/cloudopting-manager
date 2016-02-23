@@ -1,0 +1,37 @@
+<NodeType name="Tomcat" shape="ellipse" color="#ffffff" image="tomcat.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="TomcatProperties"
+		type="tTomcatProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+	<CapabilityDefinitions>
+		<CapabilityDefinition capabilityType="portsExposeCaps" />
+	</CapabilityDefinitions>
+</NodeType>
+<NodeTypeImplementation nodeType="Tomcat" name="TomcatImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="TomcatPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="TomcatPT">
+		</DeploymentArtifact>
+		<DeploymentArtifact artifactType="PuppetModule"
+			artifactRef="TomcatPM">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="TomcatPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/TomcatPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetModule" id="TomcatPM">
+	<Properties
+		xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
+		<co:PuppetModuleProperties>
+			<co:module>tomcat</co:module>
+			<co:git>https://github.com/puppetlabs/puppetlabs-tomcat</co:git>
+		</co:PuppetModuleProperties>
+	</Properties>
+</ArtifactTemplate>

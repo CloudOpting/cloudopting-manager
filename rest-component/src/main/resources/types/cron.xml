@@ -1,0 +1,35 @@
+<NodeType name="Cron" shape="ellipse" color="#ffffff" image="cron.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="CronProperties"
+		type="tCronProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="Cron"
+	name="CronImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="CronPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="CronPT">
+		</DeploymentArtifact>
+		<DeploymentArtifact artifactType="PuppetModule"
+			artifactRef="CronPM">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="CronPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/CronPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetModule" id="CronPM">
+	<Properties
+		xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
+		<co:PuppetModuleProperties>
+			<co:module>rmueller-cron</co:module>
+			<co:git>https://github.com/roman-mueller/rmueller-cron</co:git>
+		</co:PuppetModuleProperties>
+	</Properties>
+</ArtifactTemplate>

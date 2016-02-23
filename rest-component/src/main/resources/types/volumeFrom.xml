@@ -1,0 +1,4 @@
+<RelationshipType name="volumeFrom" style="solid" color="#992299">
+	<PropertiesDefinition element="volumeFromProperties"
+		type="tvolumeFromProperties" />
+</RelationshipType>

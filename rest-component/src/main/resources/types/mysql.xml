@@ -1,0 +1,36 @@
+<NodeType name="MySQL" shape="ellipse" color="#ffffff" image="mysql.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="MySQLProperties"
+		type="tMySQLProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+	<CapabilityDefinitions>
+		<CapabilityDefinition capabilityType="portsExposeCaps" />
+	</CapabilityDefinitions>
+</NodeType>
+<NodeTypeImplementation nodeType="MySQL" name="MySQLImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="MySQLPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="MySQLPT">
+		</DeploymentArtifact>
+		<DeploymentArtifact artifactType="PuppetModule"
+			artifactRef="MySQLPM">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="MySQLPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/MySQLPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetModule" id="MySQLPM">
+	<Properties xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
+		<co:PuppetModuleProperties>
+			<co:module>mysql</co:module>
+			<co:git>https://github.com/puppetlabs/puppetlabs-mysql</co:git>
+		</co:PuppetModuleProperties>
+	</Properties>
+</ArtifactTemplate>

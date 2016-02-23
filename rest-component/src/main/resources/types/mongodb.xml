@@ -1,0 +1,38 @@
+<NodeType name="MongoDB" shape="ellipse" color="#332299" image="docker.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="MongoDBProperties"
+		type="tMongoDBProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+	<CapabilityDefinitions>
+		<CapabilityDefinition capabilityType="portsExposeCaps" />
+	</CapabilityDefinitions>
+</NodeType>
+<NodeTypeImplementation nodeType="MongoDB"
+	name="MongoDBImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="MongoDBPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="MongoDBPT">
+		</DeploymentArtifact>
+		<DeploymentArtifact artifactType="PuppetModule"
+			artifactRef="MongoDBPM">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="MongoDBPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/MongoDBPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetModule" id="MongoDBPM">
+	<Properties
+		xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
+		<co:PuppetModuleProperties>
+			<co:module>mongodb</co:module>
+			<co:git>https://github.com/puppetlabs/puppetlabs-mongodb</co:git>
+		</co:PuppetModuleProperties>
+	</Properties>
+</ArtifactTemplate>

@@ -1,0 +1,23 @@
+<NodeType name="MySQLDatabase" shape="ellipse" color="#ffffff" image="mysqldb.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="MySQLDatabaseProperties"
+		type="tMySQLDatabaseProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="MySQLDatabase"
+	name="MySQLDatabaseImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="MySQLDatabasePT.ftl"
+			artifactType="PuppetTemplate" artifactRef="MySQLDatabasePT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="MySQLDatabasePT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/MySQLDatabasePT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

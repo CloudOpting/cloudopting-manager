@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definitions id="" name="" targetNamespace="http://www.cloudopting.eu"
+	xmlns="http://docs.oasis-open.org/tosca/ns/2011/12" xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes"
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://docs.oasis-open.org/tosca/ns/2011/12 ../Types/TOSCA-v1.0.xsd http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes
+		../Types/CloudOptingTypes.xsd">
+	<ServiceTemplate id="" name="">
+		<TopologyTemplate>
+		</TopologyTemplate>
+		<ArtifactType name="PuppetTemplate">
+		</ArtifactType>
+		<ArtifactType name="DockerfileTemplate">
+		</ArtifactType>
+		<ArtifactType name="PuppetModule">
+			<PropertiesDefinition element="PuppetModuleProperties" />
+		</ArtifactType>
+	</ServiceTemplate>
+</Definitions>
