@@ -1,4 +1,4 @@
-<section class="wizzard-modal" id="signin">
+<section class="wizzard-modal">
     <div class="container wrapper-white">
         <div class="row">
             <div class="col-xs-12 col-md-10 col-md-offset-1">
@@ -42,13 +42,13 @@
                                                 <td>{{instance.customizationCreation}}</td>
                                                 <td>{{instance.statusId.status}}</td>
                                                 <td class="text-right">
-                                                    <button type="button" class="btn btn-icon" ng-click="test(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.test' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="demo(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.demo' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="deploy(instance)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'instances.button.deploy' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="stop(instance)" ><i class="icon"><img src="" /></i>{{'instances.button.stop' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="delete(instance)" ><i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'instances.button.delete' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="start(instance)" ><i class="icon"><img src="" /></i>{{'instances.button.start' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="monitor(instance)" ><i class="icon"><img src="assets/img/auth/icn_list.png" /></i>{{'instances.button.monitor' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="test(instance)" ><i class="fa fa-flask"></i>{{'instances.button.test' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="demo(instance)" ><i class="fa fa-external-link"></i>{{'instances.button.demo' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="deploy(instance)" ><i class="fa fa-rocket"></i>{{'instances.button.deploy' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="start(instance)" ><i class="fa fa-play-circle"></i>{{'instances.button.start' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="stop(instance)" ><i class="fa fa-stop-circle"></i>{{'instances.button.stop' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="monitor(instance)" ><i class="fa fa-bar-chart"></i>{{'instances.button.monitor' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="delete(instance)" ><i class="fa fa-trash-o"></i>{{'instances.button.delete' | translate}}</button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -60,9 +60,9 @@
                             <!-- PAGINATION BUTTONS -->
                             <div class="form-group">
                                 <div class="input-group text-center" style="display: block">
-                                    <button type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" >&lt;&lt;</button>
-                                    {{currentPage+1}}/{{numberOfPages()}}
-                                    <button type="button" ng-disabled="currentPage >= dataLength()/pageSize - 1" ng-click="currentPage=currentPage+1" >&gt;&gt;</button>
+                                    <button class="btn btn-icon" type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" ><i class="fa fa-chevron-left"></i></button>
+                                    <span class="pagination-number">{{currentPage+1}}/{{numberOfPages()}}</span>
+                                    <button class="btn btn-icon" type="button" ng-disabled="currentPage >= dataLength()/pageSize - 1" ng-click="currentPage=currentPage+1" ><i class="fa fa-chevron-right"></i></button>
                                 </div>
                             </div>
                             <!--

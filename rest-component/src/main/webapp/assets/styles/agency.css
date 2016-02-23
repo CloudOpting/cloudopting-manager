@@ -1805,3 +1805,10 @@ ul.bxslider {
     vertical-align: middle;
     line-height: 1.6;
 }
+
+
+
+.graph-content svg {
+    background-color: white;
+    margin: 10px 0;
+}
