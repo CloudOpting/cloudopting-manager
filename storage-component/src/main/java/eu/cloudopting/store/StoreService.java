@@ -105,10 +105,12 @@ public class StoreService {
 	}
 
 	public InputStream getDocumentAsStream(String originPath){
-    	InputStream retStream = null;
-    	log.debug("in getDocumentAsStream");
-		log.debug("originPath: "+originPath);
-		try {
+		log.debug("in getDocumentAsStream");
+		InputStream retStream = null;
+    	log.debug("Original Path:'"+originPath+"'");
+    	originPath = originPath.replaceFirst(getJrHttp(), "/");
+    	log.debug("Relative Path:'"+originPath+"'");
+    	try {
 			Node storedFile = session.getRootNode().getNode(originPath);
 			log.debug("file: "+storedFile.toString());
 			PropertyIterator props = storedFile.getProperties();
