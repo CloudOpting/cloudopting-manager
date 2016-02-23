@@ -1,0 +1,38 @@
+<NodeType name="PostgreSQL" shape="ellipse" color="#ffffff" image="postgresql.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="PostgreSQLProperties"
+		type="tPostgreSQLProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+	<CapabilityDefinitions>
+		<CapabilityDefinition capabilityType="portsExposeCaps" />
+	</CapabilityDefinitions>
+</NodeType>
+<NodeTypeImplementation nodeType="PostgreSQL"
+	name="PostgreSQLImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="PostgreSQLPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="PostgreSQLPT">
+		</DeploymentArtifact>
+		<DeploymentArtifact artifactType="PuppetModule"
+			artifactRef="PostgreSQLPM">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="PostgreSQLPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/PostgreSQLPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetModule" id="PostgreSQLPM">
+	<Properties
+		xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
+		<co:PuppetModuleProperties>
+			<co:module>postgresql</co:module>
+			<co:git>https://github.com/puppetlabs/puppetlabs-postgresql</co:git>
+		</co:PuppetModuleProperties>
+	</Properties>
+</ArtifactTemplate>
