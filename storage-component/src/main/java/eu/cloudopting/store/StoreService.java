@@ -108,7 +108,7 @@ public class StoreService {
 		log.debug("in getDocumentAsStream");
 		InputStream retStream = null;
     	log.debug("Original Path:'"+originPath+"'");
-    	originPath = originPath.replaceFirst(getJrHttp(), "/");
+    	originPath = originPath.replaceFirst(getJrHttp(), "");
     	log.debug("Relative Path:'"+originPath+"'");
     	try {
 			Node storedFile = session.getRootNode().getNode(originPath);
