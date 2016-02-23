@@ -86,6 +86,16 @@ public class ToscaService {
 
 	private HashMap<String, DocumentImpl> xdocHash = new HashMap<String, DocumentImpl>();
 
+	private ArrayList<String> nodeTypeList;
+	private JSONObject nodeJsonList;
+	private JSONObject nodeJsonTypeList;
+	private ArrayList<String> edgeTypeList;
+	private JSONObject edgeJsonList;
+	private JSONObject edgeJsonTypeList;
+	private DocumentImpl definitionTemplate;
+	private DocumentImpl documentTypes;
+	private JSONObject nodeTypePropList;
+
 	@Autowired
 	private ToscaUtils toscaUtils;
 
@@ -106,9 +116,12 @@ public class ToscaService {
 		this.xpath.setXPathFunctionResolver(new XPathFunctionResolverImpl());
 		DocumentBuilderFactoryImpl dbf = new DocumentBuilderFactoryImpl();
 		dbf.setNamespaceAware(true);
+		dbf.setXIncludeAware(true);
+		dbf.setIgnoringElementContentWhitespace(true);
 
 		try {
 			this.db = (DocumentBuilderImpl) dbf.newDocumentBuilder();
+			db.setErrorHandler(new ErrorHandlerImpl());
 		} catch (ParserConfigurationException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -900,6 +913,37 @@ public class ToscaService {
 
 	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data, String organizationkey, String serviceName) {
 		return customizationUtils.generateCustomizedTosca(idApp, csarPath, data, organizationkey, serviceName);
+
+	}
+	
+	static class ErrorHandlerImpl implements ErrorHandler {
+
+		/**
+		 *
+		 * @param sAXParseException
+		 * @throws SAXException
+		 */
+		public void error(SAXParseException sAXParseException) throws SAXException {
+			System.out.println(sAXParseException);
+		}
+
+		/**
+		 *
+		 * @param sAXParseException
+		 * @throws SAXException
+		 */
+		public void fatalError(SAXParseException sAXParseException) throws SAXException {
+			System.out.println(sAXParseException);
+		}
+
+		/**
+		 *
+		 * @param sAXParseException
+		 * @throws SAXException
+		 */
+		public void warning(org.xml.sax.SAXParseException sAXParseException) throws org.xml.sax.SAXException {
+			System.out.println(sAXParseException);
+		}
 
 	}
 }
