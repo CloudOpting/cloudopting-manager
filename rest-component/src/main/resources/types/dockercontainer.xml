@@ -1,0 +1,40 @@
+<NodeType name="DockerContainer" shape="pentagon" color="#ffffff" image="docker.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="DockerContainerProperties"
+		type="tDockerContainerProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="writePuppetDockerTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+	<CapabilityDefinitions>
+		<CapabilityDefinition capabilityType="DockerContainerPortsCaps" />
+	</CapabilityDefinitions>
+</NodeType>
+<NodeTypeImplementation nodeType="DockerContainer"
+	name="DockerContainerImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="DockerContainer.dockerfile"
+			artifactType="DockerfileTemplate" artifactRef="DockerContainerDT">
+		</DeploymentArtifact>
+		<DeploymentArtifact name="sd" artifactType="PuppetTemplate"
+			artifactRef="DockerContainerPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<CapabilityType name="DockerContainerPortsCaps">
+	<PropertiesDefinition element="DockerContainerPortsCaps"
+		type="tDockerContainerPortsCaps" />
+</CapabilityType>
+<ArtifactTemplate type="DockerfileTemplate" id="DockerContainerDT"
+	name="">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/DockerContainerDT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetTemplate" id="DockerContainerPT"
+	name="">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/DockerContainerPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

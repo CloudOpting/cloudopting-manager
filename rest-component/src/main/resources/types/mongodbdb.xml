@@ -1,0 +1,23 @@
+<NodeType name="MongoDBDatabase" shape="ellipse" color="#332299" image="docker.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="MongoDBDatabaseProperties"
+		type="tMongoDBDatabaseProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="MongoDBDatabase"
+	name="MongoDBDatabaseImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="MongoDBDatabasePT.ftl"
+			artifactType="PuppetTemplate" artifactRef="MongoDBDatabasePT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="MongoDBDatabasePT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/MongoDBDatabasePT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

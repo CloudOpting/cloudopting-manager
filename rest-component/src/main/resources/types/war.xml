@@ -1,0 +1,23 @@
+<NodeType name="War" shape="ellipse" color="#ffffff" image="war.jpg">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="WarProperties"
+		type="tWarProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="War"
+	name="WarImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="WarPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="WarPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="WarPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/WarPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

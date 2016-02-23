@@ -1,0 +1,23 @@
+<NodeType name="ApacheVirtualHost" shape="ellipse" color="#ffffff" image="apachevh.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="ApacheVirtualHostProperties"
+		type="tApacheVirtualHostProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="ApacheVirtualHost"
+	name="ApacheVirtualHostImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="ApacheVirtualHostPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="ApacheVirtualHostPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="ApacheVirtualHostPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/ApacheVirtualHostPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

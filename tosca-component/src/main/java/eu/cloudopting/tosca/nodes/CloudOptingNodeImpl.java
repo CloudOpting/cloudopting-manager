@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.tosca.ToscaService;
+import eu.cloudopting.tosca.nodes.CloudOptingNode;;
 
 @Service
 public class CloudOptingNodeImpl implements CloudOptingNode {
