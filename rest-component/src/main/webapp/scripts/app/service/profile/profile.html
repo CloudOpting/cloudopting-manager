@@ -219,9 +219,9 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="darkgreen" translate="cloudaccount.col.name">Cloud Account Name</th>
-                                        <th class="darkgreen" translate="cloudaccount.col.provider">Provider</th>
-                                        <th class="darkgreen" translate="cloudaccount.col.actions">Actions</th>
+                                        <th translate="cloudaccount.col.name">Cloud Account Name</th>
+                                        <th translate="cloudaccount.col.provider">Provider</th>
+                                        <th translate="cloudaccount.col.actions">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -229,8 +229,8 @@
                                         <td>{{cloudAcc.name}}</td>
                                         <td>{{cloudAcc.providerId.provider}}</td>
                                         <td class="text-right">
-                                            <button type="button" class="btn btn-icon" ng-click="goToEdit(cloudAcc)"><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'cloudaccount.button.edit' | translate}}</button>
-                                            <button type="button" class="btn btn-icon" ng-click="deleteCloudAccount(cloudAcc)"><i class="icon"><img src="assets/img/auth/icn_delete.png" /></i>{{'cloudaccount.button.delete' | translate}}</button>
+                                            <button type="button" class="btn btn-icon" ng-click="goToEdit(cloudAcc)"><i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate}}</button>
+                                            <button type="button" class="btn btn-icon" ng-click="deleteCloudAccount(cloudAcc)"><i class="fa fa-trash-o"></i>{{'cloudaccount.button.delete' | translate}}</button>
                                         </td>
                                     </tr>
                                 </tbody>
