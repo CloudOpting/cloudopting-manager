@@ -70,26 +70,31 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			console.debug($scope.templateData);
 			$rootScope.$broadcast('appChanged');
 		};
-		ToscaideService.getNodes(callback);
+		ToscaideService.getNodeTypes(callback);
 	};
 	getNodeTypes();
 	
+	var getEdges = function() {
+		var callback = function(data, status, headers, config) {
+			$scope.formArr = data;
+			console.debug($scope.formArr);
+			$rootScope.$broadcast('appChanged');
+		};
+		ToscaideService.getEdges(callback);
+	};
+	getEdges();
+	
+	var getEdgeTypes = function() {
+		var callback = function(data, status, headers, config) {
+			$scope.templateEdgeData = data;
+			console.debug($scope.templateEdgeData);
+			$rootScope.$broadcast('appChanged');
+		};
+		ToscaideService.getEdgeTypes(callback);
+	};
+	getEdgeTypes();
 	
 	/*
-	 * $http.get('/api/nodes').then(function data(response) {
-	 * console.debug('called api'); console.debug(response); $scope.objTypes =
-	 * response.data; console.debug($scope.objTypes);
-	 * $rootScope.$broadcast('appChanged');
-	 * 
-	 * });
-	 * 
-	 * 
-	 * $http.get('/api/nodeTypes').then(function data(response) {
-	 * console.debug('called nodeTypes'); console.debug(response);
-	 * $scope.templateData = response.data; console.debug($scope.templateData);
-	 * $rootScope.$broadcast('appChanged');
-	 * 
-	 * });
 	 * 
 	 * $http.get('/api/edges').then(function data(response) {
 	 * console.debug('called edges'); console.debug(response); $scope.formArr =
