@@ -7,7 +7,7 @@ angular
 	.module('cloudoptingApp')
 	.factory(
 			'ToscaideService',
-			function($http, $log) {
+			function(SERVICE, $http, $log) {
 				var baseURI = 'api';
 				var header = {
 					'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -16,7 +16,7 @@ angular
 					getNodes : function(callback) {
 						var endpoint = baseURI + SERVICE.SEPARATOR	+ "nodes";
 						return $http
-								.post(endpoint, {}, {
+								.get(endpoint, {}, {
 									headers : header
 								})
 								.success(
@@ -25,7 +25,7 @@ angular
 									})
 								.error(
 									function(data, status, headers, config) {
-										$log.error("IdeService.getNodes error. "
+										$log.error("ToscaideService.getNodes error. "
 													+ "Data: "	+ data
 													+ ", status: "	+ status
 													+ ", headers: "	+ headers
@@ -33,11 +33,10 @@ angular
 										callback(data, status, headers,	config);
 										});
 					},
-
 					getNodeTypes : function(callback) {
-						var endpoint = baseURI + SERVICE.SEPARATOR	+ "nodes";
+						var endpoint = baseURI + SERVICE.SEPARATOR	+ "nodeTypes";
 						return $http
-								.post(endpoint, {}, {
+								.get(endpoint, {}, {
 									headers : header
 								})
 								.success(
@@ -46,7 +45,7 @@ angular
 									})
 								.error(
 									function(data, status, headers, config) {
-										$log.error("IdeService.getNodes error. "
+										$log.error("ToscaideService.nodeTypes error. "
 													+ "Data: "	+ data
 													+ ", status: "	+ status
 													+ ", headers: "	+ headers
@@ -56,9 +55,9 @@ angular
 
 					},
 					getEdges : function(callback) {
-						var endpoint = baseURI + SERVICE.SEPARATOR	+ "nodes";
+						var endpoint = baseURI + SERVICE.SEPARATOR	+ "edges";
 						return $http
-								.post(endpoint, {}, {
+								.get(endpoint, {}, {
 									headers : header
 								})
 								.success(
@@ -67,7 +66,7 @@ angular
 									})
 								.error(
 									function(data, status, headers, config) {
-										$log.error("IdeService.getNodes error. "
+										$log.error("ToscaideService.getNodes error. "
 													+ "Data: "	+ data
 													+ ", status: "	+ status
 													+ ", headers: "	+ headers
@@ -78,9 +77,9 @@ angular
 					},
 
 					getEdgeTypes : function(callback) {
-						var endpoint = baseURI + SERVICE.SEPARATOR	+ "nodes";
+						var endpoint = baseURI + SERVICE.SEPARATOR	+ "edgeTypes";
 						return $http
-								.post(endpoint, {}, {
+								.get(endpoint, {}, {
 									headers : header
 								})
 								.success(
@@ -89,7 +88,7 @@ angular
 									})
 								.error(
 									function(data, status, headers, config) {
-										$log.error("IdeService.getNodes error. "
+										$log.error("ToscaideService.getNodes error. "
 													+ "Data: "	+ data
 													+ ", status: "	+ status
 													+ ", headers: "	+ headers

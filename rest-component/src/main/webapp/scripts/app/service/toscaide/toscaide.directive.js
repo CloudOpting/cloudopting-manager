@@ -30,7 +30,8 @@ console.debug(scope.elements.nodes);
                 // you can build a complete object in the controller and pass it without rebuilding it in the directive.
                 // doing it like that allows you to add options, design or what needed to the objects
                 // doing it like that is also good if your data object/s has a different structure
-                for (i=0; i<scope.cyEdges.length; i++)
+				var i = 0;                
+				for (i=0; i<scope.cyEdges.length; i++)
                 {
                     // get edge source
                     var eSource = scope.cyEdges[i].source;
@@ -61,6 +62,7 @@ console.debug(scope.elements.nodes);
 
                 // parse data and create the Nodes array
                 // object type - is the object's group
+                
                 for (i=0; i<scope.cyData.length; i++)
                 {
                     // get id, name and type  from the object

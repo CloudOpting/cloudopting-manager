@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cloudoptingApp').controller('ToscaideController', function(SERVICE, $rootScope, $scope, $http) {
+angular.module('cloudoptingApp').controller('ToscaideController', function(SERVICE, $rootScope, $scope, $http, ToscaideService) {
 	// TODO: Write a controller here
 	$scope.mapData = [];
 	$scope.edgeData = [];
@@ -54,7 +54,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		}
 	};
 
-	$scope.getNodes = function() {
+	var getNodes = function() {
 		var callback = function(data, status, headers, config) {
 			$scope.objTypes = data;
 			console.debug($scope.objTypes);
@@ -62,6 +62,19 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		};
 		ToscaideService.getNodes(callback);
 	};
+	getNodes();
+	
+	var getNodeTypes = function() {
+		var callback = function(data, status, headers, config) {
+			$scope.templateData = data;
+			console.debug($scope.templateData);
+			$rootScope.$broadcast('appChanged');
+		};
+		ToscaideService.getNodes(callback);
+	};
+	getNodeTypes();
+	
+	
 	/*
 	 * $http.get('/api/nodes').then(function data(response) {
 	 * console.debug('called api'); console.debug(response); $scope.objTypes =
