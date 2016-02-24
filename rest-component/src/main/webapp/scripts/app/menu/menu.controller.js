@@ -63,7 +63,7 @@ angular.module('cloudoptingApp')
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
-                if(item=='catalogue' || item=='detail' || item=='instances' || item=='publish' || item=='list') {
+                if(item=='catalogue' || item=='detail' || item=='instances' || item=='publish' || item=='list' || item=='toscaide') {
                     return true;
                 }
             }

@@ -6,7 +6,7 @@
 angular
 	.module('cloudoptingApp')
 	.factory(
-			'IdeService',
+			'ToscaideService',
 			function($http, $log) {
 				var baseURI = 'api';
 				var header = {
