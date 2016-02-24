@@ -146,10 +146,12 @@ var LandingFilters = (function( $ ) {
 
 $(function() {
     // Call .bxslider()
+    /*
     $('.bxslider').bxSlider({
         auto: true,
         autoHover: true
     });
+    */
 
     /* Filters */
     LandingFilters.init();

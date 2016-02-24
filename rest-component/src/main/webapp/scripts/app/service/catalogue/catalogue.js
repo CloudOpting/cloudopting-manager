@@ -15,6 +15,7 @@ angular.module('cloudoptingApp')
                         controller: 'CatalogueController'
                     },
                     'header@': {
+                        controller: 'HeaderCatalogueController',
                         templateUrl: 'scripts/app/service/catalogue/header_catalogue.html'
                     }
                 },
