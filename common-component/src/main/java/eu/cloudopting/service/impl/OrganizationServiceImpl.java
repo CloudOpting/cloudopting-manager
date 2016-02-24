@@ -14,6 +14,7 @@ import eu.cloudopting.domain.OrganizationTypes;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.util.OrganizationStatusEnum;
 import eu.cloudopting.dto.OrganizationDTO;
+import eu.cloudopting.events.api.preconditions.ServicePreconditions;
 import eu.cloudopting.events.api.service.AbstractService;
 import eu.cloudopting.repository.OrganizationRepository;
 import eu.cloudopting.service.OrganizationService;
@@ -49,7 +50,9 @@ public class OrganizationServiceImpl extends AbstractService<Organizations> impl
 
 	@Override
 	public Organizations findOneAndInitCloudAccountCollection(Long organizationId) {
-		return organizationRepository.findOneAndInitCloudAccountCollection(organizationId);
+		Organizations organization = organizationRepository.findOneAndInitCloudAccountCollection(organizationId);
+		ServicePreconditions.checkEntityExists(organization);
+		return organization;
 	}
 	
 	@Override
@@ -66,6 +69,7 @@ public class OrganizationServiceImpl extends AbstractService<Organizations> impl
 	@Override
 	public void update(OrganizationDTO organizationDTO) {
 		Organizations organization = findOne(organizationDTO.getId());
+		ServicePreconditions.checkEntityExists(organization);
 		copyPropertiesFromDto(organizationDTO, organization);
 		
 		if(organizationDTO.getOrganizationType() != null){
@@ -100,26 +104,22 @@ public class OrganizationServiceImpl extends AbstractService<Organizations> impl
 	
 	private void setOrganizationStatus(Organizations organization, Long organizationStatusId){
 		OrganizationStatus organizationStatus = organizationStatusService.findOne(organizationStatusId);
-		if(organizationStatus == null){
-			throw new IllegalArgumentException("Cannot find organization status with id: " + organizationStatusId);
-		}
+		ServicePreconditions.checkEntityExists(organizationStatus);
 		organization.setOrganizationStatus(organizationStatus);
 		OrganizationStatusEnum orgStatusEnum = OrganizationStatusEnum.valueOf(organizationStatus.getStatus());
 		if(orgStatusEnum == null){
 			throw new IllegalArgumentException("Unsupported org status [" + organizationStatusId + "," + organizationStatus.getStatus() + "]");
 		}
-		if(orgStatusEnum == OrganizationStatusEnum.VALID){
+		if(orgStatusEnum == OrganizationStatusEnum.Validated){
 			organization.setOrganizationActivation(new Date());
-		} else if(orgStatusEnum == OrganizationStatusEnum.DECOMISSIONED){
+		} else if(orgStatusEnum == OrganizationStatusEnum.Retired){
 			organization.setOrganizationDecommission(new Date());
 		}
 	}
 	
 	private void setOrganizationType(Organizations organization, Long organizationTypeId){
 		OrganizationTypes organizationType = organizationTypeService.findOne(organizationTypeId);
-		if(organizationType == null){
-			throw new IllegalArgumentException("Cannot find organization type with id: " + organizationTypeId);
-		}
+		ServicePreconditions.checkEntityExists(organizationType);
 		organization.setOrganizationType(organizationType);
 	}
 }

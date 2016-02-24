@@ -9,6 +9,8 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.cloudopting.domain.Authority;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
+import eu.cloudopting.events.api.preconditions.ServicePreconditions;
 import eu.cloudopting.repository.AuthorityRepository;
 import eu.cloudopting.repository.OrganizationRepository;
 import eu.cloudopting.repository.PersistentTokenRepository;
@@ -243,20 +246,26 @@ public class UserService {
         return user;
     }
     
-    public List<User> findAllAndInitRolesCollection(){
-    	List<User> users = userRepository.findAll();
+    public List<User> findAllByCurrentUserOrg(){
+    	List<User> users = userRepository.findAllByCurrentUserOrg();
 		for(User user : users){
 			user.getAuthorities().size();
 		}
 		return users;
     }
     
-    public User findOneAndInitRolesCollection(final Long idUser){
+    @PostAuthorize("hasRole('ROLE_ADMIN') or returnObject.organizationId.getId() == principal.organizationId")
+    public User findOneByCurrentUserOrg(final Long idUser){
     	User user = userRepository.findOne(idUser);
-    	if(user == null){
-    		return null;
-    	}
-    	user.getAuthorities().size();
+    	ServicePreconditions.checkEntityExists(user);
+    	user.getAuthorities().size(); //init roles collection
 		return user;
+    }
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void delete(long id){
+    	User user = userRepository.findOne(id);
+    	ServicePreconditions.checkEntityExists(user);
+    	userRepository.delete(id);
     }
 }

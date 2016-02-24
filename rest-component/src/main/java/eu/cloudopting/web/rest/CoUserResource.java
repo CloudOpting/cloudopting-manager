@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.domain.User;
@@ -40,10 +41,7 @@ public class CoUserResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<User> findOne(@PathVariable("idUser") final Long idUser) {
-		User user = getUserService().findOneAndInitRolesCollection(idUser);
-		if(user == null){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		User user = getUserService().findOneByCurrentUserOrg(idUser);
 		//Don't send password to the client
 		user.setPassword(null);
 		return new ResponseEntity<>(user, HttpStatus.OK);
@@ -53,7 +51,7 @@ public class CoUserResource {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<List<User>> findAll() {
-		List<User> users = getUserService().findAllAndInitRolesCollection();
+		List<User> users = getUserService().findAllByCurrentUserOrg();
 		//Don't send password to the client
 		for(User user : users){
 			user.setPassword(null);
@@ -62,14 +60,9 @@ public class CoUserResource {
 	}
 	
 	@RequestMapping(value = "/users/{idUser}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
 	public final void delete(@PathVariable Long idUser, HttpServletResponse response){
-		User user = getUserRepository().findOne(idUser);
-		if (user == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
-		}
-		response.setStatus(HttpServletResponse.SC_OK);
-		getUserRepository().delete(idUser);
+		getUserService().delete(idUser);
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST,

@@ -1,6 +1,7 @@
 package eu.cloudopting.service;
 
 import eu.cloudopting.common.UserNotActivatedException;
+import eu.cloudopting.domain.SecurityUser;
 import eu.cloudopting.domain.User;
 
 import eu.cloudopting.repository.UserRepository;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Authenticate a user from the database.
  */
-@Component("userDetailsService")
+@Component("cloudOptingUserDetailsService")
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
@@ -42,9 +43,10 @@ public class UserDetailsService implements org.springframework.security.core.use
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                     .collect(Collectors.toList());
-            return new org.springframework.security.core.userdetails.User(lowercaseLogin,
+            Long userOrganizationId = user.getOrganizationId() == null ? null : user.getOrganizationId().getId();
+            return new SecurityUser(lowercaseLogin,
                     user.getPassword(),
-                    grantedAuthorities);
+                    grantedAuthorities, userOrganizationId);
         }).orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database"));
     }
 }

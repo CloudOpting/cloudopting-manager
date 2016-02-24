@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,24 +31,20 @@ import eu.cloudopting.service.CustomizationService;
 @RestController
 @RequestMapping("/api")
 public class CustomizationResource  extends AbstractController<Customizations> {
-   @Inject
-   CustomizationService customizationService;
-    /**
-     * Default contructor.
-     *
-     */
-    public CustomizationResource() {
-        super(Customizations.class);
-    }
 
     @Inject
     private BpmnService bpmnService;
 
+    @Inject
+    CustomizationService customizationService;
+    
+    public CustomizationResource() {
+        super(Customizations.class);
+    }
 
     public BpmnService getBpmnService() {
         return bpmnService;
     }
-
 
     @Override
     protected BaseService<Customizations> getService() {
@@ -56,16 +53,18 @@ public class CustomizationResource  extends AbstractController<Customizations> {
 
     @RequestMapping(value = "/customization/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public final Customizations findOne(@PathVariable("id") final Long id, final UriComponentsBuilder uriBuilder,
+    public final ResponseEntity<Customizations> findOne(@PathVariable("id") final Long id, final UriComponentsBuilder uriBuilder,
                                       final HttpServletResponse response) {
-        return findOneInternal(id);
+    	Customizations customization = ((CustomizationService)getService()).findOneByCurrentUserOrg(id);
+    	return new ResponseEntity<>(customization, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customization", method = RequestMethod.GET)
     @ResponseBody
-    public final List<Customizations> findAll(final UriComponentsBuilder uriBuilder,
+    public final ResponseEntity<List<Customizations>> findAll(final UriComponentsBuilder uriBuilder,
                                         final HttpServletResponse response, final HttpServletRequest request) {
-        return findAllInternal(request, uriBuilder, response);
+    	List<Customizations> customizations = ((CustomizationService)getService()).findAllByCurrentUserOrg();
+    	return new ResponseEntity<>(customizations, HttpStatus.OK);
     }
 
     //Method not used. For customization creation is used /application/{idApp}/sendCustomizationForm in CustomizationController.
@@ -78,7 +77,7 @@ public class CustomizationResource  extends AbstractController<Customizations> {
 //    }
 
     @RequestMapping(value="/customization/{customizationId}",method = RequestMethod.DELETE,  produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public final void delete(@PathVariable String customizationId, final UriComponentsBuilder uriBuilder,
                              final HttpServletResponse response, final HttpServletRequest request) {
@@ -89,11 +88,6 @@ public class CustomizationResource  extends AbstractController<Customizations> {
     @RequestMapping(value="/customization",method = RequestMethod.PUT,  produces = MediaType.APPLICATION_JSON_VALUE)
     public final void update(@RequestBody CustomizationDTO customizationDTO, final UriComponentsBuilder uriBuilder,
                              final HttpServletResponse response, final HttpServletRequest request) {
-        Customizations customization = getService().findOne(customizationDTO.getId());
-		if (customization == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
-		} 
 		response.setStatus(HttpServletResponse.SC_OK);
 		((CustomizationService)getService()).update(customizationDTO);
     }

@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -1776,12 +1777,14 @@ if(listOfFiles!=null){
 		toscaUtils.generateDockerCompose(templData, serviceHome);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @toscaAuthorization.hasReadCustomizationPermission(#idApp)")
 	public JSONObject getCustomizationFormData(Long idApp, String csarPath) {
 
 		return customizationUtils.getCustomizationFormData(idApp, csarPath);
 
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @toscaAuthorization.hasWriteCustomizationPermission(#idApp)")
 	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data, String organizationkey, String serviceName) {
 		return customizationUtils.generateCustomizedTosca(idApp, csarPath, data, organizationkey, serviceName);
 

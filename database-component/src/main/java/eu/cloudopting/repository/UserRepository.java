@@ -3,6 +3,7 @@ package eu.cloudopting.repository;
 import eu.cloudopting.domain.User;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,5 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void delete(User t);
 
     Optional<User> findOneByResetKey(String resetKey);
-
+    
+	@Query("SELECT u FROM User u where " +
+			"1 = ?#{hasRole('ROLE_ADMIN') ? 1 : 0} or " +
+			"u.organizationId.id = ?#{principal.organizationId})")
+	List<User> findAllByCurrentUserOrg();
 }

@@ -3,6 +3,8 @@ package eu.cloudopting.events.api.service;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import eu.cloudopting.events.api.constants.ClientOperation;
 
 import java.util.List;
@@ -75,6 +77,7 @@ public interface DefaultOperations<T> {
      * @param resource the resource
      * @return the t
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     T create(final T resource);
 
     // update
@@ -84,6 +87,7 @@ public interface DefaultOperations<T> {
      *
      * @param resource the resource
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void update(final T resource);
 
     // delete
@@ -93,13 +97,16 @@ public interface DefaultOperations<T> {
      *
      * @param id the id
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void delete(final long id);
 
     /**
      * Delete all.
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void deleteAll();
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void delete(Iterable<T> entities);
 
     // count

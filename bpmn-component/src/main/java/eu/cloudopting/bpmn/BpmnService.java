@@ -27,6 +27,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.cloud.CloudService;
@@ -94,6 +95,7 @@ public class BpmnService {
         return userService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteCustomizationPermission(#customizationId)")
 	public String startDeployProcess(String customizationId, long cloudId, boolean isTesting){
 		log.info("Before activating process");
 		log.info("customizationId: "+customizationId);
@@ -221,6 +223,7 @@ public class BpmnService {
 		return null;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or (principal.organizationId == #org.id)")
 	public ActivitiDTO startPublish(ApplicationDTO application, Organizations org) {
 	    HashMap<String, Object> v = new HashMap<>();
 	   
@@ -262,6 +265,7 @@ public class BpmnService {
         return tempFile;
     }
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#uploadDTO.idApp)")
 	public ActivitiDTO upload(UploadDTO uploadDTO) {
 
 		String uploadName = uploadDTO.getName();
@@ -336,6 +340,7 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#uploadDTO.idApp)")
 	public ActivitiDTO deleteFile(UploadDTO uploadDTO) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("uploaddto",uploadDTO);
@@ -347,6 +352,7 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#applicationDTO.id)")
 	public ActivitiDTO deleteApplication(ApplicationDTO applicationDTO) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("applicationdto",applicationDTO);
@@ -358,6 +364,7 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#application.id)")
 	public ActivitiDTO updateApplication(ApplicationDTO application, String processInstanceId) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("application",application);
@@ -417,6 +424,7 @@ public class BpmnService {
 		return activitiDTO;
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteCustomizationPermission(#customizationId)")
 	public ActivitiDTO deleteCustomization(String customizationId) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("customizationid",customizationId);

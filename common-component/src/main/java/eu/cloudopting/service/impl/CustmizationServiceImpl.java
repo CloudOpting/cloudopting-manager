@@ -1,5 +1,7 @@
 package eu.cloudopting.service.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -11,6 +13,7 @@ import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.CustomizationStatus;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.dto.CustomizationDTO;
+import eu.cloudopting.events.api.preconditions.ServicePreconditions;
 import eu.cloudopting.events.api.service.AbstractService;
 import eu.cloudopting.repository.CustomizationRepository;
 import eu.cloudopting.service.CloudAccountService;
@@ -43,6 +46,7 @@ public class CustmizationServiceImpl extends AbstractService<Customizations> imp
     @Override
 	public void update(CustomizationDTO customizationDTO) {
     	Customizations customization = findOne(customizationDTO.getId());
+    	ServicePreconditions.checkEntityExists(customization);
     	copyPropertiesFromDto(customizationDTO, customization);
     	if(customizationDTO.getCloudAccountId() != null){
     		setCloudAccount(customization, customizationDTO.getCloudAccountId());
@@ -53,6 +57,18 @@ public class CustmizationServiceImpl extends AbstractService<Customizations> imp
     	update(customization);
     }
     
+	@Override
+	public Customizations findOneByCurrentUserOrg(long customizationId) {
+		Customizations customization = customizationRepository.findOneByCurrentUserOrg(customizationId);
+		ServicePreconditions.checkEntityExists(customization);
+		return customization;
+	}
+	
+	@Override
+	public List<Customizations> findAllByCurrentUserOrg() {
+		return customizationRepository.findAllByCurrentUserOrg();
+	}
+	
     private void copyPropertiesFromDto(CustomizationDTO source, Customizations target){
 		if(source.getPayService() != null){
 			target.setPayService(source.getPayService());

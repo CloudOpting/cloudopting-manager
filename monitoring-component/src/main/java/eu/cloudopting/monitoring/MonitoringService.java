@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import eu.cloudopting.service.CustomizationService;
 
 @Transactional
 @Service
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class MonitoringService {
 	private final Logger log = LoggerFactory.getLogger(MonitoringService.class);
 

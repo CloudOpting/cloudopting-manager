@@ -6,27 +6,29 @@ import eu.cloudopting.security.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
-
+import org.springframework.data.repository.query.spi.EvaluationContextExtension;
 import javax.inject.Inject;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 @Order(99)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -46,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private Http401UnauthorizedEntryPoint authenticationEntryPoint;
 
     @Inject
+    @Qualifier("cloudOptingUserDetailsService")
     private UserDetailsService userDetailsService;
 
     @Inject
@@ -58,8 +61,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     private final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
 
-    @Inject
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
@@ -106,6 +109,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .headers()
             .frameOptions()
             .disable()
+        .and()
             .authorizeRequests()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/bpmnunlock/**").permitAll()
@@ -134,7 +138,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
-    @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
-    private static class GlobalSecurityConfiguration extends GlobalMethodSecurityConfiguration {
-    }
+    @Bean
+    public EvaluationContextExtension securityExtension() {
+		return new SecurityEvaluationContextExtension();
+	}
 }
