@@ -1,27 +1,28 @@
 <div class="row">
-Service name:<input	ng-model="serviceName" /><button ng-click="sendService()" ng-disabled="!serviceName.length">Send nodes</button><button ng-click="saveService()" ng-disabled="!serviceName.length">Save topology</button><button ng-click="loadTopology()" ng-disabled="!serviceName.length">Load topology</button>
+Service name:<input	ng-model="serviceName" /><button ng-click="sendService()" ng-disabled="!serviceName.length">Generate TOSCA</button><button ng-click="saveService()" ng-disabled="!serviceName.length">Save graph</button><button ng-click="loadTopology()" ng-disabled="!serviceName.length">Load graph</button>
 	<div class="panel panel-default">
 		<div class="row outer">
 			<div id="content" class="col-md-6">
-				<button ng-click="reset()">Reset nodes</button>
-				|||| Node <select ng-model="scheda.obj.objTypes"
+				<button ng-click="reset()">Reset graph</button>
+				|||| Node type <select ng-model="scheda.obj.objTypes"
 					ng-options="name for name in objTypes"></select> <input
 					ng-model="scheda.obj.name" />
 				<button ng-click="addObj()">Add node</button>
 
 				&nbsp&nbsp&nbsp&nbsp&nbsp <span ng-hide="mapData.length>1">
-					After adding 2 nodes, you can start adding connecting edges </span> <span
-					ng-show="mapData.length>1"> Edge (between 2 nodes) <select
+					After adding 2 nodes, you can start connecting relationships </span> <span
+					ng-show="mapData.length>1"> Relationship (between 2 nodes) <select
 					ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
 						<option value="">From >></option>
-				</select> <select ng-model="formEdges.toName"
+				</select> 
+				<select ng-model="formEdges.type"
+					ng-options="name for name in formArr"></select>
+					<button ng-click="addEdge()">Add relationship</button>
+				</span>
+				<select ng-model="formEdges.toName"
 					ng-options="c.name for c in mapData">
 						<option value="">To >></option>
 				</select>
-				<select ng-model="formEdges.type"
-					ng-options="name for name in formArr"></select>
-					<button ng-click="addEdge()">Add edge</button>
-				</span>
 				<hr>
 
 				<cytoscape cy-data="mapData" cy-edges="edgeData"
