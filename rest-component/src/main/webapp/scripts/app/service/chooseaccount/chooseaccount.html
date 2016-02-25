@@ -1,26 +1,43 @@
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="chooseaccount.title">Cloud Accounts Available</div>
-        <div class="panel-body">
-            <div class="alert alert-danger" ng-show="errorMessage">
-                {{errorMessage}}
-            </div>
-            <table cellspacing="1" cellpadding="1" class="table-responsive" style="width: 100%;">
-                <tr>
-                    <th translate="chooseaccount.col.name">Cloud Account Name</th>
-                    <th translate="chooseaccount.col.provider">Provider</th>
-                    <th></th>
-                </tr>
-                <tr ng-repeat="clAcc in cloudAccountsList">
-                    <td>{{clAcc.name}}</td>
-                    <td>{{clAcc.providerId.provider}}</td>
-                    <td>
-                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default" ng-click="choose(clAcc)" translate="chooseaccount.button.choose">Choose</button>
+<section>
+    <div class="container wrapper-white">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="chooseaccount.title">
+                        Cloud Accounts Available
+                    </div>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger" ng-show="errorMessage">
+                            {{errorMessage}}
                         </div>
-                    </td>
-                </tr>
-            </table>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th translate="chooseaccount.col.name">Cloud Account Name</th>
+                                                <th translate="chooseaccount.col.provider">Provider</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="clAcc in cloudAccountsList">
+                                                <td>{{clAcc.name}}</td>
+                                                <td>{{clAcc.providerId.provider}}</td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-icon" ng-click="choose(clAcc)" translate="chooseaccount.button.choose"><i class="fa fa-check-circle-o"></i>Choose</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
