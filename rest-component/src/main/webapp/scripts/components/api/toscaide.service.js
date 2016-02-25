@@ -12,6 +12,9 @@ angular
 				var header = {
 					'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
 				};
+				var headerText = {
+					'Content-Type' : 'text/plain;'
+				};
 				return {
 					getNodes : function(callback) {
 						var endpoint = baseURI + SERVICE.SEPARATOR	+ "nodes";
@@ -66,7 +69,7 @@ angular
 									})
 								.error(
 									function(data, status, headers, config) {
-										$log.error("ToscaideService.getNodes error. "
+										$log.error("ToscaideService.getEdges error. "
 													+ "Data: "	+ data
 													+ ", status: "	+ status
 													+ ", headers: "	+ headers
@@ -88,7 +91,70 @@ angular
 									})
 								.error(
 									function(data, status, headers, config) {
-										$log.error("ToscaideService.getNodes error. "
+										$log.error("ToscaideService.getEdgeTypes error. "
+													+ "Data: "	+ data
+													+ ", status: "	+ status
+													+ ", headers: "	+ headers
+													+ ", config: "	+ config);
+										callback(data, status, headers,	config);
+										});
+					},
+					sendData : function(data, callback) {
+						var endpoint = baseURI + SERVICE.SEPARATOR	+ "sendData";
+						return $http
+								.post(endpoint, {}, {
+									data : data,
+									headers : headerText
+								})
+								.success(
+									function(data, status, headers,	config) {
+										callback(data, status, headers,	config);
+									})
+								.error(
+									function(data, status, headers, config) {
+										$log.error("ToscaideService.sendData error. "
+													+ "Data: "	+ data
+													+ ", status: "	+ status
+													+ ", headers: "	+ headers
+													+ ", config: "	+ config);
+										callback(data, status, headers,	config);
+										});
+					},
+					saveData : function(data, callback) {
+						var endpoint = baseURI + SERVICE.SEPARATOR	+ "saveData";
+						return $http
+								.post(endpoint, {}, {
+									data : data,
+									headers : headerText
+								})
+								.success(
+									function(data, status, headers,	config) {
+										callback(data, status, headers,	config);
+									})
+								.error(
+									function(data, status, headers, config) {
+										$log.error("ToscaideService.saveData error. "
+													+ "Data: "	+ data
+													+ ", status: "	+ status
+													+ ", headers: "	+ headers
+													+ ", config: "	+ config);
+										callback(data, status, headers,	config);
+										});
+					},
+					loadTopology : function(data, callback) {
+						var endpoint = baseURI + SERVICE.SEPARATOR	+ "loadTopology";
+						return $http
+								.post(endpoint, {}, {
+									data : data,
+									headers : headerText
+								})
+								.success(
+									function(data, status, headers,	config) {
+										callback(data, status, headers,	config);
+									})
+								.error(
+									function(data, status, headers, config) {
+										$log.error("ToscaideService.loadTopology error. "
 													+ "Data: "	+ data
 													+ ", status: "	+ status
 													+ ", headers: "	+ headers

@@ -6,12 +6,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	$scope.edgeData = [];
 	$scope.formTypes = [];
 	// data types/groups object - used Cytoscape's shapes just
-	// to make
-	// it more clear
-	// $scope.objTypes =
-	// ['ellipse','triangle','rectangle','roundrectangle','pentagon','octagon','hexagon','heptagon','star'];
-	// $scope.objTypes = [ 'container', 'application', 'host',
-	// 'application-container' ];
+	// to make it more clear
 	$scope.form = [ "*", {
 		type : "submit",
 		title : "Save"
@@ -94,23 +89,6 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	};
 	getEdgeTypes();
 	
-	/*
-	 * 
-	 * $http.get('/api/edges').then(function data(response) {
-	 * console.debug('called edges'); console.debug(response); $scope.formArr =
-	 * response.data; console.debug($scope.formTypes);
-	 * $rootScope.$broadcast('appChanged');
-	 * 
-	 * });
-	 * 
-	 * $http.get('/api/edgeTypes').then(function data(response) {
-	 * console.debug('called edgeTypes'); console.debug(response);
-	 * $scope.templateEdgeData = response.data;
-	 * console.debug($scope.templateEdgeData);
-	 * $rootScope.$broadcast('appChanged');
-	 * 
-	 * });
-	 */
 	// add object from the form then broadcast event which
 	// triggers the
 	// directive redrawing of the chart
@@ -276,17 +254,10 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			serviceName : $scope.serviceName
 		});
 
-		$http({
-			url : "/api/sendData",
-			data : data,
-			method : "POST",
-			headers : {
-				"Content-Type" : "text/plain",
-			}
-		}).success(function(data, status) {
+		var callback = function(data, status, headers, config) {
 			console.debug(data);
-			console.debug(status);
-		});
+		};
+		ToscaideService.sendData(data, callback);
 	}
 
 	$scope.saveService = function() {
@@ -297,17 +268,10 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			serviceName : $scope.serviceName
 		});
 
-		$http({
-			url : "/api/saveData",
-			data : data,
-			method : "POST",
-			headers : {
-				"Content-Type" : "text/plain",
-			}
-		}).success(function(data, status) {
+		var callback = function(data, status, headers, config) {
 			console.debug(data);
-			console.debug(status);
-		});
+		};
+		ToscaideService.saveData(data, callback);
 	}
 	$scope.loadTopology = function() {
 		console.debug("loading saved data");
@@ -315,14 +279,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			serviceName : $scope.serviceName
 		});
 
-		$http({
-			url : "/api/loadTopology",
-			data : data,
-			method : "POST",
-			headers : {
-				"Content-Type" : "text/plain",
-			}
-		}).success(function(data, status) {
+		var callback = function(data, status, headers, config) {
 			$scope.mapData = [];
 			$scope.edgeData = [];
 			console.debug(data);
@@ -340,7 +297,9 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			console.debug($scope.mapData);
 			// $scope.edgeData = data.edges;
 			$rootScope.$broadcast('appChanged');
-		});
+
+		};
+		ToscaideService.loadTopology(data, callback);
 	}
 
 });
