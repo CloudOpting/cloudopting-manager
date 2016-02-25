@@ -345,7 +345,7 @@
                         <argument>--spring.profiles.active=dev</argument>
                     </arguments>
                     <mainClass>eu.cloudopting.Application</mainClass>
-                    <skip>true</skip>
+                    <!--<skip>true</skip>-->
                 </configuration>
             </plugin>
         </plugins>
