@@ -1,3 +1,4 @@
+
 <section>
 	<div class="container wrapper-white">
 		<div class="row">
@@ -15,7 +16,7 @@
 							</div>
 							<div class="form-group">
 								 <button type="button" class="btn btn-reverse"
-								  			ng-click="loadTopology()" ng-disabled="!serviceName.length">Load topology</button>
+								  			ng-click="loadTopology()" ng-disabled="!serviceName.length">Load graph</button>
 							</div>
 						</div>
 
@@ -45,16 +46,16 @@
 
 								<div class="form row">
 									<div class="col-lg-12">
-										<h4>Connection nodes</h4>
+										<h4 ng-show="mapData.length>1">Relationship (between 2 nodes)</h4>
 
 										<div class="form-group" ng-hide="mapData.length>1">
-											 <label translate=""><small>**After adding 2 nodes, you can start adding connecting edges</small></label>
+											 <label translate=""><small>**After adding 2 nodes, you can start connecting relationships</small></label>
 										</div>
 
 										<div class="row" ng-show="mapData.length>1">
 											<div class="col-md-3">
 												<div class="form-group">
-													<label for="fromNode" translate="">Select node origen:</label>
+													<label for="fromNode" translate="">Select node 1:</label>
 	  												<select name="fromNode" class="form-control" ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
 	  			 										<option value="">From</option>
 	  			 									</select>
@@ -62,7 +63,7 @@
 											</div>
 											<div class="col-md-3">
 												<div class="form-group">
-													<label for="toNode" translate="">Select node destino:</label>
+													<label for="toNode" translate="">Select node 2:</label>
 													<select name="toNode" class="form-control" ng-model="formEdges.toName" ng-options="c.name for c in mapData">
 														<option value="">To</option>
 													</select>
@@ -70,13 +71,13 @@
 											</div>
 											<div class="col-md-3">
 												<div class="form-group">
-													<label for="connectionType" translate="">Select type connection:</label>
+													<label for="connectionType" translate="">Select relationship:</label>
 													<select name="connectionType" class="form-control" ng-model="formEdges.type" ng-options="name for name in formArr">
 				 									</select>
 												</div>
 											</div>
 											<div class="col-md-3">
-												<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addEdge()">Add edge</button>
+												<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addEdge()">Add relationship</button>
 											</div>
 
 										</div>
@@ -90,7 +91,7 @@
 											  cy-templates="templateData" cy-edgetemplates="templateEdgeData"
 											  cy-click="doClick(value)" cy-edgeclick="doEdgeClick(value)"></cytoscape>
 								<div class="form-group">
-									<button type="text" class="btn btn-reverse" ng-click="reset()">Reset connection nodes</button>
+									<button type="text" class="btn btn-reverse" ng-click="reset()">Reset graph</button>
 								</div>
 							</div>
 							<div class="col-md-5">
@@ -104,10 +105,10 @@
 						</div>
 						<div class="row row-actions">
 							<div class="col-xs-6">
-								<button type="text" class="btn" ng-click="saveService()" ng-disabled="!serviceName.length">Save topology</button>
+								<button type="text" class="btn" ng-click="saveService()" ng-disabled="!serviceName.length">Save graph</button>
 							</div>
 							<div class="col-xs-6">
-								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length">Send nodes</button>
+								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length">Generate TOSCA</button>
 							</div>
 						</div>
 					</div>
