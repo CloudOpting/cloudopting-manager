@@ -141,8 +141,8 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
-    border-color: #31abac;
-    background-color: #31abac;
+    border-color: #485868;
+    background-color: #485868;
 }
 
 
@@ -227,6 +227,14 @@ fieldset[disabled] .btn-xl.active {
 .btn-xl .badge {
     color: #31abac;
     background-color: #fff;
+}
+
+.btn-form-cols {
+    margin-top: 26px;
+}
+.btn + .btn {
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .navbar-default {
@@ -1812,3 +1820,14 @@ ul.bxslider {
     background-color: white;
     margin: 10px 0;
 }
+
+
+
+/* CYTOSCAPE */
+#cy {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+    width: 100%;
+}
+/* end CYTOSCAPE */

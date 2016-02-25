@@ -1,44 +1,118 @@
-<div class="row">
-Service name:<input	ng-model="serviceName" /><button ng-click="sendService()" ng-disabled="!serviceName.length">Send nodes</button><button ng-click="saveService()" ng-disabled="!serviceName.length">Save topology</button><button ng-click="loadTopology()" ng-disabled="!serviceName.length">Load topology</button>
-	<div class="panel panel-default">
-		<div class="row outer">
-			<div id="content" class="col-md-6">
-				<button ng-click="reset()">Reset nodes</button>
-				|||| Node <select ng-model="scheda.obj.objTypes"
-					ng-options="name for name in objTypes"></select> <input
-					ng-model="scheda.obj.name" />
-				<button ng-click="addObj()">Add node</button>
+<section>
+	<div class="container wrapper-white">
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="backend-box">
+					<div class="backend-box-cabecera text-center" translate="">
+						TOSCA IDE
+					</div>
+					<div class="backend-box-content">
+						<div class="form">
+							<div class="form-group">
+								 <label for="serviceName" translate="">Service name:</label>
+								 <input type="text" class="form-control" ng-model="serviceName"
+								  		  name="serviceName" required />
+							</div>
+							<div class="form-group">
+								 <button type="button" class="btn btn-reverse"
+								  			ng-click="loadTopology()" ng-disabled="!serviceName.length">Load topology</button>
+							</div>
+						</div>
 
-				&nbsp&nbsp&nbsp&nbsp&nbsp <span ng-hide="mapData.length>1">
-					After adding 2 nodes, you can start adding connecting edges </span> <span
-					ng-show="mapData.length>1"> Edge (between 2 nodes) <select
-					ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
-						<option value="">From >></option>
-				</select> <select ng-model="formEdges.toName"
-					ng-options="c.name for c in mapData">
-						<option value="">To >></option>
-				</select>
-				<select ng-model="formEdges.type"
-					ng-options="name for name in formArr"></select>
-					<button ng-click="addEdge()">Add edge</button>
-				</span>
-				<hr>
+						<div class="row">
+							<div id="content" class="col-lg-12">
+								<div class="form row">
+									<div class="col-lg-12">
+										<h4>Setting node</h4>
+									</div>
+									<div class="col-md-5">
+										<div class="form-group">
+											 <label for="nameNode" translate="">Node name:</label>
+											 <input class="form-control" type="text" ng-model="scheda.obj.name" name="nameNode" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											 <label for="nodeType" translate="">Node type:</label>
+											 <select class="form-control" name="nodeType" ng-model="scheda.obj.objTypes"
+											   		ng-options="name for name in objTypes"></select>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addObj()">+ Add node</button>
+									</div>
+								</div>
 
-				<cytoscape cy-data="mapData" cy-edges="edgeData"
-					cy-templates="templateData" cy-edgetemplates="templateEdgeData" cy-click="doClick(value)" cy-edgeclick="doEdgeClick(value)"></cytoscape>
-			</div>
-			<div class="col-md-6">
-				<div>
-					<span>Node data form</span>
+								<div class="form row">
+									<div class="col-lg-12">
+										<h4>Connection nodes</h4>
 
-					<form name="myForm" sf-schema="schema" sf-form="form"
-						sf-model="model" ng-submit="onSubmit(myForm)"></form>
+										<div class="form-group" ng-hide="mapData.length>1">
+											 <label translate=""><small>**After adding 2 nodes, you can start adding connecting edges</small></label>
+										</div>
+
+										<div class="row" ng-show="mapData.length>1">
+											<div class="col-md-3">
+												<div class="form-group">
+													<label for="fromNode" translate="">Select node origen:</label>
+	  												<select name="fromNode" class="form-control" ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
+	  			 										<option value="">From</option>
+	  			 									</select>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label for="toNode" translate="">Select node destino:</label>
+													<select name="toNode" class="form-control" ng-model="formEdges.toName" ng-options="c.name for c in mapData">
+														<option value="">To</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label for="connectionType" translate="">Select type connection:</label>
+													<select name="connectionType" class="form-control" ng-model="formEdges.type" ng-options="name for name in formArr">
+				 									</select>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addEdge()">Add edge</button>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-7">
+								<cytoscape cy-data="mapData" cy-edges="edgeData"
+											  cy-templates="templateData" cy-edgetemplates="templateEdgeData"
+											  cy-click="doClick(value)" cy-edgeclick="doEdgeClick(value)"></cytoscape>
+								<div class="form-group">
+									<button type="text" class="btn btn-reverse" ng-click="reset()">Reset connection nodes</button>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form">
+									<h4>Node data</h4>
+
+									<form name="myForm" sf-schema="schema" sf-form="form"
+										sf-model="model" ng-submit="onSubmit(myForm)"></form>
+								</div>
+							</div>
+						</div>
+						<div class="row row-actions">
+							<div class="col-xs-6">
+								<button type="text" class="btn" ng-click="saveService()" ng-disabled="!serviceName.length">Save topology</button>
+							</div>
+							<div class="col-xs-6">
+								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length">Send nodes</button>
+							</div>
+						</div>
+					</div>
 				</div>
-
-				
-
 			</div>
 		</div>
 	</div>
-
-</div>
+</section>
