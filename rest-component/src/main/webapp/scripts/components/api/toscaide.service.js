@@ -102,8 +102,7 @@ angular
 					sendData : function(data, callback) {
 						var endpoint = baseURI + SERVICE.SEPARATOR	+ "sendData";
 						return $http
-								.post(endpoint, {}, {
-									data : data,
+								.post(endpoint, data, {
 									headers : headerText
 								})
 								.success(
@@ -123,8 +122,7 @@ angular
 					saveData : function(data, callback) {
 						var endpoint = baseURI + SERVICE.SEPARATOR	+ "saveData";
 						return $http
-								.post(endpoint, {}, {
-									data : data,
+								.post(endpoint, data, {
 									headers : headerText
 								})
 								.success(
@@ -144,8 +142,7 @@ angular
 					loadTopology : function(data, callback) {
 						var endpoint = baseURI + SERVICE.SEPARATOR	+ "loadTopology";
 						return $http
-								.post(endpoint, {}, {
-									data : data,
+								.post(endpoint, data, {
 									headers : headerText
 								})
 								.success(
