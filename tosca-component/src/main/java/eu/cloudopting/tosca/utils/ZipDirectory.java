@@ -9,23 +9,30 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ZipDirectory {
+
+	private static final Logger log = LoggerFactory.getLogger(ZipDirectory.class);
+	public static final String ZIP_EXTENSION = ".zip";
+
 	public static void getAllFiles(File dir, List<File> fileList) {
 		try {
 			File[] files = dir.listFiles();
 			for (File file : files) {
 				fileList.add(file);
 				if (file.isDirectory()) {
-					System.out.println("directory:" + file.getCanonicalPath());
+					log.debug("ZipDirectory.getAllFiles directory: " + file.getCanonicalPath());
 					getAllFiles(file, fileList);
 				} else {
-					System.out.println("     file:" + file.getCanonicalPath());
+					log.debug("ZipDirectory.getAllFiles file: " + file.getCanonicalPath());
 				}
 			}
 		} catch (IOException e) {
+			log.error("IOExcepton in ZipDirectory.getAllFiles.");
 			e.printStackTrace();
 		}
 	}
@@ -33,7 +40,7 @@ public class ZipDirectory {
 	public static void writeZipFile(File directoryToZip, List<File> fileList) {
 
 		try {
-			FileOutputStream fos = new FileOutputStream(directoryToZip.getName() + ".zip");
+			FileOutputStream fos = new FileOutputStream(directoryToZip.getName() + ZIP_EXTENSION);
 			ZipOutputStream zos = new ZipOutputStream(fos);
 
 			for (File file : fileList) {
@@ -45,8 +52,10 @@ public class ZipDirectory {
 			zos.close();
 			fos.close();
 		} catch (FileNotFoundException e) {
+			log.error("FileNotFoundException in ZipDirectory.writeZipFile.");
 			e.printStackTrace();
 		} catch (IOException e) {
+			log.error("IOException in ZipDirectory.writeZipFile.");
 			e.printStackTrace();
 		}
 	}
@@ -60,7 +69,7 @@ public class ZipDirectory {
 		// to the directory being zipped, so chop off the rest of the path
 		String zipFilePath = file.getCanonicalPath().substring(directoryToZip.getCanonicalPath().length() + 1,
 				file.getCanonicalPath().length());
-		System.out.println("Writing '" + zipFilePath + "' to zip file");
+		log.debug("ZipDirectory.addToZip writing '" + zipFilePath + "' to zip file.");
 		ZipEntry zipEntry = new ZipEntry(zipFilePath);
 		zos.putNextEntry(zipEntry);
 

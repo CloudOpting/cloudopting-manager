@@ -125,7 +125,7 @@ public class ToscaService {
 			this.db = (DocumentBuilderImpl) dbf.newDocumentBuilder();
 			db.setErrorHandler(new ErrorHandlerImpl());
 		} catch (ParserConfigurationException e2) {
-			// TODO Auto-generated catch block
+			log.error("ParserConfigurationException in ToscaService.ToscaService");
 			e2.printStackTrace();
 		}
 		prepareNodeTypes();
@@ -133,7 +133,7 @@ public class ToscaService {
 	}
 
 	private void readDefinitionTemplate() {
-		// TODO Auto-generated method stub
+
 		InputStream in;
         ClassPathResource definitions = new ClassPathResource("definitionsTemplate.xml");
 		try {
@@ -141,10 +141,10 @@ public class ToscaService {
 //			in = new FileInputStream("classpath:definitionsTemplate.xml");
 			this.definitionTemplate = (DocumentImpl) this.db.parse(in);
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
+			log.error("SAXException in ToscaService.readDefinitionTemplate");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			log.error("IOException in ToscaService.readDefinitionTemplate");
 			e.printStackTrace();
 		}
 
@@ -152,37 +152,38 @@ public class ToscaService {
 
 	public String readXsd(String element) {
 		// String PATH_TO_XSD = null;
-		log.debug("in read xsd");
+		log.debug("ToscaService.readXsd starting.");
 		ClassPathResource nodetypes = new ClassPathResource("types/nodeTypes.xsd");
 		File file = null;
 		try {
 			file = nodetypes.getFile();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			log.error("IOException in ToscaService.readXsd");
 			e1.printStackTrace();
 		}
 //		File file = new File("types/nodeTypes.xsd");
 		final XSModel xsModel = new XSParser().parse(file.getPath());
-		log.debug(xsModel.toString());
+		log.debug("ToscaService.readXsd xsModel: " + xsModel.toString());
 		final XSInstance xsInstance = new XSInstance();
 		xsInstance.generateOptionalElements = Boolean.TRUE; // null means random
 		// final QName rootElement = new QName(null, element);
 		final QName rootElement = new QName("http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes", element);
-		log.debug(rootElement.toString());
+		log.debug("ToscaService.readXsd rootElement: " + rootElement.toString());
 		XMLDocument sampleXml;
 		try {
-			log.debug("proviamo a scrivere");
+			log.debug("ToscaService.readXsd Providing a writer.");
 			StringWriter writer = new StringWriter();
 			sampleXml = new XMLDocument(new StreamResult(writer), true, 4, null);
 			xsInstance.generate(xsModel, rootElement, sampleXml);
-			log.debug(sampleXml.toString());
-			log.debug(writer.toString());
+			log.debug("ToscaService.readXsd sampleXml: " + sampleXml.toString());
+			log.debug("ToscaService.readXsd writer: " + writer.toString());
 			return writer.toString();
 		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
+			log.error("TransformerConfigurationException in ToscaService.readXsd");
 			e.printStackTrace();
 			return null;
 		} catch (IllegalArgumentException e) {
+			log.error("IllegalArgumentException in ToscaService.readXsd");
 			e.printStackTrace();
 			return null;
 		}

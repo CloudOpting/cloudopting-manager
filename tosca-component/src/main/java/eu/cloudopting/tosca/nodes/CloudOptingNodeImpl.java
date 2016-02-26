@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ import eu.cloudopting.tosca.nodes.CloudOptingNode;;
 
 @Service
 public class CloudOptingNodeImpl implements CloudOptingNode {
+
+	private final Logger log = LoggerFactory.getLogger(CloudOptingNodeImpl.class);
+
 	@Autowired
 	ToscaOperationImpl toscaOperationImpl;
 	
@@ -19,35 +24,35 @@ public class CloudOptingNodeImpl implements CloudOptingNode {
 	ToscaService toscaService;
 
 	public String execute(HashMap<String, String> data) {
-		// TODO Auto-generated method stub
+
 		String id = data.get("id");
 		String customizationId = data.get("customizationId");
 		String operation = toscaService.getOperationForNode(customizationId, id, "Install");
-		System.out.println("Invoking method :"+operation+" on node: "+id);
+		log.debug("Invoking method : " + operation + " on node: " + id);
 		Class partypes[] = new Class[1];
         partypes[0] = data.getClass();
         Method meth = null;
         try {
 			meth = toscaOperationImpl.getClass().getMethod(operation, partypes);
-			System.out.println(meth.toString());
-			System.out.println(meth.getParameterTypes().toString());
+			log.debug(meth.toString());
+			log.debug(meth.getParameterTypes().toString());
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
+			log.error("NoSuchMethodException on CloudOptingNodeImpl.execute getting the method");
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
+			log.error("SecurityException on CloudOptingNodeImpl.execute getting the method");
 			e.printStackTrace();
 		}
 		try {
 			return (String) meth.invoke(toscaOperationImpl,data);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			log.error("IllegalAccessException on CloudOptingNodeImpl.execute invoking the method");
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+			log.error("IllegalArgumentException on CloudOptingNodeImpl.execute invoking the method");
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
+			log.error("InvocationTargetException on CloudOptingNodeImpl.execute invoking the method");
 			e.printStackTrace();
 		}
 		return null;
@@ -55,9 +60,6 @@ public class CloudOptingNodeImpl implements CloudOptingNode {
 
 	@Override
 	public String prepare(HashMap<String, String> data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 }

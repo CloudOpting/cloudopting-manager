@@ -37,6 +37,7 @@ import freemarker.template.TemplateNotFoundException;
 
 @Service
 public class ToscaUtils {
+
 	private static final int BUFFER_SIZE = 4096;
 	private final Logger log = LoggerFactory.getLogger(ToscaUtils.class);
 
@@ -49,16 +50,16 @@ public class ToscaUtils {
 		try {
 			tpl = cfg.getTemplate("Puppetfile.ftl");
 		} catch (TemplateNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.error("TemplateNotFoundException in ToscaUtils.generatePuppetfile getting puppetfile template.");
 			e.printStackTrace();
 		} catch (MalformedTemplateNameException e) {
-			// TODO Auto-generated catch block
+			log.error("MalformedTemplateNameException in ToscaUtils.generatePuppetfile getting puppetfile template.");
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			log.error("ParseException in ToscaUtils.generatePuppetfile getting puppetfile template.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			log.error("IOException in ToscaUtils.generatePuppetfile getting puppetfile template.");
 			e.printStackTrace();
 		}
 
@@ -68,20 +69,21 @@ public class ToscaUtils {
 		try {
 			outFile = new PrintWriter(serviceHome + "/" + puppetFile, "UTF-8");
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
+			log.error("FileNotFoundException in ToscaUtils.generatePuppetfile writting the puppetfile.");
 			e1.printStackTrace();
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
+			log.error("UnsupportedEncodingException in ToscaUtils.generatePuppetfile writting the puppetfile.");
 			e1.printStackTrace();
 		}
+
 		try {
 			// tpl.process(nodeData, outputTempl);
 			tpl.process(templData, outFile);
 		} catch (TemplateException e) {
-			// TODO Auto-generated catch block
+			log.error("TemplateException in ToscaUtils.generatePuppetfile processing the puppetfile.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			log.error("IOException in ToscaUtils.generatePuppetfile processing the puppetfile.");
 			e.printStackTrace();
 		}
 
@@ -94,16 +96,16 @@ public class ToscaUtils {
 		try {
 			tpl = cfg.getTemplate("docker-compose.ftl");
 		} catch (TemplateNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.error("TemplateNotFoundException in ToscaUtils.generateDockerCompose getting docker-compose template.");
 			e.printStackTrace();
 		} catch (MalformedTemplateNameException e) {
-			// TODO Auto-generated catch block
+			log.error("MalformedTemplateNameException in ToscaUtils.generateDockerCompose getting docker-compose template.");
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			log.error("ParseException in ToscaUtils.generateDockerCompose getting docker-compose template.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			log.error("IOException in ToscaUtils.generateDockerCompose getting docker-compose template.");
 			e.printStackTrace();
 		}
 
@@ -114,20 +116,21 @@ public class ToscaUtils {
 		try {
 			outFile = new PrintWriter(serviceHome + "/" + composeFile, "UTF-8");
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
+			log.error("FileNotFoundException in ToscaUtils.generateDockerCompose writting the docker-compose.");
 			e1.printStackTrace();
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
+			log.error("UnsupportedEncodingException in ToscaUtils.generateDockerCompose writting the docker-compose.");
 			e1.printStackTrace();
 		}
+
 		try {
 			// tpl.process(nodeData, outputTempl);
 			tpl.process(templData, outFile);
 		} catch (TemplateException e) {
-			// TODO Auto-generated catch block
+			log.error("TemplateException in ToscaUtils.generateDockerCompose processing the docker-compose.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			log.error("IOException in ToscaUtils.generateDockerCompose processing the docker-compose.");
 			e.printStackTrace();
 		}
 	}
@@ -137,14 +140,14 @@ public class ToscaUtils {
 		if (!destDir.exists()) {
 			destDir.mkdir();
 		}
-		log.debug("zipFilePath:" + zipFilePath);
-		log.debug("destDirectory:" + destDirectory);
+		log.debug("ToscaUtils.unzip zipFilePath: " + zipFilePath);
+		log.debug("ToscaUtils.unzip destDirectory: " + destDirectory);
 		ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
 		ZipEntry entry = zipIn.getNextEntry();
 		// iterates over entries in the zip file
 		while (entry != null) {
 			String filePath = destDirectory + File.separator + entry.getName();
-			log.debug("filePath:" + filePath);
+			log.debug("ToscaUtils.unzip filePath: " + filePath);
 			if (!entry.isDirectory()) {
 				String dir = dirpart(entry.getName());
 				if (dir != null)
@@ -245,7 +248,7 @@ public class ToscaUtils {
 		// commandLine.addArgument("'PUPPETFILE=" + puppetFile + "
 		// PUPPETFILE_DIR="
 		// + puppetDir + " /usr/local/bin/r10k puppetfile install'", false);
-		System.out.println(commandLine.getExecutable());
+		log.debug("ToscaUtils.runR10k command line executable: " + commandLine.getExecutable());
 		// create the executor and consider the exitValue '1' as success
 		final Executor executor = new DefaultExecutor();
 		executor.setWorkingDirectory(new File(workingDir));
@@ -260,20 +263,20 @@ public class ToscaUtils {
 
 		// pass a "ExecuteResultHandler" when doing background printing
 		if (r10kInBackground) {
-			System.out.println("[print] Executing non-blocking r10k job  ...");
+			log.debug("ToscaUtils.runR10k [print] Executing non-blocking r10k job  ...");
 			resultHandler = new R10kResultHandler(watchdog);
 			try {
 				executor.execute(commandLine, env, resultHandler);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				log.error("IOException ToscaUtils.runR10k executing non-blocking r10k job.");
 				e.printStackTrace();
 			}
 		} else {
-			System.out.println("[print] Executing blocking r10k job  ...");
+			log.debug("ToscaUtils.runR10k [print] Executing blocking r10k job  ...");
 			try {
 				exitValue = executor.execute(commandLine);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				log.error("IOException ToscaUtils.runR10k executing blocking r10k job.");
 				e.printStackTrace();
 			}
 			resultHandler = new R10kResultHandler(exitValue);
