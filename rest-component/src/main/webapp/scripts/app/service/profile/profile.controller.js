@@ -96,36 +96,6 @@ angular.module('cloudoptingApp')
 
         }, true);
 
-        /*
-        $scope.cloudAccList = [
-            {
-                "id": 0,
-                "customizationss": [
-                    {
-                        "customerOrganizationId": "Organizations",
-                        "cloudAccount": "CloudAccounts",
-                        "applicationId": 0,
-                        "customizationToscaFile": "",
-                        "customizationCreation": "",
-                        "customizationActivation": "",
-                        "customizationDecommission": "",
-                        "statusId": 0,
-                        "processId": "",
-                        "id": 0
-                    }
-                ],
-                "providerId": {
-                    "provider": "CloudStack",
-                    "id": 0
-                },
-                "name": "CloudAccoount 1",
-                "apiKey": "",
-                "secretKey": "",
-                "endpoint": ""
-            }
-        ];
-        */
-
         $scope.deleteCloudAccount = function (cloudAccount) {
 
             var callback = function(data, status, headers, config){

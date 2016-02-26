@@ -157,7 +157,7 @@ $(function() {
     LandingFilters.init();
 
     // Initialize WOW.js Scrolling Animations
-    new WOW().init();
+    //new WOW().init();
 
     $('#searchlink').on('click', function(e){
         var target = e ? e.target : window.event.srcElement;

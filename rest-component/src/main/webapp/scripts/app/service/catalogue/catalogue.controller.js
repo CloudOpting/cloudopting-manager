@@ -9,8 +9,17 @@ angular.module('cloudoptingApp').filter('startFrom', function() {
 
 angular.module('cloudoptingApp')
     .controller('CatalogueController', function (SERVICE, localStorageService,
-                                                 $scope, $log, $state,
+                                                 $scope, $log, $state, $stateParams, $document, $timeout,
                                                  ApplicationService, Principal, JackrabbitService) {
+        $scope.scrollToSection = function () {
+            $timeout(function () {
+                if($stateParams.section!=null && $stateParams.section!=undefined && $stateParams.section!="") {
+                    var someElement = angular.element(document.getElementById('contact'));
+                    $document.scrollToElementAnimated( someElement, 30, 5000 );
+                    $stateParams.section = null;
+                }
+            }, 1000);
+        };
 
         $scope.applicationList = null;
 
@@ -31,6 +40,9 @@ angular.module('cloudoptingApp')
 
                 //Get the images for each application.
                 getImagesForAllApplications($scope.applicationList);
+
+                //At the end do the scrolling
+                $scope.scrollToSection();
             }
         };
 

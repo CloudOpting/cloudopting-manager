@@ -2,7 +2,7 @@
 
 angular.module('cloudoptingApp')
     .controller('MenuController', function (SERVICE,
-                                            $state, $scope,
+                                            $state, $scope, $document,
                                             Principal, Auth) {
 
         $scope.logoutButton = Principal.isAuthenticated();
@@ -24,6 +24,15 @@ angular.module('cloudoptingApp')
 
         $scope.dashboard = function(){
             $state.go("dashboard");
+        };
+
+        $scope.contact = function() {
+            if($state.current.name == "catalogue"){
+                var someElement = angular.element(document.getElementById('contact'));
+                $document.scrollToElementAnimated( someElement, 30, 5000 );
+            } else {
+                $state.go('catalogue', { section: "contact" }, {reload: true} );
+            }
         };
 
         $scope.$watch(

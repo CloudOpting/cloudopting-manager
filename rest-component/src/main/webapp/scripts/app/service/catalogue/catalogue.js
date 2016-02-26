@@ -6,6 +6,9 @@ angular.module('cloudoptingApp')
             .state('catalogue', {
                 parent: 'service',
                 url: '/catalogue',
+                params: {
+                    section: null,
+                },
                 data: {
                     roles: []
                 },
