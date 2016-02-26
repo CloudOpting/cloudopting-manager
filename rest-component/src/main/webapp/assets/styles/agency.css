@@ -1214,6 +1214,35 @@ footer ul.quicklinks {
 }
 
 
+
+/* TOSCA IDE */
+.form-nodedata .schema-form-array h3 {
+    font-size: 18px;
+}
+.form-nodedata .schema-form-fieldset legend {
+    font-size: 16px;
+    color: #b2b2b2;
+    text-transform: uppercase;
+    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    border-bottom: 0;
+}
+.form-nodedata .schema-form-array .list-group-item {
+    background-color: transparent;
+}
+.form-nodedata .schema-form-array .btn.btn-default {
+    border-color: #485868;
+    text-transform: uppercase;
+    color: #485868;
+    background-color: #FFF;
+}
+.form-nodedata .schema-form-array .btn.btn-default:hover {
+    border-color: #31abac;
+    color: #31abac;
+    background-color: #FFF;
+}
+/* end TOSCA IDE */
+
 /* inspired in https://github.com/acornejo/bootstrap-nav-wizard */
 /* wizard */
 .nav-wizard > li {
