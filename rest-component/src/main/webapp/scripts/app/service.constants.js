@@ -17,6 +17,9 @@ angular.module('cloudoptingApp')
             "PUBLISHED" : "PUBLISHED"
         },
         "STORAGE" : {
+            "ACTIVITI" : {
+                "PROCESS_ID" : "activitiProcessId"
+            },
             "DETAIL" : {
                 "APPLICATION" : "detailApplication"
             },

@@ -72,7 +72,8 @@ angular.module('cloudoptingApp')
         $scope.deploy = function(instance) {
             var callback = function (data, status, headers, config) {
                 if(checkStatusCallback(data, status, headers, config, "Deploy requested.")){
-                    //Do something here if all went ok.
+                    localStorageService.set(SERVICE.STORAGE.ACTIVITI.PROCESS_ID, data);
+                    $state.go("activiti");
                 }
             };
             ProcessService.deploy(instance.id, callback);
