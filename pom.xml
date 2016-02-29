@@ -125,6 +125,7 @@
                 <artifactId>jasypt</artifactId>
                 <version>${jasypt.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.plugin</groupId>
                 <artifactId>spring-plugin-core</artifactId>
