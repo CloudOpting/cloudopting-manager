@@ -76,6 +76,7 @@
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>database-component</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -276,6 +277,7 @@
                 </executions>
                 <configuration>
                     <excludeArtifactIds>database-component</excludeArtifactIds>
+                    <layout>NONE</layout>
                 </configuration>
             </plugin>
         </plugins>

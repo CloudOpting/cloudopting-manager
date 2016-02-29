@@ -26,6 +26,12 @@
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
+            <artifactId>database-component</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.cloudopting</groupId>
             <artifactId>docker-component</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
