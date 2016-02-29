@@ -34,10 +34,12 @@
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>common-component</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>database-component</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
@@ -124,6 +126,7 @@
                 </executions>
                 <configuration>
                     <excludeArtifactIds>storage-component,common-component,database-component</excludeArtifactIds>
+                    <layout>NONE</layout>
                 </configuration>
             </plugin>
         </plugins>
