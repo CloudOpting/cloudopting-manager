@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.jclouds</groupId>
-            <artifactId>jclouds-all</artifactId>
+            <artifactId>jclouds-allcompute</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.jclouds</groupId>
