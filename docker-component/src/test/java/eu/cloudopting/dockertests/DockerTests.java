@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
-import org.apache.log4j.spi.LoggerFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
