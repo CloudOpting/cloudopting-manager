@@ -18,15 +18,18 @@
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>common-component</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>database-component</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>storage-component</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -163,6 +166,7 @@
                 </executions>
                 <configuration>
                     <excludeArtifactIds>storage-component,common-component,database-component</excludeArtifactIds>
+                    <layout>NONE</layout>
                 </configuration>
             </plugin>
         </plugins>
