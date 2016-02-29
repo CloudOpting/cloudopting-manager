@@ -79,6 +79,7 @@
                 </executions>
                 <configuration>
                     <excludeArtifactIds>common-component</excludeArtifactIds>
+                    <layout>NONE</layout>
                 </configuration>
             </plugin>
         </plugins>
