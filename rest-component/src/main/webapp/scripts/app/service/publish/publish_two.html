@@ -31,31 +31,41 @@
                             <strong>Authentication failed!</strong> Please check your credentials and try again.
                         </div>
                         <form class="form" role="form dropzone">
-                            <div class="row">
+                            <div class="row hidden">
                                 <div class="col-md-12 text-right">
                                     <img src="assets/img/auth/icn_help.png" />
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <!--<button type="button" class="btn btn-reverse">+ Add item in library</button>-->
-                                <div class="btn btn-reverse" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <!--<button type="button" class="btn btn-reverse">+ Add item in library</button>-->
+                                        <div class="btn btn-reverse" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group" ng-show="isLibraryEmpty()">
-                                <label class="sr-only" for="contentLibrary" translate="publish.content.library">Content Library</label>
-                                <input type="text" class="form-control" id="contentLibrary" placeholder="{{'publish.content.library' | translate}}" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" ng-show="isLibraryEmpty()">
+                                        <label class="sr-only" for="contentLibrary" translate="publish.content.library">Content Library</label>
+                                        <input type="text" class="form-control" id="contentLibrary" placeholder="{{'publish.content.library' | translate}}" />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group" ng-hide="isLibraryEmpty()">
-                                <label class="sr-only" for="contentLibrary" translate="publish.content.library">Content Library</label>
-                                <div  ng-repeat="content in libraryList">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" translate="publish.content.file">File</span>
-                                        <input class="form-control" type="text" autocomplete="off" value="{{content.name}}" disabled/>
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn" ng-click="deleteLib(content)" translate="publish.button.delete">Delete file</button>
-                                        </span>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" ng-hide="isLibraryEmpty()" ng-repeat="content in libraryList">
+                                        <label class="sr-only" for="contentLibrary" translate="publish.content.library">Content Library</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" translate="publish.content.file">File</span>
+                                            <input class="form-control" type="text" autocomplete="off" value="{{content.name}}" disabled />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn" ng-click="deleteLib(content)" translate="publish.button.delete">Delete file</button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
