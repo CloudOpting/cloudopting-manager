@@ -11,12 +11,12 @@
     <artifactId>bpmn-component</artifactId>
 
     <dependencies>
+        <!-- project dependencies -->
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>cloud-component</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!-- project dependencies -->
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>common-component</artifactId>
@@ -31,11 +31,11 @@
             <artifactId>tosca-component</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!--         <dependency> -->
+        <!--             <groupId>junit</groupId> -->
+        <!--             <artifactId>junit</artifactId> -->
+        <!--             <scope>test</scope> -->
+        <!--         </dependency> -->
         <dependency>
             <groupId>net.lingala.zip4j</groupId>
             <artifactId>zip4j</artifactId>
@@ -47,6 +47,47 @@
             <version>${activiti.version}</version>
         </dependency>
         <!-- spring -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework</groupId> -->
+        <!--             <artifactId>spring-context-support</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework</groupId> -->
+        <!--             <artifactId>spring-test</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-actuator</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-autoconfigure</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-loader-tools</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-starter-aop</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-starter-logging</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-starter-security</artifactId> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-starter-test</artifactId> -->
+        <!--             <scope>test</scope> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-starter-web</artifactId> -->
+        <!--         </dependency> -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
