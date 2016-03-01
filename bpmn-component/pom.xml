@@ -16,37 +16,31 @@
             <groupId>eu.cloudopting</groupId>
             <artifactId>cloud-component</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>common-component</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.cloudopting</groupId>
-            <artifactId>docker-component</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.cloudopting</groupId>
-            <artifactId>tosca-component</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>database-component</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.cloudopting</groupId>
+            <artifactId>docker-component</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>storage-component</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.cloudopting</groupId>
+            <artifactId>tosca-component</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -111,4 +105,22 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludeArtifactIds>common-component,tosca-component,cloud-component,docker-component,storage-component,database-component</excludeArtifactIds>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
