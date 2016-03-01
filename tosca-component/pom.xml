@@ -165,7 +165,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component,storage-component</excludeArtifactIds>
+                    <excludeArtifactIds>common-component,database-component,storage-component,hibernate-core,eclipselink,scala-library,freemarker</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>
