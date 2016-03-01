@@ -143,13 +143,11 @@
             <groupId>eu.cloudopting</groupId>
             <artifactId>bpmn-component</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>cloud-component</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
