@@ -142,7 +142,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component</excludeArtifactIds>
+                    <excludeArtifactIds>common-component,database-component,elasticsearch,hibernate-core</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>
