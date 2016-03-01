@@ -35,12 +35,18 @@
         </dependency>
         <dependency>
             <groupId>org.apache.jclouds</groupId>
-            <artifactId>jclouds-all</artifactId>
+            <artifactId>jclouds-compute</artifactId>
             <version>1.9.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.jclouds</groupId>
             <artifactId>jclouds-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jclouds.api</groupId>
+            <artifactId>cloudstack</artifactId>
+            <version>1.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.jclouds.labs</groupId>
@@ -70,7 +76,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component</excludeArtifactIds>
+                    <excludeArtifactIds>common-component,database-component</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>

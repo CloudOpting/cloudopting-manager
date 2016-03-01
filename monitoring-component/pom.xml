@@ -142,7 +142,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component</excludeArtifactIds>
+                    <excludeArtifactIds>common-component,database-component</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>

@@ -74,48 +74,19 @@
                 <version>${guava.version}</version>
             </dependency>
             <!-- project dependencies -->
-            <!--
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>bpmn-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>cloud-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>common-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>database-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>docker-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>monitoring-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>storage-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.cloudopting</groupId>
-                <artifactId>tosca-component</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            -->
+            <!-- <dependency> <groupId>eu.cloudopting</groupId> <artifactId>bpmn-component</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>eu.cloudopting</groupId> 
+				<artifactId>cloud-component</artifactId> <version>1.0-SNAPSHOT</version> 
+				</dependency> <dependency> <groupId>eu.cloudopting</groupId> <artifactId>common-component</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>eu.cloudopting</groupId> 
+				<artifactId>database-component</artifactId> <version>1.0-SNAPSHOT</version> 
+				</dependency> <dependency> <groupId>eu.cloudopting</groupId> <artifactId>docker-component</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>eu.cloudopting</groupId> 
+				<artifactId>monitoring-component</artifactId> <version>1.0-SNAPSHOT</version> 
+				</dependency> <dependency> <groupId>eu.cloudopting</groupId> <artifactId>storage-component</artifactId> 
+				<version>1.0-SNAPSHOT</version> </dependency> <dependency> <groupId>eu.cloudopting</groupId> 
+				<artifactId>tosca-component</artifactId> <version>1.0-SNAPSHOT</version> 
+				</dependency> -->
             <dependency>
                 <groupId>javax.jcr</groupId>
                 <artifactId>jcr</artifactId>
@@ -136,18 +107,32 @@
                 <artifactId>jackrabbit-ocm</artifactId>
                 <version>${jackrabbit-ocm.version}</version>
             </dependency>
+
+            <!-- 			<dependency>
+				<groupId>org.apache.jclouds</groupId>
+				<artifactId>jclouds-allcompute</artifactId>
+				<version>${jclouds.version}</version>
+			</dependency>
+ -->
             <dependency>
                 <groupId>org.apache.jclouds</groupId>
-                <artifactId>jclouds-allcompute</artifactId>
+                <artifactId>jclouds-compute</artifactId>
                 <version>${jclouds.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.jclouds</groupId>
                 <artifactId>jclouds-core</artifactId>
-                <version>2.0.0-SNAPSHOT</version>
+                <version>${jclouds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jclouds.api</groupId>
+                <artifactId>cloudstack</artifactId>
+                <version>${jclouds.version}</version>
             </dependency>
 
+            <!-- <dependency> <groupId>org.apache.jclouds</groupId> <artifactId>jclouds-core</artifactId> 
+				<version>2.0.0-SNAPSHOT</version> </dependency> -->
             <dependency>
                 <groupId>org.apache.jclouds.labs</groupId>
                 <artifactId>azurecompute</artifactId>
@@ -164,7 +149,6 @@
                 <artifactId>spring-plugin-core</artifactId>
                 <version>1.2.0.RELEASE</version>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>
@@ -380,7 +364,7 @@
                         <argument>--spring.profiles.active=dev</argument>
                     </arguments>
                     <mainClass>eu.cloudopting.Application</mainClass>
-                    <!--<skip>true</skip>-->
+                    <!--<skip>true</skip> -->
                 </configuration>
             </plugin>
         </plugins>
