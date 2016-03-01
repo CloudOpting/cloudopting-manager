@@ -142,7 +142,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component,elasticsearch,hibernate-core</excludeArtifactIds>
+                    <excludeArtifactIds>common-component,database-component,elasticsearch,hibernate-core,tomcat-embed-core,guava,aspectjweaver,lucene-core</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>

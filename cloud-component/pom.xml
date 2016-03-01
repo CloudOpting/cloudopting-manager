@@ -76,7 +76,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component,hibernate-core</excludeArtifactIds>
+                    <excludeArtifactIds>common-component,database-component,hibernate-core,tomcat-embed-core,guava,freemarker</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>

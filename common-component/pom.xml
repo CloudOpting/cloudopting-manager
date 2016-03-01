@@ -200,7 +200,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>database-component</excludeArtifactIds>
+                    <excludeArtifactIds>database-component,hibernate-core,tomcat-embed-core,guava,freemarker,aspectjweaver</excludeArtifactIds>
                 </configuration>
             </plugin>
         </plugins>
