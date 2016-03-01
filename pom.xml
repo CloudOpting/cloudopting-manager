@@ -417,6 +417,7 @@
             <id>prod</id>
             <build>
                 <plugins>
+                    <!--
                     <plugin>
                         <groupId>com.github.trecloux</groupId>
                         <artifactId>yeoman-maven-plugin</artifactId>
@@ -429,7 +430,7 @@
                                     <goal>build</goal>
                                 </goals>
                                 <configuration>
-                                    <gruntBuildArgs>--force</gruntBuildArgs>
+                                    <gruntBuildArgs>force</gruntBuildArgs>
                                 </configuration>
                             </execution>
                         </executions>
@@ -454,6 +455,7 @@
                             </filesets>
                         </configuration>
                     </plugin>
+                    -->
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
