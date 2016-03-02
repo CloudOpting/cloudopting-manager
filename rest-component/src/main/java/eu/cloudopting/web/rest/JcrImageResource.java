@@ -44,28 +44,31 @@ public class JcrImageResource {
 	private String jrHttp;
     
     private String getRelativePathForNode(String jcrPath){
+		log.debug("JcrImageResource.getRelativePathForNode starting with jcrPath: " + jcrPath);
     	String result = null;
     	String jrRepositoryBase = "http://lab1.cloudopting.org:8083/repository/default/";
 		StoreService ss = this.getStoreService();
 		if (ss!=null){
 			jrRepositoryBase = ss.getJrHttp();
 		}else{
-			String s = "Store Service NOT injected!";
+			String s = "JcrImageResource.getRelativePathForNode. Store Service NOT injected!";
 			if (log!=null){
 				log.error(s);
 			}else{
-				System.out.println(s);
+				log.debug(s);
 			}
 		}
 		result = StringUtils.removeStart(jcrPath, jrRepositoryBase); 
 		if (!result.startsWith("/")){
 			result = "/"+result;
 		}
+		log.debug("JcrImageResource.getRelativePathForNode ended with result: " + result);
 		return result;
     }
 	
 	@RequestMapping(value = "/jr/img", method = RequestMethod.GET)
 	public final ResponseEntity<InputStreamResource> getJcrImage(@RequestParam("jcrPath") String jcrPath) {
+		log.debug("JcrImageResource.getJcrImage starting with jcrPath: " + jcrPath);
 		ResponseEntity<InputStreamResource> result = null;
 		String relativePath = this.getRelativePathForNode(jcrPath);
 		InputStream is = null;
@@ -83,7 +86,7 @@ public class JcrImageResource {
 			result = new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
-			log.error("Repository Exception", e);
+			log.error("JcrImageResource.getJcrImage. Repository Exception", e);
 			result = new ResponseEntity<InputStreamResource>(new InputStreamResource(is), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			try {
@@ -91,14 +94,16 @@ public class JcrImageResource {
 					is.close();
 			} catch (IOException e) {
 				e.printStackTrace();
-				log.warn("Repository Exception", e);
+				log.warn("JcrImageResource.getJcrImage. Repository Exception", e);
 			}
 		}
+		log.debug("JcrImageResource.getJcrImage ended with result: " + result);
 	    return result;
 	}
 	
 	@RequestMapping(value = "/jr/img", method = RequestMethod.DELETE)
 	public final Boolean deleteJcrImage(@RequestParam("jcrPath") String jcrPath) {
+		log.debug("JcrImageResource.deleteJcrImage starting with jcrPath: " + jcrPath);
 		Boolean result = false;
 		String relativePath = this.getRelativePathForNode(jcrPath);
 		try {
@@ -108,9 +113,10 @@ public class JcrImageResource {
 			result = true;
 		} catch (RepositoryException e) {
 			e.printStackTrace();
-			log.error("Repository Exception", e);
+			log.error("JcrImageResource.deleteJcrImage. Repository Exception", e);
 			result = false;
-		} 
+		}
+		log.debug("JcrImageResource.deleteJcrImage ended with result: " + result);
 	    return result;
 	}
 	
