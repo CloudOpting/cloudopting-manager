@@ -34,6 +34,14 @@ angular.module('cloudoptingApp')
                 $state.go('catalogue', { section: "contact" }, {reload: true} );
             }
         };
+        $scope.catalogue = function() {
+            if($state.current.name == "catalogue"){
+                var someElement = angular.element(document.getElementById('services'));
+                $document.scrollToElementAnimated( someElement, 30, 5000 );
+            } else {
+                $state.go('catalogue');
+            }
+        };
 
         $scope.$watch(
             function() {
