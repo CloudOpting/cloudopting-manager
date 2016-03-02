@@ -67,7 +67,7 @@ metrics:
 
 zabbix:
     user: Admin
-    password: ENC(B3rDZgUuY1jL4vPQHpYwdw==)
+    password: ENC(Vxfao9qTZpixb7TREt0S/nwsU0HbrinU)
     endpoint: http://cloudoptingmaster.cloudopen.csipiemonte.it/zabbix/api_jsonrpc.php
 
 elasticsearch:

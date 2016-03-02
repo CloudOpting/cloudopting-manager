@@ -67,7 +67,7 @@ metrics:
 
 zabbix:
     user: Admin
-    password: ENC(B3rDZgUuY1jL4vPQHpYwdw==)
+    password: ENC(Vxfao9qTZpixb7TREt0S/nwsU0HbrinU)
     endpoint: http://cloudoptingmaster.cloudopen.csipiemonte.it/zabbix/api_jsonrpc.php
 
 
@@ -83,3 +83,6 @@ cloud:
 
 orchestrator:
     logger_address: 84.240.187.4:4044
+
+flyway:
+    baseline-on-migrate: false
