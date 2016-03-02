@@ -178,7 +178,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,tosca-component,cloud-component,docker-component,storage-component,database-component,hibernate-core,eclipselink,scala-library,freemarker,tomcat-embed-core,xalan,guava,aspectjweaver</excludeArtifactIds>
+                    <skip>true</skip>
+                    <!--<excludeArtifactIds>common-component,tosca-component,cloud-component,docker-component,storage-component,database-component,hibernate-core,eclipselink,scala-library,freemarker,tomcat-embed-core,xalan,guava,aspectjweaver</excludeArtifactIds>-->
                 </configuration>
             </plugin>
         </plugins>

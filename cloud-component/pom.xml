@@ -112,7 +112,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component,hibernate-core,tomcat-embed-core,guava,freemarker</excludeArtifactIds>
+                    <skip>true</skip>
+                    <!--<excludeArtifactIds>common-component,database-component,hibernate-core,tomcat-embed-core,guava,freemarker</excludeArtifactIds>-->
                 </configuration>
             </plugin>
         </plugins>

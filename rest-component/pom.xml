@@ -440,5 +440,23 @@
     </dependencies>
     <build>
         <finalName>cloudopting</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<excludeArtifactIds>database-component,hibernate-core,tomcat-embed-core,guava,freemarker,aspectjweaver</excludeArtifactIds>-->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+
     </build>
 </project>

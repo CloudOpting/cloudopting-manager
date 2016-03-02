@@ -279,7 +279,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>guava,hibernate-core,tomcat-embed-core,aspectjweaver</excludeArtifactIds>
+                    <!--<excludeArtifactIds>guava,hibernate-core,tomcat-embed-core,aspectjweaver</excludeArtifactIds>-->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

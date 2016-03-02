@@ -230,7 +230,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component,storage-component,hibernate-core,eclipselink,scala-library,freemarker,xalan,tomcat-embed-core,guava,aspectjweaver</excludeArtifactIds>
+                    <!--<excludeArtifactIds>common-component,database-component,storage-component,hibernate-core,eclipselink,scala-library,freemarker,xalan,tomcat-embed-core,guava,aspectjweaver</excludeArtifactIds>-->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

@@ -90,7 +90,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component,freemarker,hibernate-core,tomcat-embed-core,guava,aspectjweaver</excludeArtifactIds>
+                    <!--<excludeArtifactIds>common-component,database-component,freemarker,hibernate-core,tomcat-embed-core,guava,aspectjweaver</excludeArtifactIds>-->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

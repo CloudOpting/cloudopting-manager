@@ -207,7 +207,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>common-component,database-component,elasticsearch,hibernate-core,tomcat-embed-core,guava,aspectjweaver,lucene-core</excludeArtifactIds>
+                    <!--<excludeArtifactIds>common-component,database-component,elasticsearch,hibernate-core,tomcat-embed-core,guava,aspectjweaver,lucene-core</excludeArtifactIds>-->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

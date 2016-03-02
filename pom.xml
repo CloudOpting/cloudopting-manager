@@ -398,6 +398,7 @@
                             <arguments>
                                 <argument>--spring.profiles.active=dev,fast</argument>
                             </arguments>
+                            <skip>true</skip>
                         </configuration>
                     </plugin>
                 </plugins>

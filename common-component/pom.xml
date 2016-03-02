@@ -346,7 +346,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludeArtifactIds>database-component,hibernate-core,tomcat-embed-core,guava,freemarker,aspectjweaver</excludeArtifactIds>
+                    <!--<excludeArtifactIds>database-component,hibernate-core,tomcat-embed-core,guava,freemarker,aspectjweaver</excludeArtifactIds>-->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
