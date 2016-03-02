@@ -81,7 +81,7 @@ angular.module('cloudoptingApp')
         };
 
         var buildImagePath = function(path){
-            return "/api/jr/img?jcrPath=" + path;
+            return "/api/jr/img?jcrPath=" + encodeURIComponent(path);
         };
 
         //Save the current application & go to the detail
