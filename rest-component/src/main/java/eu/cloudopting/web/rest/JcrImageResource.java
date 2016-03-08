@@ -86,15 +86,16 @@ public class JcrImageResource {
 			e.printStackTrace();
 			log.error("JcrImageResource.getJcrImage. Repository Exception", e);
 			result = new ResponseEntity<InputStreamResource>(new InputStreamResource(is), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-		} finally {
-			try {
-				if (is!=null)
-					is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				log.warn("JcrImageResource.getJcrImage. Repository Exception", e);
-			}
-		}
+		} 
+//		finally {
+//			try {
+//				if (is!=null)
+//					is.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				log.warn("JcrImageResource.getJcrImage. Repository Exception", e);
+//			}
+//		}
 		if (log!=null) log.debug("JcrImageResource.getJcrImage ended with result: " + result);
 	    return result;
 	}
