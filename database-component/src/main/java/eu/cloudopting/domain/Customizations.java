@@ -1,8 +1,6 @@
 package eu.cloudopting.domain;
 
 import eu.cloudopting.events.api.entity.BaseEntity;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,10 +154,6 @@ public class Customizations implements BaseEntity {
 
 	public void setProcessId(String processId) {
         this.processId = processId;
-    }
-
-	public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("applicationId", "statusId", "customerOrganizationId").toString();
     }
 
 	@Id

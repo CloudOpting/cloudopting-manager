@@ -3,8 +3,6 @@ package eu.cloudopting.domain;
 import eu.cloudopting.domain.util.DatabaseEncryptionConfiguration;
 import eu.cloudopting.events.api.entity.BaseEntity;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -130,10 +128,6 @@ public class CloudAccounts implements BaseEntity {
 
 	public void setId(Long id) {
         this.id = id;
-    }
-
-	public String toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("organizationId", "providerId").toString();
     }
 
 	@JsonIgnore
