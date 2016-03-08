@@ -99,7 +99,7 @@ public class MonitoringController {
 	public ArrayList<ElasticGraphData> findAllElasticDataById(@PathVariable("instanceId") final Long instanceId) {
 		// I get the id of the customization
 		log.debug(instanceId.toString());
-		ArrayList<ElasticGraphData> ret = monitordataService.getAllMonitorData(instanceId);
+		ArrayList<ElasticGraphData> ret = monitordataService.getAllAggregatedMonitorData(instanceId);
 		return ret;
 	}
 

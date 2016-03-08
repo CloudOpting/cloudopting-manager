@@ -3,6 +3,10 @@ package eu.cloudopting.monitoring.elastic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ResultsExtractor;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +22,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.MatchAllQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryFilterBuilder;
+import org.elasticsearch.index.query.RangeFilterBuilder;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogram;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramBuilder;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
+import org.elasticsearch.search.aggregations.bucket.histogram.InternalDateHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static org.elasticsearch.action.search.SearchType.COUNT;
 
 @Transactional
 @Service
@@ -30,6 +53,10 @@ public class MonitordataService {
 
 	@Autowired
 	private MonitordataRepository monitordataRepository;
+
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
+
 	private static final Logger logger = LoggerFactory.getLogger(MonitordataService.class);
 
 	public Monitordata findOne(String id) {
@@ -49,12 +76,122 @@ public class MonitordataService {
 
 	public List<Monitordata> getMonitorData(String container, String condition, String fields, String type,
 			Long pagination) {
-		log.debug("pagination:"+pagination.toString());
-		log.debug("condit"+condition);
+		log.debug("pagination:" + pagination.toString());
+		log.debug("condit" + condition);
 		return monitordataRepository.findMonitorData(container, condition, fields,
 				new PageRequest(0, pagination.intValue(), new Sort(new Sort.Order(Sort.Direction.ASC, "@timestamp"))));
 	}
 
+	public ElasticData[] getAggregatedMonitorData(String container, String condition, String fields, String type,
+			Long pagination) {
+		log.debug("pagination:" + pagination.toString());
+		log.debug("condit" + condition);
+		ElasticData graphData[] = null;
+		// we need a match all query to start with
+		MatchAllQueryBuilder all = QueryBuilders.matchAllQuery();
+
+		// we need a date histogram aggregation
+		DateHistogramBuilder dayly = AggregationBuilders.dateHistogram("dayly").field("@timestamp")
+				.interval(DateHistogram.Interval.DAY).format("yyyy-MM-dd hh:mm:ss");
+
+		// we need to filter the data for time range AND data match
+		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte("2016-02-20T10:55:28+01:00");
+
+		// we need to match on the path AND containername
+		MatchQueryBuilder pathMatch = QueryBuilders.matchQuery(fields, condition)
+				.operator(MatchQueryBuilder.Operator.AND);
+		MatchQueryBuilder contMatch = QueryBuilders.matchQuery("container_name", container)
+				.operator(MatchQueryBuilder.Operator.AND);
+
+		// place the match in bool AND
+		BoolQueryBuilder boolQ = QueryBuilders.boolQuery().must(pathMatch);
+		boolQ.must(contMatch);
+		// assign the bool the the filter
+		QueryFilterBuilder queryF = FilterBuilders.queryFilter(boolQ);
+
+		// place the match in AND with the range
+		AndFilterBuilder filter = FilterBuilders.andFilter(rangeFilter, queryF);
+
+		// we need the filter aggregation
+		FilterAggregationBuilder containerFilter = AggregationBuilders.filter("containers").filter(filter)
+				.subAggregation(dayly);
+
+		// build the aggregation native search query
+		SearchQuery searchQ = new NativeSearchQueryBuilder().withQuery(all).withSearchType(COUNT).withIndices("coidx-")
+				.withTypes("fluentd").addAggregation(containerFilter).build();
+		Aggregations aggregations = elasticsearchTemplate.query(searchQ, new ResultsExtractor<Aggregations>() {
+
+			@Override
+			public Aggregations extract(SearchResponse response) {
+				// TODO Auto-generated method stub
+				// response.
+				logger.debug(response.toString());
+				logger.debug(response.getHits().toString());
+				return response.getAggregations();
+			}
+
+		});
+		logger.debug("PARSING---------------");
+		for (Aggregation aAgg : aggregations.asList()) {
+			InternalFilter cnt = (InternalFilter) aAgg;
+			logger.debug("aggregation name:" + cnt.getName());
+			logger.debug(cnt.toString());
+
+			for (Aggregation theA : cnt.getAggregations().asList()) {
+				InternalDateHistogram idh = (InternalDateHistogram) theA;
+				graphData = new ElasticData[idh.getBuckets().size()];
+				int gdi = 0;
+				for (Histogram.Bucket entry : idh.getBuckets()) {
+//					logger.debug("entry:" + entry.getKey() + "aggre count:" + new Long(entry.getDocCount()).toString());
+					// logger.debug(new Long(entry.getDocCount()).toString());
+					ElasticData ed = new ElasticData(entry.getKey(), new Long(entry.getDocCount()).toString());
+					log.debug(ed.toString());
+					graphData[gdi] = ed;
+					gdi++;
+				}
+				ElasticGraphData egd = new ElasticGraphData();
+				// log.debug(new Integer(graphData.size()).toString());
+				// if (!graphData.isEmpty()) {
+				egd.setData(graphData);
+			}
+			// logger.debug(cnt.;
+			// logger.debug(new Long(cnt.getValue()).toString());
+		}
+
+		return graphData;
+	}
+
+	public ArrayList<ElasticGraphData> getAllAggregatedMonitorData(Long customizationId) {
+		// recover the customization
+		Customizations cust = customizationService.findOne(customizationId);
+		// get info on elastic form Db
+		Set<MonitoringInfoElastic> elastinfo = cust.getElasticInfos();
+		log.debug(new Integer(elastinfo.size()).toString());
+
+		ArrayList<ElasticGraphData> retData = new ArrayList<ElasticGraphData>();
+		// with info I get data to pass to the get monitor data
+		for (MonitoringInfoElastic ei : elastinfo) {
+			log.debug(ei.getContainer());
+			ElasticData[] graphData = this.getAggregatedMonitorData(ei.getContainer(), ei.getCondition(), ei.getFields(),
+					ei.getType(), ei.getPagination());
+			ElasticGraphData egd = new ElasticGraphData();
+			// log.debug(new Integer(graphData.size()).toString());
+			// if (!graphData.isEmpty()) {
+			egd.setData(graphData);
+			// }
+			egd.setTitle(ei.getTitle());
+			egd.setDescription(ei.getDescription());
+			egd.setType(ei.getType());
+			egd.setXkey("time");
+			egd.setYkeys(new String[] { "value" });
+			egd.setLabels(new String[] { "Value" });
+			egd.setLineColors(new String[] { "blue" });
+
+			retData.add(egd);
+		}
+		return retData;
+	}
+	
 	public ArrayList<ElasticGraphData> getAllMonitorData(Long customizationId) {
 		// recover the customization
 		Customizations cust = customizationService.findOne(customizationId);
@@ -70,17 +207,17 @@ public class MonitordataService {
 					ei.getType(), ei.getPagination());
 
 			ElasticData graphData[] = new ElasticData[eData.size()];
-			for (int k=0; k< eData.size(); k++) {
-				ElasticData ed = new ElasticData(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(eData.get(k).getTimestamp()),
-						"1");
+			for (int k = 0; k < eData.size(); k++) {
+				ElasticData ed = new ElasticData(
+						new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(eData.get(k).getTimestamp()), "1");
 				log.debug(ed.toString());
 				graphData[k] = ed;
 			}
 			ElasticGraphData egd = new ElasticGraphData();
-//			log.debug(new Integer(graphData.size()).toString());
-//			if (!graphData.isEmpty()) {
-				egd.setData( graphData);
-//			}
+			// log.debug(new Integer(graphData.size()).toString());
+			// if (!graphData.isEmpty()) {
+			egd.setData(graphData);
+			// }
 			egd.setTitle(ei.getTitle());
 			egd.setDescription(ei.getDescription());
 			egd.setType(ei.getType());
