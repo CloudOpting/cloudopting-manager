@@ -44,7 +44,7 @@ public class JcrImageResource {
 	private String jrHttp;
     
     private String getRelativePathForNode(String jcrPath){
-		log.debug("JcrImageResource.getRelativePathForNode starting with jcrPath: " + jcrPath);
+    	if (log!=null) log.debug("JcrImageResource.getRelativePathForNode starting with jcrPath: " + jcrPath);
     	String result = null;
     	String jrRepositoryBase = "http://lab1.cloudopting.org:8083/repository/default/";
 		StoreService ss = this.getStoreService();
@@ -54,21 +54,19 @@ public class JcrImageResource {
 			String s = "JcrImageResource.getRelativePathForNode. Store Service NOT injected!";
 			if (log!=null){
 				log.error(s);
-			}else{
-				log.debug(s);
 			}
 		}
 		result = StringUtils.removeStart(jcrPath, jrRepositoryBase); 
 		if (!result.startsWith("/")){
 			result = "/"+result;
 		}
-		log.debug("JcrImageResource.getRelativePathForNode ended with result: " + result);
+		if (log!=null) log.debug("JcrImageResource.getRelativePathForNode ended with result: " + result);
 		return result;
     }
 	
 	@RequestMapping(value = "/jr/img", method = RequestMethod.GET)
 	public final ResponseEntity<InputStreamResource> getJcrImage(@RequestParam("jcrPath") String jcrPath) {
-		log.debug("JcrImageResource.getJcrImage starting with jcrPath: " + jcrPath);
+		if (log!=null) log.debug("JcrImageResource.getJcrImage starting with jcrPath: " + jcrPath);
 		ResponseEntity<InputStreamResource> result = null;
 		String relativePath = this.getRelativePathForNode(jcrPath);
 		InputStream is = null;
@@ -97,13 +95,13 @@ public class JcrImageResource {
 				log.warn("JcrImageResource.getJcrImage. Repository Exception", e);
 			}
 		}
-		log.debug("JcrImageResource.getJcrImage ended with result: " + result);
+		if (log!=null) log.debug("JcrImageResource.getJcrImage ended with result: " + result);
 	    return result;
 	}
 	
 	@RequestMapping(value = "/jr/img", method = RequestMethod.DELETE)
 	public final Boolean deleteJcrImage(@RequestParam("jcrPath") String jcrPath) {
-		log.debug("JcrImageResource.deleteJcrImage starting with jcrPath: " + jcrPath);
+		if (log!=null) log.debug("JcrImageResource.deleteJcrImage starting with jcrPath: " + jcrPath);
 		Boolean result = false;
 		String relativePath = this.getRelativePathForNode(jcrPath);
 		try {
@@ -116,7 +114,7 @@ public class JcrImageResource {
 			log.error("JcrImageResource.deleteJcrImage. Repository Exception", e);
 			result = false;
 		}
-		log.debug("JcrImageResource.deleteJcrImage ended with result: " + result);
+		if (log!=null) log.debug("JcrImageResource.deleteJcrImage ended with result: " + result);
 	    return result;
 	}
 	
