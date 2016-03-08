@@ -85,18 +85,19 @@ public class MonitordataService {
 	public ElasticData[] getAggregatedMonitorData(String container, String condition, String fields, String type,
 			Long pagination) {
 		log.debug("pagination:" + pagination.toString());
-		log.debug("condit" + condition);
+		log.debug("condit:" + condition);
 		ElasticData graphData[] = null;
 		// we need a match all query to start with
 		MatchAllQueryBuilder all = QueryBuilders.matchAllQuery();
+		log.debug(all.toString());
 
 		// we need a date histogram aggregation
 		DateHistogramBuilder dayly = AggregationBuilders.dateHistogram("dayly").field("@timestamp")
 				.interval(DateHistogram.Interval.DAY).format("yyyy-MM-dd hh:mm:ss");
-
+		log.debug(dayly.toString());
 		// we need to filter the data for time range AND data match
 		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte("2016-02-20T10:55:28+01:00");
-
+		log.debug(rangeFilter.toString());
 		// we need to match on the path AND containername
 		MatchQueryBuilder pathMatch = QueryBuilders.matchQuery(fields, condition)
 				.operator(MatchQueryBuilder.Operator.AND);
@@ -115,34 +116,36 @@ public class MonitordataService {
 		// we need the filter aggregation
 		FilterAggregationBuilder containerFilter = AggregationBuilders.filter("containers").filter(filter)
 				.subAggregation(dayly);
-
+		log.debug(containerFilter.toString());
 		// build the aggregation native search query
 		SearchQuery searchQ = new NativeSearchQueryBuilder().withQuery(all).withSearchType(COUNT).withIndices("coidx-")
 				.withTypes("fluentd").addAggregation(containerFilter).build();
-		Aggregations aggregations = elasticsearchTemplate.query(searchQ, new ResultsExtractor<Aggregations>() {
 
+		// do the query
+		Aggregations aggregations = elasticsearchTemplate.query(searchQ, new ResultsExtractor<Aggregations>() {
 			@Override
 			public Aggregations extract(SearchResponse response) {
 				// TODO Auto-generated method stub
 				// response.
-				logger.debug(response.toString());
-				logger.debug(response.getHits().toString());
+				log.debug(response.toString());
+				log.debug(response.getHits().toString());
 				return response.getAggregations();
 			}
 
 		});
-		logger.debug("PARSING---------------");
+		log.debug("PARSING---------------");
 		for (Aggregation aAgg : aggregations.asList()) {
 			InternalFilter cnt = (InternalFilter) aAgg;
-			logger.debug("aggregation name:" + cnt.getName());
-			logger.debug(cnt.toString());
+			log.debug("aggregation name:" + cnt.getName());
+			log.debug(cnt.toString());
 
 			for (Aggregation theA : cnt.getAggregations().asList()) {
 				InternalDateHistogram idh = (InternalDateHistogram) theA;
 				graphData = new ElasticData[idh.getBuckets().size()];
 				int gdi = 0;
 				for (Histogram.Bucket entry : idh.getBuckets()) {
-//					logger.debug("entry:" + entry.getKey() + "aggre count:" + new Long(entry.getDocCount()).toString());
+					// logger.debug("entry:" + entry.getKey() + "aggre count:" +
+					// new Long(entry.getDocCount()).toString());
 					// logger.debug(new Long(entry.getDocCount()).toString());
 					ElasticData ed = new ElasticData(entry.getKey(), new Long(entry.getDocCount()).toString());
 					log.debug(ed.toString());
@@ -172,8 +175,8 @@ public class MonitordataService {
 		// with info I get data to pass to the get monitor data
 		for (MonitoringInfoElastic ei : elastinfo) {
 			log.debug(ei.getContainer());
-			ElasticData[] graphData = this.getAggregatedMonitorData(ei.getContainer(), ei.getCondition(), ei.getFields(),
-					ei.getType(), ei.getPagination());
+			ElasticData[] graphData = this.getAggregatedMonitorData(ei.getContainer(), ei.getCondition(),
+					ei.getFields(), ei.getType(), ei.getPagination());
 			ElasticGraphData egd = new ElasticGraphData();
 			// log.debug(new Integer(graphData.size()).toString());
 			// if (!graphData.isEmpty()) {
@@ -191,7 +194,7 @@ public class MonitordataService {
 		}
 		return retData;
 	}
-	
+
 	public ArrayList<ElasticGraphData> getAllMonitorData(Long customizationId) {
 		// recover the customization
 		Customizations cust = customizationService.findOne(customizationId);
