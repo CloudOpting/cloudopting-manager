@@ -1,6 +1,15 @@
 'use strict';
 
 angular.module('cloudoptingApp')
+    .directive('onLastRepeat',function(){
+    	return function(scope, element, attrs){
+    		if(scope.$last) setTimeout(function(){
+    			scope.$emit('onRepeatLast', element, attrs);
+    			console.log("emitting");
+    			console.log(element);
+    		},1);
+    	};
+    })
     .controller('MonitoringController', function (SERVICE, localStorageService,
                                                   $scope, $state, $log, $timeout,
                                                   MonitoringService, Principal) {
@@ -115,25 +124,41 @@ angular.module('cloudoptingApp')
                 for(var i in graphs){
                 	$scope.graphsList.push({
                         title: graphs[i].title,
-                        chartId: "elasticchart"+i
+                        chartId: "elastic_chart_"+i,
+                        data: graphs[i]
                     });
+                	/*
                 	$timeout(function () {
                 		switch (graphs[i].type) {
 						case "bar":
-							barChart(graphs[i], "elasticchart"+i);	
+//							barChart(graphs[i], "elasticchart"+i);
+							$timeout(function() {
+			                    barChart(graphs[i], "elasticchart"+i);
+			                }, 1000);
 							break;
 						default:
 							lineChart(graphs[i], "elasticchart"+i);
 							break;
 						}
                     }, 1000);
-                	
+                	*/
                 }
-
+console.log("filled data for elastic graphs");
             }
         };
         MonitoringService.findOneDataById(instance.id, elasticcallback);
 
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+        	console.log("the ngrepeat has finished");
+        	for(var i in $scope.graphsList){
+        		console.log(i);
+        		console.log("elastic_chart_"+i);
+//        		$timeout(function() {
+        			console.log("creating bar chart"+i);
+                    barChart($scope.graphsList[i].data, "elastic_chart_"+i);
+  //              }, 1000);
+        	}
+        });
         //FIXME: TO DELETE: "HARDCODED" to 1.
         /*
         var newelasticcallback =  function(data, status, headers, config) {

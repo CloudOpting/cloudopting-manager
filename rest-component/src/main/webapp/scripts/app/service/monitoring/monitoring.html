@@ -37,7 +37,7 @@
 					</div>
 					<!-- Div that will contain all graphs in the grpahsList -->
 					<div class="backend-box-content" id="space-for-charts">
-						<div class="wrapper-graph" ng-repeat="graph in graphsList">
+						<div class="wrapper-graph" ng-repeat="graph in graphsList" on-last-repeat>
 							<h3>{{graph.title}}</h3>
 							<div id="{{graph.chartId}}" class="graph-content"></div>
 						</div>
