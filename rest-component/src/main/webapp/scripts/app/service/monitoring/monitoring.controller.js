@@ -16,6 +16,10 @@ angular.module('cloudoptingApp')
 
         var instance = localStorageService.get(SERVICE.STORAGE.MONITORING.INSTANCE);
 
+        $scope.dater = {
+        		startDate: moment(),
+        		endDate: moment()
+        }
         //Add the dives to the page dynamically.
         $scope.graphsList = [];
 
