@@ -18,9 +18,7 @@ angular.module('cloudoptingApp')
 
         //get only the instances of the current application.
         $scope.currentApp = localStorageService.get(SERVICE.STORAGE.INSTANCES.APPLICATION);
-
         $scope.instancesList = $scope.currentApp.customizationss;
-
         angular.forEach($scope.instancesList, function(instance, key) {
             instance.applicationName = $scope.currentApp.applicationName;
         });
@@ -58,37 +56,41 @@ angular.module('cloudoptingApp')
         };
 
         $scope.stop = function(instance) {
-            $window.alert('Not implemented yet');
+            $scope.errorMessage = "Stop not implemented yet";
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "Stop requested.")){
                     //Do something here if all went ok.
                 }
             };
-            //InstanceService.stop(instance);
+            //ProcessService.stop(instance);
         };
         $scope.delete = function(instance) {
-            $window.alert('Not implemented yet');
+            $scope.errorMessage = "Delete not implemented yet";
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "Delete requested.")){
                     //Do something here if all went ok.
                 }
             };
-            //InstanceService.delete(instance.id, callback);
+            //ProcessService.delete(instance.id, callback);
         };
 
         $scope.monitor = function(instance) {
-            localStorageService.set(SERVICE.STORAGE.MONITORING.INSTANCE, instance);
-            $state.go('monitoring');
+            if(instance.statusId.status!="Running") {
+                $scope.errorMessage = "Cannot check monitoring, the instance is not running.";
+            } else {
+                localStorageService.set(SERVICE.STORAGE.MONITORING.INSTANCE, instance);
+                $state.go('monitoring');
+            }
         };
 
         $scope.start = function(instance) {
-            $window.alert('Not implemented yet');
+            $scope.errorMessage = "Start not implemented yet";
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "Start requested.")){
                     //Do something here if all went ok.
                 }
-            };
-            //InstanceService.start(instance);
+            }
+            //ProcessService.start(instance);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){
