@@ -16,36 +16,14 @@ angular.module('cloudoptingApp')
             return $filter('filter')($scope.instancesList, $scope.searchTextInstance).length;
         };
 
-        if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)) {
-            //Get all instances of the user if it is a SUBSCRIBER.
-            var callback = function(data, status, headers, config){
-                if(checkStatusCallback(data, status, headers, config, null)) {
-                    $scope.instancesList = data;
-                }
-            };
-            InstanceService.findAll(callback);
-        } else if(Principal.isInRole(SERVICE.ROLE.ADMIN) || Principal.isInRole(SERVICE.ROLE.OPERATOR) ) {
-            //If the user is an ADMIN or an OPERATOR and they comes from DETAIL screen
-            //get only the instances of the current application.
-            $scope.currentApp = localStorageService.get(SERVICE.STORAGE.INSTANCES.APPLICATION);
+        //get only the instances of the current application.
+        $scope.currentApp = localStorageService.get(SERVICE.STORAGE.INSTANCES.APPLICATION);
 
-            $scope.instancesList = $scope.currentApp.customizationss;
+        $scope.instancesList = $scope.currentApp.customizationss;
 
-            angular.forEach($scope.instancesList, function(instance, key) {
-                instance.applicationName = $scope.currentApp.applicationName;
-            });
-
-/*
-            angular.forEach(instancesList, function(instancesList, key) {
-                $scope.instancesList.push({
-                    "service_name": $scope.currentApp.applicationName,
-                    "author": customization.customerOrganizationId,
-                    "date": customization.customizationCreation,
-                    "status": customization.statusId
-
-                })
-            })*/
-        }
+        angular.forEach($scope.instancesList, function(instance, key) {
+            instance.applicationName = $scope.currentApp.applicationName;
+        });
 
         $scope.test = function(instance) {
             var callback = function (data, status, headers, config) {
