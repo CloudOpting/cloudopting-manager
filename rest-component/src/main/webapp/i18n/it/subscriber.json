@@ -1,21 +1,21 @@
 {
   "subscriber": {
-    "title": "Service Subscriber",
+    "title": "Servizio Abbonati",
     "titles": {
-      "manage" : "Manage {{service_name}}",
-      "operations": "Manage {{service_name}} Operations",
+      "manage" : "Gestione {{service_name}}",
+      "operations": "Gestione {{service_name}} Operazioni",
       "follow": "Follow {{service_name}} KPI's"
     },
-    "handle": "Handle resource request:",
-    "decommission": "Decommission {{service_name}} Instance:",
+    "handle": "Gestire la richiesta di risorse:",
+    "decommission": "Dismettere {{service_name}} Istanza:",
     "button" : {
-      "update": "Update {{service_name}}",
-      "decommission": "Decommission"
+      "update": "Aggiorna {{service_name}}",
+      "decommission": "Dismettere"
     },
-    "cpu": "CPU Usage:",
-    "disk": "Disk Space Usage:",
-    "ram": "RAM Memory Usage:",
-    "bandwidth": "Bandwidth Usage:",
-    "terms": "Check your Terms and Conditions"
+    "cpu": "CPU Utilizzo:",
+    "disk": "Utilizzo Spazio su Disco:",
+    "ram": "Utilizzo Memoria RAM:",
+    "bandwidth": "Larghezza di banda utilizzata:",
+    "terms": "Controllare i Termini e Condizioni"
   }
 }

@@ -1,12 +1,12 @@
 {
   "detail": {
-    "title": "Service Detail",
-    "service": "\"{{service_name}}\" Service",
-    "status": "Status: {{service_status}}",
+    "title": "Dettagli del Servizio",
+    "service": "\"{{service_name}}\" Servizio",
+    "status": "Stato: {{service_status}}",
     "button" : {
-      "subscribe": "SUBSCRIBE",
-      "instances": "SEE INSTANCES",
-      "completepublish": "COMPLETE PUBLISH"
+      "subscribe": "SOTTOSCRIVI",
+      "instances": "VEDI LE ISTANZE",
+      "completepublish": "COMPLETA LA PUBBLICAZIONE"
     }
   }
 }

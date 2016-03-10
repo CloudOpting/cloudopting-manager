@@ -1,21 +1,21 @@
 {
     "health": {
-        "title": "Health checks",
-        "refresh.button": "Refresh",
+        "title": "Controlli sanitari",
+        "refresh.button": "Ricarica",
         "stacktrace": "Stacktrace",
         "indicator": {
             "db": "Database",
-            "diskSpace": "Disk space",
+            "diskSpace": "Spazio su Disco",
             "mail": "Email",
             "mongo": "Mongo DB"
         },
         "table": {
-            "service": "Service name",
-            "status": "Status"
+            "service": "Nome del Servizio",
+            "status": "Stato"
         },
         "status": {
-            "UP": "UP",
-            "DOWN": "DOWN"
+            "UP": "SU",
+            "DOWN": "GIÚ"
         }
     }
 }

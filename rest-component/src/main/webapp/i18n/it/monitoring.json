@@ -1,13 +1,13 @@
 {
   "monitoring": {
-    "title": "Service Monitoring",
+    "title": "Monitoraggio del Servizio",
     "titles" : {
-      "monitor": "Service Monitor",
-      "alerts": "Service Alerts"
+      "monitor": "Monitoraggio del Servizio",
+      "alerts": "Avvisi relativi ai Servizi"
     },
-    "cpu": "CPU Usage:",
-    "disk": "Disk Usage:",
-    "ram": "RAM Usage:"
+    "cpu": "CPU Utilizzo:",
+    "disk": "Disk Utilizzo:",
+    "ram": "RAM Utilizzo:"
   }
 }
 

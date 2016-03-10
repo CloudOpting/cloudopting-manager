@@ -1,19 +1,19 @@
 {
   "management": {
-    "title": "Service Management",
+    "title": "Gestione del Servizio",
     "titles" : {
-      "operations": "Operations"
+      "operations": "Operazioni"
     },
     "button" : {
-      "start": "Start Service",
-      "stop": "Stop Service",
-      "decommission": "Decommission Service",
-      "redeploy": "Redeploy Service"
+      "start": "Avviare Servizio",
+      "stop": "Arrestare Servizio",
+      "decommission": "Dismettere Servizio",
+      "redeploy": "Ridistribuire Servizio"
     },
     "tab" : {
-      "params": "Params",
+      "params": "Parametri",
       "monitor": "Monitor",
-      "logging": "Logging"
+      "logging": "Registrazione"
     }
   }
 }

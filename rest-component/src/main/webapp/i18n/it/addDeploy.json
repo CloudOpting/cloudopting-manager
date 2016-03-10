@@ -1,23 +1,23 @@
 {
   "addDeploy": {
-    "title": "Service Add Deploy Form",
+    "title": "Form aggiunta Servizi da Rilasciare",
     "titles" : {
-      "deploy": "Service Deploy",
-      "params": "Service Parameters"
+      "deploy": "Rilascio del Servizio",
+      "params": "Parametri del Servizio"
     },
     "button" : {
-      "deploy": "Deploy Service",
-      "test": "Test Service",
-      "save": "Save Template",
-      "upload": "Upload Template"
+      "deploy": "Rilascia il Servizio",
+      "test": "Prova il  Servizio",
+      "save": "Salva il Template",
+      "upload": "Carica il Template"
     },
     "cloudnode": "Cloud Node:",
-    "os": "Operating System:",
-    "numcpu": "Number CPU's:",
-    "disk": "Disk Space:",
-    "ram": "Memory RAM:",
-    "bandwidth": "Bandwidth:",
-    "urldomain": "URL/Domain:",
+    "os": "Sistema Operativo:",
+    "numcpu": "Numero di CPU:",
+    "disk": "Spazio su Disco:",
+    "ram": "Memoria RAM:",
+    "bandwidth": "Larghezza di banda:",
+    "urldomain": "URL/Dominio:",
     "cssskin": "CSS Skin:"
   }
 }
