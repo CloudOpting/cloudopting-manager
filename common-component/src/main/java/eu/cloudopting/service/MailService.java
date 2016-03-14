@@ -76,15 +76,22 @@ public class MailService {
 			template.process(dataMap, writer);
 			this.content = writer.toString();
 		} catch (TemplateException e) {
-			log.warn("Error paring the template, message is {}", e.getMessage());
+			log.warn("Error parsing the template, message is {}", e.getMessage());
 		} catch (IOException e) {
-			log.warn("Error paring the template, message is {}", e.getMessage());
+			log.warn("Error parsing the template, message is {}", e.getMessage());
 		}
 	}
 	
 	public void sendEmail(String to) {
 		sendEmail(to, this.subject, this.content, this.isMultipart, this.isHtml);
 	}
+	
+	
+	// CUSTOMIZATION
+	// prendo path a jackrabbit che contiene il template
+	//recupero il file, leggo il template, applico i dati e ottengo la stringa
+	
+	
 
 	@Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
