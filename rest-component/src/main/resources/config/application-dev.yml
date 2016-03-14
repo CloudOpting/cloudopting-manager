@@ -5,20 +5,31 @@ spring:
     profiles:
         active: dev
 
+    jcr:
+        repo_url: http://lab1.cloudopting.org:8083/server
+        repo_http: http://lab1.cloudopting.org:8083/repository/default/
+        user: admin
+        password: ENC(qwbz5bEyjdJBU2+qsDUC3g==)
+
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
         driver: org.postgresql.Driver
-        url: jdbc:postgresql://cloudopting1.cloudapp.net:5433/cloudopting
+        url: jdbc:postgresql://lab1.cloudopting.org:5433/cloudopting
         databaseName: cloudopting
-        serverName: cloudopting1.cloudapp.net
+        serverName: lab1.cloudopting.org
         username: postgres
-        password: 1qaz2wsx
+        password: ENC(i/xS2Pgo/o4VzMbL/t5WFS+81TDMHkdR)
+        test-on-borrow: true
+        test-while-idle: true
+        test-on-return: true
+        remove-abandoned: true
+        validation-query: SELECT 1;
 
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect
         database: POSTGRESQL
         openInView: false
-        show_sql: true
+        show_sql: false
         generate-ddl: false
         hibernate:
             ddl-auto: none
@@ -28,13 +39,20 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
 
+    mail:
+        baseUrl: http://localhost:8080
+
     thymeleaf:
         mode: XHTML
         cache: false
     activiti:
         jobExecutorActivate: true
         restApiEnabled: true
-
+    data:
+        elasticsearch:
+            cluster-nodes: cloudoptingmaster.cloudopen.csipiemonte.it:9300
+            repositories.enabled: true
+            
 metrics:
     jmx.enabled: true
     spark:
@@ -46,10 +64,15 @@ metrics:
         host: localhost
         port: 2003
         prefix: cloudopting
+
 zabbix:
-    user: admin
-    password: admin
-    endpoint: http://tst-zabbix-opendata.odsp.csi.it/zabbix/api_jsonrpc.php
+    user: Admin
+    password: ENC(Vxfao9qTZpixb7TREt0S/nwsU0HbrinU)
+    endpoint: http://cloudoptingmaster.cloudopen.csipiemonte.it/zabbix/api_jsonrpc.php
+
+elasticsearch:
+    host: cloudoptingmaster.cloudopen.csipiemonte.it
+    port: 9300
 
 cloud:
     doDeploy: true
@@ -59,3 +82,6 @@ cloud:
 
 orchestrator:
     logger_address: 84.240.187.4:4044
+
+flyway:
+    baseline-on-migrate: false

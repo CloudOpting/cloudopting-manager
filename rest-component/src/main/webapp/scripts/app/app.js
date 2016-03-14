@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
-    'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster',
-    'ngFileUpload', 'schemaForm', 'ui.bootstrap'])
+angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vcRecaptcha',
+    'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster', 'textAngular',
+    'ngFileUpload', 'schemaForm', 'ui.bootstrap', 'checklist-model', 'ngFileSaver', 'duScroll', 'daterangepicker'])
 
     .run(function ($rootScope, $location, $http, $state, $translate, Auth, Principal, Language, ENV, VERSION) {
         $rootScope.ENV = ENV;
@@ -27,10 +27,10 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
         });
 
         $rootScope.back = function() {
-            // If previous state is 'activate' or do not exist go to 'catalog'
+            // If previous state is 'activate' or do not exist go to 'catalogue'
             if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
                 //$state.go('home');
-                $state.go('catalog');
+                $state.go('catalogue');
             } else {
                 $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
             }
@@ -46,9 +46,9 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
         //Cache everything except rest api requests
         httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/, /.*bootstrap.*/, , /.*ui-bootstrap-tpls.*/]);
 
-        $urlRouterProvider.otherwise('/catalog');
+        $urlRouterProvider.otherwise('/catalogue');
         $stateProvider.state('site', {
-            'abstract': true,
+            abstract: true,
             views: {
                 'navbar@': {
                     templateUrl: 'scripts/components/navbar/navbar.html',
@@ -58,9 +58,8 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
                     templateUrl: 'scripts/app/menu/menu.html',
                     controller: 'MenuController'
                 },
-                'footerlinks@': {
-                    templateUrl: 'scripts/app/footer/footer.html',
-                    controller: 'FooterController'
+                'footer@': {
+                    templateUrl: 'scripts/app/footer/footer.html'
                 }
             },
             resolve: {
@@ -76,7 +75,7 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale',
                 }]
             }
         });
-        
+
 
         // Initialize angular-translate
         $translateProvider.useLoader('$translatePartialLoader', {

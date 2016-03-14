@@ -1,102 +1,96 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function (SERVICE, $scope, $state, $log, $location, Principal, localStorageService, InstanceService, ProcessService) {
-        $scope.instancesList = null;
-        if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)) {
-            //Get all instances of the user if it is a SUBSCRIBER.
-            InstanceService.findAllUnpaginatedSubscriber()
-                .success(function (instances) {
-                    $scope.instancesList = instances;
-                });
+    .controller('InstancesController', function (SERVICE, localStorageService,
+                                                 $scope, $state, $log, $location, $window, $filter,
+                                                 Principal, InstanceService, ProcessService, Blob, FileSaver) {
 
-        } else if(Principal.isInRole(SERVICE.ROLE.ADMIN) || Principal.isInRole(SERVICE.ROLE.OPERATOR) ) {
-            //If the user is an ADMIN or an OPERATOR and they comes from DETAIL screen
-            //get only the instances of the current application.
-            $scope.currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-
-            $scope.instancesList = $scope.currentApp.customizationss;
-
-            angular.forEach($scope.instancesList, function(instance, key) {
-                instance.applicationName = $scope.currentApp.applicationName;
-            });
-
-/*
-            angular.forEach(instancesList, function(instancesList, key) {
-                $scope.instancesList.push({
-                    "service_name": $scope.currentApp.applicationName,
-                    "author": customization.customerOrganizationId,
-                    "date": customization.customizationCreation,
-                    "status": customization.statusId
-
-                })
-            })*/
-        }
-
-        //TODO: Implement button "Search Service" functionality.
-
-        $scope.testapp1 = function(instance) {
-            //Save the organization in order to retrieve later the clouds accounts.
-            var callback = function (data) {
-                window.alert("Test requested.");
-                call_b();
-            };
-            var cloudAccount = {};
-            cloudAccount.id = 1;
-            ProcessService.test(instance, cloudAccount, callback);
-
-            $state.go('chooseaccount');
-
+        $scope.currentPage = 0;
+        $scope.pageSize = 8;
+        $scope.instancesList = [];
+        $scope.searchTextInstance = '';
+        $scope.numberOfPages = function(){
+            return Math.ceil($scope.dataLength()/$scope.pageSize);
         };
+        $scope.dataLength = function(){
+            return $filter('filter')($scope.instancesList, $scope.searchTextInstance).length;
+        };
+
+        //get only the instances of the current application.
+        $scope.currentApp = localStorageService.get(SERVICE.STORAGE.INSTANCES.APPLICATION);
+        $scope.instancesList = $scope.currentApp.customizationss;
+        angular.forEach($scope.instancesList, function(instance, key) {
+            instance.applicationName = $scope.currentApp.applicationName;
+        });
 
         $scope.test = function(instance) {
-            //Save the organization in order to retrieve later the clouds accounts.
-            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp.organizationId);
-
-            var func = function (cloudAccount, call_b) {
-                var callback = function (data) {
-                    window.alert("Test requested.");
-                    call_b();
-                };
-                ProcessService.test(instance, cloudAccount, callback);
+            var callback = function (data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config, "Test requested.")) {
+                    if(data) {
+                        var zip = new Blob([data], {type: 'application/zip'});
+                        var fileName = 'TOSCA_Archive_Test.zip';
+                        FileSaver.saveAs(zip, fileName);
+                    }
+                }
             };
-
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
-
-            $state.go('chooseaccount');
-
+            ProcessService.test(instance.id, callback);
         };
+
+        $scope.demo = function(instance) {
+            var callback = function (data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config, "Demo requested.")){
+                    //Do something here if all went ok.
+                }
+            };
+            ProcessService.demo(instance.id, callback);
+        };
+
         $scope.deploy = function(instance) {
-            //Save the organization in order to retrieve later the clouds accounts.
-            var currentApp = localStorageService.get(SERVICE.STORAGE.CURRENT_APP);
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.ORGANIZATION, currentApp);
-
-            var func = function (cloudAccount, call_b) {
-                var callback = function (data) {
-                    window.alert("Deploy requested.");
-                    call_b();
-                };
-                ProcessService.deploy(instance, cloudAccount, callback);
+            var callback = function (data, status, headers, config) {
+                if(checkStatusCallback(data, status, headers, config, "Deploy requested.")){
+                    localStorageService.set(SERVICE.STORAGE.ACTIVITI.PROCESS_ID, data);
+                    $state.go("activiti");
+                }
             };
-
-            localStorageService.set(SERVICE.STORAGE.WIZARD_INSTANCES.FUNCTION, func);
-
-            $state.go('chooseaccount');
-
+            ProcessService.deploy(instance.id, callback);
         };
+
         $scope.stop = function(instance) {
-            InstanceService.stop(instance);
+            $scope.errorMessage = "Stop not implemented yet";
+            var callback = function(data, status, headers, config){
+                if(checkStatusCallback(data, status, headers, config, "Stop requested.")){
+                    //Do something here if all went ok.
+                }
+            };
+            //ProcessService.stop(instance);
         };
         $scope.delete = function(instance) {
-            InstanceService.delete(instance);
+            $scope.errorMessage = "Delete not implemented yet";
+            var callback = function(data, status, headers, config){
+                if(checkStatusCallback(data, status, headers, config, "Delete requested.")){
+                    //Do something here if all went ok.
+                }
+            };
+            //ProcessService.delete(instance.id, callback);
         };
+
         $scope.monitor = function(instance) {
-            localStorageService.set(SERVICE.STORAGE.CURRENT_INSTANCE, instance);
-            $state.go('monitoring');
+            if(instance.statusId.status!="Running") {
+                $scope.errorMessage = "Cannot check monitoring, the instance is not running.";
+            } else {
+                localStorageService.set(SERVICE.STORAGE.MONITORING.INSTANCE, instance);
+                $state.go('monitoring');
+            }
         };
+
         $scope.start = function(instance) {
-            InstanceService.start(instance);
+            $scope.errorMessage = "Start not implemented yet";
+            var callback = function(data, status, headers, config){
+                if(checkStatusCallback(data, status, headers, config, "Start requested.")){
+                    //Do something here if all went ok.
+                }
+            }
+            //ProcessService.start(instance);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){
@@ -113,6 +107,37 @@ angular.module('cloudoptingApp')
         };
         $scope.showMonitor = function(str){
             return str === "Running";
+        };
+
+        $scope.errorMessage = null;
+        $scope.infoMessage = null;
+
+        //function to check possible outputs for the end user information.
+        var checkStatusCallback = function(data, status, headers, config, message){
+            if(status==401) {
+                //Unauthorised. Check if signed in.
+                if(Principal.isAuthenticated()){
+                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                } else {
+                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $timeout(function() {
+                        $state.go('login');
+                    }, 3000);
+                }
+                return false;
+            }else if(status!=200 && status!=201) {
+                //Show message
+                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                return false;
+            } else {
+                //Return to the list
+                if(message==null){
+                    $log.info("Successfully done!");
+                } else {
+                    $scope.infoMessage = message + " Successfully done!";
+                }
+                return true;
+            }
         };
     }
 );

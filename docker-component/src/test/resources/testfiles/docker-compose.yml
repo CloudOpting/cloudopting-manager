@@ -1,5 +1,0 @@
-web:
-  image: default/apache
-  ports:
-    - "8000:80"
-  command: /usr/sbin/apache2ctl -DFOREGROUND

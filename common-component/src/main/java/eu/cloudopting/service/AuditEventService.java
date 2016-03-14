@@ -5,6 +5,7 @@ import eu.cloudopting.domain.PersistentAuditEvent;
 import eu.cloudopting.repository.PersistenceAuditEventRepository;
 import org.joda.time.LocalDateTime;
 import org.springframework.boot.actuate.audit.AuditEvent;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +29,12 @@ public class AuditEventService {
     @Inject
     private AuditEventConverter auditEventConverter;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<AuditEvent> findAll() {
         return auditEventConverter.convertToAuditEvent(persistenceAuditEventRepository.findAll());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<AuditEvent> findByDates(LocalDateTime fromDate, LocalDateTime toDate) {
         List<PersistentAuditEvent> persistentAuditEvents =
             persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate);

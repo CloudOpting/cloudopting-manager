@@ -1,0 +1,4 @@
+<CapabilityType name="portsExposeCaps">
+	<PropertiesDefinition element="portsExposeCaps"
+		type="tportsExposeCaps" />
+</CapabilityType>

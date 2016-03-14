@@ -22,7 +22,7 @@ public final class ServicePreconditions {
      */
     public static <T> T checkEntityExists(final T entity) {
         if (entity == null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("Not found");
         }
         return entity;
     }

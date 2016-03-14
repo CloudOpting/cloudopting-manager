@@ -1,18 +1,18 @@
 {
     "main": {
-        "title": "Welcome, CloudOpting!",
-        "subtitle": "This is your homepage",
+        "title": "Benvenuto, CloudOpting!",
+        "subtitle": "Questa è la tua homepage",
         "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
+            "message": "Sei stato registrato come l'utente \"{{username}}\"."
         },
         "question": "Cloudopting:",
         "link": {
             "homepage": "CloudOpting homepage",
-            "stackoverflow": "CloudOpting on Stack Overflow",
-            "bugtracker": "CluodOpting bug tracker",
-            "contact": "contact @cloudopting on Twitter"
+            "stackoverflow": "CloudOpting su Stack Overflow",
+            "bugtracker": "CloudOpting bug tracker",
+            "contact": "contattare @cloudopting su Twitter"
         },
-        "like": "If you like CloudOpting, don't forget to give us a star on",
+        "like": "Se ti piace CloudOpting, non dimenticare di mettere una stella su",
         "github": "Github"
     }
 }

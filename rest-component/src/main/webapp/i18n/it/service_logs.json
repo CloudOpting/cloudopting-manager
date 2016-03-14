@@ -1,8 +1,8 @@
 {
   "service_logs": {
-    "title": "Service Logs",
+    "title": "Log del Servizio",
     "titles" : {
-      "time": "Time Line Logs"
+      "time": "Log Cronologia"
     }
   }
 }

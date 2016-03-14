@@ -2,6 +2,9 @@ package eu.cloudopting.events.api.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import eu.cloudopting.domain.User;
+import eu.cloudopting.repository.UserRepository;
+import eu.cloudopting.security.SecurityUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
@@ -25,6 +28,10 @@ import eu.cloudopting.events.api.exceptions.BadRequestException;
 import eu.cloudopting.events.api.exceptions.ConflictException;
 import eu.cloudopting.events.api.preconditions.ServicePreconditions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -281,9 +288,14 @@ public abstract class AbstractDefaultService<T extends BaseEntity> implements Ba
      * @param constraint constrangerile
      * @return un Specification
      */
-    @SuppressWarnings({"static-method", "unused"})
     public final Specification<T> resolveConstraint(final Triple<String, ClientOperation, String> constraint) {
-        throw new UnsupportedOperationException();
+        return new Specification<T>() {
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
+                                         CriteriaBuilder builder) {
+
+                return builder.equal(root.get(constraint.getLeft()), constraint.getRight());
+            }
+        };
     }
 
     /**

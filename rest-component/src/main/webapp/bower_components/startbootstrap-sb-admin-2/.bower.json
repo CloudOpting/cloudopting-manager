@@ -45,6 +45,6 @@
     "commit": "c1fc29bfe4b433b4d4dd9b445ac2cf296fba3c5c"
   },
   "_source": "git://github.com/IronSummitMedia/startbootstrap-sb-admin-2.git",
-  "_target": "*",
+  "_target": "1.0.7",
   "_originalSource": "startbootstrap-sb-admin-2"
 }

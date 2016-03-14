@@ -1,29 +1,29 @@
 {
     "settings": {
-        "title": "User settings for [<b>{{username}}</b>]",
+        "title": "Impostazioni utente per [<b>{{username}}</b>]",
         "form": {
-            "firstname": "First Name",
-            "firstname.placeholder": "Your first name",
-            "lastname": "Last Name",
-            "lastname.placeholder": "Your last name",
-            "button": "Save"
+            "firstname": "Nome",
+            "firstname.placeholder": "Nome",
+            "lastname": "Cognome",
+            "lastname.placeholder": "Cognome",
+            "button": "Salva"
         },
         "messages": {
             "error": {
-                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+                "fail": "<strong>Si è verificato un errore!</strong> Le impostazioni non possono essere salvate.",
+                "emailexists": "<strong>E-mail già utilizzata!</strong> Si prega di sceglierne un'altra."
             },
-            "success": "<strong>Settings saved!</strong>",
+            "success": "<strong>Impostazioni salvate!</strong>",
             "validate": {
                 "firstname": {
-                    "required": "Your first name is required.",
-                    "minlength": "Your first name is required to be at least 1 character",
-                    "maxlength": "Your first name cannot be longer than 50 characters"
+                    "required": "Il nome è richiesto.",
+                    "minlength": "Il nome è richiesto e deve esere composto da almeno 1 carattere",
+                    "maxlength": "Il nome non può essere più lungo di 50 caratteri"
                 },
                 "lastname": {
-                    "required": "Your last name is required.",
-                    "minlength": "Your last name is required to be at least 1 character",
-                    "maxlength": "Your last name cannot be longer than 50 characters"
+                    "required": "Il cognome è richiesto.",
+                    "minlength": "Il cognome è richiesto e deve esere composto da almeno 1 carattere",
+                    "maxlength": "Il cognome non può essere più lungo di 50 caratteri"
                 }
             }
         }

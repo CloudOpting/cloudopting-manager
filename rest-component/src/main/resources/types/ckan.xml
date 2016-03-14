@@ -1,0 +1,34 @@
+<NodeType name="CKAN" shape="ellipse" color="#ffffff" image="ckan.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="CKANProperties"
+		type="tCKANProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="CKAN" name="CKANImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="CKANPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="CKANPT">
+		</DeploymentArtifact>
+		<DeploymentArtifact artifactType="PuppetModule"
+			artifactRef="CKANPM">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="CKANPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/CKANPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetModule" id="CKANPM">
+	<Properties
+		xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
+		<co:PuppetModuleProperties>
+			<co:module>liferay</co:module>
+			<co:git>https://github.com/gioppoluca/puppet-liferay.git</co:git>
+		</co:PuppetModuleProperties>
+	</Properties>
+</ArtifactTemplate>

@@ -7,6 +7,7 @@ public class ActivitiDTO {
     String applicationId;
     String processInstanceId;
     String customizationId;
+    String jrPath;
 
 
     public String getCustomizationId() {
@@ -32,4 +33,12 @@ public class ActivitiDTO {
     public void setProcessInstanceId(String processInstanceId) {
         this.processInstanceId = processInstanceId;
     }
+
+	public String getJrPath() {
+		return jrPath;
+	}
+
+	public void setJrPath(String jrPath) {
+		this.jrPath = jrPath;
+	}
 }

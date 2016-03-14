@@ -1,14 +1,19 @@
 package eu.cloudopting.web.rest.dto;
 
-import org.hibernate.validator.constraints.Email;
 
-import eu.cloudopting.domain.Organizations;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.List;
 
+import org.hibernate.validator.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import eu.cloudopting.domain.Organizations;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
 
     public static final int PASSWORD_MIN_LENGTH = 5;

@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.cloudopting.domain.ApplicationMedia;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.service.ApplicationMediaService;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.store.StoreService;
 
@@ -18,6 +20,8 @@ public class DeleteServiceTask implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeleteServiceTask.class);
 	@Autowired
 	ApplicationService applicationService;
+	@Autowired
+	ApplicationMediaService applicationMediaService;
 	@Autowired(required = true)
 	StoreService storeService;
 	
@@ -31,9 +35,16 @@ public class DeleteServiceTask implements JavaDelegate {
 		//TODO CHECK WHY THE APPLICATION DOES NOT HAVE AN ASSOCIATED ORGANIZATION
 		//     AS SOON AS THE DATABASE COMES BACK UP
 		Applications a = applicationService.findOne(app.getId());
-		storeService.deletePath(a.getOrganizationId().getOrganizationKey(), a.getApplicationToscaName());
-		applicationService.delete(app.getId());
-		execution.setVariable("applicationdeletedid", app.getId());
+		if (a.getOrganizationId()!=null && a.getOrganizationId().getOrganizationKey()!=null){
+			storeService.deletePath(a.getOrganizationId().getOrganizationKey(), a.getApplicationToscaName());
+			for (ApplicationMedia m : a.getApplicationMedias()) {
+				applicationMediaService.delete(m.getId());
+			}
+			applicationService.delete(app.getId());
+			execution.setVariable("applicationdeletedid", app.getId());
+		}else{
+			log.error("Application with id:"+app.getId()+" has no associated Organization. Skipping removal.");
+		}
 	}
 
 }

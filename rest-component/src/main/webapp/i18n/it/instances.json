@@ -1,29 +1,29 @@
 {
   "instances": {
-    "title": "Instances Service Catalog",
-    "placeholder" : "Search for...",
+    "title": "Catalogo delle Istanze dei Servizi",
+    "placeholder" : "Ricerca per...",
     "col" : {
-      "instanceof": "Instance of",
-      "author": "Author",
-      "date": "Date",
-      "status": "Status",
-      "actions": "Actions"
+      "instanceof": "Istanza di",
+      "author": "Autori",
+      "date": "Data",
+      "status": "Stato",
+      "actions": "Azioni"
     },
     "status" : {
-      "requested": "Requested",
-      "deleted": "Deleted",
-      "running": "Running",
-      "todelete": "To Delete",
-      "stopped": "Stopped"
+      "requested": "Richiesto",
+      "deleted": "Cancellato",
+      "running": "In Esecuzione",
+      "todelete": "Da Cancellare",
+      "stopped": "Fermato"
     },
     "button" : {
-      "search" : "Search Service",
+      "search" : "Ricerca Servizio",
       "go": "GO",
-      "monitor": "Monitoring",
-      "deploy": "Deploy",
+      "monitor": "Monitoraggio",
+      "deploy": "Rilascio",
       "stop": "Stop",
       "start": "Start",
-      "delete": "Delete"
+      "delete": "Cancella"
     }
   }
 }

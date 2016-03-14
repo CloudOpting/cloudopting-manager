@@ -1,23 +1,21 @@
 package eu.cloudopting.config;
 
 
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.context.ApplicationContextException;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 @Configuration
 @EnableJpaRepositories("eu.cloudopting.repository")
@@ -76,6 +74,14 @@ public class DatabaseConfiguration implements EnvironmentAware {
         dataSource.setMaxActive(100);
         dataSource.setMaxIdle(8);
         dataSource.setMaxWait(30000);
+        //Start Issue #104 Fix
+        //See http://stackoverflow.com/questions/29620265/postgres-connection-has-been-closed-error-in-spring-boot
+        dataSource.setTestOnBorrow(Boolean.valueOf(propertyResolver.getProperty("test-on-borrow")));
+        dataSource.setRemoveAbandoned(Boolean.valueOf(propertyResolver.getProperty("remove-abandoned")));
+        dataSource.setTestWhileIdle(Boolean.valueOf(propertyResolver.getProperty("test-while-idle")));
+        dataSource.setTestOnReturn(Boolean.valueOf(propertyResolver.getProperty("test-on-return")));
+        dataSource.setValidationQuery(propertyResolver.getProperty("validation-query"));
+        //End Issue #104 Fix
        /* List<String> sqls=new ArrayList<String>();
         sqls.add("SET SCHEMA = '" + propertyResolver.getProperty("databaseName") + "'");*/
 //        dataSource.setConnectionInitSqls(sqls);

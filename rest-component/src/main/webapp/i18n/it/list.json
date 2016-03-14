@@ -1,26 +1,26 @@
 {
   "list": {
-    "title": "Services List",
+    "title": "Lista dei Servizi",
     "search": {
-      "placeholder": "Search for..."
+      "placeholder": "Ricerca per..."
     },
     "button": {
-      "addservice": "+ Add New Service",
-      "search": "Search Service",
-      "edit": "Edit",
-      "listinstances": "List instances",
-      "delete": "Delete",
-      "createinstance": "Create Instance"
+      "addservice": "+ Aggiungi un Nuovo Servizio",
+      "search": "Ricerca Servizio",
+      "edit": "Modifica",
+      "listinstances": "Lista istanze",
+      "delete": "Cancella",
+      "createinstance": "Crea una Istanza"
     },
     "col": {
-      "name": "Service Name",
-      "status": "Status",
-      "edit": "Edit Service"
+      "name": "Nome Servizio",
+      "status": "Stato",
+      "edit": "Modifica il Servizio"
     },
     "status": {
-      "published": "Published",
-      "fortesting": "For Testing",
-      "uploaded": "Uploaded"
+      "published": "Pubblicato",
+      "fortesting": "Per il Collaudo",
+      "uploaded": "Caricato"
     }
   }
 }

@@ -1,0 +1,57 @@
+<section class="wizzard-modal">
+    <div class="container wrapper-white">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                <div class="wizard-box backend-box">
+                    <ul class="nav nav-wizard">
+                        <li class="done">
+                            <div class="nav-wizard-content">
+                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                            </div>
+                        </li>
+                        <li class="done">
+                            <div class="nav-wizard-content">
+                                <span class="badge">2</span> <span class="text">Upload needed files</span>
+                            </div>
+                        </li>
+                        <li class="done">
+                            <div class="nav-wizard-content">
+                                <span class="badge">3</span> <span class="text">Upload TOSCA archive</span>
+                            </div>
+                        </li>
+                        <li class="active">
+                            <div class="nav-wizard-content">
+                                <span class="badge">4</span> <span class="text">Request Status</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger hide">
+                            <!-- FIXME: Has no sense -->
+                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <img src="assets/img/auth/icn_help.png" />
+                                </div>
+                            </div>
+
+                            <div class="thanks">
+                                <h4>Thanks!</h4>
+                                <h5>Your service has been published</h5>
+                            </div>
+
+                            <div class="row row-actions">
+                                <div class="col-xs-6"></div>
+                                <div class="col-xs-6">
+                                    <a ui-sref="list" data-target="#list" class="btn btn-primary pull-right">Service List</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

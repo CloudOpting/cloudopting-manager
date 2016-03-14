@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('MenuController', function (SERVICE, $state, $scope, Principal, Auth) {
+    .controller('MenuController', function (SERVICE,
+                                            $state, $scope, $document,
+                                            Principal, Auth) {
 
         $scope.logoutButton = Principal.isAuthenticated();
         //$scope.name = Principal.isAuthenticated ? Principal.identity().login : '';
@@ -20,6 +22,27 @@ angular.module('cloudoptingApp')
             $state.go("profile");
         };
 
+        $scope.dashboard = function(){
+            $state.go("dashboard");
+        };
+
+        $scope.contact = function() {
+            if($state.current.name == "catalogue"){
+                var someElement = angular.element(document.getElementById('contact'));
+                $document.scrollToElementAnimated( someElement, 30, 5000 );
+            } else {
+                $state.go('catalogue', { section: "contact" }, {reload: true} );
+            }
+        };
+        $scope.catalogue = function() {
+            if($state.current.name == "catalogue"){
+                var someElement = angular.element(document.getElementById('services'));
+                $document.scrollToElementAnimated( someElement, 30, 5000 );
+            } else {
+                $state.go('catalogue');
+            }
+        };
+
         $scope.$watch(
             function() {
                 return Principal.isAuthenticated();
@@ -34,13 +57,14 @@ angular.module('cloudoptingApp')
                     });
                 }
 
+                //TODO: Wrong. Check uses and delete it.
                 $scope.isPublisher = function (){
                     return Principal.isInRole(SERVICE.ROLE.SUBSCRIBER);
                 };
 
                 $scope.logout = function(){
                     Auth.logout();
-                    $state.go("catalog");
+                    $state.go("catalogue");
                 };
             },
             true
@@ -51,20 +75,21 @@ angular.module('cloudoptingApp')
                 return true;
             }
             else if(Principal.isInRole(SERVICE.ROLE.OPERATOR)){
-                if(item=='catalog' || item=='detail' || item=='detail') {
+                if(item=='catalogue' || item=='detail' || item=='detail') {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
-                if(item=='catalog' || item=='detail' || item=='instances' || item=='publish') {
+                if(item=='catalogue' || item=='detail' || item=='instances' || item=='publish' || item=='list' || item=='toscaide') {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)){
-                if(item=='catalog' || item=='detail' || item=='instances' || item=='subscriber' || item=='taylor') {
+                if(item=='catalogue' || item=='detail' || item=='instances' || item=='subscriber' || item=='taylor') {
                     return true;
                 }
             }
         };
+
     }
 );

@@ -1,132 +1,157 @@
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="user_org_manager.title.user_detail">User Detail</div>
-        <div class="panel-body">
-            <form name="user_form" novalidate ng-submit="submitUserForm(user.id)" show-validation>
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <label class="darkgreen" name="alias" translate="user_org_manager.col.login">Alias:</label>
-                        <input type="text" class="form-control" ng-model="user.login"
-                               ng-minlength=1 ng-maxlength=50 required maxlength="50">
-                        <div ng-show="user_form.alias.$dirty && user_form.alias.$invalid">
-                            <p class="help-block"
-                               ng-show="user_form.alias.$error.required" translate="settings.messages.validate.firstname.required">
-                                Your first name is required.
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.alias.$error.minlength" translate="settings.messages.validate.firstname.minlength">
-                                Your first name is required to be at least 1 character
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.alias.$error.maxlength" translate="settings.messages.validate.firstname.maxlength">
-                                Your first name cannot be longer than 50 characters
-                            </p>
+<section>
+    <div class="container wrapper-white">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="user_org_manager.title.user_detail">
+                        User Detail
+                    </div>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger" ng-show="errorMessage">
+                            {{errorMessage}}
                         </div>
+                        <form class="form" name="user_form" novalidate ng-submit="submitUserForm(user.id)" show-validation>
+
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.login">Alias:</label>
+                                    <input type="text" class="form-control" ng-model="user.login" name="alias"
+                                           ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/" required maxlength="50">
+                                    <div ng-show="user_form.alias.$dirty && user_form.alias.$invalid">
+                                        <p class="help-block"
+                                           ng-show="user_form.alias.$error.required" translate="settings.messages.validate.alias.required">
+                                            Your alias is required.
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.alias.$error.minlength" translate="settings.messages.validate.alias.minlength">
+                                            Your alias is required to be at least 1 character
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.alias.$error.maxlength" translate="settings.messages.validate.alias.maxlength">
+                                            Your alias cannot be longer than 50 characters
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.alias.$error.pattern" translate="settings.messages.validate.alias.pattern">
+                                            Your alias can only contain lower-case letters and digits
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.firstName">First Name:</label>
+                                    <input type="text" class="form-control" ng-model="user.firstName" name="firstName"
+                                           ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                                    <div ng-show="user_form.firstName.$dirty && user_form.firstName.$invalid">
+                                        <p class="help-block"
+                                           ng-show="user_form.firstName.$error.required" translate="settings.messages.validate.firstname.required">
+                                            Your first name is required.
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.firstName.$error.minlength" translate="settings.messages.validate.firstname.minlength">
+                                            Your first name is required to be at least 1 character
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.firstName.$error.maxlength" translate="settings.messages.validate.firstname.maxlength">
+                                            Your first name cannot be longer than 50 characters
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.lastName">Last Name:</label>
+                                    <input type="text" class="form-control" ng-model="user.lastName" name="lastName"
+                                           ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                                    <div ng-show="user_form.lastName.$dirty && user_form.lastName.$invalid">
+                                        <p class="help-block"
+                                           ng-show="user_form.lastName.$error.required" translate="settings.messages.validate.lastname.required">
+                                            Your last name is required.
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.lastName.$error.minlength" translate="settings.messages.validate.lastname.minlength">
+                                            Your last name is required to be at least 1 character
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.lastName.$error.maxlength" translate="settings.messages.validate.lastname.maxlength">
+                                            Your last name cannot be longer than 50 characters
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <!-- add email validation -->
+                                    <label translate="user_org_manager.col.email">Email:</label>
+                                    <input type="email" class="form-control" ng-model="user.email" name="email"
+                                           ng-minlength=5 ng-maxlength=100 required maxlength="100">
+                                    <div ng-show="user_form.email.$dirty && user_form.email.$invalid">
+                                        <p class="help-block"
+                                           ng-show="user_form.email.$error.required" translate="global.messages.validate.email.required">
+                                            Your e-mail is required.
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.email.$error.email" translate="global.messages.validate.email.invalid">
+                                            Your e-mail is invalid.
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.email.$error.minlength" translate="global.messages.validate.email.minlength">
+                                            Your e-mail is required to be at least 5 characters
+                                        </p>
+                                        <p class="help-block"
+                                           ng-show="user_form.email.$error.maxlength" translate="global.messages.validate.email.maxlength">
+                                            Your e-mail cannot be longer than 100 characters
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="user.id">
+                                    <label translate="user_org_manager.col.password">Password:</label>
+                                    <input type="password" class="form-control" ng-model="user.password">
+                                </div>
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.langKey">Language:</label>
+                                    <select class="form-control" ng-model="user.langKey"
+                                            ng-options="l.langKey as l.langName for l in languages">
+                                    </select>
+                                </div>
+                                <!--
+                                <div class="form-group row">
+                                    <label class="darkgreen"translate="user_org_manager.col.organization">Organization Name:</label>
+                                    <input type="text" class="form-control" ng-model="user.organizationId.organizationName">
+                                </div>
+                                -->
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="user.activated" />
+                                        {{'user_org_manager.col.activated' | translate}}
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <!-- This will be useful for organizations -->
+                                    <label translate="user_org_manager.col.role">Role:</label>
+                                    <!--
+                                    <select class="form-control" ng-model="user.roles"
+                                            ng-options="r.roleName as r.roleName for r in roles">
+                                    </select>
+                                    -->
+                                    <label class="checkbox-inline" ng-repeat="role in roles">
+                                        <input type="checkbox" checklist-model="user.roles" checklist-value="role" /> {{role}}
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label translate="user_org_manager.col.organization">Organization:</label>
+                                    <select class="form-control" ng-model="user.organizationId.id"
+                                            ng-options="o.id as o.organizationName for o in organizations">
+                                    </select>
+                                    <a ui-sref="org_manager" data-target="#org_manager">Go to organization manager to create a new one.</a>
+                                </div>
+                                <div class="row row-actions">
+                                    <div class="col-xs-6">
+                                        <button ng-show="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.edit">Edit</button>
+                                        <button ng-hide="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.create">Create</button>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button type="submit" ng-click="cancel('user_manager')" class="btn btn-secondary pull-right" translate="user_org_manager.button.cancel">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group row">
-                        <label class="darkgreen" name="firstName" translate="user_org_manager.col.firstName">First Name:</label>
-                        <input type="text" class="form-control" ng-model="user.firstName"
-                               ng-minlength=1 ng-maxlength=50 required maxlength="50">
-                        <div ng-show="user_form.firstName.$dirty && user_form.firstName.$invalid">
-                            <p class="help-block"
-                               ng-show="user_form.firstName.$error.required" translate="settings.messages.validate.firstname.required">
-                                Your first name is required.
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.firstName.$error.minlength" translate="settings.messages.validate.firstname.minlength">
-                                Your first name is required to be at least 1 character
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.firstName.$error.maxlength" translate="settings.messages.validate.firstname.maxlength">
-                                Your first name cannot be longer than 50 characters
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="darkgreen" name="lastName" translate="user_org_manager.col.lastName">Last Name:</label>
-                        <input type="text" class="form-control" ng-model="user.lastName"
-                               ng-minlength=1 ng-maxlength=50 required maxlength="50">
-                        <div ng-show="user_form.lastName.$dirty && user_form.lastName.$invalid">
-                            <p class="help-block"
-                               ng-show="user_form.lastName.$error.required" translate="settings.messages.validate.firstname.required">
-                                Your first name is required.
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.lastName.$error.minlength" translate="settings.messages.validate.firstname.minlength">
-                                Your first name is required to be at least 1 character
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.lastName.$error.maxlength" translate="settings.messages.validate.firstname.maxlength">
-                                Your first name cannot be longer than 50 characters
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <!-- add email validation -->
-                        <label class="darkgreen" name="email" translate="user_org_manager.col.email">Email:</label>
-                        <input type="email" class="form-control" ng-model="user.email"
-                               ng-minlength=5 ng-maxlength=100 required maxlength="100">
-                        <div ng-show="user_form.email.$dirty && user_form.email.$invalid">
-                            <p class="help-block"
-                               ng-show="user_form.email.$error.required" translate="global.messages.validate.email.required">
-                                Your e-mail is required.
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.email.$error.email" translate="global.messages.validate.email.invalid">
-                                Your e-mail is invalid.
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.email.$error.minlength" translate="global.messages.validate.email.minlength">
-                                Your e-mail is required to be at least 5 characters
-                            </p>
-                            <p class="help-block"
-                               ng-show="user_form.email.$error.maxlength" translate="global.messages.validate.email.maxlength">
-                                Your e-mail cannot be longer than 100 characters
-                            </p>
-                        </div>
-                    </div>
-                    <div ng-hide="user.id" class="form-group row">
-                        <label clappass="darkgreen" translate="user_org_manager.col.password">Password:</label>
-                        <input type="text" class="form-control" ng-model="user.password">
-                    </div>
-                    <div class="form-group row">
-                        <label class="darkgreen" translate="user_org_manager.col.langKey">Language:</label>
-                        <select class="form-control" ng-model="user.langKey" >
-                            <option ng-repeat="l in languages" value="{{l.langKey}}">{{l.langName}}</option>
-                        </select>
-                    </div>
-                    <!--
-                    <div class="form-group row">
-                        <label class="darkgreen"translate="user_org_manager.col.organization">Organization Name:</label>
-                        <input type="text" class="form-control" ng-model="user.organizationId.organizationName">
-                    </div>
-                    -->
-                    <div class="form-group row">
-                        <label class="darkgreen"translate="user_org_manager.col.activated">Activated:</label>
-                        <input type="checkbox" class="form-control" ng-model="user.activated">
-                    </div>
-                    <div class="form-group row">
-                        <!-- This will be useful for organizations -->
-                        <label class="darkgreen" translate="user_org_manager.col.role">Role:</label>
-                        <select class="form-control" ng-model="user.roles" >
-                            <option ng-repeat="r in roles" value="{{r.roleName}}">{{r.roleName}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group row">
-                        <!-- This will be useful for organizations -->
-                        <label class="darkgreen" translate="user_org_manager.col.organization">Organization:</label>
-                        <select class="form-control" ng-model="user.organizationId.id" >
-                            <option ng-repeat="o in organizations" value="{{o.id}}">{{o.organizationName}}</option>
-                        </select>
-                    </div>
-                    <button ng-show="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.edit_user">Edit User</button>
-                    <button ng-hide="user.id" type="submit" ng-disabled="user_form.$invalid" class="btn btn-success" translate="user_org_manager.button.create_user">Create User</button>
-                    <!--
-                    <button ng-show="user.id" type="button" class="btn btn-success" ng-click="saveUser()" translate="user_org_manager.button.edit_user">Edit User</button>
-                    <button ng-hide="user.id" type="button" class="btn btn-success" ng-click="createUser()" translate="user_org_manager.button.create_user">Create User</button>
-                    -->
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</section>

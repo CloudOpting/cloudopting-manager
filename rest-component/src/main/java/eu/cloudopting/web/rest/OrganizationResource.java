@@ -1,8 +1,6 @@
 package eu.cloudopting.web.rest;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cloudopting.domain.CloudAccounts;
@@ -45,10 +44,7 @@ public class OrganizationResource extends AbstractController<Organizations> {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<Organizations> findOne(@PathVariable("idOrganization") final Long idOrganization) {
-		Organizations organization = getService().findOne(idOrganization);
-		if(organization == null){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		Organizations organization = ((OrganizationService)getService()).findOneAndInitCloudAccountCollection(idOrganization);
 		return new ResponseEntity<>(organization, HttpStatus.OK);
 	}
 	
@@ -61,54 +57,36 @@ public class OrganizationResource extends AbstractController<Organizations> {
 	}
 
 	@RequestMapping(value = "/organization", method = RequestMethod.POST)
-	public final ResponseEntity<Organizations> create(@RequestBody OrganizationDTO organizationDTO) {
+	public final ResponseEntity<Organizations> create(@Valid @RequestBody OrganizationDTO organizationDTO) {
 		Organizations organization = ((OrganizationService)getService()).create(organizationDTO);
 		return new ResponseEntity<>(organization, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/organization", method = RequestMethod.PUT)
-	public final void update(@RequestBody OrganizationDTO organizationDTO, HttpServletResponse response) {
-		Organizations organization = getService().findOne(organizationDTO.getId());
-		if (organization == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
-		} 
-		response.setStatus(HttpServletResponse.SC_OK);
+	@ResponseStatus(HttpStatus.OK)
+	public final void update(@Valid @RequestBody OrganizationDTO organizationDTO, HttpServletResponse response) {
 		((OrganizationService)getService()).update(organizationDTO);
 	}
 
 	@RequestMapping(value = "/organization/{idOrganization}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
 	public final void delete(@PathVariable Long idOrganization, HttpServletResponse response){
-		Organizations organization = getService().findOne(idOrganization);
-		if (organization == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
-		}
-		response.setStatus(HttpServletResponse.SC_OK);
 		getService().delete(idOrganization);
 	}
 
 	@RequestMapping(value = "/organization/{idOrganization}/cloudaccounts", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public final ResponseEntity<Set<CloudAccounts>> findAllCloudAccounts(@PathVariable Long idOrganization) {
-		Organizations organization = ((OrganizationService)getService()).findOneAndInitCloudAccountCollection(idOrganization);
-		if (organization == null) {
-			return new ResponseEntity<>(new HashSet<>(), HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(organization.getCloudAccountss(), HttpStatus.OK);
+	public final ResponseEntity<List<CloudAccounts>> findAllCloudAccounts(@PathVariable Long idOrganization) {
+		List<CloudAccounts> cloudAccounts = ((CloudAccountService)getCloudAccountService()).findByOrganizationId(idOrganization);
+		return new ResponseEntity<>(cloudAccounts, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/organization/{idOrganization}/cloudaccounts/{idCloudAccount}", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public final ResponseEntity<CloudAccounts> findCloudAccount(@PathVariable Long idOrganization, @PathVariable Long idCloudAccount) {
-		Organizations organization = ((OrganizationService)getService()).findOneAndInitCloudAccountCollection(idOrganization);
-		CloudAccounts cloudAccount = getCloudAccountService().findOne(idCloudAccount);
-		if (organization == null || cloudAccount == null ||
-				!cloudAccount.getOrganizationId().getId().equals(organization.getId())){
-			return new ResponseEntity<>((CloudAccounts)null, HttpStatus.NOT_FOUND);
-		}
+		CloudAccounts cloudAccount = ((CloudAccountService)getCloudAccountService()).find(idOrganization, idCloudAccount);
 		return new ResponseEntity<>(cloudAccount, HttpStatus.OK);
 	}
 	
@@ -116,19 +94,7 @@ public class OrganizationResource extends AbstractController<Organizations> {
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public final ResponseEntity<String> deleteCloudAccount(@PathVariable Long idOrganization, @PathVariable Long idCloudAccount,
 			HttpServletResponse response) {
-		Organizations organization = ((OrganizationService)getService()).findOneAndInitCloudAccountCollection(idOrganization);
-		if (organization == null) {
-			return new ResponseEntity<>("Organization with id " + idOrganization + " not found", HttpStatus.NOT_FOUND);
-		}
-		CloudAccounts cloudAccount = getCloudAccountService().findOne(idCloudAccount);
-		if (cloudAccount == null) {
-			return new ResponseEntity<>("CloudAccount with id " + idCloudAccount + " not found", HttpStatus.NOT_FOUND);
-		}
-		if (!organization.getId().equals(cloudAccount.getOrganizationId().getId())) {
-			return new ResponseEntity<>("CloudAccount with id " + idCloudAccount + " is not associated with organization with id " + idOrganization, 
-					HttpStatus.NOT_FOUND);
-		}
-		getCloudAccountService().delete(idCloudAccount);
+		((CloudAccountService)getCloudAccountService()).delete(idOrganization, idCloudAccount);
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
@@ -136,10 +102,6 @@ public class OrganizationResource extends AbstractController<Organizations> {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public final ResponseEntity<CloudAccounts> createCloudAccount(@Valid @RequestBody CloudAccountDTO cloudAccountDTO,
 			@PathVariable Long idOrganization) {
-		Organizations organization = getService().findOne(idOrganization);
-		if(organization == null) {
-			return new ResponseEntity<>((CloudAccounts)null, HttpStatus.NOT_FOUND);
-		}
 		CloudAccounts cloudAccount = ((CloudAccountService)getCloudAccountService()).create(idOrganization, cloudAccountDTO);
 		return new ResponseEntity<>(cloudAccount, HttpStatus.CREATED);
 	}
@@ -148,19 +110,7 @@ public class OrganizationResource extends AbstractController<Organizations> {
 			produces = MediaType.TEXT_PLAIN_VALUE)
 	public final ResponseEntity<String> updateCloudAccount(@Valid @RequestBody CloudAccountDTO cloudAccountDTO,
 			@PathVariable Long idOrganization) {
-		Organizations organization = ((OrganizationService)getService()).findOneAndInitCloudAccountCollection(idOrganization);
-		if(organization == null) {
-			return new ResponseEntity<>("Organization with id " + idOrganization + " not found", HttpStatus.NOT_FOUND);
-		}
-		CloudAccounts cloudAccount = getCloudAccountService().findOne(cloudAccountDTO.getId());
-		if (cloudAccount == null) {
-			return new ResponseEntity<>("CloudAccount with id " + cloudAccountDTO.getId() + " not found", HttpStatus.NOT_FOUND);
-		}
-		if (!cloudAccount.getOrganizationId().getId().equals(organization.getId())) {
-			return new ResponseEntity<>("CloudAccount with id " + cloudAccountDTO.getId() + " is not associated with organization with id " + 
-					idOrganization, HttpStatus.NOT_FOUND);
-		}
-		((CloudAccountService)getCloudAccountService()).update(cloudAccountDTO);
+		((CloudAccountService)getCloudAccountService()).update(idOrganization, cloudAccountDTO);
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 	

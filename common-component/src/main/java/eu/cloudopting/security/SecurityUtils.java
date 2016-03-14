@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import eu.cloudopting.domain.SecurityUser;
+
 import java.util.Collection;
 
 /**
@@ -51,5 +53,9 @@ public final class SecurityUtils {
             }
         }
         return true;
+    }
+    
+    public static SecurityUser getCurrentLoggedInUser(){
+    	return (SecurityUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

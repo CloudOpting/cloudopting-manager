@@ -2,6 +2,8 @@ package eu.cloudopting.dto;
 
 import java.io.Serializable;
 
+import eu.cloudopting.domain.ApplicationSize;
+
 /**
  * Created by danielpo on 09/07/2015.
  */
@@ -17,7 +19,16 @@ public class ApplicationDTO implements Serializable{
     String name;
     String value;
     String processId;
-
+    String shortDescription;
+    String applicationSubscriberMail;
+    String applicationSpMail;
+    Boolean applicationIsTryable;
+    String terms;
+    String servicePrice;
+    String platformPrice;
+    String imageRef;
+	ApplicationSize size;
+	
     public Long getId() {
 		return id;
 	}
@@ -98,5 +109,76 @@ public class ApplicationDTO implements Serializable{
 		this.applicationToscaName = applicationToscaName;
 	}
 
+	public String getShortDescription() {
+		return shortDescription;
+	}
+
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+
+	public String getApplicationSubscriberMail() {
+		return applicationSubscriberMail;
+	}
+
+	public void setApplicationSubscriberMail(String applicationSubscriberMail) {
+		this.applicationSubscriberMail = applicationSubscriberMail;
+	}
+
+	public String getApplicationSpMail() {
+		return applicationSpMail;
+	}
+
+	public void setApplicationSpMail(String applicationSpMail) {
+		this.applicationSpMail = applicationSpMail;
+	}
+
+	public Boolean getApplicationIsTryable() {
+		return applicationIsTryable;
+	}
+
+	public void setApplicationIsTryable(Boolean applicationIsTryable) {
+		this.applicationIsTryable = applicationIsTryable;
+	}
+
+	public String getTerms() {
+		return terms;
+	}
+
+	public void setTerms(String terms) {
+		this.terms = terms;
+	}
+
+	public String getServicePrice() {
+		return servicePrice;
+	}
+
+	public void setServicePrice(String servicePrice) {
+		this.servicePrice = servicePrice;
+	}
+
+	public String getPlatformPrice() {
+		return platformPrice;
+	}
+
+	public void setPlatformPrice(String platformPrice) {
+		this.platformPrice = platformPrice;
+	}
+
+	public ApplicationSize getSize() {
+		return size;
+	}
+
+	public void setSize(ApplicationSize size) {
+		this.size = size;
+	}
+
+	public String getImageRef() {
+		return imageRef;
+	}
+
+	public void setImageRef(String imageRef) {
+		this.imageRef = imageRef;
+	}
 }
 

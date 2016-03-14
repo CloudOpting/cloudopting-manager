@@ -18,6 +18,13 @@
         <dependency>
             <groupId>eu.cloudopting</groupId>
             <artifactId>common-component</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- NEW ADDED -->
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
         </dependency>
         <dependency>
             <groupId>javax.jcr</groupId>
@@ -36,11 +43,6 @@
             <groupId>org.apache.jackrabbit</groupId>
             <artifactId>jackrabbit-jcr2dav</artifactId>
         </dependency>
-        <!--  <dependency>
-            <groupId>org.apache.jackrabbit</groupId>
-            <artifactId>jackrabbit-standalone</artifactId>
-            <version>2.0-SNAPSHOT</version>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.jackrabbit</groupId>
             <artifactId>jackrabbit-ocm</artifactId>
@@ -49,18 +51,49 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <!--             <exclusions> -->
+            <!--                 <exclusion> -->
+            <!--                     <artifactId>log4j</artifactId> -->
+            <!--                     <groupId>log4j</groupId> -->
+            <!--                 </exclusion> -->
+            <!--             </exclusions> -->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>4.2.4.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.2.4.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.1.6.RELEASE</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<excludeArtifactIds>common-component,database-component,freemarker,hibernate-core,tomcat-embed-core,guava,aspectjweaver</excludeArtifactIds>-->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

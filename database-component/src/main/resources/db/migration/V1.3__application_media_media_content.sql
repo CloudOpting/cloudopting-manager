@@ -1,0 +1,1 @@
+ALTER TABLE application_media ALTER COLUMN media_content TYPE text;

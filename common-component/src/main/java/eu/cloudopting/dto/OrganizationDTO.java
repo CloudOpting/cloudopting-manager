@@ -3,9 +3,15 @@ package eu.cloudopting.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import eu.cloudopting.domain.OrganizationStatus;
 import eu.cloudopting.domain.OrganizationTypes;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrganizationDTO implements Serializable{
 
 	private Long id;
@@ -26,6 +32,16 @@ public class OrganizationDTO implements Serializable{
 
     private String organizationName; // client
 
+    @Email
+    @Size(max = 100)
+    private String email;
+    
+    @Size(max = 300)
+    private String contactRepresentative;
+    
+    @Size(max = 100)
+    private String contactPhone;
+    
 	public Long getId() {
 		return id;
 	}
@@ -96,6 +112,30 @@ public class OrganizationDTO implements Serializable{
 
 	public void setOrganizationName(String organizationName) {
 		this.organizationName = organizationName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getContactRepresentative() {
+		return contactRepresentative;
+	}
+
+	public void setContactRepresentative(String contactRepresentative) {
+		this.contactRepresentative = contactRepresentative;
+	}
+
+	public String getContactPhone() {
+		return contactPhone;
+	}
+
+	public void setContactPhone(String contactPhone) {
+		this.contactPhone = contactPhone;
 	}
 }
 

@@ -226,7 +226,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <exclusiveGateway id="exclusivegateway12" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow22" sourceRef="exclusivegateway12" targetRef="taskDockerComposeFile"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway13" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow23" sourceRef="exclusivegateway13" targetRef="theEnd">
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway13" targetRef="zip">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTesting==true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="exclusivegateway13" targetRef="deployOnDockerTask">
@@ -260,6 +260,8 @@ This task will probably be transformed into a subprocess, but at the moment we n
     <sequenceFlow id="flow28" sourceRef="exclusivegateway15" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="azure" targetRef="exclusivegateway15"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="vmware" targetRef="exclusivegateway15"></sequenceFlow>
+    <serviceTask id="zip" name="Zip files" activiti:delegateExpression="${deployZip}"></serviceTask>
+    <sequenceFlow id="flow35" sourceRef="zip" targetRef="cleanup"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cloudoptingProcess">
     <bpmndi:BPMNPlane bpmnElement="cloudoptingProcess" id="BPMNPlane_cloudoptingProcess">
@@ -493,6 +495,9 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway15" id="BPMNShape_exclusivegateway15">
         <omgdc:Bounds height="40.0" width="40.0" x="1250.0" y="733.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="zip" id="BPMNShape_zip">
+        <omgdc:Bounds height="55.0" width="105.0" x="1218.0" y="1581.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fromStart" id="BPMNEdge_fromStart">
         <omgdi:waypoint x="36.0" y="769.0"></omgdi:waypoint>
@@ -808,8 +813,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="1270.0" y="1322.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1270.0" y="1678.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1397.0" y="1678.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1270.0" y="1581.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="1290.0" y="1302.0"></omgdi:waypoint>
@@ -858,6 +862,10 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="1181.0" y="103.0"></omgdi:waypoint>
         <omgdi:waypoint x="1258.0" y="103.0"></omgdi:waypoint>
         <omgdi:waypoint x="1270.0" y="733.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="1323.0" y="1608.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1362.0" y="1608.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

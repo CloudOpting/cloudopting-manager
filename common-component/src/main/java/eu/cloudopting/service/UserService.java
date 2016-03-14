@@ -9,6 +9,8 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.cloudopting.domain.Authority;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
+import eu.cloudopting.events.api.preconditions.ServicePreconditions;
 import eu.cloudopting.repository.AuthorityRepository;
 import eu.cloudopting.repository.OrganizationRepository;
 import eu.cloudopting.repository.PersistentTokenRepository;
@@ -93,10 +96,22 @@ public class UserService {
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
                                       String langKey, Long organizationId) {
+        return createUserInformation(login, password, firstName, lastName, email, langKey, organizationId, null);
+    }
+
+    public User createUserInformation(String login, String password, String firstName, String lastName, String email,
+                                      String langKey, Long organizationId, List<String> roles) {
         User newUser = new User();
-        Authority authoritySubscriber = authorityRepository.findOne("ROLE_SUBSCRIBER");
-        Authority authorityUser = authorityRepository.findOne("ROLE_USER");
         Set<Authority> authorities = new HashSet<>();
+        if(roles==null || roles.isEmpty()) {
+            authorities.add(authorityRepository.findOne("ROLE_SUBSCRIBER"));
+        } else {
+            for(String role : roles) {
+                authorities.add(authorityRepository.findOne(role));
+            }
+        }
+        authorities.add(authorityRepository.findOne("ROLE_USER"));
+
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
         // new user gets initially a generated password
@@ -109,8 +124,6 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authoritySubscriber);
-        authorities.add(authorityUser);
         newUser.setAuthorities(authorities);
         setUserOrganization(newUser, organizationId);
         userRepository.save(newUser);
@@ -136,11 +149,22 @@ public class UserService {
     }
 
     public void updateUserInformation(long userId, String firstName, String lastName, String email, Long organizationId) {
+        updateUserInformation(userId, firstName, lastName, email, organizationId, null);
+    }
+    public void updateUserInformation(long userId, String firstName, String lastName, String email, Long organizationId, List<String> roles) {
     	User user = userRepository.findOne(userId);
     	user.setFirstName(firstName);
     	user.setLastName(lastName);
     	user.setEmail(email);
     	setUserOrganization(user, organizationId);
+
+        if(roles!=null && !roles.isEmpty()) {
+            Set<Authority> authorities = new HashSet<>();
+            for(String role : roles) {
+                authorities.add(authorityRepository.findOne(role));
+            }
+            user.setAuthorities(authorities);
+        }
     	userRepository.save(user);
     }
     
@@ -222,20 +246,26 @@ public class UserService {
         return user;
     }
     
-    public List<User> findAllAndInitRolesCollection(){
-    	List<User> users = userRepository.findAll();
+    public List<User> findAllByCurrentUserOrg(){
+    	List<User> users = userRepository.findAllByCurrentUserOrg();
 		for(User user : users){
 			user.getAuthorities().size();
 		}
 		return users;
     }
     
-    public User findOneAndInitRolesCollection(final Long idUser){
+    @PostAuthorize("hasRole('ROLE_ADMIN') or returnObject.organizationId.getId() == principal.organizationId")
+    public User findOneByCurrentUserOrg(final Long idUser){
     	User user = userRepository.findOne(idUser);
-    	if(user == null){
-    		return null;
-    	}
-    	user.getAuthorities().size();
+    	ServicePreconditions.checkEntityExists(user);
+    	user.getAuthorities().size(); //init roles collection
 		return user;
+    }
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void delete(long id){
+    	User user = userRepository.findOne(id);
+    	ServicePreconditions.checkEntityExists(user);
+    	userRepository.delete(id);
     }
 }

@@ -1,15 +1,15 @@
 {
     "login": {
-        "title": "Authentication",
+        "title": "Autenticazione",
         "form": {
             "password": "Password",
-            "password.placeholder": "Your password",
-            "rememberme": "Automatic Login",
-            "button": "Authenticate"
+            "password.placeholder": "La Tua password",
+            "rememberme": "Login Automatico",
+            "button": "Autenticare"
         },
         "messages": {
             "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                "authentication": "<strong>Autenticazione fallita!</strong> Si prega di verificare le credenziali e riprovare."
             }
         }
     }

@@ -44,7 +44,7 @@ public class DockerCluster {
 	public ResponseEntity<String> initCluster(Machine machine) throws DockerError {
 		// Prepare files
 		LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-		map.add("endpoint", "tcp://"+machine.getHostname()+":"+machine.getDockerPort());
+		map.add("endpoint", "http://"+machine.getHostname()+":"+machine.getDockerPort());
 		
 		// Request
 		HttpHeaders headers = new HttpHeaders();
@@ -90,6 +90,24 @@ public class DockerCluster {
 		try {
 			responseEntity = rest.exchange(endPoint + "/cluster/"
 					+ clusterToken, HttpMethod.GET, requestEntity, String.class);
+		} catch (HttpClientErrorException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND)
+				responseEntity = new ResponseEntity<String>(
+						e.getResponseBodyAsString(), HttpStatus.NOT_FOUND);
+		}
+
+		return responseEntity;
+	}
+
+		public ResponseEntity<String> getClusterDetail(String clusterToken) throws DockerError{
+		// Request
+		HttpEntity<String> requestEntity = new HttpEntity<String>("",
+				genericHeaders);
+
+		ResponseEntity<String> responseEntity = null;
+		try {
+			responseEntity = rest.exchange(endPoint + "/cluster/"
+					+ clusterToken + "/detail", HttpMethod.GET, requestEntity, String.class);
 		} catch (HttpClientErrorException e) {
 			if (e.getStatusCode() == HttpStatus.NOT_FOUND)
 				responseEntity = new ResponseEntity<String>(

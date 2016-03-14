@@ -26,11 +26,15 @@
         <appender-ref ref="FILE"/>
     </appender>
 -->
-
+	
+	<logger name="org.activiti.engine" level="ERROR"/>
     <logger name="eu.cloud.cloudopting" level="TRACE"/>
     <logger name="eu.cloudopting" level="TRACE"/>
 	<logger name="sun.net.www.protocol.http" level="TRACE"/>
-	
+	<logger name="org.springframework.data.elasticsearch" level="TRACE"/>
+	<logger name="org.spring.data.elasticsearch" level="TRACE"/>
+	<logger name="org.elasticsearch" level="TRACE"/>
+	<logger name="org.springframework.data.elasticsearch.repository.ElasticsearchRepository" level="TRACE"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.xml.bind" level="WARN"/>
@@ -60,7 +64,6 @@
     <!-- The next two lines are to avoid the hell of output from httpclient -->
     <logger name="httpclient.wire.content" level="ERROR"/>
     <logger name="httpclient.wire.header" level="ERROR"/>
-
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>

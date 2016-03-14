@@ -1,3 +1,96 @@
+<section class="wizzard-modal">
+    <div class="container wrapper-white">
+        <div class="row">
+            <div class="col-md-offset-1 col-md-10">
+                <div class="wizard-box backend-box">
+                    <ul class="nav nav-wizard">
+                        <li class="done">
+                            <div class="nav-wizard-content">
+                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                            </div>
+                        </li>
+                        <li class="active">
+                            <div class="nav-wizard-content">
+                                <span class="badge">2</span> <span class="text">Upload needed files</span>
+                            </div>
+                        </li>
+                        <li class="">
+                            <div class="nav-wizard-content">
+                                <span class="badge">3</span> <span class="text">Upload TOSCA archive</span>
+                            </div>
+                        </li>
+                        <li class="">
+                            <div class="nav-wizard-content">
+                                <span class="badge">4</span> <span class="text">Request Status</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger hide">
+                            <!-- FIXME: Wrong text -->
+                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="row hidden">
+                                <div class="col-md-12 text-right">
+                                    <img src="assets/img/auth/icn_help.png" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <!--<button type="button" class="btn btn-reverse">+ Add item in library</button>-->
+                                        <div class="btn btn-reverse" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" ng-show="isLibraryEmpty()">
+                                        <label class="sr-only" for="contentLibrary" translate="publish.content.library">Content Library</label>
+                                        <input type="text" class="form-control" id="contentLibrary" placeholder="{{'publish.content.library' | translate}}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" ng-hide="isLibraryEmpty()" ng-repeat="content in libraryList">
+                                        <label class="sr-only" for="contentLibrary" translate="publish.content.library">Content Library</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" translate="publish.content.file">File</span>
+                                            <input class="form-control" type="text" autocomplete="off" value="{{content.name}}" disabled />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn" ng-click="deleteLib(content)" translate="publish.button.delete">Delete file</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row row-actions">
+                                <div class="col-xs-6">
+                                    <!--
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-secondary">Update</button>
+                                    -->
+                                </div>
+                                <div class="col-xs-6">
+                                    <!-- ng-disabled="isLibraryEmpty()" -->
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--
 <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="publish.title">Publish Service</div>
@@ -23,9 +116,10 @@
                     </div>
 
                 </div>
-                <!-- ng-disabled="isLibraryEmpty()" -->
+
                 <button type="button" class="btn btn-success" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
             </form>
         </div>
     </div>
 </div>
+-->

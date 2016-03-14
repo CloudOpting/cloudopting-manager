@@ -1,0 +1,10 @@
+web:
+  image: cloudopting/web
+  links:
+    - db
+  ports:
+    - 5000:5000
+  command: python /usr/src/app/app.py
+
+db:
+  image: cloudopting/redis

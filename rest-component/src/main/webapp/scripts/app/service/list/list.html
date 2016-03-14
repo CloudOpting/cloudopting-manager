@@ -1,3 +1,83 @@
+<section class="wizzard-modal">
+    <div class="container wrapper-white">
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <div class="backend-box">
+                    <div class="backend-box-cabecera text-center" translate="list.title">
+                        Service List
+                    </div>
+                    <div class="backend-box-content">
+                        <div class="alert alert-danger hide">
+                            <!-- FIXME: This do not have any sense -->
+                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                        </div>
+                        <form class="form" role="form dropzone">
+                            <div class="form-group">
+                                <div class="input-group">
+                                        <!--<button class="btn btn-success pull-right" type="button" ng-click="goToPublish()" translate="list.button.addservice">+ Add New Service</button>-->
+                                        <button type="button" class="btn btn-reverse" ng-click="goToPublish()" >+ {{'list.button.addservice' | translate}}</button>
+                                </div><!-- /.col-lg-12 -->
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="searchTextApplication" placeholder="{{'list.search.placeholder' | translate}}" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button"><img src="assets/img/auth/icn_search.png" /></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th translate="list.col.name">Service name</th>
+                                                <th translate="list.col.status">Status</th>
+                                                <th translate="list.col.actions">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="app in applicationList | filter:searchTextApplication | startFrom:currentPage*pageSize | limitTo:pageSize">
+                                                <td>{{app.applicationName}}</td>
+                                                <td>{{app.statusId.status}}</td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-icon" ng-click="goToCreateInstance(app)" ><i class="fa fa-plus-square-o"></i>{{'list.button.createinstance' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="goToEdit(app)" ><i class="fa fa-pencil-square-o"></i>{{'list.button.edit' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="goToInstanceList(app)" ><i class="fa fa-list-ul"></i>{{'list.button.listinstances' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="goToDelete(app)" ><i class="fa fa-trash-o"></i>{{'list.button.delete' | translate}}</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PAGINATION BUTTONS -->
+                            <div class="form-group">
+                                <div class="input-group text-center" style="display: block">
+                                    <button class="btn btn-icon" type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" ><i class="fa fa-chevron-left"></i></button>
+                                    <span class="pagination-number">{{currentPage+1}}/{{numberOfPages()}}</span>
+                                    <button class="btn btn-icon" type="button" ng-disabled="currentPage >= dataLength()/pageSize - 1" ng-click="currentPage=currentPage+1" ><i class="fa fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+<!--
+                            <div class="row row-actions">
+                                <div class="col-lg-12">
+                                    <button type="submit" class="btn btn-primary pull-right">Next</button>
+                                </div>
+                            </div>
+                            -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--
 <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
         <div class="panel-heading darkgreen" translate="list.title">Services List</div>
@@ -7,7 +87,7 @@
                     <span class="input-group-btn">
                         <button class="btn btn-success pull-right" type="button" ng-click="goToPublish()" translate="list.button.addservice">+ Add New Service</button>
                     </span>
-                </div><!-- /.col-lg-12 -->
+                </div>
             </div>
             <br />
             <div class="row">
@@ -17,8 +97,8 @@
                         <span class="input-group-btn">
                             <button class="btn btn-success" type="button" translate="list.button.search">Search Service</button>
                         </span>
-                    </div><!-- /input-group -->
-                </div><!-- /.col-lg-12 -->
+                    </div>
+                </div>
             </div>
             <br />
 
@@ -44,3 +124,4 @@
         </div>
     </div>
 </div>
+-->

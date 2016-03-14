@@ -17,18 +17,47 @@ angular.module('cloudoptingApp')
             "PUBLISHED" : "PUBLISHED"
         },
         "STORAGE" : {
-            "CURRENT_APP" : "currentApplication",
-            "CURRENT_ORGANIZATION" : "currentOrganization",
-            "CURRENT_INSTANCE" : "currentInstance",
-            "CURRENT_INSTANCE_ID" : "currentInstanceId",
-            "ACTIVITI" : "activiti",
-            "CURRENT_EDIT_USER" : "currentEditUser",
-            "CURRENT_EDIT_ORG" : "currentEditOrganization",
-            "PUBLISH_EDITION" : "isApplicationBeingEdited",
-            "CURRENT_CLOUDACCOUNT" : "currentCloudAccount",
-            "WIZARD_INSTANCES" : {
-                "ORGANIZATION" : "storageWizardInstancesOrganization",
-                "FUNCTION" : "storageWizardInstancesFunction"
+            "ACTIVITI" : {
+                "PROCESS_ID" : "activitiProcessId"
+            },
+            "DETAIL" : {
+                "APPLICATION" : "detailApplication"
+            },
+            "CHOOSE_ACCOUNT" : {
+                "INSTANCE" : "chooseAccountInstance"
+            },
+            "CLOUD_ACCOUNT" : {
+                "CLOUD_ACCOUNT" : "cloudAccountCloudAccount",
+                "ORGANIZATION" : "cloudAccountOrganization"
+            },
+            "MONITORING" : {
+                "INSTANCE" : "monitoringInstance"
+            },
+            "FORM_GENERATION" : {
+                "APPLICATION" : "formGenerationApplication"
+            },
+            "INSTANCES" : {
+                "APPLICATION" : "instancesApplication"
+            },
+            "PUBLISH" : {
+                "APPLICATION" : "publishApplication",
+                "IS_EDITION" : "isEdition",
+                "ACTIVITI" : "publishActiviti"
+            },
+            "PROFILE" : {
+                "CLOUD_ACCOUNT" : "profileCloudAccount"
+            },
+            "USER_MANAGER" : {
+                "USER" : "userManagerUser"
+            },
+            "ORG_MANAGER" : {
+                "ORGANIZATION" : "orgManagerOrganization"
+            },
+            "TAYLOR" : {
+                "APPLICATION" : "taylorInstancesApplication"
+            },
+            "ADD_DEPLOY" : {
+                "APPLICATION" : "taylorInstancesApplication"
             }
         },
         "FILE_TYPE" : {
@@ -37,5 +66,4 @@ angular.module('cloudoptingApp')
             "TOSCA_ARCHIVE" : "toscaarchive"
         }
     }
-)
-;
+);

@@ -4,7 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -25,12 +27,12 @@ import javax.jcr.query.QueryResult;
 import org.apache.jackrabbit.commons.JcrUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.cloudopting.storagecomponent.StorageComponent;
 import eu.cloudopting.store.jackrabbit.JackrabbitStoreRequest;
 import eu.cloudopting.store.jackrabbit.JackrabbitStoreResult;
-import eu.cloudopting.util.MimeTypeUtils;
 
 @Service
 public class StoreService {
@@ -40,6 +42,12 @@ public class StoreService {
     Repository repository;
     @Inject
     Session session;
+    
+    /**
+     * JackRabbit Repository URL
+     */
+    @Value("${spring.jcr.repo_http}")
+	private String jrHttp;
 
 	@Inject
 	StorageComponent<JackrabbitStoreResult,JackrabbitStoreRequest> jackrabbitBinaryStore;
@@ -50,10 +58,21 @@ public class StoreService {
 	 * @param applicationToscaName The Tosca Name of the Template (no spaces and fancy chars)
 	 * @return The path to be passed as first parameter to the JackRabbitStoreRequest constructor.
 	 */
-	public static String getTemplatePath (String organizationKey, String applicationToscaName){
+	public String getTemplatePath (String organizationKey, String applicationToscaName){
+		return this.getTemplatePath(organizationKey, applicationToscaName, false);
+	}
+	
+	/**
+	 * Gets the path where to save Service Template files
+	 * @param organizationKey The Organization Key
+	 * @param applicationToscaName The Tosca Name of the Template (no spaces and fancy chars)
+	 * @param withAbsolutePath prefix the path with the http URL prefix
+	 * @return The path to be passed as first parameter to the JackRabbitStoreRequest constructor.
+	 */
+	public String getTemplatePath (String organizationKey, String applicationToscaName, boolean withAbsolutePath){
 		//TODO Uncomment once JackRabbit is able to create intermediate paths
-		return organizationKey + "/" + applicationToscaName + "/template";
-		
+		String prefix = withAbsolutePath?jrHttp:"";
+		return prefix + organizationKey + "/" + applicationToscaName + "/template";
 	}
 
 	/**
@@ -86,10 +105,12 @@ public class StoreService {
 	}
 
 	public InputStream getDocumentAsStream(String originPath){
-    	InputStream retStream = null;
-    	log.debug("in getDocumentAsStream");
-		log.debug("originPath: "+originPath);
-		try {
+		log.debug("in getDocumentAsStream");
+		InputStream retStream = null;
+    	log.debug("Original Path:'"+originPath+"'");
+    	originPath = originPath.replaceFirst(getJrHttp(), "");
+    	log.debug("Relative Path:'"+originPath+"'");
+    	try {
 			Node storedFile = session.getRootNode().getNode(originPath);
 			log.debug("file: "+storedFile.toString());
 			PropertyIterator props = storedFile.getProperties();
@@ -113,31 +134,39 @@ public class StoreService {
 			log.debug("[Local]\tFile Path:"+filePath+" - File name:"+theFile);
 			log.debug("[Remote]\tFile Path:"+storePath+" - File name:"+storeFile);
 	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
-	        String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
+	        //String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
+	        String mimeType2 = URLConnection.guessContentTypeFromStream(stream);
+	        if (mimeType2==null){
+	        	log.error("Unable to detect the mime type for file "+theFile+", defaulting to 'application/octet-stream'");
+	        	mimeType2 = "application/octet-stream";
+	        }
 	        //Add the file separator to the local path, if missing
 	        filePath += filePath.endsWith(File.separator)?"":File.separator;
 	        folder = this.createNodesForPath(storePath);
-	        JcrUtils.putFile(folder, storeFile, mimeType, stream);
+	        JcrUtils.putFile(folder, storeFile, mimeType2, stream);
 	        session.save();
+	        stream.close();
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
     }
     
     /**
      * Creates a hierarchy of Nodes by splitting the input String on occurrences of File.pathSeparator
-     * @param localFileAbsolutePath the path whose matching nodes have to be created
+     * @param jackRabbitRemotePath the path whose matching nodes have to be created
      * @return The last (deepest) created node for the provided path
      * @throws RepositoryException
      */
-    public Node createNodesForPath(String localFileAbsolutePath) throws RepositoryException{
-    	String splitRegex = Pattern.quote(File.separator);
-    	if (localFileAbsolutePath.startsWith(File.separator)){
-    		localFileAbsolutePath = localFileAbsolutePath.replaceFirst(splitRegex, "");
+    public Node createNodesForPath(String jackRabbitRemotePath) throws RepositoryException{
+    	String splitRegex = Pattern.quote("/");
+    	if (jackRabbitRemotePath.startsWith(File.separator)){
+    		jackRabbitRemotePath = jackRabbitRemotePath.replaceFirst(splitRegex, "");
     	}
-		String[] splittedFileName = localFileAbsolutePath.split(splitRegex);
+		String[] splittedFileName = jackRabbitRemotePath.split(splitRegex);
 		Node lastCreatedNode = session.getRootNode();
 		for (int i = 0; i < splittedFileName.length; i++) {
 			lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
@@ -167,7 +196,7 @@ public class StoreService {
         Node folder,
              folderParent;
         try {
-			folder = session.getRootNode().getNode(StoreService.getTemplatePath(orgKey, toscaName));
+			folder = session.getRootNode().getNode(this.getTemplatePath(orgKey, toscaName));
 			log.debug("Folder->"+folder.getPath());
 			folderParent = folder.getParent();
 			log.debug("FolderParent->"+folderParent.getPath());
@@ -175,8 +204,8 @@ public class StoreService {
 			session.save();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			log.error("Repository Exception", e);
-			e.printStackTrace();
+			log.error("Repository Exception: "+e.getLocalizedMessage());
+			//e.printStackTrace();
 		}
     }  
     
@@ -209,6 +238,10 @@ public class StoreService {
 			e.printStackTrace();
 		}
 		return resultSet;
+	}
+
+	public String getJrHttp() {
+		return jrHttp;
 	}
 
 }

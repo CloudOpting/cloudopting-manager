@@ -4,41 +4,70 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>cloudopting</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <meta name="author" content="worldline">
+
+        <title>CloudOpting</title>
+
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css assets/styles/vendor.css -->
         <!-- bower:css -->
+        <!-- Bootstrap Core CSS -->
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/metisMenu/dist/metisMenu.css" />
         <link rel="stylesheet" href="bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" />
+        <link rel='stylesheet' href='bower_components/textAngular/dist/textAngular.css'>
+        <link rel='stylesheet' href='bower_components/bootstrap-daterangepicker/daterangepicker.css'>
+
+
+        <!-- Plugin CSS -->
+        <link rel="stylesheet" href="assets/styles/animate.min.css" />
+
+        <!-- Cytoscape CSS for IDE -->
+        <link rel="stylesheet" type="text/css" href="assets/styles/cytoscape.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="assets/styles/agency.css" />
+
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Montserrat:400,700" rel="stylesheet" type="text/css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css assets/styles/main.css -->
-        <link rel="stylesheet" href="assets/styles/main.css">
+        <!--<link rel="stylesheet" href="assets/styles/main.css">-->
         <!-- endbuild -->
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
-    <body ng-app="cloudoptingApp">
+    <body ng-app="cloudoptingApp" id="page-top" class="index">
         <!--[if lt IE 10]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <!--
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
-        <div ui-view="navbar" ng-cloak=""></div>
+        -->
+        <nav ui-view="navbar" ng-cloak="" class="navbar navbar-default navbar-fixed-top" role="navigation"></nav>
 
-        <div class="container">
-            <div ui-view="menu" ng-cloak=""></div>
-            <div ui-view="content"></div><!--class="well"-->
+        <!-- <div ui-view="menu" ng-cloak=""></div> -->
 
-            <div class="footer">
-                <div ui-view="footerlinks"></div>
-            </div>
+        <!-- Header -->
+        <header ui-view="header" class="header-main"></header>
 
-        </div>
+        <div ui-view="content"></div><!--class="well"-->
 
+        <footer ui-view="footer"></footer>
+        <!-- TODO: Do something to fix the footer only in particular cases class="fixed-bottom" -->
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
@@ -57,18 +86,29 @@
         <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
         <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
         <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+        <script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
         <script src="bower_components/ng-file-upload/ng-file-upload-all.js"></script>
-
         <script src="bower_components/tv4/tv4.js"></script>
         <script src="bower_components/objectpath/lib/ObjectPath.js"></script>
-
+<!--         <script src="bower_components/cytoscape/dist/cytoscape.min.js"></script> -->
         <script src="bower_components/angular-schema-form/dist/schema-form.js"></script>
         <script src="bower_components/angular-schema-form/dist/bootstrap-decorator.js"></script>
-
         <script src="bower_components/raphael/raphael.js"></script>
         <script src="bower_components/morrisjs/morris.js"></script>
+        <script src="bower_components/moment/min/moment.min.js"></script>
+        <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
         <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
         <script src="bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js"></script>
+        <script src="bower_components/checklist-model/checklist-model.js"></script>
+        <script src="bower_components/textAngular/dist/textAngular-rangy.min.js"></script>
+        <script src="bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>
+        <script src="bower_components/textAngular/dist/textAngular.min.js"></script>
+        <script src="bower_components/angular-file-saver/dist/angular-file-saver.min.js"></script>
+        <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js"></script>
+        <script src="bower_components/angular-scroll/angular-scroll.min.js"></script>
+
+        <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit" async defer></script>
+        <script src="bower_components/angular-recaptcha/release/angular-recaptcha.min.js"></script>
 
 
         <!-- endbower -->
@@ -77,6 +117,23 @@
         <script src="bower_components/ui-bootstrap-tpls/ui-bootstrap-tpls-0.13.4.js"></script>
         <!-- endbuild -->
 
+        <!-- For Look & feel -->
+
+        <!-- Plugin JavaScript -->
+        <!--<script src="assets/js/jquery.easing.min.js"></script>-->
+        <script src="assets/js/classie.js"></script>
+        <!--<script src="assets/js/cbpAnimatedHeader.js"></script>-->
+        <script src="assets/js/jquery.bxslider.js"></script> <!--http://bxslider.com/ -->
+        <!--<script src="assets/js/wow.min.js"></script> <!--scroll animations -->
+        <script src="assets/js/jquery.shuffle.js"></script> <!--filters -->
+
+        <!-- Contact Form JavaScript -->
+        <script src="assets/js/jqBootstrapValidation.js"></script>
+        <script src="assets/js/contact_me.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="assets/js/agency.js"></script>
+        <!--<script src="assets/js/landing.js"></script>-->
 
         <!-- build:js({.tmp,src/main/webapp}) scripts/app.js -->
         <script src="scripts/app/app.js"></script>
@@ -107,6 +164,9 @@
         <script src="scripts/components/api/user.service.js"></script>
         <script src="scripts/components/api/contact.service.js"></script>
         <script src="scripts/components/api/providers.service.js"></script>
+        <script src="scripts/components/api/jackrabbit.service.js"></script>
+        <script src="scripts/components/api/toscaide.service.js"></script>
+        <script src="scripts/components/api/activiti.service.js"></script>
 
         <script src="scripts/components/api/process.service.js"></script>
 
@@ -155,8 +215,10 @@
         <script src="scripts/app/footer/footer.controller.js"></script>
 
         <script src="scripts/app/service/service.js"></script>
-        <script src="scripts/app/service/catalog/catalog.js"></script>
-        <script src="scripts/app/service/catalog/catalog.controller.js"></script>
+        <script src="scripts/app/service/catalogue/catalogue.js"></script>
+        <script src="scripts/app/service/catalogue/catalogue.controller.js"></script>
+        <script src="scripts/app/service/catalogue/headercatalogue.controller.js"></script>
+        <script src="scripts/app/service/catalogue/headercatalogue.directive.js"></script>
         <script src="scripts/app/service/list/list.js"></script>
         <script src="scripts/app/service/list/list.controller.js"></script>
         <script src="scripts/app/service/detail/detail.js"></script>
@@ -187,6 +249,13 @@
         <script src="scripts/app/service/cloudaccount/cloudaccount.controller.js"></script>
         <script src="scripts/app/service/chooseaccount/chooseaccount.js"></script>
         <script src="scripts/app/service/chooseaccount/chooseaccount.controller.js"></script>
+        <script src="scripts/app/service/dashboard/dashboard.js"></script>
+        <script src="scripts/app/service/dashboard/dashboard.controller.js"></script>
+        <script src="scripts/app/service/toscaide/toscaide.js"></script>
+        <script src="scripts/app/service/toscaide/toscaide.directive.js"></script>
+        <script src="scripts/app/service/toscaide/toscaide.controller.js"></script>
+        <script src="scripts/app/service/activiti/activiti.js"></script>
+        <script src="scripts/app/service/activiti/activiti.controller.js"></script>
 
         <!-- BUTTON SCREEN IS TO EXECUTE DIRECT ACTIONS -->
         <script src="scripts/app/service/button/button.js"></script>
@@ -195,6 +264,8 @@
         <!-- FORM GENERATOR -->
         <script src="scripts/app/service/form_generation/form_generation.js"></script>
         <script src="scripts/app/service/form_generation/form_generation.controller.js"></script>
+
+        <script src="assets/js/cytoscape.js"></script>
 
 
         <!-- cloudopting-manager-webui end -->

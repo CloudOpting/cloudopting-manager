@@ -1,0 +1,23 @@
+<NodeType name="Wordpress" shape="pentagon" color="#ffffff" image="wordpress.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="WordpressProperties"
+		type="tWordpressProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="Wordpress"
+	name="WordpressImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="WordpressPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="WordpressPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="WordpressPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/WordpressPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

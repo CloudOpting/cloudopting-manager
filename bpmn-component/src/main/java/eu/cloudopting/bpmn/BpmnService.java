@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +20,6 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -29,32 +27,33 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import scala.collection.concurrent.Debug;
-import eu.cloudopting.bpmn.dto.BasicProcessInfo;
 import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.Status;
-import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
-import eu.cloudopting.dto.CustomizationDTO;
 import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
+import eu.cloudopting.service.CloudAccountService;
 import eu.cloudopting.service.CustomizationService;
 import eu.cloudopting.service.StatusService;
 import eu.cloudopting.service.UserService;
 import eu.cloudopting.service.util.StatusConstants;
+import eu.cloudopting.store.StoreService;
+//import scala.collection.concurrent.Debug;
 
 
 @Service
 @Transactional
 public class BpmnService {
 	private final Logger log = LoggerFactory.getLogger(BpmnService.class);
+	private static final String gatewayActivityId = "eventgateway2";
 	
 	public static final String TEMP_FILE_NAME_SEPARATOR = "___";
 
@@ -78,6 +77,9 @@ public class BpmnService {
     
 	@Inject
 	private StatusService statusService;
+	
+	@Inject
+	private StoreService storeService;
 
 	@Inject
 	private ApplicationService applicationService;
@@ -85,12 +87,16 @@ public class BpmnService {
 	@Inject
     private UserService userService;
 
+	@Inject
+    private CloudAccountService cloudAccountService;
 
+	
     public UserService getUserService() {
         return userService;
     }
 
-	public String startDeployProcess(String customizationId, String cloudId, boolean isTesting){
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteCustomizationPermission(#customizationId)")
+	public String startDeployProcess(String customizationId, long cloudId, boolean isTesting){
 		log.info("Before activating process");
 		log.info("customizationId: "+customizationId);
 		log.info("cloudId: "+cloudId);
@@ -108,8 +114,9 @@ public class BpmnService {
 		// We recover the Customization and chack if processId is null otherwise we need to throw exception since we cannot execute another deploy for the same Customization
 		Customizations theCust = customizationS.findOne(Long.parseLong(customizationId));
 		log.info("theCust: "+theCust.toString());
-		CloudAccounts account = theCust.getCloudAccount();
-		Applications app = applicationService.findOne(theCust.getApplicationId()); 
+//		CloudAccounts account = theCust.getCloudAccount();
+		CloudAccounts account = cloudAccountService.findOne(cloudId);
+		Applications app = theCust.getApplicationId(); 
 
 		if(theCust.getProcessId()!= null){
 			log.debug("Customization "+customizationId+" has already a deployment process");
@@ -147,53 +154,24 @@ public class BpmnService {
         return pi.getProcessInstanceId();
 
 	}
+	
+	public String returnZipPath(String pid){
+		String zipPath = null;
+		
+		runtimeService.getVariable(pid, "serviceHome");
+		
+		return zipPath;
+	}
 
 	public void configuredVM(String processInstanceId){
 		log.info("Before processing message");
 		Map<String, Object> params = new HashMap<String, Object>();
-    	Set<String> executionIds = unlockProcess(processInstanceId, "machineInstalled", params);
-    	Debug.log(executionIds.toString());
+    	unlockProcess(processInstanceId, "machineInstalled", params);
+    	//Commented out, do we need to add Scala just to debug?
+    	//Debug.log(executionIds.toString());
     	
 	}
 
-	
-	/**
-	 * Starts the process with the provided id and the provided initial input parameters.
-	 * <strong>For testing purposes, might be removed at any time</strong>.
-	 * @param processId the Identifier of the process (not null)
-	 * @param startParams the input variables (might be null)
-	 * @return the process instance id
-	 */
-	public String startGenericProcess(String processId, Map<String, Object> startParams){
-		log.debug("Starting Process with id:'"+processId+"'");
-		// TODO the process string has to go in a constant
-        ProcessInstance pi = runtimeService.startProcessInstanceByKey(processId, startParams);
-        System.out.println("ProcessID:"+pi.getProcessInstanceId());
-        return pi.getProcessInstanceId();
-
-	}
-	
-	/**
-	 * Gets the list of active Process Definitions
-	 * For testing purposes, <strong>might be removed at any time</strong>.
-	 * @return
-	 */
-	public List<BasicProcessInfo> getAvailableProcessDefinitions(){
-		log.debug("Retrieving available process definitions");
-		RepositoryService rs = processEngine.getRepositoryService();
-		List<BasicProcessInfo> result = new LinkedList<BasicProcessInfo>();
-		for (ProcessDefinition currentDefinition : rs.createProcessDefinitionQuery().active().list()) {
-			BasicProcessInfo bpi = new BasicProcessInfo(
-						currentDefinition.getId(), 
-						currentDefinition.getName(), 
-						currentDefinition.getKey(), 
-						currentDefinition.getVersion(), 
-						currentDefinition.getDeploymentId()
-			);
-			result.add(bpi);
-		}
-        return result;
-	}
 	
 	public void deleteDeploymentById(String deploymentId){
 		log.debug("Deleting Process Deployment with id:"+ deploymentId);
@@ -206,40 +184,46 @@ public class BpmnService {
 	 * <strong>For testing purposes, might be removed at any time</strong>.
 	 * @param processInstanceId The id of the instance of the target process
 	 * @param messageName The name of the intermediate message the instance is waiting for
-	 * @return A set containing the execution ids of unlocked process instances
 	 */
 	public Set<String> unlockProcess(String processInstanceId, String messageName, Map<String, ? extends Object> variables){
-		Set<String> exIds = new HashSet<String>();
 		log.debug("Unlocking Process with processInstanceId:'"+processInstanceId+"'");
+		Set<String> result = new HashSet<String>();
 		List<Execution> executions = runtimeService.createExecutionQuery()
 			      .messageEventSubscriptionName(messageName).processInstanceId(processInstanceId)
 			      .list();
 			      
 		for (Execution execution2 : executions) {
 			String curExId = execution2.getId();
-			exIds.add(curExId);
+			result.add(curExId);
 			runtimeService.setVariables(curExId, variables);
 			runtimeService.messageEventReceived(messageName, curExId);
 		}
-		return exIds;
+		return result;
 	}
 	
-//	public String startTestDeployProcess(){
-//		return null;
-//	
-//	}
-//	
-//	public String startAddApplicationProcess(){
-//		return null;
-//	
-//	}
-//	
+	/**
+	 * Unlocks the process instance with the provided instance id, waiting on the message event with the provided name.
+	 * <strong>For testing purposes, might be removed at any time</strong>.
+	 * @param processInstanceId The id of the instance of the target process
+	 * @param processExecutionId The id of the execution of the target process 
+	 * @param messageName The name of the intermediate message the instance is waiting for
+	 */
+	public Set<String> unlockProcess(String processInstanceId, String processExecutionId, String messageName, Map<String, ? extends Object> variables){
+		log.debug("Unlocking Process with [processInstanceId:processExecutionId]=["+processInstanceId+":"+processExecutionId+"]");
+		Set<String> result = new HashSet<String>();
+		result.add(processInstanceId);
+		runtimeService.setVariables(processInstanceId, variables);
+		log.debug("---- Before Signaling "+messageName);
+		runtimeService.messageEventReceived(messageName, processExecutionId);
+		log.debug("---- After Signaling "+messageName);
+		return result;
+	}
+	
 	public byte[] getProcessStatusImage(String id){
 		return null;
-	
 	}
-	
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or (principal.organizationId == #org.id)")
 	public ActivitiDTO startPublish(ApplicationDTO application, Organizations org) {
 	    HashMap<String, Object> v = new HashMap<>();
 	   
@@ -253,6 +237,25 @@ public class BpmnService {
 		return activitiDTO;
 	}
 	
+	/**
+	 * Starts the Application Update process
+	 * @param applicationId the DB id
+	 * @param org
+	 * @return
+	 */
+	public ActivitiDTO startUpdate(Long applicationId, Organizations org) {
+	    HashMap<String, Object> v = new HashMap<>();
+	    v.put("applicationId",applicationId);
+		v.put("org", org);
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("ServiceUpdateProcess",v);
+		ActivitiDTO activitiDTO = new ActivitiDTO();
+		String appId = applicationId.toString();
+		activitiDTO.setApplicationId(appId);
+		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
+		return activitiDTO;
+	}
+	
+	
 	public static File stream2file (String uploadName, InputStream in) throws IOException {
         final File tempFile = File.createTempFile(uploadName+BpmnService.TEMP_FILE_NAME_SEPARATOR, "tmp");
         tempFile.deleteOnExit();
@@ -262,6 +265,7 @@ public class BpmnService {
         return tempFile;
     }
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#uploadDTO.idApp)")
 	public ActivitiDTO upload(UploadDTO uploadDTO) {
 
 		String uploadName = uploadDTO.getName();
@@ -277,43 +281,66 @@ public class BpmnService {
 			log.error("Error while reading UPLOAD file.",e);
 		}
 	    String uploadIdApp = uploadDTO.getIdApp();
-	    String uploadProcessId = uploadDTO.getProcessId();
+	    String uploadProcessInstanceId = uploadDTO.getProcessId();
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("name",uploadName);
 		params.put("type",uploadType);
         params.put("fileId",uploadFileId);
         params.put("filePath",uploadTempFilePath);
         params.put("appId",uploadIdApp);
-        params.put("processId",uploadProcessId);
+        params.put("processId",uploadProcessInstanceId);
         params.put("org",uploadDTO.getOrg());
         params.put("user",uploadDTO.getUser());
-        //The return value is not used, just for debug purposes
-        Set<String> executionIds = null;
+        
+        String messageName = "",
+        	   postMessageName = "",
+        	   latestPathVariableName="";
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_CONTENT_LIBRARY.toString())){
-        	executionIds = unlockProcess(uploadProcessId, "ArtifactsUploadEventRef", params);
-        	Execution execution = runtimeService.createExecutionQuery()
-        			  .processInstanceId(uploadProcessId)
-        			  .activityId("postArtifactsUploadId")
-        			  .singleResult();
-  	      	//application = (ApplicationDTO) runtimeService.getVariable(uploadProcessId, "application");
-  	      	runtimeService.signal(execution.getId());
+        	messageName = BpmnServiceConstants.MSG_START_ARTIFACTS_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedArtifactPath";
         }
         if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_TOSCA_ARCHIVE.toString())){
-        	executionIds = unlockProcess(uploadProcessId, "ToscaUploadEventRef", params);
-        	Execution execution = runtimeService.createExecutionQuery()
-      			  .processInstanceId(uploadProcessId)
-      			  .activityId("postToscaUploadId")
-      			  .singleResult();
-	      	//application = (ApplicationDTO) runtimeService.getVariable(uploadProcessId, "application");
-	      	runtimeService.signal(execution.getId());
+        	messageName = BpmnServiceConstants.MSG_START_TOSCAFILE_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedToscaFilePath";
         }
+        if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_PROMO_IMAGE.toString())){
+        	messageName = BpmnServiceConstants.MSG_START_PROMOIMAGE_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_PROMOIMAGE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedPromoImagePath";
+        }
+        
         //Return the updated value of the model
         ActivitiDTO activitiDTO = new ActivitiDTO();
-		activitiDTO.setApplicationId(uploadIdApp);
-		activitiDTO.setProcessInstanceId(uploadProcessId);
+		
+        Execution preUploadExec = runtimeService.createExecutionQuery().processInstanceId(uploadProcessInstanceId).activityId(BpmnService.gatewayActivityId)/*.messageEventSubscriptionName(messageName)*/.singleResult();
+        if (preUploadExec!=null){
+        	log.debug("ProcessInstanceId:"+uploadProcessInstanceId+", Upload Execution:"+preUploadExec.toString()+", message:"+messageName);
+        	String executionId = preUploadExec.getId();
+            //Perform the upload
+            runtimeService.messageEventReceived(messageName, executionId, params);
+        }else{
+        	log.warn("[Pre Upload] No Execution found for message:"+messageName);
+        }
+        //Release the process by calling the POST UPLOAD intermediate message
+        Map<String, Object> processVars = runtimeService.getVariables(uploadProcessInstanceId);
+        String latestUploadPath = (String) processVars.get(latestPathVariableName);
+        activitiDTO.setJrPath(latestUploadPath!=null?latestUploadPath:"");
+        Execution postUploadExecution = runtimeService.createExecutionQuery().processInstanceId(uploadProcessInstanceId).messageEventSubscriptionName(postMessageName).singleResult();
+        if (postUploadExecution!=null){
+            	String pueId = postUploadExecution.getId();
+            	log.debug("Post Upload Execution ID:"+pueId+".");
+            	runtimeService.messageEventReceived(postMessageName, pueId, processVars);
+        }else{
+        	log.warn("[Post Upload] No Execution found for message:"+postMessageName);
+        }
+        activitiDTO.setApplicationId(uploadIdApp);
+		activitiDTO.setProcessInstanceId(uploadProcessInstanceId);
 		return activitiDTO;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#uploadDTO.idApp)")
 	public ActivitiDTO deleteFile(UploadDTO uploadDTO) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("uploaddto",uploadDTO);
@@ -325,6 +352,7 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#applicationDTO.id)")
 	public ActivitiDTO deleteApplication(ApplicationDTO applicationDTO) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("applicationdto",applicationDTO);
@@ -336,13 +364,13 @@ public class BpmnService {
 		return activitiDTO;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#application.id)")
 	public ActivitiDTO updateApplication(ApplicationDTO application, String processInstanceId) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("application",application);
 		Status statusDraft = statusService.findOne(StatusConstants.DRAFT),
         		statusRequested = statusService.findOne(StatusConstants.REQUESTED),
         		statusPublished = statusService.findOne(StatusConstants.PUBLISHED);
-        Set<String> executionIds = new HashSet<String>();
         if (application.getStatus()==null){
         	log.warn("Status-less Application! No good.");
         	application.setStatus(statusDraft.getStatus());
@@ -352,20 +380,33 @@ public class BpmnService {
         Map<String, ApplicationDTO> params = new HashMap<String, ApplicationDTO>();
         params.put("application", application);
         
+        String messageName = "";
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusDraft.getStatus())){
-        	executionIds = unlockProcess(processInstanceId, "metadataRetrievalMsg", params);
-        	Execution execution = runtimeService.createExecutionQuery()
-        			  .processInstanceId(processInstanceId)
-        			  .activityId("postMetadataTaskId")
-        			  .singleResult();
-        	application = (ApplicationDTO) runtimeService.getVariable(processInstanceId, "application");
-        	runtimeService.signal(execution.getId());
+        	messageName = BpmnServiceConstants.MSG_START_META_RETRIEVAL.toString();
         }
         if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusRequested.getStatus())){
-        	executionIds = unlockProcess(processInstanceId, "PublishEventRef", params);
-        	//TODO Check for the return status from the process, if any
+        	messageName = BpmnServiceConstants.MSG_START_PUBLISH.toString();
+        }
+        if (currentApplicationStatus!=null && currentApplicationStatus.equalsIgnoreCase(statusPublished.getStatus())){
+        	messageName = BpmnServiceConstants.MSG_START_META_UPDATE.toString();
+        }
+        
+        Execution exec = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).activityId(BpmnService.gatewayActivityId)./*messageEventSubscriptionName(messageName).*/singleResult();
+        if (exec!=null){
+        	log.debug("Update Execution:"+exec.toString()+", message:"+messageName);
+            //Perform the update
+            unlockProcess(processInstanceId, exec.getId(), messageName, params);
+        }else{
+        	log.warn("No Execution found for message:"+messageName);
+        }
+        
+        if (messageName.equalsIgnoreCase(BpmnServiceConstants.MSG_START_META_RETRIEVAL.toString())){
+        	application = (ApplicationDTO) runtimeService.getVariable(processInstanceId, "application");
+        }
+        if (messageName.equalsIgnoreCase(BpmnServiceConstants.MSG_START_PUBLISH.toString())){
         	application.setStatus(statusPublished.getStatus());
         }
+
         ActivitiDTO activitiDTO = new ActivitiDTO();
         //The return value is not used, just for debug purposes
         if (currentApplicationStatus!=null && !currentApplicationStatus.equalsIgnoreCase(statusRequested.getStatus())){
@@ -383,18 +424,7 @@ public class BpmnService {
 		return activitiDTO;
 	}
 	
-	
-	public ActivitiDTO createCustomization(CustomizationDTO customizationDTO) {
-		HashMap<String, Object> v = new HashMap<>();
-		v.put("customization",customizationDTO);
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("createCustomization",v);
-		ActivitiDTO activitiDTO = new ActivitiDTO();
-		Map map = ((ExecutionEntity) pi).getVariableInstances();
-		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
-		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
-		return activitiDTO;
-	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteCustomizationPermission(#customizationId)")
 	public ActivitiDTO deleteCustomization(String customizationId) {
 		HashMap<String, Object> v = new HashMap<>();
 		v.put("customizationid",customizationId);
@@ -405,16 +435,4 @@ public class BpmnService {
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}
-
-	public ActivitiDTO updateCustomization(CustomizationDTO customizationDTO) {
-		HashMap<String, Object> v = new HashMap<>();
-		v.put("customization",customizationDTO);
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("updateCustomization",v);
-		ActivitiDTO activitiDTO = new ActivitiDTO();
-		Map map = ((ExecutionEntity) pi).getVariableInstances();
-		activitiDTO.setCustomizationId(((VariableInstanceEntity) map.get("customizationId")).getTextValue());
-		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
-		return activitiDTO;
-	}
-	
 }

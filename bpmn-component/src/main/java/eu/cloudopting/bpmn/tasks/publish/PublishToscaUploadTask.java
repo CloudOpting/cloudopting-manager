@@ -1,9 +1,11 @@
 package eu.cloudopting.bpmn.tasks.publish;
 
 import java.io.File;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.commons.io.FileUtils;
@@ -34,6 +36,9 @@ public class PublishToscaUploadTask implements JavaDelegate {
 	@Inject
 	private ApplicationService applicationService;
 	
+	@Autowired
+    private RuntimeService runtimeService;
+	
 	/**
 	 * Sets the "Application Tosca Template" attribute on an Application entity
 	 * according to the format for JackRabbit
@@ -45,22 +50,22 @@ public class PublishToscaUploadTask implements JavaDelegate {
 	private void setToscaTemplatePath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
 		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = applicationService.findOne(applicationSource.getId());
-        application.setApplicationToscaTemplate(StoreService.getTemplatePath(orgKey,toscaName)+"/"+remoteFileNameReduced);
+        String path = storeService.getTemplatePath(orgKey,toscaName,true)+"/"+remoteFileNameReduced;
+        application.setApplicationToscaTemplate(path);
         applicationService.update(application);
+        //Unlock the process and update process variables
+        Map<String, Object> processVars = execution.getVariables();
+        processVars.put("latestUploadedToscaFilePath", path);
+        runtimeService.setVariables(execution.getProcessInstanceId(), processVars);
+        //runtimeService.messageEventReceived(BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString(), execution.getId(), processVars);
 	}
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		log.info("Publish - Tosca File Upload");
-		//String uploadName = (String) execution.getVariable("name");
-		//String uploadType = (String) execution.getVariable("type");
-		//String uploadFileId = (String) execution.getVariable("fileId");
 		String uploadFilePath = (String) execution.getVariable("filePath");
-		//String uploadIdApp = (String) execution.getVariable("appId");
 		String uploadToscaName = (String) execution.getVariable("toscaname");
-		//String uploadProcessId = (String) execution.getVariable("processId");
 		Organizations org = (Organizations) execution.getVariable("org");
-		//User user = (User) execution.getVariable("user");
 
 		File fileToDelete = FileUtils.getFile(uploadFilePath);
 		//TODO check the result of upload to JackRabbit
@@ -73,7 +78,7 @@ public class PublishToscaUploadTask implements JavaDelegate {
 					String 	localFileAbsolutePath 	= fileToDelete.getAbsolutePath(),
 							localFilePath = localFileAbsolutePath.substring(0,localFileAbsolutePath.lastIndexOf(File.separator)+1),
 							localFileName 	= fileToDelete.getName(), 
-							remoteFilePath 	= StoreService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
+							remoteFilePath 	= storeService.getTemplatePath(org.getOrganizationKey(),uploadToscaName), 
 							remoteFileName	= fileToDelete.getName(),
 							remoteFileNameReduced	= remoteFileName.substring(0,remoteFileName.indexOf(BpmnService.TEMP_FILE_NAME_SEPARATOR));
 					log.debug("--- Local File Absolute Path:"+localFileAbsolutePath);
@@ -97,6 +102,7 @@ public class PublishToscaUploadTask implements JavaDelegate {
 			} else {
 				log.debug("Invalid Tosca Archive!");
 			};
+			
 		} catch (ToscaException e) {
 			throw e;
 		} finally {

@@ -35,7 +35,7 @@ public class DeployManageCustomization implements JavaDelegate {
 		// @TODO will have to remove the comment in production, but now for developing setting the ID is a pain 
 //		customizationS.update(theCust);
 		toscaService.setToscaCustomization(customizationId, theCust.getCustomizationToscaFile());
-//		execution.setVariable("organizationId", theCust.getUsername());
+//		execution.setVariable("organizationId", theCust.getCustomerOrganizationId().getOrganizationKey());
 		execution.setVariable("provider", "csi");
 		
 		

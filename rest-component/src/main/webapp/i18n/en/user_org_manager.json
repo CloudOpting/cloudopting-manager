@@ -6,7 +6,7 @@
     },
     "title.user_detail": "User Detail",
     "title.org_detail": "Organization Detail",
-    "search": "Search:",
+    "search": "Search for...",
     "col": {
       "name": "Name",
       "description": "Description",
@@ -16,20 +16,19 @@
       "role": "Role",
       "langKey": "Language",
       "firstName" : "First Name",
-      "organizationKey": "Key",
       "lastName" : "Last Name",
+      "organizationKey": "Key",
       "email": "Email",
       "activated": "Activated",
       "organization": "Organization",
       "actions": "Actions",
-      "cloudaccounts": "Cloud Account"
+      "cloudaccounts": "Cloud Account",
+      "password": "Password"
     },
     "button" : {
       "edit": "Edit",
-      "edit_user": "Edit User",
-      "create_user": "Create User",
-      "edit_organization":"Edit Organization",
-      "create_organization":"Create Organization",
+      "create": "Create",
+      "cancel": "Cancel",
       "delete": "Delete"
     }
   }

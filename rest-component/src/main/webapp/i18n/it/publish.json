@@ -1,30 +1,30 @@
 {
   "publish": {
-    "title": "Publish Service",
+    "title": "Pubblica Servizio",
     "service" : {
-      "name": "Service Name",
-      "description": "Service Description",
-      "image": "Service Image"
+      "name": "Nome Servizio",
+      "description": "Descrizione Servizio",
+      "image": "Immagine Servizio"
     },
     "select" : {
-      "addtosca": "+ Add TOSCA Archive",
-      "tosca": "TOSCA Archive",
-      "toscaempty": "TOSCA Archive not selected",
-      "file": "Select File"
+      "addtosca": "+ Aggiungere Archivio TOSCA",
+      "tosca": "Archivio TOSCA",
+      "toscaempty": "Archivio TOSCA non selezionato",
+      "file": "Seleziona il File"
     },
-    "selectedfile": "Selected File",
+    "selectedfile": "File Selezionato",
     "content" : {
-      "emptylibrary": "The Library is Empty",
-      "libarary" : "Content Library",
-      "name" : "name",
+      "emptylibrary": "La Libreria è vuota",
+      "libarary" : "Contenuto della Libreria",
+      "name" : "nome",
       "file" : "file"
     },
     "button" : {
-      "save": "Save Configuration",
-      "save_n_next": "Save Configuration & Next",
-      "publish": "Publish Service",
-      "add": "+ Add Item in Library",
-      "delete": "Delete Item in Library"
+      "save": "Salva Configurazione",
+      "save_n_next": "Salva Configurazione & Prosegui",
+      "publish": "Pubblica il Servizio",
+      "add": "+ Aggiungi un Elemento alla Libreria",
+      "delete": "Cancella un Elemento della Libreria"
     }
   }
 }

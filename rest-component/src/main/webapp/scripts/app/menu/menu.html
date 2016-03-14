@@ -7,35 +7,36 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li ng-show="showMenu('publish')"><a ui-sref="publish">Publish Service</a></li>
-                <li ng-show="showMenu('catalog')"><a ui-sref="catalog">Service Catalog</a></li>
-                <li ng-show="showMenu('list')"><a ui-sref="list">Services List - Manager</a></li>
-                <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager">User Manager</a></li>
-                <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager">Org Manager</a></li>
+                <li ng-show="showMenu('publish')"><a ui-sref="publish" data-target="#publish">Publish Service</a></li>
+                <li ng-show="showMenu('catalogue')"><a ui-sref="catalogue" data-target="#catalogue">Service Catalogue</a></li>
+                <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list">Services List - Manager</a></li>
+                <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager" data-target="#user_manager">User Manager</a></li>
+                <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager" data-target="#org_manager">Org Manager</a></li>
+                <li ng-show="showMenu('toscaide')"><a ui-sref="toscaide" data-target="#toscaide">Tosca IDE</a></li>
                 <!--<li ng-show="showMenu('manager')"><a ui-sref="manager">User/Org Manager</a></li>-->
                 <li>- These should not be in the menu -</li>
-                <li ng-show="showMenu('button')"><a ui-sref="button">Button Screen</a></li>
-                <li ng-show="showMenu('detail')"><a ui-sref="detail">Service Detail</a></li>
-                <li ng-show="showMenu('subscriber')"><a ui-sref="subscriber">Service Subscriber</a></li>
-                <li ng-show="showMenu('addDeploy')"><a ui-sref="addDeploy">Add/Deploy Service</a></li>
-                <li ng-show="showMenu('instances')"><a ui-sref="instances">Instances List - Manager</a></li>
-                <li ng-show="showMenu('taylor')"><a ui-sref="taylor">Taylor Service</a></li>
-                <li ng-show="showMenu('management')"><a ui-sref="management">Service Management</a></li>
-                <li ng-show="showMenu('monitoring')"><a ui-sref="monitoring">Service Monitoring</a></li>
-                <li ng-show="showMenu('logs')"><a ui-sref="logs">Service Logs</a></li>
-                <li ng-show="showMenu('form_generation')"><a ui-sref="form_generation">Form Generation Screen</a></li>
+                <li ng-show="showMenu('button')"><a ui-sref="button" data-target="#button">Button Screen</a></li>
+                <li ng-show="showMenu('detail')"><a ui-sref="detail" data-target="#detail">Service Detail</a></li>
+                <li ng-show="showMenu('subscriber')"><a ui-sref="subscriber" data-target="#subscriber">Service Subscriber</a></li>
+                <li ng-show="showMenu('addDeploy')"><a ui-sref="addDeploy" data-target="#addDeploy">Add/Deploy Service</a></li>
+                <li ng-show="showMenu('instances')"><a ui-sref="instances" data-target="#instances">Instances List - Manager</a></li>
+                <li ng-show="showMenu('taylor')"><a ui-sref="taylor" data-target="#taylor">Taylor Service</a></li>
+                <li ng-show="showMenu('management')"><a ui-sref="management" data-target="#management">Service Management</a></li>
+                <li ng-show="showMenu('monitoring')"><a ui-sref="monitoring" data-target="#monitoring">Service Monitoring</a></li>
+                <li ng-show="showMenu('logs')"><a ui-sref="logs" data-target="#logs">Service Logs</a></li>
+                <li ng-show="showMenu('form_generation')"><a ui-sref="form_generation" data-target="#form_generation">Form Generation Screen</a></li>
             </ul>
         </div>
         <!-- MENU FOR DEVELOPMENT -->
     </div>
 </div>
 
-<br/>
 <!-- INIT NAVIGATION -->
+<!--
 <div class="container" ng-controller="MenuController">
     <div class="row">
         <div class="col-md-2">
-            <a ui-sref="catalog">
+            <a ui-sref="catalogue">
                 <div class="cloudopting_logo" ></div>
             </a>
         </div>
@@ -45,7 +46,7 @@
                     <li ng-hide="logoutButton" class="pull-right"><a ui-sref="register">Join</a></li>
                     <li ng-hide="logoutButton" class="pull-right"><a>|</a></li>
                     <li ng-hide="logoutButton" class="pull-right"><a ui-sref="login"><strong><u>Sign in</u></strong></a></li>
-                    <li ng-show="isPublisher()"><a ui-sref="servicesCatalog">Dashboard</a></li>
+                    <li ng-show="isPublisher()"><a ui-sref="servicesCatalogue">Dashboard</a></li>
                     <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="logout()">Sign out</a></li>
                     <li ng-show="logoutButton" class="pull-right"><a>|</a></li>
                     <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="profile()">Name: {{name}}</a></li>
@@ -55,4 +56,5 @@
     </div>
 </div>
 <br/>
+-->
 <!-- END NAVIGATION -->

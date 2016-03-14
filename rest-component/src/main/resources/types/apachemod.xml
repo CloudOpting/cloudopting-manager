@@ -1,0 +1,23 @@
+<NodeType name="ApacheModule" shape="ellipse" color="#ffffff" image="apache_mod.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="ApacheModuleProperties"
+		type="tApacheModuleProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="ApacheModule"
+	name="ApacheModuleImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="ApacheModulePT.ftl"
+			artifactType="PuppetTemplate" artifactRef="ApacheModulePT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="ApacheModulePT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/ApacheModulePT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

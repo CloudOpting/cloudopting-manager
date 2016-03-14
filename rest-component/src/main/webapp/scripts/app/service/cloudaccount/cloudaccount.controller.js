@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('CloudAccountController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Contact, Providers, OrganizationService) {
+    .controller('CloudAccountController', function(SERVICE, localStorageService,
+                                                   $location, $translate, $scope, $log, $state,
+                                                   Principal, Contact, Providers, OrganizationService) {
 
         function resetMessages(){
             $scope.successNew = null;
@@ -11,8 +13,8 @@ angular.module('cloudoptingApp')
 
         resetMessages();
 
-        $scope.cloudAcc = localStorageService.get(SERVICE.STORAGE.CURRENT_CLOUDACCOUNT);
-        $scope.organization = localStorageService.get(SERVICE.STORAGE.CURRENT_EDIT_ORG);
+        $scope.cloudAcc = localStorageService.get(SERVICE.STORAGE.CLOUD_ACCOUNT.CLOUD_ACCOUNT);
+        $scope.organization = localStorageService.get(SERVICE.STORAGE.CLOUD_ACCOUNT.ORGANIZATION);
 
         Providers.get(function(providers) {
             $scope.providerList =  providers;
@@ -23,46 +25,55 @@ angular.module('cloudoptingApp')
         };
 
 
-        $scope.createCloudAccount = function (cloudAccount) {
+        $scope.createCloudAccount = function () {
             resetMessages();
 
             var callback = function (data){
                 if(data) {
                     $scope.successNew = true;
+                    $state.go('profile', { tab: "tab_cloudaccounts" }, {reload: true} );
                 } else {
                     $scope.error = true;
                 }
             };
 
-            OrganizationService.createCloudAccount($scope.organization.id, cloudAccount, callback);
+            //Set provider for the DTO.
+            for(var prov in $scope.providerList){
+                if($scope.providerList[prov].id == $scope.cloudAcc.providerId.id) {
+                    $scope.cloudAcc.provider = $scope.providerList[prov];
+                }
+            }
+
+            OrganizationService.createCloudAccount($scope.organization.id, $scope.cloudAcc, callback);
         };
 
-        $scope.updateCloudAccount = function (cloudAccount) {
+        $scope.updateCloudAccount = function () {
             resetMessages();
 
             var callback = function (data){
                 if(data) {
                     $scope.successUpdate = true;
+                    $state.go('profile', { tab: "tab_cloudaccounts" }, {reload: true} );
                 } else {
                     $scope.error = true;
                 }
             };
 
-            OrganizationService.updateCloudAccount($scope.organization.id, cloudAccount, callback);
+            OrganizationService.updateCloudAccount($scope.organization.id, $scope.cloudAcc, callback);
         };
 
 
-        $scope.deleteCloudAccount = function (cloudAccount) {
+        $scope.deleteCloudAccount = function () {
 
-            var callback = function(data){
-                if(data) {
-                    $state.go('profile', { tab: "tab_cloudaccounts" } );
+            var callback = function(data, status, headers, config){
+                if(status==200) {
+                    $state.go('profile', { tab: "tab_cloudaccounts" }, {reload: true} );
                 } else {
                     console.log("Error deleting the Cloud Account");
                 }
             };
 
-            OrganizationService.deleteCloudAccount($scope.organization.id, cloudAccount, callback);
+            OrganizationService.deleteCloudAccount($scope.organization.id, $scope.cloudAcc.id, callback);
         };
 
         $scope.goToProfile = function(){

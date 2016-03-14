@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <message id="metadataRetrieval" name="metadataRetrievalMsg"></message>
-  <message id="toscaUploadEvent" name="toscaUploadEvent"></message>
-  <message id="artifactsUploadEvent" name="artifactsUploadEvent"></message>
-  <message id="publishEvent" name="publishEvent"></message>
-  <message id="PublishEventRef" name="PublishEventRef"></message>
-  <message id="ToscaUploadEventRef" name="ToscaUploadEventRef"></message>
-  <message id="ArtifactsUploadEventRef" name="ArtifactsUploadEventRef"></message>
+  <message id="MetadataRetrievalEventId" name="MetadataRetrievalEventRef"></message>
+  <message id="PublishEventId" name="PublishEventRef"></message>
+  <message id="ToscaUploadEventId" name="ToscaUploadEventRef"></message>
+  <message id="ToscaFileUploadedMsgId" name="ToscaFileUploadedMsgRef"></message>
+  <message id="ArtifactsUploadEventId" name="ArtifactsUploadEventRef"></message>
+  <message id="ArtifactUploadedMsgId" name="ArtifactUploadedMsgRef"></message>
+  <message id="PromoImageUploadEventId" name="PromoImageUploadEventRef"></message>
+  <message id="PromoImageUploadedMsgId" name="PromoImageUploadedMsgRef"></message>
   <process id="ServicePublishingProcess" name="Service Publishing" isExecutable="true">
     <startEvent id="startevent" name="Start"></startEvent>
     <eventBasedGateway id="eventgateway2" name="Event Gateway"></eventBasedGateway>
     <sequenceFlow id="flow27" sourceRef="startevent" targetRef="publishContextSetupTask"></sequenceFlow>
     <serviceTask id="publishMetadataTask" name="Metadata Retrieval" activiti:delegateExpression="${publishMetadataTask}"></serviceTask>
-    <sequenceFlow id="flow31" sourceRef="publishMetadataTask" targetRef="postMetadataTaskId"></sequenceFlow>
     <serviceTask id="publishPublishTask" name="Publish" activiti:delegateExpression="${publishPublishTask}"></serviceTask>
-    <sequenceFlow id="flow37" sourceRef="postArtifactsUploadId" targetRef="eventgateway2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="afterArtifactStorageCatchEventId" targetRef="eventgateway2"></sequenceFlow>
     <intermediateCatchEvent id="PublishIntermediateCatchEvent" name="PublishEvent">
-      <messageEventDefinition messageRef="PublishEventRef"></messageEventDefinition>
+      <messageEventDefinition messageRef="PublishEventId"></messageEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow38" sourceRef="PublishIntermediateCatchEvent" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -32,7 +32,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==false}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow45" name="Metadata Available" sourceRef="exclusivegateway5" targetRef="publishArtifactStorageTask">
+    <sequenceFlow id="flow45" sourceRef="exclusivegateway5" targetRef="publishArtifactStorageTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow46" name="No Metadata Available" sourceRef="exclusivegateway5" targetRef="eventgateway2">
@@ -41,17 +41,17 @@
     <serviceTask id="publishContextSetupTask" name="Context Setup" activiti:delegateExpression="${publishContextSetupTask}"></serviceTask>
     <sequenceFlow id="flow50" sourceRef="publishContextSetupTask" targetRef="eventgateway2"></sequenceFlow>
     <intermediateCatchEvent id="MetadataRetrievalIntermediateCatchEvent" name="metadataRetrievalEvent">
-      <messageEventDefinition messageRef="metadataRetrieval"></messageEventDefinition>
+      <messageEventDefinition messageRef="MetadataRetrievalEventId"></messageEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow54" sourceRef="MetadataRetrievalIntermediateCatchEvent" targetRef="publishMetadataTask"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="eventgateway2" targetRef="MetadataRetrievalIntermediateCatchEvent"></sequenceFlow>
     <intermediateCatchEvent id="ToscaUploadIntermediateCatchEvent" name="ToscaUploadEvent">
-      <messageEventDefinition messageRef="ToscaUploadEventRef"></messageEventDefinition>
+      <messageEventDefinition messageRef="ToscaUploadEventId"></messageEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow56" sourceRef="eventgateway2" targetRef="ToscaUploadIntermediateCatchEvent"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="ToscaUploadIntermediateCatchEvent" targetRef="exclusivegateway4"></sequenceFlow>
     <intermediateCatchEvent id="ArtifactsUploadIntermediateCatchEvent" name="ArtifactsUploadEvent">
-      <messageEventDefinition messageRef="ArtifactsUploadEventRef"></messageEventDefinition>
+      <messageEventDefinition messageRef="ArtifactsUploadEventId"></messageEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow58" sourceRef="eventgateway2" targetRef="ArtifactsUploadIntermediateCatchEvent"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="ArtifactsUploadIntermediateCatchEvent" targetRef="exclusivegateway5"></sequenceFlow>
@@ -60,15 +60,29 @@
     <sequenceFlow id="flow60" sourceRef="exclusivegateway4" targetRef="publishToscaUploadTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chkPublishMetadataAvailable==true}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow62" sourceRef="publishToscaUploadTask" targetRef="postToscaUploadId"></sequenceFlow>
-    <receiveTask id="postMetadataTaskId" name="AfterMetadataTask"></receiveTask>
-    <sequenceFlow id="flow63" sourceRef="postMetadataTaskId" targetRef="eventgateway2"></sequenceFlow>
-    <receiveTask id="postToscaUploadId" name="After Tosca Upload"></receiveTask>
-    <sequenceFlow id="flow64" sourceRef="postToscaUploadId" targetRef="eventgateway2"></sequenceFlow>
-    <receiveTask id="postArtifactsUploadId" name="After Artifacts Upload"></receiveTask>
-    <sequenceFlow id="flow65" sourceRef="publishArtifactStorageTask" targetRef="postArtifactsUploadId"></sequenceFlow>
+    <sequenceFlow id="flow63" sourceRef="publishMetadataTask" targetRef="eventgateway2"></sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="afterToscaUploadCatchEventId" targetRef="eventgateway2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow66" sourceRef="publishPublishTask" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="publishPromoImage" name="Promo Image Upload" activiti:delegateExpression="${publishPromoImage}"></serviceTask>
+    <intermediateCatchEvent id="PromoImageUploadintermediatecatchevent" name="PublishPromoImageUploadEventRef">
+      <messageEventDefinition messageRef="PromoImageUploadEventId"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow67" sourceRef="eventgateway2" targetRef="PromoImageUploadintermediatecatchevent"></sequenceFlow>
+    <sequenceFlow id="flow68" name="Upload Available" sourceRef="PromoImageUploadintermediatecatchevent" targetRef="publishPromoImage"></sequenceFlow>
+    <sequenceFlow id="flow70" sourceRef="afterPromoImageCatchEventId" targetRef="eventgateway2"></sequenceFlow>
+    <intermediateCatchEvent id="afterToscaUploadCatchEventId" name="MessageCatchEvent">
+      <messageEventDefinition messageRef="ToscaFileUploadedMsgId"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow71" sourceRef="publishToscaUploadTask" targetRef="afterToscaUploadCatchEventId"></sequenceFlow>
+    <intermediateCatchEvent id="afterPromoImageCatchEventId" name="MessageCatchEvent">
+      <messageEventDefinition messageRef="PromoImageUploadedMsgId"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow72" sourceRef="publishPromoImage" targetRef="afterPromoImageCatchEventId"></sequenceFlow>
+    <intermediateCatchEvent id="afterArtifactStorageCatchEventId" name="MessageCatchEvent">
+      <messageEventDefinition messageRef="ArtifactUploadedMsgId"></messageEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow73" sourceRef="publishArtifactStorageTask" targetRef="afterArtifactStorageCatchEventId"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ServicePublishingProcess">
     <bpmndi:BPMNPlane bpmnElement="ServicePublishingProcess" id="BPMNPlane_ServicePublishingProcess">
@@ -79,7 +93,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="208.0" y="290.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="publishMetadataTask" id="BPMNShape_publishMetadataTask">
-        <omgdc:Bounds height="55.0" width="265.0" x="389.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="265.0" x="387.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="publishPublishTask" id="BPMNShape_publishPublishTask">
         <omgdc:Bounds height="55.0" width="105.0" x="649.0" y="490.0"></omgdc:Bounds>
@@ -100,7 +114,7 @@
         <omgdc:Bounds height="55.0" width="105.0" x="34.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="MetadataRetrievalIntermediateCatchEvent" id="BPMNShape_MetadataRetrievalIntermediateCatchEvent">
-        <omgdc:Bounds height="35.0" width="35.0" x="313.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="311.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="ToscaUploadIntermediateCatchEvent" id="BPMNShape_ToscaUploadIntermediateCatchEvent">
         <omgdc:Bounds height="35.0" width="35.0" x="313.0" y="139.0"></omgdc:Bounds>
@@ -109,33 +123,36 @@
         <omgdc:Bounds height="35.0" width="35.0" x="313.0" y="383.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="publishArtifactStorageTask" id="BPMNShape_publishArtifactStorageTask">
-        <omgdc:Bounds height="55.0" width="271.0" x="601.0" y="373.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="182.0" x="489.0" y="373.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="publishToscaUploadTask" id="BPMNShape_publishToscaUploadTask">
         <omgdc:Bounds height="55.0" width="141.0" x="509.0" y="129.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="postMetadataTaskId" id="BPMNShape_postMetadataTaskId">
-        <omgdc:Bounds height="55.0" width="105.0" x="736.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="postToscaUploadId" id="BPMNShape_postToscaUploadId">
-        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="129.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="postArtifactsUploadId" id="BPMNShape_postArtifactsUploadId">
-        <omgdc:Bounds height="55.0" width="149.0" x="662.0" y="283.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="788.0" y="500.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="publishPromoImage" id="BPMNShape_publishPromoImage">
+        <omgdc:Bounds height="55.0" width="181.0" x="489.0" y="234.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PromoImageUploadintermediatecatchevent" id="BPMNShape_PromoImageUploadintermediatecatchevent">
+        <omgdc:Bounds height="35.0" width="35.0" x="312.0" y="244.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="afterToscaUploadCatchEventId" id="BPMNShape_afterToscaUploadCatchEventId">
+        <omgdc:Bounds height="35.0" width="35.0" x="719.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="afterPromoImageCatchEventId" id="BPMNShape_afterPromoImageCatchEventId">
+        <omgdc:Bounds height="35.0" width="35.0" x="719.0" y="244.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="afterArtifactStorageCatchEventId" id="BPMNShape_afterArtifactStorageCatchEventId">
+        <omgdc:Bounds height="35.0" width="35.0" x="719.0" y="383.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="86.0" y="155.0"></omgdi:waypoint>
         <omgdi:waypoint x="86.0" y="193.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="654.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="736.0" y="47.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="662.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="736.0" y="383.0"></omgdi:waypoint>
+        <omgdi:waypoint x="736.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="248.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -167,15 +184,12 @@
         <omgdi:waypoint x="439.0" y="176.0"></omgdi:waypoint>
         <omgdi:waypoint x="228.0" y="290.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="407.0" y="206.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="382.0" y="178.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="459.0" y="400.0"></omgdi:waypoint>
-        <omgdi:waypoint x="601.0" y="400.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="91.0" x="469.0" y="383.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
+        <omgdi:waypoint x="489.0" y="400.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="439.0" y="380.0"></omgdi:waypoint>
@@ -190,13 +204,13 @@
         <omgdi:waypoint x="208.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="348.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="389.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="346.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="387.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
         <omgdi:waypoint x="228.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="228.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="313.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
         <omgdi:waypoint x="228.0" y="290.0"></omgdi:waypoint>
@@ -218,30 +232,49 @@
         <omgdi:waypoint x="459.0" y="156.0"></omgdi:waypoint>
         <omgdi:waypoint x="509.0" y="156.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="650.0" y="156.0"></omgdi:waypoint>
-        <omgdi:waypoint x="696.0" y="156.0"></omgdi:waypoint>
-        <omgdi:waypoint x="740.0" y="156.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="788.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="788.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="266.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="228.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="652.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="784.0" y="86.0"></omgdi:waypoint>
+        <omgdi:waypoint x="784.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="248.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="792.0" y="184.0"></omgdi:waypoint>
-        <omgdi:waypoint x="792.0" y="236.0"></omgdi:waypoint>
-        <omgdi:waypoint x="364.0" y="236.0"></omgdi:waypoint>
-        <omgdi:waypoint x="228.0" y="290.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="736.0" y="373.0"></omgdi:waypoint>
-        <omgdi:waypoint x="736.0" y="338.0"></omgdi:waypoint>
+        <omgdi:waypoint x="754.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="248.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="754.0" y="517.0"></omgdi:waypoint>
         <omgdi:waypoint x="788.0" y="517.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="248.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="329.0" y="279.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="347.0" y="261.0"></omgdi:waypoint>
+        <omgdi:waypoint x="489.0" y="261.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="80.0" x="347.0" y="261.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="736.0" y="279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="736.0" y="309.0"></omgdi:waypoint>
+        <omgdi:waypoint x="248.0" y="310.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="650.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="156.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="670.0" y="261.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="261.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
+        <omgdi:waypoint x="671.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="400.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

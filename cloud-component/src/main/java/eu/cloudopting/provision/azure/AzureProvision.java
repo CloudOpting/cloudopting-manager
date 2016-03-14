@@ -1,34 +1,45 @@
 package eu.cloudopting.provision.azure;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.inject.Module;
-import eu.cloudopting.provision.AbstractProvision;
-import eu.cloudopting.provision.ProvisionComponent;
+import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Iterables.tryFind;
+import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.azurecompute.AzureComputeApi;
 import org.jclouds.azurecompute.AzureComputeProviderMetadata;
 import org.jclouds.azurecompute.compute.AzureComputeServiceAdapter;
-import org.jclouds.azurecompute.domain.*;
+import org.jclouds.azurecompute.domain.CloudService;
+import org.jclouds.azurecompute.domain.CreateStorageServiceParams;
+import org.jclouds.azurecompute.domain.Deployment;
+import org.jclouds.azurecompute.domain.DeploymentParams;
+import org.jclouds.azurecompute.domain.NetworkConfiguration;
+import org.jclouds.azurecompute.domain.StorageService;
 import org.jclouds.azurecompute.features.DeploymentApi;
 import org.jclouds.azurecompute.features.VirtualNetworkApi;
 import org.jclouds.azurecompute.util.ConflictManagementPredicate;
-import org.jclouds.azurecompute.xml.InputEndpointHandler;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.providers.ProviderMetadata;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.inject.Module;
 
-import static com.google.common.collect.Iterables.find;
-import static com.google.common.collect.Iterables.tryFind;
-import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
+import eu.cloudopting.provision.AbstractProvision;
 
 /**
  * Main class used to provision on azure.
@@ -60,6 +71,12 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
     }
 
     private DeploymentParams deploymentParams() {
+    	List<String> subnetNames = new LinkedList<String>();
+    	subnetNames.add(Iterables.get(virtualNetworkSite.subnets(), 0).name());
+    	
+    	Set<DeploymentParams.ExternalEndpoint> endpoints = new HashSet<DeploymentParams.ExternalEndpoint>();
+    	endpoints.add(DeploymentParams.ExternalEndpoint.inboundTcpToLocalPort(22, 22));
+    	endpoints.addAll(request.getExternalEndpoints());
         return DeploymentParams.builder()
                 .name(request.getDeployment())
                 .os(request.getOsImageType())
@@ -68,12 +85,10 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
                 .username(request.getUsername())
                 .password(request.getPassword())
                 .size(request.getRoleSizeType())
-                .subnetName(Iterables.get(virtualNetworkSite.subnets(), 0).name())
+                .subnetNames(subnetNames)
                 .virtualNetworkName(virtualNetworkSite.name())
-                .externalEndpoint(DeploymentParams.ExternalEndpoint.inboundTcpToLocalPort(22, 22))
-                .externalEndpoints(request.getExternalEndpoints())
+                .externalEndpoints(endpoints)
                 .build();
-
     }
 
     private AzureComputeApi api() {
