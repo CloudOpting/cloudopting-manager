@@ -81,17 +81,6 @@ public class MonitoringController {
 		graph.setLineColors(new String[] { "green", "blue", "orange" });
 
 		return graph;
-		/*
-		 * return "graph: {" + "data: [" +
-		 * " { time: '2001', disk: 20, cpu: 12, ram: 15 }," +
-		 * " { time: '2002', disk: 10, cpu: 5, ram: 13 }," +
-		 * " { time: '2003', disk: 5, cpu: 20, ram: 19 }," +
-		 * " { time: '2004', disk: 5, cpu: 3, ram: 0 }," +
-		 * " { time: '2005', disk: 20, cpu: 10, ram: 5 }" + "], " +
-		 * "xkey: 'time'," + "ykeys: ['disk', 'cpu', 'ram']," +
-		 * "labels: ['Disk', 'CPU', 'RAM']," +
-		 * "lineColors: ['green', 'blue', 'orange']" + "}";
-		 */
 	}
 
 	@RequestMapping(value = "/monitoring/elastic/{instanceId}", method = RequestMethod.GET)
@@ -201,6 +190,18 @@ public class MonitoringController {
 		// need to login to zabbix
 		monitoringService.loginZabbix();
 		return new ResponseEntity<String>(monitoringService.getDataHistory(itemId).toString(), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/monitoring/status/{instanceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<Boolean> getStatus(@PathVariable("instanceId") final Long instanceId) {
+		// here I get the name of the host from the Db to get info from zabbix
+		
+		// whti the instance id I get the Db fqdn
+		
+		// need to login to zabbix
+		monitoringService.loginZabbix();
+		return new ResponseEntity<Boolean>(monitoringService.getStatus(instanceId), HttpStatus.OK);
 	}
 
 }

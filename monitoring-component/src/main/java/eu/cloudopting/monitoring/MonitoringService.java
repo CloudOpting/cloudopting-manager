@@ -121,6 +121,29 @@ public class MonitoringService {
 		System.err.println(hostid);
 		return hosts;
 	}
+	
+	public boolean getStatus(Long customizationId){
+		JSONArray hosts = getHostId(customizationId);
+		boolean status = true;
+		for(int i=0; i<hosts.length();i++){
+			JSONObject host = null;
+			try {
+				host = hosts.getJSONObject(i);
+				switch (host.getInt("available")) {
+				case 2:
+					status = false;
+					break;
+
+				default:
+					break;
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return status;
+	}
 
 	public JSONArray getItems(String hostid) {
 
