@@ -211,6 +211,29 @@ angular.module('cloudoptingApp')
                             "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
+            },
+
+            /**
+             * Method to retrieve the status for the instance with identification 'instanceId'.
+             * @param instanceId Identification of the instance.
+             * @param callback Function that will take care of the returned objects.
+             * @returns {*}
+             */
+            getStatusById: function(instanceId, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    'status' +
+                    SERVICE.SEPARATOR +
+                    instanceId;
+                return $http.get(endpoint)
+                    .success(function(data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error("MonitoringService.getStatusById error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
             }
         };
     }
