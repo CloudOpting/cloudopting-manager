@@ -179,10 +179,8 @@ angular.module('cloudoptingApp')
                     SERVICE.SEPARATOR +
                     'elastic' +
                     SERVICE.SEPARATOR +
-                    instanceId +
-                    '?startdate=' + startDate +
-                    '&enddate=' + endDate;
-                return $http.get(endpoint)
+                    instanceId;
+                return $http.get(endpoint,{params:{startdate:startDate, enddate: endDate}})
                     .success(function(data, status, headers, config) {
                         callback(data, status, headers, config);
                     })

@@ -115,18 +115,13 @@ angular
 								zabbixHistoryCallback);
 					};
 
-					// FIXME: TO DELETE: "HARDCODED" to 1.
-					/*
-					 * var callback = function(data, status, headers, config) {
-					 * checkStatusCallback(data, status, headers, config);
-					 * if(data){ var graph = data; $scope.graphsList.push({
-					 * title: "findObject Chart Line (ID:1)", chartId:
-					 * "chart_line" }); $scope.graphsList.push({ title:
-					 * "findObject Chart Bar (ID:1)", chartId: "chart_bar" });
-					 * $timeout(function() { lineChart(graph, "chart_line");
-					 * barChart(graph, "chart_bar"); }, 1000); } };
-					 * MonitoringService.findObject(1, 1, callback);
-					 */
+					$scope.changeDate = function() {
+						console.log("in changeDate");
+						console.log($scope.dater);
+						MonitoringService.findOneDataById(instance.id,
+								$scope.dater.startDate.format("YYYY-MM-DDThh:mm:ssZ"), $scope.dater.endDate.format("YYYY-MM-DDThh:mm:ssZ"),
+								elasticcallback);
+					}
 
 					var elasticcallback = function(data, status, headers,
 							config) {
@@ -134,6 +129,7 @@ angular
 						if (data) {
 							var graphs = data;
 							console.log(data);
+							$scope.graphsList = [];
 							for ( var i in graphs) {
 								$scope.graphsList.push({
 									title : graphs[i].title,
@@ -154,7 +150,7 @@ angular
 						}
 					};
 					MonitoringService.findOneDataById(instance.id,
-							$scope.dater.startDate.format("YYYY-MM-DDThh:mm:00+01:00"), $scope.dater.endDate.format("YYYY-MM-DDThh:mm:00+01:00"),
+							$scope.dater.startDate.format("YYYY-MM-DDThh:mm:ssZ"), $scope.dater.endDate.format("YYYY-MM-DDThh:mm:ssZ"),
 							elasticcallback);
 
 					$scope.$on('onRepeatLast', function(scope, element, attrs) {
