@@ -29,7 +29,7 @@ angular.module('cloudoptingApp')
         $scope.contact = function() {
             if($state.current.name == "catalogue"){
                 var someElement = angular.element(document.getElementById('contact'));
-                $document.scrollToElementAnimated( someElement, 30, 5000 );
+                $document.scrollToElementAnimated( someElement, 30, 500 );
             } else {
                 $state.go('catalogue', { section: "contact" }, {reload: true} );
             }
@@ -37,7 +37,7 @@ angular.module('cloudoptingApp')
         $scope.catalogue = function() {
             if($state.current.name == "catalogue"){
                 var someElement = angular.element(document.getElementById('services'));
-                $document.scrollToElementAnimated( someElement, 30, 5000 );
+                $document.scrollToElementAnimated( someElement, 30, 500 );
             } else {
                 $state.go('catalogue');
             }

@@ -15,10 +15,10 @@ angular.module('cloudoptingApp')
             $timeout(function () {
                 if($stateParams.section!=null && $stateParams.section!=undefined && $stateParams.section!="") {
                     var someElement = angular.element(document.getElementById('contact'));
-                    $document.scrollToElementAnimated( someElement, 30, 5000 );
+                    $document.scrollToElementAnimated( someElement, 30, 500 );
                     $stateParams.section = null;
                 }
-            }, 1000);
+            }, 500);
         };
 
         $scope.applicationList = null;
