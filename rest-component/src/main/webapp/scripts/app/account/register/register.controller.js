@@ -2,6 +2,13 @@
 
 angular.module('cloudoptingApp')
     .controller('RegisterController', function ($scope, $translate, $timeout, Auth) {
+        $scope.scrollTo = function(element) {
+            $( 'html, body').animate({
+                scrollTop: $(element).offset().top
+            }, 500);
+        };
+        $scope.scrollTo( "#page-top");
+
         $scope.success = null;
         $scope.error = null;
         $scope.doNotMatch = null;

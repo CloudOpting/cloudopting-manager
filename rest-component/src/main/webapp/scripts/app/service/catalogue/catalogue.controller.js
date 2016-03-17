@@ -11,11 +11,19 @@ angular.module('cloudoptingApp')
     .controller('CatalogueController', function (SERVICE, localStorageService,
                                                  $scope, $log, $state, $stateParams, $document, $timeout,
                                                  ApplicationService, Principal, JackrabbitService) {
+
+        $scope.scrollTo = function(element) {
+            $( 'html, body').animate({
+                scrollTop: $(element).offset().top
+            }, 500);
+        };
+        
         $scope.scrollToSection = function () {
             $timeout(function () {
                 if($stateParams.section!=null && $stateParams.section!=undefined && $stateParams.section!="") {
                     var someElement = angular.element(document.getElementById('contact'));
-                    $document.scrollToElementAnimated( someElement, 30, 500 );
+                    //$document.scrollToElementAnimated( someElement, 30, 500 );
+                    $scope.scrollTo( "#contact");
                     $stateParams.section = null;
                 }
             }, 500);

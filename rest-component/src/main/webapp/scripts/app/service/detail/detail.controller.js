@@ -3,6 +3,14 @@
 angular.module('cloudoptingApp')
     .controller('DetailController', function(SERVICE, $location, $translate, $scope, $log, $state, localStorageService, Principal) {
 
+        $scope.scrollTo = function(element) {
+            $( 'html, body').animate({
+                scrollTop: $(element).offset().top
+            }, 500);
+        };
+        $scope.scrollTo( "#page-top");
+
+
         $scope.currentApp = localStorageService.get(SERVICE.STORAGE.DETAIL.APPLICATION);
         $scope.showButton = true;
 

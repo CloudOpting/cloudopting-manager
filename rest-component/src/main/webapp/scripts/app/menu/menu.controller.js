@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('cloudoptingApp')
     .controller('MenuController', function (SERVICE,
                                             $state, $scope, $document,
@@ -26,10 +27,17 @@ angular.module('cloudoptingApp')
             $state.go("dashboard");
         };
 
+        $scope.scrollTo = function(element) {
+            $( 'html, body').animate({
+                scrollTop: $(element).offset().top
+            }, 500);
+        };
+
         $scope.contact = function() {
             if($state.current.name == "catalogue"){
                 var someElement = angular.element(document.getElementById('contact'));
-                $document.scrollToElementAnimated( someElement, 30, 500 );
+                //$document.scrollToElementAnimated( someElement, 30, 500 );
+                $scope.scrollTo( "#contact");
             } else {
                 $state.go('catalogue', { section: "contact" }, {reload: true} );
             }
@@ -37,7 +45,8 @@ angular.module('cloudoptingApp')
         $scope.catalogue = function() {
             if($state.current.name == "catalogue"){
                 var someElement = angular.element(document.getElementById('services'));
-                $document.scrollToElementAnimated( someElement, 30, 500 );
+                //$document.scrollToElementAnimated( someElement, 30, 500 );
+                $scope.scrollTo( "#services");
             } else {
                 $state.go('catalogue');
             }
