@@ -15,9 +15,10 @@ angular.module('cloudoptingApp')
                                                   MonitoringService, Principal) {
 
         var instance = localStorageService.get(SERVICE.STORAGE.MONITORING.INSTANCE);
-
+        var activationDate = instance.customizationActivation;
+        console.log(activationDate);
         $scope.dater = {
-        		startDate: moment(),
+        		startDate: activationDate,
         		endDate: moment()
         }
         //Add the dives to the page dynamically.
@@ -150,7 +151,7 @@ angular.module('cloudoptingApp')
 console.log("filled data for elastic graphs");
             }
         };
-        MonitoringService.findOneDataById(instance.id, elasticcallback);
+        MonitoringService.findOneDataById(instance.id, $scope.dater.startDate, $scope.dater.endDate, elasticcallback);
 
         $scope.$on('onRepeatLast', function(scope, element, attrs){
         	console.log("the ngrepeat has finished");
