@@ -15,9 +15,10 @@ angular.module('cloudoptingApp')
                                                   MonitoringService, Principal) {
 
         var instance = localStorageService.get(SERVICE.STORAGE.MONITORING.INSTANCE);
-
+        var activationDate = instance.customizationActivation;
+        console.log(activationDate);
         $scope.dater = {
-        		startDate: moment(),
+        		startDate: activationDate,
         		endDate: moment()
         }
         //Add the dives to the page dynamically.

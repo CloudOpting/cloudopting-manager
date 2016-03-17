@@ -85,10 +85,10 @@ public class MonitoringController {
 
 	@RequestMapping(value = "/monitoring/elastic/{instanceId}", method = RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<ElasticGraphData> findAllElasticDataById(@PathVariable("instanceId") final Long instanceId) {
+	public ArrayList<ElasticGraphData> findAllElasticDataById(@PathVariable("instanceId") final Long instanceId,@RequestParam(value = "startdate", required = false) String startDate, @RequestParam(value = "enddate", required = false) String endDate) {
 		// I get the id of the customization
 		log.debug(instanceId.toString());
-		ArrayList<ElasticGraphData> ret = monitordataService.getAllAggregatedMonitorData(instanceId);
+		ArrayList<ElasticGraphData> ret = monitordataService.getAllAggregatedMonitorData(instanceId, startDate, endDate);
 		return ret;
 	}
 

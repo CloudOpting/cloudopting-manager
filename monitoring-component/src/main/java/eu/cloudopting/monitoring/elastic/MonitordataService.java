@@ -83,7 +83,7 @@ public class MonitordataService {
 	}
 
 	public ElasticData[] getAggregatedMonitorData(String container, String condition, String fields, String type,
-			Long pagination) {
+			Long pagination, String startDate, String endDate) {
 		log.debug("pagination:" + pagination.toString());
 		log.debug("condit:" + condition);
 		ElasticData graphData[] = null;
@@ -164,7 +164,7 @@ public class MonitordataService {
 		return graphData;
 	}
 
-	public ArrayList<ElasticGraphData> getAllAggregatedMonitorData(Long customizationId) {
+	public ArrayList<ElasticGraphData> getAllAggregatedMonitorData(Long customizationId, String startDate, String endDate) {
 		// recover the customization
 		Customizations cust = customizationService.findOne(customizationId);
 		// get info on elastic form Db
@@ -176,7 +176,7 @@ public class MonitordataService {
 		for (MonitoringInfoElastic ei : elastinfo) {
 			log.debug(ei.getContainer());
 			ElasticData[] graphData = this.getAggregatedMonitorData(ei.getContainer(), ei.getCondition(),
-					ei.getFields(), ei.getType(), ei.getPagination());
+					ei.getFields(), ei.getType(), ei.getPagination(), startDate, endDate);
 			ElasticGraphData egd = new ElasticGraphData();
 			// log.debug(new Integer(graphData.size()).toString());
 			// if (!graphData.isEmpty()) {
