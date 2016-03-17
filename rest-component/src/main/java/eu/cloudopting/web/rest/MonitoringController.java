@@ -90,6 +90,9 @@ public class MonitoringController {
 		// I get the id of the customization
 		log.debug(instanceId.toString());
 		log.debug("startDate:"+startDate);
+//		startDate = startDate + "T10:55:28+01:00";
+//		log.debug("startDate:"+startDate);
+		log.debug("endDate:"+endDate);
 		ArrayList<ElasticGraphData> ret = monitordataService.getAllAggregatedMonitorData(instanceId, startDate,
 				endDate);
 		return ret;
