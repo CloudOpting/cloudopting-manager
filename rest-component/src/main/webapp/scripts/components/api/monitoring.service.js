@@ -173,12 +173,15 @@ angular.module('cloudoptingApp')
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            findOneDataById: function(instanceId, callback) {
+            findOneDataById: function(instanceId, startDate, endDate, callback) {
+            	console.log(startDate);
                 var endpoint = baseURI +
                     SERVICE.SEPARATOR +
                     'elastic' +
                     SERVICE.SEPARATOR +
-                    instanceId;
+                    instanceId +
+                    '?startdate=' + startDate +
+                    '&enddate=' + endDate;
                 return $http.get(endpoint)
                     .success(function(data, status, headers, config) {
                         callback(data, status, headers, config);

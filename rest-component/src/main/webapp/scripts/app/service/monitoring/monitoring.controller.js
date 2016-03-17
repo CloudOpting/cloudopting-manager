@@ -151,7 +151,7 @@ angular.module('cloudoptingApp')
 console.log("filled data for elastic graphs");
             }
         };
-        MonitoringService.findOneDataById(instance.id, elasticcallback);
+        MonitoringService.findOneDataById(instance.id, $scope.dater.startDate, $scope.dater.endDate, elasticcallback);
 
         $scope.$on('onRepeatLast', function(scope, element, attrs){
         	console.log("the ngrepeat has finished");

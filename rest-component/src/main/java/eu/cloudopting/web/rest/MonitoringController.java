@@ -46,7 +46,6 @@ public class MonitoringController {
 	@Autowired
 	MonitordataService monitordataService;
 
-
 	/**
 	 * The the list of monitored objects
 	 * 
@@ -85,15 +84,17 @@ public class MonitoringController {
 
 	@RequestMapping(value = "/monitoring/elastic/{instanceId}", method = RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<ElasticGraphData> findAllElasticDataById(@PathVariable("instanceId") final Long instanceId,@RequestParam(value = "startdate", required = false) String startDate, @RequestParam(value = "enddate", required = false) String endDate) {
+	public ArrayList<ElasticGraphData> findAllElasticDataById(@PathVariable("instanceId") final Long instanceId,
+			@RequestParam(value = "startdate", required = false) String startDate,
+			@RequestParam(value = "enddate", required = false) String endDate) {
 		// I get the id of the customization
 		log.debug(instanceId.toString());
-		ArrayList<ElasticGraphData> ret = monitordataService.getAllAggregatedMonitorData(instanceId, startDate, endDate);
+		log.debug("startDate:"+startDate);
+		ArrayList<ElasticGraphData> ret = monitordataService.getAllAggregatedMonitorData(instanceId, startDate,
+				endDate);
 		return ret;
 	}
 
-		
-	
 	@RequestMapping(value = "/monitoring/elastic_old/{instanceId}", method = RequestMethod.GET)
 	@ResponseBody
 	public GraphDTO findOneDataById(@PathVariable("instanceId") final String instanceId) {
@@ -159,9 +160,9 @@ public class MonitoringController {
 	@ResponseBody
 	public ResponseEntity<String> findHosts(@PathVariable("instanceId") final Long instanceId) {
 		// here I get the name of the host from the Db to get info from zabbix
-		
+
 		// whti the instance id I get the Db fqdn
-		
+
 		// need to login to zabbix
 		monitoringService.loginZabbix();
 		return new ResponseEntity<String>(monitoringService.getHostId(instanceId).toString(), HttpStatus.OK);
@@ -172,7 +173,7 @@ public class MonitoringController {
 	public ResponseEntity<String> findItemss(@PathVariable("instanceId") final String instanceId,
 			@PathVariable("hostId") final String hostId) {
 		// here I get the name of the host from the Db to get info from zabbix
-		
+
 		// whti the instance id I get the Db fqdn
 		String fqdn = "corbyportal.cs8cloud.internal";
 		// need to login to zabbix
@@ -183,7 +184,7 @@ public class MonitoringController {
 	@RequestMapping(value = "/monitoring/history/{instanceId}/{hostId}/{itemId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<String> findItemss(@PathVariable("instanceId") final String instanceId,
-			@PathVariable("hostId") final String hostId,@PathVariable("itemId") final String itemId) {
+			@PathVariable("hostId") final String hostId, @PathVariable("itemId") final String itemId) {
 		// here I get the name of the host from the Db to get info from zabbix
 		// whti the instance id I get the Db fqdn
 		String fqdn = "corbyportal.cs8cloud.internal";
@@ -196,9 +197,9 @@ public class MonitoringController {
 	@ResponseBody
 	public ResponseEntity<Boolean> getStatus(@PathVariable("instanceId") final Long instanceId) {
 		// here I get the name of the host from the Db to get info from zabbix
-		
+
 		// whti the instance id I get the Db fqdn
-		
+
 		// need to login to zabbix
 		monitoringService.loginZabbix();
 		return new ResponseEntity<Boolean>(monitoringService.getStatus(instanceId), HttpStatus.OK);
