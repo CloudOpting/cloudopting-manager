@@ -187,13 +187,15 @@ public class MonitoringController {
 	@RequestMapping(value = "/monitoring/history/{instanceId}/{hostId}/{itemId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<String> findItemss(@PathVariable("instanceId") final String instanceId,
-			@PathVariable("hostId") final String hostId, @PathVariable("itemId") final String itemId) {
+			@PathVariable("hostId") final String hostId, @PathVariable("itemId") final String itemId,
+			@RequestParam(value = "startts", required = false) String startTs,
+			@RequestParam(value = "endts", required = false) String endTs) {
 		// here I get the name of the host from the Db to get info from zabbix
 		// whti the instance id I get the Db fqdn
 		String fqdn = "corbyportal.cs8cloud.internal";
 		// need to login to zabbix
 		monitoringService.loginZabbix();
-		return new ResponseEntity<String>(monitoringService.getDataHistory(itemId).toString(), HttpStatus.OK);
+		return new ResponseEntity<String>(monitoringService.getDataHistory(itemId, startTs, endTs).toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/monitoring/status/{instanceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

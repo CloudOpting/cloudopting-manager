@@ -91,7 +91,8 @@ angular.module('cloudoptingApp')
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            findZabbixHistory: function(instanceId, hostId, itemId, callback) {
+            findZabbixHistory: function(instanceId, hostId, itemId, tsStart, tsEnd, callback) {
+            	console.log(tsStart);
                 var endpoint = baseURI +
                     SERVICE.SEPARATOR +
                     'history' +
@@ -101,7 +102,7 @@ angular.module('cloudoptingApp')
                     hostId +
                     SERVICE.SEPARATOR +
                     itemId;
-                return $http.get(endpoint)
+                return $http.get(endpoint,{params:{startts:tsStart, endts: tsEnd}})
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })

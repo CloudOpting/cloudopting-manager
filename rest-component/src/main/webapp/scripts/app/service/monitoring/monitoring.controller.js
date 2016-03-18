@@ -112,6 +112,7 @@ angular
 						console.log(itemid);
 						MonitoringService.findZabbixHistory(instance.id,
 								$scope.zabbixdata.hostSelect.hostid, itemid,
+								$scope.dater.startDate.unix(),$scope.dater.endDate.unix(),
 								zabbixHistoryCallback);
 					};
 

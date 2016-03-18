@@ -188,21 +188,25 @@ public class MonitoringService {
 		return items;
 	}
 
-	public JSONArray getDataHistory(String itemid) {
-		return getDataHistory(itemid, "clock", "DESC", "100");
+	public JSONArray getDataHistory(String itemid, String startTs, String endTs) {
+		return getDataHistory(itemid, startTs, endTs, "clock", "DESC", null);
 	}
 
-	public JSONArray getDataHistory(String itemid, String sortfield, String sortorder, String limit) {
+	public JSONArray getDataHistory(String itemid, String startTs, String endTs, String sortfield, String sortorder, String limit) {
 		Request getRequest = null;
+		log.debug(startTs);
+		log.debug(endTs);
 
 		if (limit == null || limit.isEmpty()) {
 			getRequest = RequestBuilder.newBuilder().method("history.get").paramEntry("output", "extend")
 					.paramEntry("itemids", itemid).paramEntry("sortfield", sortfield).paramEntry("sortorder", sortorder)
+					.paramEntry("time_from", startTs).paramEntry("time_till", endTs)
 					.build();
 
 		} else {
 			getRequest = RequestBuilder.newBuilder().method("history.get").paramEntry("output", "extend")
 					.paramEntry("itemids", itemid).paramEntry("sortfield", sortfield).paramEntry("sortorder", sortorder)
+					.paramEntry("time_from", startTs).paramEntry("time_till", endTs)
 					.paramEntry("limit", limit).build();
 		}
 
