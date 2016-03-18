@@ -29,6 +29,8 @@ import eu.cloudopting.service.CustomizationService;
 public class MonitoringService {
 	private final Logger log = LoggerFactory.getLogger(MonitoringService.class);
 
+	private int discardThreashold = 50;
+
 	@Value("${zabbix.user}")
 	private String zabbix_user;
 
@@ -121,11 +123,11 @@ public class MonitoringService {
 		System.err.println(hostid);
 		return hosts;
 	}
-	
-	public boolean getStatus(Long customizationId){
+
+	public boolean getStatus(Long customizationId) {
 		JSONArray hosts = getHostId(customizationId);
 		boolean status = true;
-		for(int i=0; i<hosts.length();i++){
+		for (int i = 0; i < hosts.length(); i++) {
 			JSONObject host = null;
 			try {
 				host = hosts.getJSONObject(i);
@@ -192,7 +194,8 @@ public class MonitoringService {
 		return getDataHistory(itemid, startTs, endTs, "clock", "DESC", null);
 	}
 
-	public JSONArray getDataHistory(String itemid, String startTs, String endTs, String sortfield, String sortorder, String limit) {
+	public JSONArray getDataHistory(String itemid, String startTs, String endTs, String sortfield, String sortorder,
+			String limit) {
 		Request getRequest = null;
 		log.debug(startTs);
 		log.debug(endTs);
@@ -200,14 +203,12 @@ public class MonitoringService {
 		if (limit == null || limit.isEmpty()) {
 			getRequest = RequestBuilder.newBuilder().method("history.get").paramEntry("output", "extend")
 					.paramEntry("itemids", itemid).paramEntry("sortfield", sortfield).paramEntry("sortorder", sortorder)
-					.paramEntry("time_from", startTs).paramEntry("time_till", endTs)
-					.build();
+					.paramEntry("time_from", startTs).paramEntry("time_till", endTs).build();
 
 		} else {
 			getRequest = RequestBuilder.newBuilder().method("history.get").paramEntry("output", "extend")
 					.paramEntry("itemids", itemid).paramEntry("sortfield", sortfield).paramEntry("sortorder", sortorder)
-					.paramEntry("time_from", startTs).paramEntry("time_till", endTs)
-					.paramEntry("limit", limit).build();
+					.paramEntry("time_from", startTs).paramEntry("time_till", endTs).paramEntry("limit", limit).build();
 		}
 
 		JSONObject getResponse = this.zabbixApi.call(getRequest);
@@ -217,17 +218,23 @@ public class MonitoringService {
 
 		try {
 			data = getResponse.getJSONArray("result");
+			int discardCounter = 0;
 			for (int i = 0; i < data.length(); i++) {
-				JSONObject measure = new JSONObject();
-				// log.debug(measure.getString("clock"));
-				measure.put("clock", data.getJSONObject(i).optLong("clock") * 1000);
-				measure.put("value", data.getJSONObject(i).optInt("value"));
-				dataRet.put(measure);
+				if (discardCounter > this.discardThreashold) {
+					JSONObject measure = new JSONObject();
+					// log.debug(measure.getString("clock"));
+					measure.put("clock", data.getJSONObject(i).optLong("clock") * 1000);
+					measure.put("value", data.getJSONObject(i).optInt("value"));
+
+					dataRet.put(measure);
+					discardCounter = 0;
+				}
 				// data.getJSONObject(i).put("clock",
 				// data.getJSONObject(i).optLong("clock")*1000);
 				// data.getJSONObject(i).put("value",
 				// data.getJSONObject(i).optInt("value"));
-				log.debug(measure.toString());
+				// log.debug(measure.toString());
+				discardCounter++;
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
