@@ -8,13 +8,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -74,7 +79,7 @@ public class CytoscapeController {
 
 	@RequestMapping(value = "/sendData", method = RequestMethod.POST, consumes = "text/plain")
 	@ResponseBody
-	public String sendData(@RequestBody String payload) {
+	public void sendData(@RequestBody String payload,HttpServletResponse response) {
 		log.debug("the received payload");
 		log.debug(payload);
 		JSONObject toscadata = null;
@@ -87,7 +92,14 @@ public class CytoscapeController {
 		// process definition
 
 		// copy template dir in tmp
-		File srcDir = new File("toscaTemplate");
+		ClassPathResource toscaTemplate = new ClassPathResource("toscaTemplate");
+		File srcDir = null;
+		try {
+			srcDir = toscaTemplate.getFile();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		File destDir = new File("/tmp/tosca");
 		try {
 			FileUtils.copyDirectory(srcDir, destDir);
@@ -100,9 +112,28 @@ public class CytoscapeController {
 
 		List<File> fileList = new ArrayList<File>();
 		zipDirectory.getAllFiles(destDir, fileList);
-		zipDirectory.writeZipFile(destDir, fileList);
+		String toscafile = zipDirectory.writeZipFile(destDir, fileList);
 
-		return null;
+		File f = new File(toscafile);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Pragma", "no-cache");
+		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+		headers.add("Expires", "0");
+		headers.add("Content-disposition", "attachment; filename=tosca.zip");
+
+		response.addHeader("Content-disposition", "attachment; filename=tosca.zip");
+		response.setContentType("application/zip");
+		//response.setContentLength(FileUtils.sizeOf(f));
+
+		
+		try {
+			IOUtils.copy(FileUtils.openInputStream(f), response.getOutputStream());
+			response.flushBuffer();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		return null;
 	}
 
 	@RequestMapping(value = "/saveData", method = RequestMethod.POST, consumes = "text/plain")

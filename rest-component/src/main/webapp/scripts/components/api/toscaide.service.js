@@ -103,7 +103,7 @@ angular
 						var endpoint = baseURI + SERVICE.SEPARATOR	+ "sendData";
 						return $http
 								.post(endpoint, data, {
-									headers : headerText
+									headers : headerText, responseType: "blob"
 								})
 								.success(
 									function(data, status, headers,	config) {

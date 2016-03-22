@@ -1,4 +1,4 @@
-<NodeType name="Package" shape="ellipse" color="#ffffff" image="cron-jobs.png">
+<NodeType name="Package" shape="ellipse" color="#ffffff" image="rpm-package.png">
 	<DerivedFrom typeRef="root" />
 	<PropertiesDefinition element="PackageProperties"
 		type="tPackageProperties" />

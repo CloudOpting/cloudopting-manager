@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cloudoptingApp').controller('ToscaideController', function(SERVICE, $rootScope, $scope, $http, ToscaideService) {
+angular.module('cloudoptingApp').controller('ToscaideController', function(SERVICE, $rootScope, $scope, $http, ToscaideService,Blob, FileSaver) {
 	// TODO: Write a controller here
 	$scope.mapData = [];
 	$scope.edgeData = [];
@@ -231,7 +231,13 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 
 			);
 			var callback = function(data) {
-				console.debug("sendCustomForm succeeded with data: " + data);
+				console.debug("in the callback");
+//				console.debug("sendCustomForm succeeded with data: " + data);
+                if(data) {
+                    var zip = new Blob([data], {type: 'application/zip'});
+                    var fileName = 'TOSCA_Archive.zip';
+                    FileSaver.saveAs(zip, fileName);
+                }
 			};
 		}
 	}
@@ -255,7 +261,12 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		});
 
 		var callback = function(data, status, headers, config) {
-			console.debug(data);
+//			console.debug(data);
+            if(data) {
+                var zip = new Blob([data], {type: 'application/zip'});
+                var fileName = 'TOSCA_Archive.zip';
+                FileSaver.saveAs(zip, fileName);
+            }
 		};
 		ToscaideService.sendData(data, callback);
 	}

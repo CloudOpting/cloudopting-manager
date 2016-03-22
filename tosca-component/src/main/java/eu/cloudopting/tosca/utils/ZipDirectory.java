@@ -37,10 +37,11 @@ public class ZipDirectory {
 		}
 	}
 
-	public static void writeZipFile(File directoryToZip, List<File> fileList) {
-
+	public static String writeZipFile(File directoryToZip, List<File> fileList) {
+		String filename = directoryToZip.getName() + ZIP_EXTENSION;
 		try {
-			FileOutputStream fos = new FileOutputStream(directoryToZip.getName() + ZIP_EXTENSION);
+			
+			FileOutputStream fos = new FileOutputStream(filename);
 			ZipOutputStream zos = new ZipOutputStream(fos);
 
 			for (File file : fileList) {
@@ -50,6 +51,7 @@ public class ZipDirectory {
 			}
 
 			zos.close();
+
 			fos.close();
 		} catch (FileNotFoundException e) {
 			log.error("FileNotFoundException in ZipDirectory.writeZipFile.");
@@ -58,6 +60,7 @@ public class ZipDirectory {
 			log.error("IOException in ZipDirectory.writeZipFile.");
 			e.printStackTrace();
 		}
+		return filename;
 	}
 
 	public static void addToZip(File directoryToZip, File file, ZipOutputStream zos) throws FileNotFoundException,
