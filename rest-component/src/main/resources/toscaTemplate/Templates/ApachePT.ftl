@@ -9,3 +9,12 @@ class { 'apache':
 <#foreach childTemplate in childtemplates>
 ${childTemplate}
 </#foreach>
+
+file{'/root/start.sh':
+  content => "#! /usr/bin/env bash
+set -eu
+tail --pid $$ -n0 -F /var/log/httpd/*_access.log &
+exec /usr/sbin/httpd -DFOREGROUND",
+  mode => 700,
+}
+
