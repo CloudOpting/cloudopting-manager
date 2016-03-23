@@ -2,13 +2,13 @@
   <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
       <div class="backend-box">
-        <h3 class="sr-only">Profile</h3>
+        <h3 class="sr-only" translate="profile.title">Profile</h3>
 
         <ul class="nav nav-tabs">
-            <li ng-class="{'active': tab_selected === 'tab_settings'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')">Settings</a></li>
-            <li ng-class="{'active': tab_selected === 'tab_password'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')">Password</a></li>
-            <li ng-class="{'active': tab_selected === 'tab_organization'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_organization')">Organization</a></li>
-            <li ng-class="{'active': tab_selected === 'tab_cloudaccounts'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')">Cloud Accounts</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_settings'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')" translate="profile.tab.settings">Settings</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_password'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')" translate="profile.tab.passwrod">Password</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_organization'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_organization')" translate="profile.tab.organization">Organization</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_cloudaccounts'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')" translate="profile.tab.cloudAccounts">Cloud Accounts</a></li>
         </ul>
         <div class="tab-content backend-box-content">
             <div id="tab_settings" class="tab-pane" ng-class="{active: tab_selected == 'tab_settings'}">

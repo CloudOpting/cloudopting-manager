@@ -7,30 +7,34 @@
                     <ul class="nav nav-wizard">
                         <li class="active">
                             <div class="nav-wizard-content">
-                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                                <span class="badge">1</span> <span class="text" translate="publish.wizzard.one">Set Global Properties</span>
                             </div>
                         </li>
                         <li class="">
                             <div class="nav-wizard-content">
-                                <span class="badge">2</span> <span class="text">Upload needed files</span>
+                                <span class="badge">2</span> <span class="text" translate="publish.wizzard.tow">Upload needed files</span>
                             </div>
                         </li>
                         <li class="">
                             <div class="nav-wizard-content">
-                                <span class="badge">3</span> <span class="text">Upload TOSCA archive</span>
+                                <span class="badge">3</span> <span class="text" translate="publish.wizzard.three">Upload TOSCA archive</span>
                             </div>
                         </li>
                         <li class="">
                             <div class="nav-wizard-content">
-                                <span class="badge">4</span> <span class="text">Request Status</span>
+                                <span class="badge">4</span> <span class="text" translate="publish.wizzard.four">Request Status</span>
                             </div>
                         </li>
                     </ul>
 
                     <div class="backend-box-content">
                         <div class="alert alert-danger hide">
-                            <!-- TODO: This messages has no sense!! -->
-                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                            <div class="alert alert-info" ng-show="infoMessage">
+                                {{infoMessage}}
+                            </div>
+                            <div class="alert alert-danger" ng-show="errorMessage">
+                                {{errorMessage}}
+                            </div>
                         </div>
 
                         <form class="form" role="form dropzone" name="form_publish">
@@ -39,7 +43,7 @@
                                     <img src="assets/img/auth/icn_help.png" />
                                 </div>
                             </div>
-
+<!--
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -48,11 +52,11 @@
                                     </div>
                                 </div>
                             </div>
-
+-->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="serviceName">Service Name</label>
+                                        <label for="serviceName" translate="publish.service.name">Service Name</label>
                                         <input type="text" class="form-control" id="serviceName" placeholder="{{'publish.service.name' | translate}}"
                                                autocomplete="off" name="name" ng-model="application.applicationName"
                                                ng-minlength=1 required />
@@ -74,7 +78,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="toscaName">Tosca Name</label>
+                                        <label for="toscaName" translate="publish.service.toscaname">Tosca Name</label>
                                         <input type="text" class="form-control" id="toscaName" placeholder="{{'publish.service.toscaname' | translate}}"
                                                autocomplete="off" name="toscaname" ng-model="application.applicationToscaName"
                                                ng-pattern="/^[a-zA-Z0-9\-_]{0,10}$/" ng-minlength=1 ng-maxlength=10 required maxlength="10" />
@@ -110,7 +114,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="servicePrice">Service Price</label>
+                                        <label for="servicePrice" translate="publish.service.servicePrice">Service Price</label>
                                         <input type="text" class="form-control" id="servicePrice" placeholder="{{'publish.service.servicePrice' | translate}}"
                                                autocomplete="off" name="servicePrice" ng-model="application.servicePrice"
                                                required/>
@@ -127,7 +131,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="platformPrice">Platform Price</label>
+                                        <label for="platformPrice" translate="publish.service.platformPrice">Platform Price</label>
                                         <input type="text" class="form-control" id="platformPrice" placeholder="{{'publish.service.platformPrice' | translate}}"
                                                autocomplete="off" name="platformPrice" ng-model="application.platformPrice"
                                                required/>
@@ -145,7 +149,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <!-- FIXME: Deleted sr-only class -->
-                                        <label for="sizeId">Size</label>
+                                        <label for="sizeId" translate="publish.service.sizeId">Size</label>
                                         <select class="form-control" id="sizeId" placeholder="{{'publish.service.sizeId' | translate}}"
                                                 autocomplete="off" name="sizeId" ng-model="application.size"
                                                 ng-options="appSize as appSize.size for appSize in applicationSizes track by appSize.id"
@@ -167,7 +171,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="termsAndConditions">Terms and conditions link</label>
+                                        <label for="termsAndConditions" translate="publish.service.termsAndConditions">Terms and conditions link</label>
                                         <input type="text" class="form-control" id="termsAndConditions" placeholder="{{'publish.service.termsAndConditions' | translate}}"
                                                   autocomplete="off" name="termsAndConditions" ng-model="application.terms"
                                                   required/>
@@ -187,7 +191,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="shortDescription">Short Description</label>
+                                        <label for="shortDescription" translate="publish.service.shortDescription">Short Description</label>
                                         <textarea class="form-control" id="shortDescription" placeholder="{{'publish.service.shortDescription' | translate}}"
                                                   autocomplete="off" name="shortDescription" ng-model="application.shortDescription" rows="3"
                                                   required/>
@@ -208,7 +212,8 @@
                                 <div class="col-md-12">
                                     <!-- FIXME: ADDED NEW STYLE IN ORDER TO SOLVE VISIBILITY PROBLEMS -->
                                     <div class="form-group">
-                                        <div class="textarea-lg wrapper-wysiwyg">
+                                        <label for="description" translate="publish.service.description">Description</label>
+                                        <div class="textarea-lg wrapper-wysiwyg" id="description">
                                             <!-- FIXME: ADDED SOME KIND OF TEMPLATE. FIX THIS -->
                                             <div text-angular placeholder="{{'publish.service.description' | translate}}"
                                                  rows="5" autocomplete="off" name="description" ng-model="application.applicationDescription"
@@ -258,7 +263,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="applicationSubscriberMail">Subscriber mail template</label>
+                                        <label for="applicationSubscriberMail" translate="publish.service.applicationSubscriberMail">Subscriber mail template</label>
                                         <textarea class="form-control" id="applicationSubscriberMail" placeholder="{{'publish.service.applicationSubscriberMail' | translate}}"
                                                   autocomplete="off" name="applicationSubscriberMail" ng-model="application.applicationSubscriberMail" rows="3"
                                                   required/>
@@ -278,7 +283,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="applicationSpMail">Provider mail template</label>
+                                        <label for="applicationSpMail" translate="publish.service.applicationSpMail">Provider mail template</label>
                                         <textarea class="form-control" id="applicationSpMail" placeholder="{{'publish.service.applicationSpMail' | translate}}"
                                                   autocomplete="off" name="applicationSpMail" ng-model="application.applicationSpMail" rows="3"
                                                   required/>
@@ -294,7 +299,7 @@
                                     </div>
                                 </div>
                             </div>
-
+<!--
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -304,11 +309,11 @@
                                     </div>
                                 </div>
                             </div>
-
+-->
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label translate="publish.service.image">Service Image</label>
+                                        <label translate="publish.service.image" translate="publish.service.description">Service Image</label>
                                         <!--ngf-multiple="multiple"-->
                                         <button class="btn btn-reverse" ngf-select ngf-multiple="false" ngf-change="newPromoImage($files)" translate="publish.select.file">Select File</button>
                                     </div>
@@ -340,7 +345,7 @@
                                         <label for="applicationIsTryable">
                                             <input type="checkbox" id="applicationIsTryable" placeholder="{{'publish.service.applicationIsTryable' | translate}}"
                                                     autocomplete="off" name="applicationIsTryable" ng-model="application.applicationIsTryable" />
-                                            Can the platform be tried
+                                            {{'publish.service.applicationIsTryable' | translate}}
                                         </label>
                                     </div>
                                 </div>
@@ -348,11 +353,11 @@
 
                             <div class="row row-actions">
                                 <div class="col-xs-6">
-                                    <button type="button" class="btn btn-primary" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()">Save</button>
-                                    <button type="button" class="btn btn-secondary" ng-disabled="form_publish.$invalid || disableUpdate" ng-click="updateWizardOne()">Update</button>
+                                    <button type="button" class="btn btn-primary" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()" translate="publish.button.save">Save</button>
+                                    <button type="button" class="btn btn-secondary" ng-disabled="form_publish.$invalid || disableUpdate" ng-click="updateWizardOne()" translate="publish.button.update">Update</button>
                                 </div>
                                 <div class="col-xs-6">
-                                    <button type="button" class="btn btn-primary pull-right" ng-disabled="disableNextOne" ng-click="nextWizardOne()">Next</button>
+                                    <button type="button" class="btn btn-primary pull-right" ng-disabled="disableNextOne" ng-click="nextWizardOne()" translate="publish.button.next">Next</button>
                                 </div>
                             </div>
                         </form>

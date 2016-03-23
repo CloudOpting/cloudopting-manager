@@ -6,29 +6,33 @@
                     <ul class="nav nav-wizard">
                         <li class="done">
                             <div class="nav-wizard-content">
-                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                                <span class="badge">1</span> <span class="text" translate="publish.wizzard.one">Set Global Properties</span>
                             </div>
                         </li>
                         <li class="done">
                             <div class="nav-wizard-content">
-                                <span class="badge">2</span> <span class="text">Upload needed files</span>
+                                <span class="badge">2</span> <span class="text" translate="publish.wizzard.tow">Upload needed files</span>
                             </div>
                         </li>
                         <li class="active">
                             <div class="nav-wizard-content">
-                                <span class="badge">3</span> <span class="text">Upload TOSCA archive</span>
+                                <span class="badge">3</span> <span class="text" translate="publish.wizzard.three">Upload TOSCA archive</span>
                             </div>
                         </li>
                         <li class="">
                             <div class="nav-wizard-content">
-                                <span class="badge">4</span> <span class="text">Request Status</span>
+                                <span class="badge">4</span> <span class="text" translate="publish.wizzard.four">Request Status</span>
                             </div>
                         </li>
                     </ul>
                     <div class="backend-box-content">
                         <div class="alert alert-danger hide">
-                            <!-- FIXME: This message has no sense -->
-                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                            <div class="alert alert-info" ng-show="infoMessage">
+                                {{infoMessage}}
+                            </div>
+                            <div class="alert alert-danger" ng-show="errorMessage">
+                                {{errorMessage}}
+                            </div>
                         </div>
                         <form class="form" role="form dropzone">
                             <div class="row">
@@ -40,11 +44,13 @@
                             <div class="form-group">
                                 <div class="btn btn-reverse" ngf-select ngf-multiple="false" ng-model="toscaFiles" ngf-change="addToscaArchive($files)" translate="publish.select.addtosca">+ Add TOSCA Archive</div>
                             </div>
+                            <!--
                             <div class="form-group">
                                 <div accept="image/*,audio/*,video/*" class="drop-box">
                                     <span class="">Drag and drop to upload (Not working yet)</span>
                                 </div>
                             </div>
+                            -->
                             <div class="form-group" ng-show="isToscaFilesEmpty()">
                                 <label class="sr-only" for="toscaArchive" translate="publish.select.tosca">TOSCA Archive</label>
                                 <input type="text" class="form-control" id="toscaArchive" placeholder="{{'publish.select.toscaempty' | translate}}" />
@@ -80,38 +86,3 @@
         </div>
     </div>
 </section>
-
-<!--
-
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="publish.title">Publish Service</div>
-        <div class="panel-body">
-            <form novalidate class="">
-                <div class="form-group row">
-                    <div class="btn btn-info" ngf-select ng-model="toscaFiles" ngf-change="addToscaArchive($files)" translate="publish.select.addtosca">+ Add TOSCA Archive</div>
-                </div>
-                <div class="form-group row" ng-show="isToscaFilesEmpty()">
-                    <label class="darkgreen" translate="publish.select.tosca">TOSCA Archive</label>
-                    <input class="form-control" type="text" autocomplete="off" value="{{'publish.select.toscaempty' | translate}}" disabled />
-                </div>
-                <div class="form-group row" ng-hide="isToscaFilesEmpty()">
-                    <label class="darkgreen" translate="publish.select.tosca">TOSCA Archive</label>
-
-                    <div  ng-repeat="file in toscaFiles">
-                        <div class="input-group">
-                            <span class="input-group-addon" translate="publish.content.file">File</span>
-                            <input class="form-control" type="text" autocomplete="off" value="{{file.name}}" disabled/>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-danger" ng-click="deleteToscaArchive(file)" translate="publish.button.delete">Delete File</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <button ng-disabled="isToscaEmpty()" type="button" class="btn btn-success" ng-click="saveConfiguration()" translate="publish.button.save">Save Configuration</button>
-                <button ng-disabled="disablePublish" type="button" class="btn btn-success" ng-click="publishService()" translate="publish.button.publish">Publish Service</button>
-            </form>
-        </div>
-    </div>
-</div>
--->

@@ -33,7 +33,10 @@
       "save_n_next": "Save & Next",
       "publish": "Publish Service",
       "add": "+ Add Item in Library",
-      "delete": "Delete File"
+      "delete": "Delete File",
+      "service_list":"Service List",
+      "update": "Update",
+      "next": "Next"
     },
     "messages": {
       "validate": {
@@ -73,7 +76,15 @@
           "required": "The size is required."
         }
       }
-    }
+    },
+    "wizzard": {
+      "one":"Set Global Properties",
+      "tow":"Upload needed files",
+      "three":"Upload TOSCA archive",
+      "four":"Request Status"
+    },
+    "thanks" :"Thanks!",
+    "thanks_2": "Your service has been published"
   }
 }
 
