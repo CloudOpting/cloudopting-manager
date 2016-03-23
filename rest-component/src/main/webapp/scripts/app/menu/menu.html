@@ -19,38 +19,9 @@
                 <li ng-show="showMenu('detail')"><a ui-sref="detail" data-target="#detail">Service Detail</a></li>
                 <li ng-show="showMenu('instances')"><a ui-sref="instances" data-target="#instances">Instances List - Manager</a></li>
                 <li ng-show="showMenu('monitoring')"><a ui-sref="monitoring" data-target="#monitoring">Service Monitoring</a></li>
-                <li ng-show="showMenu('logs')"><a ui-sref="logs" data-target="#logs">Service Logs</a></li>
                 <li ng-show="showMenu('form_generation')"><a ui-sref="form_generation" data-target="#form_generation">Form Generation Screen</a></li>
             </ul>
         </div>
         <!-- MENU FOR DEVELOPMENT -->
     </div>
 </div>
-
-<!-- INIT NAVIGATION -->
-<!--
-<div class="container" ng-controller="MenuController">
-    <div class="row">
-        <div class="col-md-2">
-            <a ui-sref="catalogue">
-                <div class="cloudopting_logo" ></div>
-            </a>
-        </div>
-        <div class="col-md-10">
-            <div class="masthead">
-                <ul class="nav nav-pills">
-                    <li ng-hide="logoutButton" class="pull-right"><a ui-sref="register">Join</a></li>
-                    <li ng-hide="logoutButton" class="pull-right"><a>|</a></li>
-                    <li ng-hide="logoutButton" class="pull-right"><a ui-sref="login"><strong><u>Sign in</u></strong></a></li>
-                    <li ng-show="isPublisher()"><a ui-sref="servicesCatalogue">Dashboard</a></li>
-                    <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="logout()">Sign out</a></li>
-                    <li ng-show="logoutButton" class="pull-right"><a>|</a></li>
-                    <li ng-show="logoutButton" class="pull-right"><a href="#" ng-click="profile()">Name: {{name}}</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<br/>
--->
-<!-- END NAVIGATION -->
