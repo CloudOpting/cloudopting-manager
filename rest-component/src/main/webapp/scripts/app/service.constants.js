@@ -52,12 +52,6 @@ angular.module('cloudoptingApp')
             },
             "ORG_MANAGER" : {
                 "ORGANIZATION" : "orgManagerOrganization"
-            },
-            "TAYLOR" : {
-                "APPLICATION" : "taylorInstancesApplication"
-            },
-            "ADD_DEPLOY" : {
-                "APPLICATION" : "taylorInstancesApplication"
             }
         },
         "FILE_TYPE" : {
