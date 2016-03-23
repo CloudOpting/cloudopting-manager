@@ -1,0 +1,34 @@
+{
+  "cloudaccount": {
+    "title" : "Conturi de Cloud",
+    "form" : {
+      "name" : "Nume cont de Cloud",
+      "apiKey" : "Cheie API",
+      "secretKey" : "Cheie secretă",
+      "endpoint" : "Punct final",
+      "provider" : "Furnizor",
+      "placeholder" : {
+        "name" : "Numele contului de Cloud",
+        "apiKey" : "Cheia API",
+        "secretKey" : "Cheia secretă",
+        "endpoint" : "Punctul final"
+      },
+      "button" : {
+        "back" : "Înapoi",
+        "save" : "Salvează",
+        "delete" : "Șterge",
+        "update" : "Modifică"
+      }
+    },
+    "col" : {
+      "name": "Nume cont de Cloud",
+      "provider": "Furnizor",
+      "actions": "Acțiuni"
+    },
+    "button" : {
+      "add" : "Adaugă",
+      "edit" : "Editează",
+      "delete" : "Șterge"
+    }
+  }
+}

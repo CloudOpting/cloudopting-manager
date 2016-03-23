@@ -1,6 +1,6 @@
 {
     "errors": {
-        "title": "Error page!",
-        "403": "You are not authorized to access the page."
+        "title": "Pagină de eroare!",
+        "403": "Nu sunteți autorizat să folosiți această pagină."
     }
 }

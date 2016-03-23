@@ -1,40 +1,44 @@
 {
     "global": {
-        "title": "cloudopting",
-        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "title": "CloudOpting",
+        "browsehappy": "Folosești un navigator <strong>vechi</strong>. <a href=\"http://browsehappy.com/?locale=ro\"> Actualizează-ți navigatorul</a> pentru a avea parte de o experiență îmbunătățită.",
         "menu": {
-            "home": "Home",
+            "home": "Acasă",
             "entities": {
-                "main": "Cloudopting",
+                "main": "CloudOpting",
                 "additionalEntity": ""
             },
             "account": {
-                "main": "Account",
-                "settings": "Settings",
-                "password": "Password",
-                "sessions": "Sessions",
-                "login": "Authenticate",
-                "logout": "Log out",
-                "register": "Register"
+                "main": "Cont",
+                "settings": "Setări",
+                "password": "Parolă",
+                "sessions": "Sesiuni",
+                "login": "Autentifică",
+                "logout": "Ieșire",
+                "register": "Înregistrare"
             },
             "admin": {
-                "main": "Administration",
-                "tracker": "User tracker",
-                "metrics": "Metrics",
-                "health": "Health",
-                "configuration": "Configuration",
-                "logs": "Logs",
-                "audits": "Audits",
+                "main": "Administrare",
+                "tracker": "Jurnal utilizator",
+                "metrics": "Metrici",
+                "health": "Sănătate",
+                "configuration": "Configurație",
+                "logs": "Loguri",
+                "audits": "Înregistrări",
                 "apidocs": "API",
-                "database": "Database"
+                "database": "Bază de date"
             },
-            "language": "Language"
+            "language": "Limbă"
         },
         "form": {
-            "username": "Login",
-            "username.placeholder": "Your login",
-            "newpassword": "New password",
-            "newpassword.placeholder": "New password",
+            "username": "Utilizator",
+            "username.placeholder": "Utilizatorul tău",
+            "firstName": "Prenume",
+            "firstName.placeholder": "Prenumele tău",
+            "lastName": "Nume",
+            "lastName.placeholder": "Numele tău",
+            "newpassword": "Parolă nouă",
+            "newpassword.placeholder": "Parolă nouă",
             "confirmpassword": "New password confirmation",
             "confirmpassword.placeholder": "Confirm the new password",
             "email": "E-mail",
@@ -43,7 +47,8 @@
         "messages": {
             "info": {
                 "authenticated": "If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
-                "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>"
+                "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>",
+                "reset": "Did you forget your password? <a href=\"#/reset/request\">Reset your password</a>"
             },
             "error": {
                 "dontmatch" : "The password and its confirmation do not match!"

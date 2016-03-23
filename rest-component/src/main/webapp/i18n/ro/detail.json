@@ -1,12 +1,21 @@
 {
   "detail": {
-    "title": "Service Detail",
-    "service": "\"{{service_name}}\" Service",
-    "status": "Status: {{service_status}}",
+    "title": "Detaliile serviciului",
+    "service": " Serviciul \"{{service_name}}\" ",
+    "status": "Starea: {{service_status}}",
+    "termsAndConditions": "Agrează Termenii și Condițiile",
     "button" : {
-      "subscribe": "SUBSCRIBE",
-      "instances": "SEE INSTANCES",
-      "completepublish": "COMPLETE PUBLISH"
+      "register_subscribe": "Register & Subscribe Now",
+      "subscribe": "Subscrie acum",
+      "instances": "Mergi la instanțe",
+      "completepublish": "PUBLICARE COMPLETĂ"
+    },
+    "messages": {
+      "validate": {
+        "termsAndConditions": {
+          "required": "Acceptarea termenilor și a condițiilor este obligatorie."
+        }
+      }
     }
   }
 }

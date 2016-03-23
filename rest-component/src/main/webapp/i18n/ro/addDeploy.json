@@ -1,24 +1,24 @@
 {
   "addDeploy": {
-    "title": "Service Add Deploy Form",
+    "title": "Formular de lansare a serviciului",
     "titles" : {
-      "deploy": "Service Deploy",
-      "params": "Service Parameters"
+      "deploy": "Lansează serviciul",
+      "params": "Parametrii serviciului"
     },
     "button" : {
       "deploy": "Deploy Service",
-      "test": "Test Service",
-      "save": "Save Template",
-      "upload": "Upload Template"
+      "test": "Testează serviciul",
+      "save": "Salvează macheta",
+      "upload": "Încarcă macheta"
     },
-    "cloudnode": "Cloud Node:",
-    "os": "Operating System:",
-    "numcpu": "Number CPU's:",
-    "disk": "Disk Space:",
-    "ram": "Memory RAM:",
-    "bandwidth": "Bandwidth:",
-    "urldomain": "URL/Domain:",
-    "cssskin": "CSS Skin:"
+    "cloudnode": "Nod cloud:",
+    "os": "Sistem de operare:",
+    "numcpu": "Număr de CPU:",
+    "disk": "Spațiu disc:",
+    "ram": "Memorie RAM:",
+    "bandwidth": "Lățime de bandă:",
+    "urldomain": "URL/Domeniu:",
+    "cssskin": "Schemă culori CSS:"
   }
 }
 

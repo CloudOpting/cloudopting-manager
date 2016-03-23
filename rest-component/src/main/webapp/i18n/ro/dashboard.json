@@ -1,0 +1,31 @@
+{
+  "instances": {
+    "title": "Instanțele serviciului",
+    "placeholder" : "Caută...",
+    "col" : {
+      "instanceof": "Intanța lui",
+      "author": "Autor",
+      "date": "Data",
+      "status": "Stare",
+      "actions": "Acțiuni"
+    },
+    "status" : {
+      "requested": "Cerut",
+      "deleted": "Șters",
+      "running": "În execuție",
+      "todelete": "Spre ștergere",
+      "stopped": "Oprit"
+    },
+    "button" : {
+      "test": "Test",
+      "demo" : "Demo",
+      "search" : "Caută serviciu",
+      "go": "GO",
+      "monitor": "Monitorizează.",
+      "deploy": "Lansează",
+      "stop": "Oprește",
+      "start": "Pornește",
+      "delete": "Șterge"
+    }
+  }
+}
