@@ -13,6 +13,12 @@
         "email": "Your Email *",
         "companyName": "Your Company",
         "message": "Your Message *"
+      },
+      "validation": {
+        "name": "Please enter your name.",
+        "phone": "Please enter your phone number.",
+        "email": "Please enter your email address.",
+        "message": "Please enter a message."
       }
     },
 

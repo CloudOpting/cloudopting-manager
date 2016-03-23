@@ -2,7 +2,6 @@
   "chooseaccount": {
     "title" : "Cloud Accounts Available",
     "button" : {
-      "back" : "Back",
       "choose" : "Choose"
     },
     "col" : {

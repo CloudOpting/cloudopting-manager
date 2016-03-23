@@ -29,6 +29,12 @@
       "add" : "Add",
       "edit" : "Edit",
       "delete" : "Delete"
+    },
+    "alert" : {
+      "sent" : "Message sent!",
+      "wrong" : "Something went wrong!",
+      "contact_you" : "We will contact with you soon.",
+      "try_again" : "Please try again later."
     }
   }
 }

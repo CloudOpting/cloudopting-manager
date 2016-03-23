@@ -1,6 +1,6 @@
 {
   "instances": {
-    "title": "Instances Service",
+    "title": "My Instances Service",
     "placeholder" : "Search for...",
     "col" : {
       "instanceof": "Instance of",
@@ -26,6 +26,7 @@
       "stop": "Stop",
       "start": "Start",
       "delete": "Delete"
-    }
+    },
+    "go_to_tosca_ide" : "Create TOSCA file"
   }
 }

@@ -1,10 +1,18 @@
 <section class="wizzard-modal">
     <div class="container wrapper-white">
+
+        <div class="row" ng-show="isPublisher()">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="form-group">
+                    <button type="button" class="btn btn-reverse" ng-click="toscaide()" translate="instances.go_to_tosca_ide">Go to TOSCA IDE</button>
+                </div>
+            </div>
+        </div>
         <div class="row" ng-show="isSubscriber()">
             <div class="col-md-10 col-md-offset-1">
                 <div class="backend-box">
                     <div class="backend-box-cabecera text-center" translate="instances.title">
-                        Instances Service
+                        My Instances Service
                     </div>
                     <div class="backend-box-content">
                         <div class="alert alert-info" ng-show="infoMessage">
@@ -79,19 +87,5 @@
             </div>
         </div>
 
-        <div class="row" ng-show="isPublisher()">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="backend-box ">
-                    <div class="backend-box-cabecera text-center" translate="instances.title">
-                        Instances Service
-                    </div>
-                    <div class="backend-box-content">
-                        <div class="form-group">
-                            <button type="button" class="btn btn-reverse" ng-click="toscaide()" >Go to TOSCA IDE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>

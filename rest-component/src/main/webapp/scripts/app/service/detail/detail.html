@@ -8,10 +8,10 @@
                     <p class="item-intro text-muted">{{currentApp.shortDescription}}</p>
                     <img class="img-responsive img-centered" src="{{currentApp.applicationLogoReference}}" alt="" />
                     <p><div ta-bind ng-model="currentApp.applicationDescription"></div></p>
-                    <p>SERVICE PRICE: {{currentApp.servicePrice}}</p>
-                    <p>PLATFORM PRICE: {{currentApp.platformPrice}}</p>
-                    <p>SIZE: {{currentApp.size.size}}</p>
-                    <h4 ng-show="currentApp.applicationIsTryable">NEW SECTION: The application can BE TESTED!!!</h4>
+                    <p><strong>{{'detail.servicePrice' | translate}}</strong> {{currentApp.servicePrice}}</p>
+                    <p><strong>{{'detail.platformPrice' | translate}}</strong> {{currentApp.platformPrice}}</p>
+                    <p><strong>{{'detail.serverSizeRequired' | translate}}</strong> {{currentApp.size.size}}</p>
+                    <h4 ng-show="currentApp.applicationIsTryable">{{'detail.applicationCanBeTested' | translate}}</h4>
                 </div>
             </div>
         </div>

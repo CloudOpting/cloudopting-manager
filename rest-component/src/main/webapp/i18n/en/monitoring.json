@@ -8,7 +8,9 @@
     "cpu": "CPU Usage:",
     "disk": "Disk Usage:",
     "ram": "RAM Usage:",
-    "reloadGraphs":"Reload graphs"
+    "reloadGraphs":"Reload graphs",
+    "selecthost": "Select the Host:",
+    "selectitemhost": "Select the item in Host:"
   }
 }
 
