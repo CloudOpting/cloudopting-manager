@@ -9,7 +9,7 @@ angular.module('cloudoptingApp').filter('startFrom', function() {
 
 angular.module('cloudoptingApp')
     .controller('CatalogueController', function (SERVICE, localStorageService,
-                                                 $scope, $log, $state, $stateParams, $document, $timeout,
+                                                 $scope, $log, $state, $stateParams, $document, $timeout, $translate,
                                                  ApplicationService, Principal, JackrabbitService) {
 
         $scope.scrollTo = function(element) {
@@ -138,16 +138,16 @@ angular.module('cloudoptingApp')
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    $scope.errorMessage = $translate.use("callback.no_permissions");
                 } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $scope.errorMessage = $translate.use("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
                 }
                 return false;
             }else if(status!=200 && status!=201) {
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                $scope.errorMessage = $translate.use("callback.generic_error");
                 return false;
             } else {
                 return true;

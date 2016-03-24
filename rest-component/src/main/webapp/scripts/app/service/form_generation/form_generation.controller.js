@@ -1,6 +1,6 @@
 angular.module('cloudoptingApp')
     .controller('FormGenerationController', function (SERVICE, localStorageService,
-                                                      $scope, $state, $log, $timeout,
+                                                      $scope, $state, $log, $timeout, $translate,
                                                       CustomizationService, Principal) {
 
         var currentApp = localStorageService.get(SERVICE.STORAGE.FORM_GENERATION.APPLICATION);
@@ -53,16 +53,16 @@ angular.module('cloudoptingApp')
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    $scope.errorMessage = $translate.use("callback.no_permissions");
                 } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $scope.errorMessage = $translate.use("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
                 }
             }else if(status!=200 && status!=201) {
                 //Show message
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                $scope.errorMessage = $translate.use("callback.generic_error");
             } else {
                 $log.info("Service customization succeeded with data: " + data);
             }

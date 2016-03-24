@@ -1,7 +1,6 @@
 'use strict';
 
-angular
-		.module('cloudoptingApp')
+angular.module('cloudoptingApp')
 		.directive('onLastRepeat', function() {
 			return function(scope, element, attrs) {
 				if (scope.$last)
@@ -12,13 +11,11 @@ angular
 					}, 1);
 			};
 		})
-		.controller(
-				'MonitoringController',
-				function(SERVICE, localStorageService, $scope, $state, $log,
-						$timeout, MonitoringService, Principal) {
+		.controller( 'MonitoringController', function(SERVICE, localStorageService,
+													  $scope, $state, $log, $timeout, $translate,
+													  MonitoringService, Principal) {
 
-					var instance = localStorageService
-							.get(SERVICE.STORAGE.MONITORING.INSTANCE);
+					var instance = localStorageService.get(SERVICE.STORAGE.MONITORING.INSTANCE);
 					var activationDate = instance.customizationActivation;
 					console.log(activationDate);
 					$scope.dater = {
@@ -252,16 +249,16 @@ angular
 						if (status == 401) {
 							// Unauthorised. Check if signed in.
 							if (Principal.isAuthenticated()) {
-								$scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+								$scope.errorMessage = $translate.use("callback.no_permissions");
 							} else {
-								$scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+								$scope.errorMessage = $translate.use("callback.session_ended");
 								$timeout(function() {
 									$state.go('login');
 								}, 3000);
 							}
 						} else if (status != 200 && status != 201) {
 							// Show message
-							$scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+							$scope.errorMessage = $translate.use("callback.generic_error");
 
 						} else {
 							$log.info("Successful.");
