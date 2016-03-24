@@ -97,9 +97,9 @@ angular.module('cloudoptingApp')
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = $translate.use("callback.no_permissions");
+                    $scope.errorMessage = $translate.instant("callback.no_permissions");
                 } else {
-                    $scope.errorMessage = $translate.use("callback.session_ended");
+                    $scope.errorMessage = $translate.instant("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
@@ -107,7 +107,7 @@ angular.module('cloudoptingApp')
                 return false;
             } else if(status!=200 && status!=201) {
                 //Show message
-                $scope.errorMessage = $translate.use("callback.generic_error");
+                $scope.errorMessage = $translate.instant("callback.generic_error");
                 return false;
             } else {
                 $log.info("Everything went ok!");
