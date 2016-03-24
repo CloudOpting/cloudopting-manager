@@ -13,6 +13,12 @@ angular.module('cloudoptingApp')
                     'content@': {
                         templateUrl: 'scripts/app/service/privacy_policy/privacy_policy.html'
                     }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('privacy_policy');
+                        return $translate.refresh();
+                    }]
                 }
             });
     });

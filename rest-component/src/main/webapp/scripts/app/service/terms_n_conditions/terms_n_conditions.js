@@ -13,6 +13,12 @@ angular.module('cloudoptingApp')
                     'content@': {
                         templateUrl: 'scripts/app/service/terms_n_conditions/terms_n_conditions.html'
                     }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('terms');
+                        return $translate.refresh();
+                    }]
                 }
             });
     });
