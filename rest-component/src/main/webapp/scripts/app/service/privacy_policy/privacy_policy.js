@@ -11,7 +11,8 @@ angular.module('cloudoptingApp')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/service/privacy_policy/privacy_policy.html'
+                        templateUrl: 'scripts/app/service/privacy_policy/privacy_policy.html',
+                        controller: 'PrivacyPolicyController'
                     }
                 },
                 resolve: {
