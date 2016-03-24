@@ -9,7 +9,7 @@
       "message": "Mesaj",
       "placeholder": {
         "name": "Numele dvs. *",
-        "phone": "Numărul de telefon *",
+        "phone": "Numărul de telefon",
         "email": "Adresa de email *",
         "companyName": "Numele companiei",
         "message": "Mesajul dvs. *"

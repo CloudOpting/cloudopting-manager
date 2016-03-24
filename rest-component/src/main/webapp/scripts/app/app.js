@@ -70,16 +70,16 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
                     }
                 ],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('co_footer');
                     $translatePartialLoader.addPart('global');
                     $translatePartialLoader.addPart('language');
                     $translatePartialLoader.addPart('menu');
                     $translatePartialLoader.addPart('navbar');
-                    $translatePartialLoader.addPart('footer');
+
                     return $translate.refresh();
                 }]
             }
         });
-
 
         // Initialize angular-translate
         $translateProvider.useLoader('$translatePartialLoader', {
@@ -92,3 +92,31 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage('NG_TRANSLATE_LANG_KEY');
     });
+
+function loadScript(url, callback)
+{
+    // Adding the script tag to the head as suggested before
+    var head = document.getElementsByTagName('head')[0];
+    var r_script = head.getElementsByTagName('script');
+    for (var index = r_script.length - 1; index >= 0; index--) {
+        r_script[index].parentNode.removeChild(r_script[index]);
+    }
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    head.appendChild(script);
+
+    //modification so we can remove this after
+    return script;
+}
+/*
+function vcRecaptchaApiLoaded(){
+    grecaptcha.render();
+}*/

@@ -19,6 +19,7 @@ angular.module('cloudoptingApp')
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('user_org_manager');
                         $translatePartialLoader.addPart('settings');
+                        $translatePartialLoader.addPart('callback');
                         return $translate.refresh();
                     }]
                 }
@@ -39,6 +40,7 @@ angular.module('cloudoptingApp')
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('user_org_manager');
                         $translatePartialLoader.addPart('settings');
+                        $translatePartialLoader.addPart('callback');
                         return $translate.refresh();
                     }]
                 }
@@ -59,6 +61,7 @@ angular.module('cloudoptingApp')
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('user_org_manager');
                         $translatePartialLoader.addPart('settings');
+                        $translatePartialLoader.addPart('callback');
                         return $translate.refresh();
                     }]
                 }
@@ -79,6 +82,7 @@ angular.module('cloudoptingApp')
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('user_org_manager');
                         $translatePartialLoader.addPart('settings');
+                        $translatePartialLoader.addPart('callback');
                         return $translate.refresh();
                     }]
                 }

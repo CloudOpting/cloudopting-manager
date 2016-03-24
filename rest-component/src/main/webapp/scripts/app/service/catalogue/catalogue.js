@@ -26,6 +26,7 @@ angular.module('cloudoptingApp')
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('catalogue');
                         $translatePartialLoader.addPart('contact');
+                        $translatePartialLoader.addPart('callback');
                         return $translate.refresh();
                     }]
                 }

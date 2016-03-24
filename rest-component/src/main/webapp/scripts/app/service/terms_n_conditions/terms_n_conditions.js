@@ -11,7 +11,8 @@ angular.module('cloudoptingApp')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/service/terms_n_conditions/terms_n_conditions.html'
+                        templateUrl: 'scripts/app/service/terms_n_conditions/terms_n_conditions.html',
+                        controller: 'TermsNConditionsController'
                     }
                 },
                 resolve: {

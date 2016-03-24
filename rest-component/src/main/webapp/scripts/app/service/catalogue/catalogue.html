@@ -73,7 +73,7 @@
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="">
+<section id="contact" class="" ng-controller="ContactController">
     <div class="container wrapper-white padding-top-big padding-bottom-big">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -85,6 +85,12 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
+                <div class="alert alert-info" ng-show="infoMessage" translate="contact.messages.success">
+                    <strong>Message sent!</strong> We will contact with you soon.
+                </div>
+                <div class="alert alert-danger" ng-show="errorMessage" translate="contact.messages.error.fail">
+                    <strong>Something went wrong!</strong> Please try again later.
+                </div>
                 <form id="contactForm" ng-show="!success" name="form" role="form" novalidate ng-submit="contact()" show-validation>
                     <div class="row">
                         <div class="col-md-6">
@@ -99,7 +105,7 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <input type="tel" class="form-control" id="phone" name="phone" required data-validation-required-message="{{'contact.form.validation.phone' | translate}}"
+                                <input type="tel" class="form-control" id="phone" name="phone"
                                        placeholder="{{'contact.form.placeholder.phone' | translate}}" ng-model="message.phone" ng-minlength=5 ng-maxlength=100 />
                                 <p class="help-block text-danger"></p>
                             </div>
@@ -110,7 +116,7 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                              <div vc-recaptcha key="'6LcGBRgTAAAAAC_6oLaySPQbfvSBM2T9JxaHi3Wl'"></div>
+                              <div id="multilingual_recaptcha" vc-recaptcha key="'6LcGBRgTAAAAAC_6oLaySPQbfvSBM2T9JxaHi3Wl'"></div>
                             </div>
                         </div>
                         <div class="col-md-6">

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('DashboardController', function (SERVICE, $scope, $state, $log, $location, Principal, $filter,
-                                                 localStorageService, InstanceService, ProcessService, $window, Blob, FileSaver) {
+    .controller('DashboardController', function (SERVICE, localStorageService,
+                                                 $scope, $state, $log, $location, $filter, $window, $translate,
+                                                 Principal, InstanceService, ProcessService, Blob, FileSaver) {
 
         $scope.currentPage = 0;
         $scope.pageSize = 8;
@@ -134,9 +135,9 @@ angular.module('cloudoptingApp')
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    $scope.errorMessage = $translate.instant("callback.no_permissions");
                 } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $scope.errorMessage = $translate.instant("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
@@ -144,14 +145,14 @@ angular.module('cloudoptingApp')
                 return false;
             }else if(status!=200 && status!=201) {
                 //Show message
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                $scope.errorMessage = $translate.instant("callback.generic_error");
                 return false;
             } else {
                 //Return to the list
                 if(message==null){
                     $log.info("Successfully done!");
                 } else {
-                    $scope.infoMessage = message + " Successfully done!";
+                    $scope.infoMessage = message + $translate.instant("callback.success");
                 }
 
                 return true;
