@@ -26,6 +26,7 @@
       "stop": "Oprește",
       "start": "Pornește",
       "delete": "Șterge"
-    }
+    },
+    "go_to_tosca_ide" : "Create TOSCA file"
   }
 }

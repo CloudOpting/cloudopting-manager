@@ -30,6 +30,7 @@
       "create": "Create",
       "cancel": "Cancel",
       "delete": "Delete"
-    }
+    },
+    "go.organization": "Go to organization manager to create a new one."
   }
 }

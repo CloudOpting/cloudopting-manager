@@ -13,6 +13,12 @@
         "email": "Adresa de email *",
         "companyName": "Numele companiei",
         "message": "Mesajul dvs. *"
+      },
+      "validation": {
+        "name": "Please enter your name.",
+        "phone": "Please enter your phone number.",
+        "email": "Please enter your email address.",
+        "message": "Please enter a message."
       }
     },
 

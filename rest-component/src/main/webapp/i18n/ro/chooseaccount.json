@@ -2,8 +2,7 @@
   "chooseaccount": {
     "title" : "Conturi de cloud disponibile",
     "button" : {
-      "back" : "Înapoi",
-      "choose" : "Alege"
+      "choose" : "Choose"
     },
     "col" : {
       "name" : "Numele contului de cloud",

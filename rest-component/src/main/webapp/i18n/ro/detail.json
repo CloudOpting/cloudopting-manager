@@ -4,6 +4,10 @@
     "service": " Serviciul \"{{service_name}}\" ",
     "status": "Starea: {{service_status}}",
     "termsAndConditions": "Agrează Termenii și Condițiile",
+    "servicePrice" : "SERVICE PRICE",
+    "platformPrice" : "PLATFORM PRICE",
+    "serverSizeRequired" : "SERVER SIZE REQUIRED",
+    "applicationCanBeTested" : "<strong>The application can be tested!</strong>",
     "button" : {
       "register_subscribe": "Register & Subscribe Now",
       "subscribe": "Subscrie acum",
