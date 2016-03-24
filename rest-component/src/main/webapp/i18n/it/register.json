@@ -2,10 +2,22 @@
     "register": {
         "title": "Registrazione",
         "form": {
-            "button": "Registrazione"
+            "button": "Registrazione",
+            "username.placeholder": "Username",
+            "firstName.placeholder": "First name",
+            "lastName.placeholder": "Last name",
+            "email.placeholder": "E-mail",
+            "password.placeholder": "Password",
+            "confirmpassword.placeholder": "Confirm Password"
         },
         "messages": {
             "validate": {
+                "firstName": {
+                    "required": "Your first name is required."
+                },
+                "lastName": {
+                    "required": "Your last name is required."
+                },
                 "login": {
                     "required": "Il login è richiesto.",
                     "minlength": "Il login deve essere composto da almeno 1 carattere",

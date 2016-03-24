@@ -4,7 +4,15 @@
     "service" : {
       "name": "Nome Servizio",
       "description": "Descrizione Servizio",
-      "image": "Immagine Servizio"
+      "image": "Immagine Servizio",
+      "shortDescription" : "Short Description",
+      "termsAndConditions" : "Terms and conditions link",
+      "applicationSubscriberMail" : "Subscriber mail template",
+      "applicationSpMail" : "Provider mail template",
+      "servicePrice" : "Service Price",
+      "platformPrice" : "Platform Price",
+      "applicationIsTryable": "Can the platform be tried",
+      "sizeId": "Size"
     },
     "select" : {
       "addtosca": "+ Aggiungere Archivio TOSCA",
@@ -24,8 +32,58 @@
       "save_n_next": "Salva Configurazione & Prosegui",
       "publish": "Pubblica il Servizio",
       "add": "+ Aggiungi un Elemento alla Libreria",
-      "delete": "Cancella un Elemento della Libreria"
-    }
+      "delete": "Delete File",
+      "service_list":"Service List",
+      "update": "Update",
+      "next": "Next"
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "The name is required.",
+          "minlength": "The name is required to be at least 1 character."
+        },
+        "toscaname": {
+          "required": "The Service TOSCA Name is required.",
+          "minlength": "The Service TOSCA Name is required to be at least 1 character.",
+          "maxlength": "The Service TOSCA Name cannot be longer than 10 characters.",
+          "pattern": "The Service TOSCA Name cannot contain spaces."
+        },
+        "description": {
+          "required": "The description is required.",
+          "minlength": "The description is required to be at least 1 character."
+        },
+        "shortDescription": {
+          "required": "The short description is required."
+        },
+        "termsAndConditions": {
+          "required": "The terms and conditions link is required."
+        },
+        "applicationSubscriberMail": {
+          "required": "The subscriber mail template is required."
+        },
+        "applicationSpMail": {
+          "required": "The provider mail template is required."
+        },
+        "servicePrice": {
+          "required": "The service price is required."
+        },
+        "platformPrice": {
+          "required": "The platform price is required."
+        },
+        "sizeId": {
+          "required": "The size is required."
+        }
+      }
+    },
+    "wizzard": {
+      "one":"Set Global Properties",
+      "tow":"Upload needed files",
+      "three":"Upload TOSCA archive",
+      "four":"Request Status"
+    },
+    "thanks" :"Thanks!",
+    "thanks_2": "Your service has been published"
   }
 }
 

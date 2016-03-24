@@ -33,6 +33,10 @@
         "form": {
             "username": "Login",
             "username.placeholder": "Il tuo login",
+            "firstName": "First Name",
+            "firstName.placeholder": "First Name",
+            "lastName": "Last Name",
+            "lastName.placeholder": "Last Name",
             "newpassword": "Nuova password",
             "newpassword.placeholder": "Nuova password",
             "confirmpassword": "Conferma la nuova password",
@@ -43,7 +47,8 @@
         "messages": {
             "info": {
                 "authenticated": "Se si desidera <a href=\"#/login\">autenticarsi</a>, è possibile provare gli account predefiniti:<br/>- Amministratore (login=\"admin\" e password=\"admin\") <br/>- Utente (login=\"user\" e password=\"user\").",
-                "register": "Non avete ancora un account? <a href=\"#/register\">Registrare un nuovo account</a>"
+                "register": "Non avete ancora un account? <a href=\"#/register\">Registrare un nuovo account</a>",
+                "reset": "Did you forget your password? <a href=\"#/reset/request\">Reset your password</a>"
             },
             "error": {
                 "dontmatch" : "La password e la sua conferma non corrispondono!"

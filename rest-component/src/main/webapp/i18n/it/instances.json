@@ -17,9 +17,11 @@
       "stopped": "Fermato"
     },
     "button" : {
+      "test": "Test",
+      "demo" : "Demo",
       "search" : "Ricerca Servizio",
       "go": "GO",
-      "monitor": "Monitoraggio",
+      "monitor": "Monitor.",
       "deploy": "Rilascio",
       "stop": "Stop",
       "start": "Start",

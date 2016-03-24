@@ -3,10 +3,23 @@
     "title": "Dettagli del Servizio",
     "service": "\"{{service_name}}\" Servizio",
     "status": "Stato: {{service_status}}",
+    "termsAndConditions": "Agree with Terms and Conditions",
+    "servicePrice" : "SERVICE PRICE",
+    "platformPrice" : "PLATFORM PRICE",
+    "serverSizeRequired" : "SERVER SIZE REQUIRED",
+    "applicationCanBeTested" : "<strong>The application can be tested!</strong>",
     "button" : {
+      "register_subscribe": "Register & Subscribe Now",
       "subscribe": "SOTTOSCRIVI",
       "instances": "VEDI LE ISTANZE",
       "completepublish": "COMPLETA LA PUBBLICAZIONE"
+    },
+    "messages": {
+      "validate": {
+        "termsAndConditions": {
+          "required": "Accept terms and conditions is required."
+        }
+      }
     }
   }
 }
