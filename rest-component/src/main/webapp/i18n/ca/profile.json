@@ -1,0 +1,18 @@
+{
+  "profile": {
+    "title":"Profile",
+    "form_org": {
+      "org_name": "Organization name",
+      "org_description": "Organization description",
+      "org_status": "Organization status",
+      "org_type": "Organization type",
+      "button": "Update"
+    },
+    "tab" : {
+      "settings":"Settings",
+      "passwrod":"Password",
+      "organization":"Organization",
+      "cloudAccounts":"Cloud Accounts"
+    }
+  }
+}
