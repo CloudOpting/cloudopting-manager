@@ -70,11 +70,12 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
                     }
                 ],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('co_footer');
                     $translatePartialLoader.addPart('global');
                     $translatePartialLoader.addPart('language');
                     $translatePartialLoader.addPart('menu');
                     $translatePartialLoader.addPart('navbar');
-                    $translatePartialLoader.addPart('footer');
+
                     return $translate.refresh();
                 }]
             }

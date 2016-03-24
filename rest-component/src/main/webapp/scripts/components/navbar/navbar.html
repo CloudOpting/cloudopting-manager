@@ -10,14 +10,14 @@
             <ul class="nav navbar-nav navbar-right pre-header">
                 <!-- Development only -->
                 <li ng-show="logoutButton" class="dropdown" ng-controller="MenuController">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#" translate="navbar.title">Menu<span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">{{'navbar.title'| translate}}<span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li ng-show="showMenu('publish')"><a ui-sref="publish" data-target="#publish" translate="navbar.publish">Publish Service</a></li>
-                        <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list" translate="services.manage">Services Manager</a></li>
+                        <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list" translate="navbar.services.manager">Services Manager</a></li>
                         <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager" data-target="#user_manager" translate="navbar.user.manager">User Manager</a></li>
                         <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager" data-target="#org_manager" translate="navbar.org.manager">Org Manager</a></li>
                         <li ng-show="showMenu('toscaide')"><a ui-sref="toscaide" data-target="#toscaide" translate="navbar.toscaide">Tosca IDE</a></li>
-                        <li ng-show="showMenu('button')"><a ui-sref="button" data-target="#button" >(Button Screen)</a></li>
+                        <!--<li ng-show="showMenu('button')"><a ui-sref="button" data-target="#button" >(Button Screen)</a></li>-->
                     </ul>
                 </li>
                 <!-- Development only -->
