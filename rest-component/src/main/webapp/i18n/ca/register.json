@@ -12,17 +12,33 @@
         },
         "messages": {
             "validate": {
-                "firstName": {
+                "firstname": {
                     "required": "Your first name is required."
                 },
-                "lastName": {
+                "lastname": {
                     "required": "Your last name is required."
                 },
-                "login": {
-                    "required": "Your login is required.",
-                    "minlength": "Your login is required to be at least 1 character",
-                    "maxlength": "Your login cannot be longer than 50 characters",
-                    "pattern": "Your login can only contain lower-case letters and digits"
+                "username": {
+                    "required": "Your username is required.",
+                    "minlength": "Your username is required to be at least 1 character",
+                    "maxlength": "Your username cannot be longer than 50 characters",
+                    "pattern": "Your username can only contain lower-case letters and digits"
+                },
+                "password" :{
+                    "required": "Your password is required.",
+                    "minlength": "Your password is required to be at least 5 character",
+                    "maxlength": "Your password cannot be longer than 50 characters"
+                },
+                "password2" :{
+                    "required": "Your password confirmation is required.",
+                    "minlength": "Your password is required to be at least 5 character",
+                    "maxlength": "Your password cannot be longer than 50 characters"
+                },
+                "email" :{
+                    "required": "Your e-mail is required.",
+                    "invalid": "Your e-mail is invalid.",
+                    "minlength": "Your e-mail is required to be at least 5 character",
+                    "maxlength": "Your e-mail cannot be longer than 100 characters"
                 }
             },
             "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
