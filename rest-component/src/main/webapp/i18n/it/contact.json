@@ -9,7 +9,7 @@
       "message": "Message",
       "placeholder": {
         "name": "Your Name *",
-        "phone": "Your Phone *",
+        "phone": "Your Phone",
         "email": "Your Email *",
         "companyName": "Your Company",
         "message": "Your Message *"
