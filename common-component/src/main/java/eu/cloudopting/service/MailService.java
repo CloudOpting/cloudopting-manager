@@ -111,7 +111,9 @@ public class MailService {
 	@Async
 	public void sendActivationEmail(User user, String baseUrl) {
 		log.debug("Sending activation e-mail to '{}'", user.getEmail());
-		String content = "<html>" + "<body>" + "<p> Dear " + user.getFirstName() + ", </p>" + "<p>Activation URL: "
+		String content = "<html>" + "<body>" + "<p> Hi " + user.getFirstName() + ", </p>"
+				+ "<p>Thanks for joining CloudOpting!</p>"
+				+ "<p>Please, click the following link to verify your email: "
 				+ baseUrl + "/#/activate?key=" + user.getActivationKey() + "</p>" + "<p>Best regards,</p>"
 				+ "<p>CloudOpting team.</p>" + "</body>" + "</html>";
 		String subject = "CloudOpting Catalogue Activation Link";
