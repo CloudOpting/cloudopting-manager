@@ -10,26 +10,20 @@
             <ul class="nav navbar-nav navbar-right pre-header">
                 <!-- Development only -->
                 <li ng-show="logoutButton" class="dropdown" ng-controller="MenuController">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Menu<span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#" translate="navbar.title">Menu<span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li ng-show="showMenu('publish')"><a ui-sref="publish" data-target="#publish" >Publish Service</a></li>
-                        <!--<li ng-show="showMenu('catalogue')"><a ui-sref="catalogue">Service Catalogue</a></li>-->
-                        <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list" >Services Manager</a></li>
-                        <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager" data-target="#user_manager" >User Manager</a></li>
-                        <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager" data-target="#org_manager" >Org Manager</a></li>
-                        <li ng-show="showMenu('toscaide')"><a ui-sref="toscaide" data-target="#toscaide">Tosca IDE</a></li>
-                        <!--<li ng-show="showMenu('manager')"><a ui-sref="manager">User/Org Manager</a></li>-->
+                        <li ng-show="showMenu('publish')"><a ui-sref="publish" data-target="#publish" translate="navbar.publish">Publish Service</a></li>
+                        <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list" translate="services.manage">Services Manager</a></li>
+                        <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager" data-target="#user_manager" translate="navbar.user.manager">User Manager</a></li>
+                        <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager" data-target="#org_manager" translate="navbar.org.manager">Org Manager</a></li>
+                        <li ng-show="showMenu('toscaide')"><a ui-sref="toscaide" data-target="#toscaide" translate="navbar.toscaide">Tosca IDE</a></li>
                         <li ng-show="showMenu('button')"><a ui-sref="button" data-target="#button" >(Button Screen)</a></li>
-                        <!--<li ng-show="showMenu('detail')"><a ui-sref="detail">Service Detail</a></li>-->
-                        <!--<li ng-show="showMenu('instances')"><a ui-sref="instances">Instances List - Manager</a></li>-->
-                        <!--<li ng-show="showMenu('monitoring')"><a ui-sref="monitoring" data-target="#monitoring" >Service Monitoring</a></li>-->
-                        <!--<li ng-show="showMenu('form_generation')"><a ui-sref="form_generation">Form Generation Screen</a></li>-->
                     </ul>
                 </li>
                 <!-- Development only -->
 
                 <li class="dropdown" ng-controller="LanguageController">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">Languages<span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">{{'navbar.languages'| translate}}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li active-menu="{{language}}" ng-repeat="language in languages">
                             <a href="" ng-click="changeLanguage(language)">{{'language.' + language| translate}}</a>
@@ -76,31 +70,31 @@
                       <a href="#page-top"></a>
                   </li>
                   <li>
-                      <a class="page-scroll" href="#" ng-click="catalogue()">Catalogue of Services</a>
+                      <a class="page-scroll" href="#" ng-click="catalogue()" translate="navbar.catalogue">Catalogue of Services</a>
                   </li>
                   <li role="separator" class="divider hidden-xs">|</li>
                   <li>
-                      <a class="page-scroll" href="#" ng-click="contact()">Contact</a>
+                      <a class="page-scroll" href="#" ng-click="contact()" translate="navbar.contact">Contact</a>
                   </li>
 
                   <li ng-show="logoutButton" role="separator" class="divider hidden-xs">|</li>
                   <li ng-show="logoutButton">
-                      <a href="#" ng-click="dashboard()">Dashboard</a>
+                      <a href="#" ng-click="dashboard()" translate="navbar.dasbhoard">Dashboard</a>
                   </li>
 
                   <li role="separator" class="divider hidden-xs">|</li>
                   <li ng-hide="logoutButton">
-                      <a ui-sref="login" data-target="#login">Sign in</a>
+                      <a ui-sref="login" data-target="#login" translate="navbar.signin">Sign in</a>
                   </li>
                   <li ng-show="logoutButton">
-                      <a href="#" ng-click="profile()">Account</a>
+                      <a href="#" ng-click="profile()" translate="navbar.account">Account</a>
                   </li>
                   <li role="separator" class="divider hidden-xs">|</li>
                   <li ng-hide="logoutButton">
-                      <a ui-sref="register" data-target="#register">Join</a>
+                      <a ui-sref="register" data-target="#register" translate="navbar.join">Join</a>
                   </li>
                   <li ng-show="logoutButton">
-                      <a href="#" ng-click="logout()">Logout</a>
+                      <a href="#" ng-click="logout()" translate="navbar.logout">Logout</a>
                   </li>
               </ul>
           </div>

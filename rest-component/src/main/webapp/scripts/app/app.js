@@ -59,7 +59,8 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
                     controller: 'MenuController'
                 },
                 'footer@': {
-                    templateUrl: 'scripts/app/footer/footer.html'
+                    templateUrl: 'scripts/app/footer/footer.html',
+                    controller: 'FooterController'
                 }
             },
             resolve: {
@@ -71,6 +72,9 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');
                     $translatePartialLoader.addPart('language');
+                    $translatePartialLoader.addPart('menu');
+                    $translatePartialLoader.addPart('navbar');
+                    $translatePartialLoader.addPart('footer');
                     return $translate.refresh();
                 }]
             }

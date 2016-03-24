@@ -2,24 +2,19 @@
     <div class="row inner-container">
         <!-- MENU FOR DEVELOPMENT -->
         <div class="dropdown" ng-show="logoutButton" ng-controller="MenuController">
-            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Development menu
+            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" translate="menu.title">
+                Menu
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li ng-show="showMenu('publish')"><a ui-sref="publish" data-target="#publish">Publish Service</a></li>
-                <li ng-show="showMenu('catalogue')"><a ui-sref="catalogue" data-target="#catalogue">Service Catalogue</a></li>
-                <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list">Services List - Manager</a></li>
-                <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager" data-target="#user_manager">User Manager</a></li>
-                <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager" data-target="#org_manager">Org Manager</a></li>
-                <li ng-show="showMenu('toscaide')"><a ui-sref="toscaide" data-target="#toscaide">Tosca IDE</a></li>
-                <!--<li ng-show="showMenu('manager')"><a ui-sref="manager">User/Org Manager</a></li>-->
-                <li>- These should not be in the menu -</li>
-                <li ng-show="showMenu('button')"><a ui-sref="button" data-target="#button">Button Screen</a></li>
-                <li ng-show="showMenu('detail')"><a ui-sref="detail" data-target="#detail">Service Detail</a></li>
-                <li ng-show="showMenu('instances')"><a ui-sref="instances" data-target="#instances">Instances List - Manager</a></li>
-                <li ng-show="showMenu('monitoring')"><a ui-sref="monitoring" data-target="#monitoring">Service Monitoring</a></li>
-                <li ng-show="showMenu('form_generation')"><a ui-sref="form_generation" data-target="#form_generation">Form Generation Screen</a></li>
+                <li ng-show="showMenu('publish')"><a ui-sref="publish" data-target="#publish" translate="menu.publish">Publish Service</a></li>
+                <li ng-show="showMenu('catalogue')"><a ui-sref="catalogue" data-target="#catalogue" translate="menu.service.catalogue">Service Catalogue</a></li>
+                <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list" translate="menu.services.manager">Services Manager</a></li>
+                <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager" data-target="#user_manager" translate="menu.user.manager">User Manager</a></li>
+                <li ng-show="showMenu('org_manager')"><a ui-sref="org_manager" data-target="#org_manager" translate="menu.org.manager">Org Manager</a></li>
+                <li ng-show="showMenu('toscaide')"><a ui-sref="toscaide" data-target="#toscaide" translate="menu.toscaide">Tosca IDE</a></li>
+                <li ng-show="showMenu('button')"><a ui-sref="button" data-target="#button" >(Button Screen)</a></li>
             </ul>
         </div>
         <!-- MENU FOR DEVELOPMENT -->
