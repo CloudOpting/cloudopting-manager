@@ -16,7 +16,7 @@
                     "required": "Prenumele este obligatoriu."
                 },
                 "lastname": {
-                    "required": "Numele este obligatoriu.
+                    "required": "Numele este obligatoriu."
                 },
                 "username": {
                     "required": "Utilizatorul este obligatoriu.",
