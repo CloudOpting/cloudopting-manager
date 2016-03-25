@@ -1,11 +1,11 @@
 {
   "menu": {
-    "title":"Menu",
-    "publish":"Publish Service",
-    "service.catalogue":"Service Catalogue",
-    "services.manager":"Services Manager",
-    "user.manager":"User Manager",
-    "org.manager":"Org Manager",
-    "toscaide":"Tosca IDE"
+    "title":"Meniu",
+    "publish":"Publică serviciuc",
+    "service.catalogue":"Catalog de servicii",
+    "services.manager":"Administrare servicii",
+    "user.manager":"Administrare utilizatori",
+    "org.manager":"Administrare organizații",
+    "toscaide":"IDE TOSCA"
   }
 }
