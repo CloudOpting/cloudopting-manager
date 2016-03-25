@@ -4,9 +4,9 @@
     "service": "\"{{service_name}}\" Servizio",
     "status": "Stato: {{service_status}}",
     "termsAndConditions": "Agree with Terms and Conditions",
-    "servicePrice" : "SERVICE PRICE",
-    "platformPrice" : "PLATFORM PRICE",
-    "serverSizeRequired" : "SERVER SIZE REQUIRED",
+    "servicePrice" : "Service:",
+    "platformPrice" : "Cloud Hosting:",
+    "serverSizeRequired" : "Size of the Entity:",
     "applicationCanBeTested" : "<strong>The application can be tested!</strong>",
     "button" : {
       "register_subscribe": "Register & Subscribe Now",

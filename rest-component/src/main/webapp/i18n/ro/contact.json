@@ -21,7 +21,6 @@
         "message": "Please enter a message."
       }
     },
-
     "messages": {
       "validate": {
         "name": {
