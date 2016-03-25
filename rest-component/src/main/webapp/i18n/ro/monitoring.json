@@ -1,16 +1,16 @@
 {
   "monitoring": {
-    "title": "Service Monitoring",
+    "title": "Monitorizare servicii",
     "titles" : {
-      "monitor": "Service Monitor",
-      "alerts": "Service Alerts"
+      "monitor": "Monitorizează serviciu",
+      "alerts": "Alerte serviciu"
     },
-    "cpu": "CPU Usage:",
-    "disk": "Disk Usage:",
-    "ram": "RAM Usage:",
-    "reloadGraphs":"Reload graphs",
-    "selecthost": "Select the Host:",
-    "selectitemhost": "Select the item in Host:"
+    "cpu": "Utilizare CPU:",
+    "disk": "Utilizare disc:",
+    "ram": "Utilizare RAM:",
+    "reloadGraphs":"Reîncarcă grafice",
+    "selecthost": "Alege gazda:",
+    "selectitemhost": "Selectează elementul din gazdă:"
   }
 }
 
