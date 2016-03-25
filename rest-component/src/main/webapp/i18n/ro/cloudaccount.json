@@ -31,10 +31,10 @@
       "delete" : "Șterge"
     },
     "alert" : {
-      "sent" : "Message sent!",
-      "wrong" : "Something went wrong!",
-      "contact_you" : "We will contact with you soon.",
-      "try_again" : "Please try again later."
+      "sent" : "Mesaj trimis!",
+      "wrong" : "A apărut o eroare!",
+      "contact_you" : "Vă vom contacta în curând.",
+      "try_again" : "Vă rugăm incercați mai târziu."
     }
   }
 }
