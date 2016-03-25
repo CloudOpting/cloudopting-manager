@@ -1,18 +1,18 @@
 {
   "profile": {
-    "title":"Profile",
+    "title":"Profil",
     "form_org": {
-      "org_name": "Organization name",
-      "org_description": "Organization description",
-      "org_status": "Organization status",
-      "org_type": "Organization type",
-      "button": "Update"
+      "org_name": "Nume organizație",
+      "org_description": "Descriere organizație",
+      "org_status": "Stare organizație",
+      "org_type": "Tip organizație",
+      "button": "Modifică"
     },
     "tab" : {
-      "settings":"Settings",
-      "passwrod":"Password",
-      "organization":"Organization",
-      "cloudAccounts":"Cloud Accounts"
+      "settings":"Setări",
+      "passwrod":"Parolă",
+      "organization":"Organizație",
+      "cloudAccounts":"Conturi Cloud"
     }
   }
 }
