@@ -1,9 +1,14 @@
 package eu.cloudopting.service;
 
-import eu.cloudopting.domain.User;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
@@ -14,15 +19,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.mail.internet.MimeMessage;
+import eu.cloudopting.domain.User;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 /**
  * Service for sending e-mails.
@@ -114,7 +114,7 @@ public class MailService {
 		String content = "<html>" + "<body>" + "<p> Hi " + user.getFirstName() + ", </p>"
 				+ "<p>Thanks for joining CloudOpting!</p>"
 				+ "<p>Please, click the following link to verify your email: "
-				+ baseUrl + "/#/activate?key=" + user.getActivationKey() + "</p>" + "<p>Best regards,</p>"
+				+ baseUrl + "/cloudopting/#/activate?key=" + user.getActivationKey() + "</p>" + "<p>Best regards,</p>"
 				+ "<p>CloudOpting team.</p>" + "</body>" + "</html>";
 		String subject = "CloudOpting Catalogue Activation Link";
 		sendEmail(user.getEmail(), subject, content, false, true);
@@ -124,7 +124,7 @@ public class MailService {
 	public void sendPasswordResetMail(User user, String baseUrl) {
 		log.debug("Sending password reset e-mail to '{}'", user.getEmail());
 		String content = "<html>" + "<body>" + "<p> Dear " + user.getFirstName() + ", </p>" + "<p>Reset password URL: "
-				+ baseUrl + "/#/reset/finish?key=" + user.getResetKey() + "</p>" + "<p>Best regards,</p>"
+				+ baseUrl + "/cloudopting/#/reset/finish?key=" + user.getResetKey() + "</p>" + "<p>Best regards,</p>"
 				+ "<p>CloudOpting team.</p>" + "</body>" + "</html>";
 		String subject = "CloudOpting Catalogue Reset Password Link";
 		sendEmail(user.getEmail(), subject, content, false, true);
