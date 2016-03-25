@@ -1,36 +1,36 @@
 {
   "user_org_manager": {
     "title": {
-      "user": "User Management",
-      "org": "Organization Management"
+      "user": "Administrare utilizatori",
+      "org": "Administrare organizații"
     },
-    "title.user_detail": "User Detail",
-    "title.org_detail": "Organization Detail",
-    "search": "Search for...",
+    "title.user_detail": Detalii utilizator",
+    "title.org_detail": "Detalii organizație",
+    "search": "Caută...",
     "col": {
-      "name": "Name",
-      "description": "Description",
-      "status":"Status",
-      "type":"Type",
-      "login": "Alias",
-      "role": "Role",
-      "langKey": "Language",
-      "firstName" : "First Name",
-      "lastName" : "Last Name",
-      "organizationKey": "Key",
+      "name": "Nume",
+      "description": "Descriere",
+      "status":"Stare",
+      "type":"Tip",
+      "login": "Poreclă",
+      "role": "Rol",
+      "langKey": "Limbă",
+      "firstName" : "Prenume",
+      "lastName" : "Nume",
+      "organizationKey": "Cheie",
       "email": "Email",
-      "activated": "Activated",
-      "organization": "Organization",
-      "actions": "Actions",
-      "cloudaccounts": "Cloud Account",
-      "password": "Password"
+      "activated": "Activat",
+      "organization": "Organizație",
+      "actions": "Acțiuni",
+      "cloudaccounts": "Cont Cloud",
+      "password": "Parolă"
     },
     "button" : {
-      "edit": "Edit",
-      "create": "Create",
-      "cancel": "Cancel",
-      "delete": "Delete"
+      "edit": "Modifică",
+      "create": "Creează",
+      "cancel": "Anulează",
+      "delete": "Șterge"
     },
-    "go.organization": "Go to organization manager to create a new one."
+    "go.organization": "Mergi spre administrarea de organizații pentru a crea una nouă."
   }
 }
