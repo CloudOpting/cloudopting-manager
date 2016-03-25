@@ -3,7 +3,7 @@
     "title": "Instanțele serviciului",
     "placeholder" : "Caută...",
     "col" : {
-      "instanceof": "Intanța lui",
+      "instanceof": "Instanța serviciului",
       "author": "Autor",
       "date": "Data",
       "status": "Stare",
@@ -27,6 +27,6 @@
       "start": "Pornește",
       "delete": "Șterge"
     },
-    "go_to_tosca_ide" : "Create TOSCA file"
+    "go_to_tosca_ide" : "Creează fișier TOSCA"
   }
 }
