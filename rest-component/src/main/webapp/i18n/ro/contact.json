@@ -15,10 +15,10 @@
         "message": "Mesajul dvs. *"
       },
       "validation": {
-        "name": "Please enter your name.",
-        "phone": "Please enter your phone number.",
-        "email": "Please enter your email address.",
-        "message": "Please enter a message."
+        "name": "Introduceți numele.",
+        "phone": "Introduceți numărul de telefon.",
+        "email": "Introduceți adresa de email.",
+        "message": "Introduceți un mesaj."
       }
     },
     "messages": {
