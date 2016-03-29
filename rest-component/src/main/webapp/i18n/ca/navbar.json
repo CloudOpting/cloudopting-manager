@@ -1,18 +1,18 @@
 {
   "navbar": {
-    "title":"Menu",
-    "publish":"Publish Service",
-    "services.manager":"Services Manager",
-    "user.manager":"User Manager",
-    "org.manager":"Org Manager",
+    "title":"Menú",
+    "publish":"Publica un Servei",
+    "services.manager":"Administrador de Serveis",
+    "user.manager":"Administrador d'Usuaris",
+    "org.manager":"Administrador d'Entitats",
     "toscaide":"Tosca IDE",
-    "languages": "Languages",
-    "catalogue":"Catalogue of Services",
-    "contact":"Contact",
-    "dasbhoard":"Dashboard",
-    "signin":"Sign in",
-    "account":"Account",
-    "join":"Join",
-    "logout":"Logout"
+    "languages": "Idiomes",
+    "catalogue":"Catàleg de Serveis",
+    "contact":"Contacta",
+    "dasbhoard":"Panell de Comandament",
+    "signin":"Inicia Sessió",
+    "account":"Compte",
+    "join":"Uniu-vos",
+    "logout":"Tanca Sessió"
   }
 }
