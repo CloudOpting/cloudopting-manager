@@ -1,20 +1,20 @@
 {
     "language": {
-        "ca": "Catalan",
-        "zh-tw": "Chinese (traditional)",
-        "da": "Danish",
-        "en": "English",
-        "fr": "French",
-        "de": "German",
-        "kr": "Korean",
-        "hu": "Hungarian",
-        "pl": "Polish",
-        "pt-br": "Portuguese (brazilian)",
-        "ru": "Russian",
-        "es": "Spanish",
-        "sv": "Swedish",
-        "tr": "Turkish",
-        "ro": "Romanian",
-        "it": "Italian"
+        "ca": "Català",
+        "zh-tw": "Xinès (Tradicional)",
+        "da": "Danès",
+        "en": "Anglès",
+        "fr": "Francès",
+        "de": "Alemany",
+        "kr": "Coreà",
+        "hu": "Hongarès",
+        "pl": "Polonès",
+        "pt-br": "Portuguès (Brasiler)",
+        "ru": "Rus",
+        "es": "Castellà",
+        "sv": "Suec",
+        "tr": "Turc",
+        "ro": "Romanès",
+        "it": "Italià"
     }
 }
