@@ -1,23 +1,23 @@
 {
   "detail": {
-    "title": "Service Detail",
-    "service": "\"{{service_name}}\" Service",
-    "status": "Status: {{service_status}}",
-    "termsAndConditions": "Agree with Terms and Conditions",
-    "servicePrice" : "Service:",
+    "title": "Detalls del Servei",
+    "service": "\"{{service_name}}\" Servei",
+    "status": "Estat: {{service_status}}",
+    "termsAndConditions": "D'acord amb les condicions d'ús",
+    "servicePrice" : "Servei:",
     "platformPrice" : "Cloud Hosting:",
-    "serverSizeRequired" : "Size of the Entity:",
-    "applicationCanBeTested" : "<strong>The application can be tested!</strong>",
+    "serverSizeRequired" : "Mida de l'Entitat:",
+    "applicationCanBeTested" : "<strong>L'aplicació es pot provar!</strong>",
     "button" : {
-      "register_subscribe": "Register & Subscribe Now",
-      "subscribe": "Subscribe Now",
-      "instances": "See Instances",
-      "completepublish": "COMPLETE PUBLISH"
+      "register_subscribe": "Registreu-vos i Subscriviu-vos ara",
+      "subscribe": "Subscriviu-vos ara",
+      "instances": "Veure instàncies",
+      "completepublish": "PUBLICACIÓ COMPLETA"
     },
     "messages": {
       "validate": {
         "termsAndConditions": {
-          "required": "Accept terms and conditions is required."
+          "required": "Es requereix l'acceptació de les condicions d'ús."
         }
       }
     }
