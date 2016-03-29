@@ -1,15 +1,15 @@
 {
     "login": {
-        "title": "Authentication",
+        "title": "Autenticació",
         "form": {
-            "password.placeholder": "Password",
-            "username.placeholder": "Username",
-            "rememberme": "Remember me",
-            "button": "Sign In"
+            "password.placeholder": "Contrasenya",
+            "username.placeholder": "Nom d'usuari",
+            "rememberme": "Recorda'm",
+            "button": "Inicia Sessió"
         },
         "messages": {
             "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                "authentication": "<strong>L'autenticació ha fallat!</strong> Si us plau, comproveu les credencials i torneu a provar-ho."
             }
         }
     }
