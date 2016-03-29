@@ -1,31 +1,31 @@
 {
   "instances": {
-    "title": "Instances Service",
-    "placeholder" : "Search for...",
+    "title": "Instàncies del Servei",
+    "placeholder" : "Cerca per...",
     "col" : {
-      "instanceof": "Instance of",
-      "author": "Author",
-      "date": "Date",
-      "status": "Status",
-      "actions": "Actions"
+      "instanceof": "Instància de",
+      "author": "Autor",
+      "date": "Data",
+      "status": "Estat",
+      "actions": "Accions"
     },
     "status" : {
-      "requested": "Requested",
-      "deleted": "Deleted",
-      "running": "Running",
-      "todelete": "To Delete",
-      "stopped": "Stopped"
+      "requested": "Sol·licitada",
+      "deleted": "Eliminada",
+      "running": "En procés",
+      "todelete": "Per Eliminar",
+      "stopped": "Aturada"
     },
     "button" : {
       "test": "Test",
       "demo" : "Demo",
-      "search" : "Search Service",
-      "go": "GO",
-      "monitor": "Monitor.",
-      "deploy": "Deploy",
-      "stop": "Stop",
-      "start": "Start",
-      "delete": "Delete"
+      "search" : "Cerca Servei",
+      "go": "Vés-hi!",
+      "monitor": "Monitoritza",
+      "deploy": "Desplega",
+      "stop": "Atura",
+      "start": "Inicia",
+      "delete": "Elimina"
     }
   }
 }
