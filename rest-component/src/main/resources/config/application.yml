@@ -23,15 +23,26 @@ async:
 
 spring:
     mail:
+#        Previous values    
+#        baseUrl: http://cloudopting1.cloudapp.net
+#        protocol: smtp
+#        host: smtp.gmail.com
+#        port: 587
+#        username: cloudopting@gmail.com
+#        password: Smart@2012
+#        tls: true
+#        auth: true
+#        from: cloudopting@gmail.com
         baseUrl: http://cloudopting1.cloudapp.net
         protocol: smtp
-        host: smtp.gmail.com
-        port: 587
-        username: cloudopting@gmail.com
-        password: Smart@2012
+        host: vl23232.dns-privadas.es
+        port: 465
+        username: dev@cloudopting.eu
+        password: CloudOpting@2016
         tls: true
         auth: true
-        from: cloudopting@gmail.com
+        from: dev@cloudopting.eu
+
 
     messageSource:
         cacheSeconds: 1
