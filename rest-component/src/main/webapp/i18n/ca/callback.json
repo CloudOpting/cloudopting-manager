@@ -1,8 +1,8 @@
 {
   "callback": {
-    "no_permissions":"You have no permissions to do so. Ask for more permissions to the administrator",
-    "session_ended":"Your session has ended. Sign in again. Redirecting to login...",
-    "generic_error":"An error occurred. Wait a moment and try again, if problem persists contact the administrator",
-    "success":" Successfully done!"
+    "no_permissions":"No teniu autorització per fer-ho. Demaneu més permisos a l'administrador.",
+    "session_ended":"La vostra sessió ha finalitzat. Accediu de nou. Redireccionant per autenticació...",
+    "generic_error":"Hi ha hagut un error. Espereu una mica i torneu a intentar-ho, si el problema persisteix poseu-vos en contacte amb l'administrador.",
+    "success":"Realitzat amb èxit!"
   }
 }
