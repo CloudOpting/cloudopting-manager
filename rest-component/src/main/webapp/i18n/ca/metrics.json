@@ -1,19 +1,19 @@
 {
     "metrics": {
-        "title": "Application Metrics",
-        "refresh.button": "Refresh",
-        "updating": "Updating...",
+        "title": "Mètriques de l'Aplicació",
+        "refresh.button": "Actualitza",
+        "updating": "Actualitzant...",
         "jvm": {
-            "title": "JVM Metrics",
+            "title": "Mètriques JVM",
             "memory": {
-                "title": "Memory",
-                "total": "Total Memory",
+                "title": "Memòria",
+                "total": "Memòria Total",
                 "heap": "Heap Memory",
                 "nonheap": "Non-Heap Memory"
             },
             "threads": {
                 "title": "Threads",
-                "all": "All",
+                "all": "Tots",
                 "runnable": "Runnable",
                 "timedwaiting": "Timed waiting",
                 "waiting": "Waiting",
