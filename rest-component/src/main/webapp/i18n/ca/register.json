@@ -1,51 +1,51 @@
 {
     "register": {
-        "title": "Register",
+        "title": "Registra't",
         "form": {
-            "button": "Register",
-            "username.placeholder": "Username",
-            "firstName.placeholder": "First name",
-            "lastName.placeholder": "Last name",
-            "email.placeholder": "E-mail",
-            "password.placeholder": "Password",
-            "confirmpassword.placeholder": "Confirm Password"
+            "button": "Registra't",
+            "username.placeholder": "Nom d'Usuari",
+            "firstName.placeholder": "Nom",
+            "lastName.placeholder": "Cognom",
+            "email.placeholder": "Correu electrònic",
+            "password.placeholder": "Contrasenya",
+            "confirmpassword.placeholder": "Confirma la contrasenya"
         },
         "messages": {
             "validate": {
                 "firstname": {
-                    "required": "Your first name is required."
+                    "required": "Es requereix el vostre nom."
                 },
                 "lastname": {
-                    "required": "Your last name is required."
+                    "required": "Es requereix el vostre cognom."
                 },
                 "username": {
-                    "required": "Your username is required.",
-                    "minlength": "Your username is required to be at least 1 character",
-                    "maxlength": "Your username cannot be longer than 50 characters",
-                    "pattern": "Your username can only contain lower-case letters and digits"
+                    "required": "Es requereix el vostre nom d'usuari.",
+                    "minlength": "El nom d'usuari ha de tenir almenys 1 caràcter.",
+                    "maxlength": "El nom d'usuari no pot excedir els 50 caràcters.",
+                    "pattern": "El nom d'usuari només pot contenir lletres minúscules i dígits."
                 },
                 "password" :{
-                    "required": "Your password is required.",
-                    "minlength": "Your password is required to be at least 5 character",
-                    "maxlength": "Your password cannot be longer than 50 characters"
+                    "required": "Es requereix la contrasenya.",
+                    "minlength": "La contrasenya ha de tenir almenys 5 caràcters.",
+                    "maxlength": "La contrasenya no pot excedir els 50 caràcters."
                 },
                 "password2" :{
-                    "required": "Your password confirmation is required.",
-                    "minlength": "Your password is required to be at least 5 character",
-                    "maxlength": "Your password cannot be longer than 50 characters"
+                    "required": "Es requereix la clau de confirmació.",
+                    "minlength": "La contrasenya de confirmació ha de tenir almenys 5 caràcters.",
+                    "maxlength": "La contrasenya de confirmació no pot excedir els 50 caràcters."
                 },
                 "email" :{
-                    "required": "Your e-mail is required.",
-                    "invalid": "Your e-mail is invalid.",
-                    "minlength": "Your e-mail is required to be at least 5 character",
-                    "maxlength": "Your e-mail cannot be longer than 100 characters"
+                    "required": "Es requereix el vostre correu electrònic.",
+                    "invalid": "El vostre correu electrònic no és vàlid.",
+                    "minlength": "El correu electrònic ha de tenir almenys 5 caràcters.",
+                    "maxlength": "El correu electrònic no pot excedir els 100 caràcters."
                 }
             },
-            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+            "success": "<strong>Registre desat!</strong> Si us plau, consulteu el vostre correu electrònic per confirmar-ho.",
             "error": {
-                "fail": "<strong>Registration failed!</strong> Please try again later.",
-                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+                "fail": "<strong>El registre ha fallat!</strong> Si us plau, intenteu-ho més tard.",
+                "userexists": "<strong>Nom d'usuari ja registrat!</strong> Si us plau, seleccioneu-ne un altre.",
+                "emailexists": "<strong>Aquest correu electrònic ja està en ús!</strong> Si us plau, seleccioneu-ne un altre."
             }
         }
     }
