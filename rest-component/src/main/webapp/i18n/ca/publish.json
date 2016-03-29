@@ -1,90 +1,90 @@
 {
   "publish": {
-    "title": "Publish Service",
+    "title": "Publica un Servei",
     "service" : {
-      "name": "Service Name",
-      "toscaname": "Service TOSCA Name",
-      "description": "Service Description",
-      "image": "Service Image",
-      "shortDescription" : "Short Description",
-      "termsAndConditions" : "Terms and conditions link",
-      "applicationSubscriberMail" : "Subscriber mail template",
-      "applicationSpMail" : "Provider mail template",
-      "servicePrice" : "Service Price",
-      "platformPrice" : "Platform Price",
-      "applicationIsTryable": "Can the platform be tried",
-      "sizeId": "Size"
+      "name": "Nom del Servei",
+      "toscaname": "Nom del Servei TOSCA",
+      "description": "Descripció del Servei",
+      "image": "Imatge principal del Servei",
+      "shortDescription" : "Descripció curta",
+      "termsAndConditions" : "Enllaç a les condicions d'ús",
+      "applicationSubscriberMail" : "Plantilla de correu electrònic pel Subcriptor",
+      "applicationSpMail" : "Plantilla de correu electrònic pel Proveïdor",
+      "servicePrice" : "Preu del Servei",
+      "platformPrice" : "Preu de la Plataforma Cloud",
+      "applicationIsTryable": "Es pot provar l'aplicació?",
+      "sizeId": "Mida"
     },
     "select" : {
-      "addtosca": "+ Add TOSCA Archive",
-      "tosca": "TOSCA Archive",
-      "toscaempty": "TOSCA Archive not selected",
-      "file": "Select File"
+      "addtosca": "+ Afegeix l'arxiu TOSCA",
+      "tosca": "Arxiu TOSCA",
+      "toscaempty": "Arxiu TOSCA no seleccionat",
+      "file": "Selecciona arxiu"
     },
-    "selectedfile": "Selected File",
+    "selectedfile": "Arxiu seleccionat",
     "content" : {
-      "emptylibrary": "The Library is Empty",
-      "library" : "Content Library",
-      "name" : "Name",
-      "file" : "File"
+      "emptylibrary": "La llibreria està buida",
+      "library" : "Continguts de la llibreria",
+      "name" : "Nom",
+      "file" : "Arxiu"
     },
     "button" : {
-      "save": "Save",
-      "save_n_next": "Save & Next",
-      "publish": "Publish Service",
-      "add": "+ Add Item in Library",
-      "delete": "Delete File",
-      "service_list":"Service List",
-      "update": "Update",
-      "next": "Next"
+      "save": "Desa",
+      "save_n_next": "Desa & Continua",
+      "publish": "Publica el Servei",
+      "add": "+ Afegeix ítem a la llibreria",
+      "delete": "Elimina arxiu",
+      "service_list":"Llista de Serveis",
+      "update": "Actualitza",
+      "next": "Següent"
     },
     "messages": {
       "validate": {
         "name": {
-          "required": "The name is required.",
-          "minlength": "The name is required to be at least 1 character."
+          "required": "Cal indicar el nom.",
+          "minlength": "El nom ha de tenir almenys 1 caràcter."
         },
         "toscaname": {
-          "required": "The Service TOSCA Name is required.",
-          "minlength": "The Service TOSCA Name is required to be at least 1 character.",
-          "maxlength": "The Service TOSCA Name cannot be longer than 10 characters.",
-          "pattern": "The Service TOSCA Name cannot contain spaces."
+          "required": "Es requereix el nom del Servei TOSCA.",
+          "minlength": "El nom del Servei TOSCA ha de tenir almenys 1 caràcter.",
+          "maxlength": "El nom del Servei TOSCA no pot excedir els 10 caràcters.",
+          "pattern": "El nom del Servei TOSCA no pot contenir espais."
         },
         "description": {
-          "required": "The description is required.",
-          "minlength": "The description is required to be at least 1 character."
+          "required": "Es requereix la descripció.",
+          "minlength": "La descripció ha de tenir almenys 1 caràcter."
         },
         "shortDescription": {
-          "required": "The short description is required."
+          "required": "Es requereix la descripció curta."
         },
         "termsAndConditions": {
-          "required": "The terms and conditions link is required."
+          "required": "Es requereix l'enllaç a les condicions d'ús."
         },
         "applicationSubscriberMail": {
-          "required": "The subscriber mail template is required."
+          "required": "Es requereix la plantilla de correu electrònic pel Subcriptor."
         },
         "applicationSpMail": {
-          "required": "The provider mail template is required."
+          "required": "Es requereix la plantilla de correu electrònic pel Proveïdor."
         },
         "servicePrice": {
-          "required": "The service price is required."
+          "required": "Es requereix el preu del Servei."
         },
         "platformPrice": {
-          "required": "The platform price is required."
+          "required": "Es requereix el preu de la plataforma cloud."
         },
         "sizeId": {
-          "required": "The size is required."
+          "required": "Es requereix la mida de l'Entitat."
         }
       }
     },
     "wizzard": {
-      "one":"Set Global Properties",
-      "tow":"Upload needed files",
-      "three":"Upload TOSCA archive",
-      "four":"Request Status"
+      "one":"Estableix les propietats globals",
+      "tow":"Puja els arxius necessaris",
+      "three":"Pula l'arxiu TOSCA",
+      "four":"Sol·licita estat"
     },
-    "thanks" :"Thanks!",
-    "thanks_2": "Your service has been published"
+    "thanks" :"Gràcies!",
+    "thanks_2": "El vostre servei ha estat publicat amb èxit!"
   }
 }
 
