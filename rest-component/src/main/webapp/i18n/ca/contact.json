@@ -1,38 +1,38 @@
 {
   "contact": {
-    "title": "Contact Us",
+    "title": "Contacta'ns",
     "form": {
-      "button": "Send Message",
-      "name": "Name",
-      "phone": "Phone",
-      "companyName": "Company name",
-      "message": "Message",
+      "button": "Envia missatge",
+      "name": "Nom",
+      "phone": "Telèfon",
+      "companyName": "Empresa",
+      "message": "Missatge",
       "placeholder": {
-        "name": "Your Name *",
-        "phone": "Your Phone",
-        "email": "Your Email *",
-        "companyName": "Your Company",
-        "message": "Your Message *"
+        "name": "El vostre nom *",
+        "phone": "El vostre telèfon",
+        "email": "El vostre correu electrònic *",
+        "companyName": "La vostra empresa",
+        "message": "El vostre missatge *"
       },
       "validation": {
-        "name": "Please enter your name.",
-        "phone": "Please enter your phone number.",
-        "email": "Please enter your email address.",
-        "message": "Please enter a message."
+        "name": "Si us plau, introduïu el vostre nom.",
+        "phone": "Si us plau, introduïu el vostre telèfon.",
+        "email": "Si us plau, introduïu la vostra adreça.",
+        "message": "Si us plau, escriviu el missatge."
       }
     },
     "messages": {
       "validate": {
         "name": {
-          "required": "Your name is required."
+          "required": "Es requereix el vostre nom."
         },
         "lastName": {
-          "required": "Your last name is required."
+          "required": "Es requereix el vostre cognom."
         }
       },
-      "success": "<strong>Message sent!</strong> We will contact with you soon.",
+      "success": "<strong>Missatge enviat!</strong> Ens posarem en contacte ben aviat.",
       "error": {
-        "fail": "<strong>Something went wrong!</strong> Please try again later."
+        "fail": "<strong>Alguna cosa ha anat malament!</strong> Si us plau, intenta-ho més tard."
       }
     }
   }
