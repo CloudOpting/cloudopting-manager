@@ -1,12 +1,12 @@
 {
   "cloudaccount": {
-    "title" : "Cloud Accounts",
+    "title" : "Comptes de Cloud",
     "form" : {
-      "name" : "Cloud Account Name",
+      "name" : "Nom del Compte de Cloud",
       "apiKey" : "API Key",
       "secretKey" : "Secret Key",
       "endpoint" : "Endpoint",
-      "provider" : "Provider",
+      "provider" : "Proveïdor",
       "placeholder" : {
         "name" : "The Cloud Account Name",
         "apiKey" : "The API Key",
@@ -14,27 +14,27 @@
         "endpoint" : "The Endpoint"
       },
       "button" : {
-        "back" : "Back",
-        "save" : "Save",
-        "delete" : "Delete",
-        "update" : "Update"
+        "back" : "Torna",
+        "save" : "Desa",
+        "delete" : "Esborra",
+        "update" : "Actualitza"
       }
     },
     "col" : {
-      "name": "Cloud Account Name",
-      "provider": "Provider",
-      "actions": "Actions"
+      "name": "Nom del Compte de Cloud",
+      "provider": "Proveïdor",
+      "actions": "Accions"
     },
     "button" : {
-      "add" : "Add",
-      "edit" : "Edit",
-      "delete" : "Delete"
+      "add" : "Afegeix",
+      "edit" : "Edita",
+      "delete" : "Esborra"
     },
     "alert" : {
-      "sent" : "Message sent!",
-      "wrong" : "Something went wrong!",
-      "contact_you" : "We will contact with you soon.",
-      "try_again" : "Please try again later."
+      "sent" : "Missatge enviat!",
+      "wrong" : "Alguna cosa ha anat malament!",
+      "contact_you" : "Ens posarem en contacte ben aviat.",
+      "try_again" : "Siusplau, intenta-ho més tard."
     }
   }
 }
