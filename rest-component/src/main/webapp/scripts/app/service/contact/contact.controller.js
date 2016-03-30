@@ -18,7 +18,7 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            Contact.save($scope.message, callback);
+            return Contact.save($scope.message, callback);
         };
 
     }

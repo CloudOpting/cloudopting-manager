@@ -41,7 +41,7 @@ angular.module('cloudoptingApp')
                         $state.go('chooseaccount');
                     }
                 };
-                CustomizationService.sendCustomizationForm(currentApp.id, $scope.model, callback);
+                return CustomizationService.sendCustomizationForm(currentApp.id, $scope.model, callback);
             }
         };
 

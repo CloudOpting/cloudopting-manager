@@ -39,8 +39,8 @@
                                                 <td>{{org.organizationStatus.status}}</td>
                                                 <td>{{org.organizationType.types}}</td>
                                                 <td class="text-right">
-                                                    <button type="button" class="btn btn-icon" ng-click="editOrganization(org)" ><i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="deleteOrganization(org.id)" ><i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="editOrganization(org)" ng-autodisable><i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate}}</button>
+                                                    <button type="button" class="btn btn-icon" ng-click="deleteOrganization(org.id)" ng-autodisable><i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate}}</button>
                                                 </td>
                                             </tr>
                                             </tbody>

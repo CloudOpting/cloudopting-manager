@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vcRecaptcha',
+angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vcRecaptcha', 'ngAutodisable',
     'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster', 'textAngular',
     'ngFileUpload', 'schemaForm', 'ui.bootstrap', 'checklist-model', 'ngFileSaver', 'duScroll', 'daterangepicker'])
 

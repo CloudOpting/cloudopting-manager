@@ -359,8 +359,8 @@
 
                             <div class="row row-actions">
                                 <div class="col-xs-6">
-                                    <button type="button" class="btn btn-primary" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()" translate="publish.button.save">Save</button>
-                                    <button type="button" class="btn btn-secondary" ng-disabled="form_publish.$invalid || disableUpdate" ng-click="updateWizardOne()" translate="publish.button.update">Update</button>
+                                    <button type="button" class="btn btn-primary" ng-disabled="form_publish.$invalid || disableSave" ng-click="saveWizardOne()" translate="publish.button.save" ng-autodisable>Save</button>
+                                    <button type="button" class="btn btn-secondary" ng-disabled="form_publish.$invalid || disableUpdate" ng-click="updateWizardOne()" translate="publish.button.update" ng-autodisable>Update</button>
                                 </div>
                                 <div class="col-xs-6">
                                     <button type="button" class="btn btn-primary pull-right" ng-disabled="disableNextOne" ng-click="nextWizardOne()" translate="publish.button.next">Next</button>

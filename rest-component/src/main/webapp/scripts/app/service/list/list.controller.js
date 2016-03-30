@@ -65,7 +65,7 @@ angular.module('cloudoptingApp')
         };
 
         //Function to delete a service after confirmation of the user.
-        $scope.goToDelete = function (app) {
+        $scope.delete = function (app) {
 
             if($window.confirm('Are you sure that you want to delete this service?')) {
                 var callback = function(data, status, headers, config) {
@@ -74,7 +74,7 @@ angular.module('cloudoptingApp')
                         $state.go($state.current, {}, {reload: true});
                     }
                 };
-                ApplicationService.delete(app.id, callback);
+                return ApplicationService.delete(app.id, callback);
             } else {
                 //Nothing to do.
             }

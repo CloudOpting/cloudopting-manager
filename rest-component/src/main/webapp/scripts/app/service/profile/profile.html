@@ -27,7 +27,7 @@
                     <strong>An error has occurred!</strong> Settings could not be saved.
                 </div>
 
-                <form name="form_settings" novalidate ng-submit="save()" show-validation>
+                <form name="form_settings" novalidate ng-submit="save()" show-validation ng-autodisable>
 
                     <div class="form-group">
                         <label translate="settings.form.firstname">First Name</label>
@@ -116,7 +116,7 @@
                     The password and its confirmation do not match!
                 </div>
 
-                <form name="form_pass" novalidate ng-submit="changePassword()" show-validation>
+                <form name="form_pass" novalidate ng-submit="changePassword()" show-validation ng-autodisable>
 
                     <div class="form-group">
                         <label translate="global.form.newpassword">New password</label>
@@ -170,7 +170,7 @@
 
                 <!-- <h3 translate="password.title" translate-values="{username: '{{passAccount.login}}'}">Organization {{passAccount.login}}</h3> -->
 
-                <form name="form_org" novalidate ng-submit="updateOrganization()" show-validation>
+                <form name="form_org" novalidate ng-submit="updateOrganization()" show-validation ng-autodisable>
 
                     <div class="form-group">
                         <label translate="profile.form_org.org_name">Organization name</label>
@@ -229,8 +229,8 @@
                                         <td>{{cloudAcc.name}}</td>
                                         <td>{{cloudAcc.providerId.provider}}</td>
                                         <td class="text-right">
-                                            <button type="button" class="btn btn-icon" ng-click="goToEdit(cloudAcc)"><i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate}}</button>
-                                            <button type="button" class="btn btn-icon" ng-click="deleteCloudAccount(cloudAcc)"><i class="fa fa-trash-o"></i>{{'cloudaccount.button.delete' | translate}}</button>
+                                            <button type="button" class="btn btn-icon" ng-click="goToEdit(cloudAcc)" ><i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate}}</button>
+                                            <button type="button" class="btn btn-icon" ng-click="deleteCloudAccount(cloudAcc)" ng-autodisable><i class="fa fa-trash-o"></i>{{'cloudaccount.button.delete' | translate}}</button>
                                         </td>
                                     </tr>
                                 </tbody>

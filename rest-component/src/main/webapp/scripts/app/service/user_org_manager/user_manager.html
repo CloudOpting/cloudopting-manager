@@ -41,8 +41,8 @@
                                                 <td>{{user.email}}</td>
                                                 <td>{{user.organizationId.organizationName}}</td>
                                                 <td class="text-right">
-                                                    <button type="button" ng-click="editUser(user)" class="btn btn-icon" ><i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate}}</button>
-                                                    <button type="button" ng-click="deleteUser(user.id)" class="btn btn-icon" ><i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate}}</button>
+                                                    <button type="button" ng-click="editUser(user)" class="btn btn-icon" ng-autodisable><i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate}}</button>
+                                                    <button type="button" ng-click="deleteUser(user.id)" class="btn btn-icon" ng-autodisable><i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate}}</button>
                                                 </td>
                                             </tr>
                                             </tbody>

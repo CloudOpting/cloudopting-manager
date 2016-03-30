@@ -203,7 +203,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		$scope.$broadcast('schemaFormRedraw');
 
 		$scope.$apply();
-	}
+	};
 
 	$scope.onSubmit = function(form) {
 		// First we broadcast an event so all fields validate
@@ -236,11 +236,11 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
                 if(data) {
                     var zip = new Blob([data], {type: 'application/zip'});
                     var fileName = 'TOSCA_Archive.zip';
-                    FileSaver.saveAs(zip, fileName);
+					return FileSaver.saveAs(zip, fileName);
                 }
 			};
 		}
-	}
+	};
 
 	// reset the sample nodes
 	$scope.reset = function() {
@@ -250,7 +250,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		$scope.$apply();
 		$rootScope.$broadcast('appChanged');
 
-	}
+	};
 
 	$scope.sendService = function() {
 		console.debug("sending data");
@@ -268,8 +268,8 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
                 FileSaver.saveAs(zip, fileName);
             }
 		};
-		ToscaideService.sendData(data, callback);
-	}
+		return ToscaideService.sendData(data, callback);
+	};
 
 	$scope.saveService = function() {
 		console.debug("sending data for save");
@@ -282,8 +282,9 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		var callback = function(data, status, headers, config) {
 			console.debug(data);
 		};
-		ToscaideService.saveData(data, callback);
-	}
+		return ToscaideService.saveData(data, callback);
+	};
+
 	$scope.loadTopology = function() {
 		console.debug("loading saved data");
 		var data = JSON.stringify({
@@ -310,7 +311,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			$rootScope.$broadcast('appChanged');
 
 		};
-		ToscaideService.loadTopology(data, callback);
+		return ToscaideService.loadTopology(data, callback);
 	}
 
 });

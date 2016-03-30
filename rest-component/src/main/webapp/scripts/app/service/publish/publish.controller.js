@@ -78,7 +78,7 @@ angular.module('cloudoptingApp')
                 };
 
                 //FIXME: We do not have the file ID
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
+                return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
         };
@@ -122,7 +122,7 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            ApplicationService.create($scope.application, callback);
+            return ApplicationService.create($scope.application, callback);
         };
 
         $scope.updateWizardOne = function() {
@@ -135,7 +135,7 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
+            return ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
         };
 
         $scope.nextWizardOne = function() {
@@ -195,6 +195,7 @@ angular.module('cloudoptingApp')
                     ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
                 }
             }
+            return;
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
@@ -274,6 +275,7 @@ angular.module('cloudoptingApp')
                     ApplicationService.addToscaArchive(activiti.applicationId, activiti.processInstanceId, file, callback);
                 }
             }
+            return;
         };
 
         /**
@@ -298,7 +300,7 @@ angular.module('cloudoptingApp')
                     }
                 };
 
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
+                return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
         };
@@ -318,7 +320,7 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            requestPublication(activiti, application, callback);
+            return requestPublication(activiti, application, callback);
         };
 
         /**
@@ -330,7 +332,7 @@ angular.module('cloudoptingApp')
             //activiti.processInstanceId, activiti.applicationId
             application.status = "Requested";
             $log.debug("Requesting publication for application: " + angular.toJson(application, true));
-            ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
+            return ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
         };
 
         //////////

@@ -57,7 +57,7 @@ angular.module('cloudoptingApp')
                 };
 
                 //Delete user
-                UserService.delete(idUser, deleteCallback);
+                return UserService.delete(idUser, deleteCallback);
             } else {
                 //Nothing to do.
             }
@@ -65,9 +65,9 @@ angular.module('cloudoptingApp')
 
         $scope.submitUserForm = function(userId) {
             if(userId) {
-                saveUser();
+                return saveUser();
             } else {
-                createUser();
+                return createUser();
             }
         };
 
@@ -80,14 +80,14 @@ angular.module('cloudoptingApp')
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'user_manager');
             };
-            UserService.create($scope.user, callback);
+            return UserService.create($scope.user, callback);
         };
 
         var saveUser = function() {
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'user_manager');
             };
-            UserService.update($scope.user, callback);
+            return UserService.update($scope.user, callback);
         };
         //////////////////////////////////////////
 
@@ -146,7 +146,7 @@ angular.module('cloudoptingApp')
                     checkStatusCallback(data, status, headers, config, 'org_manager');
                 };
                 //Delete organization.
-                OrganizationService.delete(idOrganization, deleteCallback);
+                return OrganizationService.delete(idOrganization, deleteCallback);
             } else {
                 //Nothing to do.
             }
@@ -154,9 +154,9 @@ angular.module('cloudoptingApp')
 
         $scope.submitOrganizationForm = function(orgId) {
             if(orgId) {
-                saveOrganization();
+                return saveOrganization();
             } else {
-                createOrganization();
+                return createOrganization();
             }
         };
 
@@ -169,14 +169,14 @@ angular.module('cloudoptingApp')
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'org_manager');
             };
-            OrganizationService.create($scope.org, callback);
+            return OrganizationService.create($scope.org, callback);
         };
 
         var saveOrganization = function() {
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'org_manager');
             };
-            OrganizationService.update($scope.org, callback);
+            return OrganizationService.update($scope.org, callback);
         };
 
         /////////////////

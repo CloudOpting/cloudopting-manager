@@ -38,7 +38,7 @@ angular.module('cloudoptingApp')
                     }
                 }
             };
-            ProcessService.test(instance.id, callback);
+            return ProcessService.test(instance.id, callback);
         };
 
         $scope.demo = function(instance) {
@@ -47,7 +47,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.demo(instance.id, callback);
+            return ProcessService.demo(instance.id, callback);
         };
 
         $scope.deploy = function(instance) {
@@ -57,7 +57,7 @@ angular.module('cloudoptingApp')
                     $state.go("activiti");
                 }
             };
-            ProcessService.deploy(instance.id, callback);
+            return ProcessService.deploy(instance.id, callback);
         };
 
         $scope.stop = function(instance) {
@@ -67,7 +67,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            //ProcessService.stop(instance);
+            //return ProcessService.stop(instance);
         };
         $scope.delete = function(instance) {
             $scope.errorMessage = "Delete not implemented yet";
@@ -76,7 +76,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            //ProcessService.delete(instance.id, callback);
+            //return ProcessService.delete(instance.id, callback);
         };
 
         $scope.monitor = function(instance) {
@@ -94,8 +94,8 @@ angular.module('cloudoptingApp')
                 if(checkStatusCallback(data, status, headers, config, "Start requested.")){
                     //Do something here if all went ok.
                 }
-            }
-            //ProcessService.start(instance);
+            };
+            //return ProcessService.start(instance);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){

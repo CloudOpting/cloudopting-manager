@@ -44,7 +44,7 @@ angular.module('cloudoptingApp')
                 }
             }
 
-            OrganizationService.createCloudAccount($scope.organization.id, $scope.cloudAcc, callback);
+            return OrganizationService.createCloudAccount($scope.organization.id, $scope.cloudAcc, callback);
         };
 
         $scope.updateCloudAccount = function () {
@@ -59,7 +59,7 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            OrganizationService.updateCloudAccount($scope.organization.id, $scope.cloudAcc, callback);
+            return OrganizationService.updateCloudAccount($scope.organization.id, $scope.cloudAcc, callback);
         };
 
 
@@ -73,7 +73,7 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            OrganizationService.deleteCloudAccount($scope.organization.id, $scope.cloudAcc.id, callback);
+            return OrganizationService.deleteCloudAccount($scope.organization.id, $scope.cloudAcc.id, callback);
         };
 
         $scope.goToProfile = function(){

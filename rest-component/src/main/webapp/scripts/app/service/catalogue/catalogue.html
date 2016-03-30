@@ -103,7 +103,7 @@
                 <div class="alert alert-danger" ng-show="errorMessage" translate="contact.messages.error.fail">
                     <strong>Something went wrong!</strong> Please try again later.
                 </div>
-                <form id="contactForm" ng-show="!success" name="form" role="form" novalidate ng-submit="contact()" show-validation>
+                <form id="contactForm" ng-show="!success" name="form" role="form" novalidate ng-submit="contact()" show-validation ng-autodisable>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">

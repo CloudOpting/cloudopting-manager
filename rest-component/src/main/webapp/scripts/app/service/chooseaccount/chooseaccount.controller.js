@@ -27,7 +27,7 @@ angular.module('cloudoptingApp')
             var instanceWithAccount = {};
             instanceWithAccount.id = instance.id;
             instanceWithAccount.cloudAccountId = cloudAccount.id;
-            InstanceService.update(instanceWithAccount, callback);
+            return InstanceService.update(instanceWithAccount, callback);
         };
 
         //Error handling

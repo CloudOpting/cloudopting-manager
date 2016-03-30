@@ -55,7 +55,7 @@ angular.module('cloudoptingApp')
                     }
                 }
             };
-            ProcessService.test(instance.id, callback);
+            return ProcessService.test(instance.id, callback);
         };
 
         $scope.demo = function(instance) {
@@ -64,7 +64,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.demo(instance.id, callback);
+            return ProcessService.demo(instance.id, callback);
         };
 
         $scope.deploy = function(instance) {
@@ -73,7 +73,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.deploy(instance.id, callback);
+            return ProcessService.deploy(instance.id, callback);
         };
 
         $scope.stop = function(instance) {
@@ -83,7 +83,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            //InstanceService.stop(instance);
+            //return InstanceService.stop(instance);
         };
         $scope.delete = function(instance) {
             $window.alert('Not implemented yet');
@@ -92,7 +92,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            //InstanceService.delete(instance.id, callback);
+            //return InstanceService.delete(instance.id, callback);
         };
 
         $scope.monitor = function(instance) {
@@ -107,7 +107,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            //InstanceService.start(instance);
+            //return InstanceService.start(instance);
         };
 
         //Checks for showing the buttons.

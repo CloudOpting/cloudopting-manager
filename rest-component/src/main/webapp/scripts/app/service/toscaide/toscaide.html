@@ -104,10 +104,10 @@
 						</div>
 						<div class="row row-actions">
 							<div class="col-xs-6">
-								<button type="text" class="btn" ng-click="saveService()" ng-disabled="!serviceName.length" translate="toscaide.saveGraph">Save graph</button>
+								<button type="text" class="btn" ng-click="saveService()" ng-disabled="!serviceName.length" translate="toscaide.saveGraph" ng-autodisable>Save graph</button>
 							</div>
 							<div class="col-xs-6">
-								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length" translate="toscaide.generateTosca">Generate TOSCA</button>
+								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length" translate="toscaide.generateTosca" ng-autodisable>Generate TOSCA</button>
 							</div>
 						</div>
 					</div>
