@@ -4,8 +4,8 @@
         "refresh.button": "Actualitza",
         "stacktrace": "Stacktrace",
         "indicator": {
-            "db": "Base de Dades",
-            "diskSpace": "Disk space",
+            "db": "Base de dades",
+            "diskSpace": "Espai del disc",
             "mail": "Correu electrònic",
             "mongo": "Mongo DB"
         },
