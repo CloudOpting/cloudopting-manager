@@ -1,7 +1,7 @@
 {
     "global": {
         "title": "CloudOpting",
-        "browsehappy": "Esteu utilitzant un navegador <strong>obsolet</strong>. Si us plau <a href=\"http://browsehappy.com/?locale=en\">actualitzeu el vostre navegador</a> per millorar-ne l'experiència.",
+        "browsehappy": "Esteu utilitzant un navegador <strong>obsolet</strong>. Si us plau <a href=\"http://browsehappy.com/?locale=en\">actualitzeu-lo</a> per millorar-ne l'experiència.",
         "menu": {
             "home": "Inici",
             "entities": {
