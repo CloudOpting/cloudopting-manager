@@ -53,7 +53,7 @@ h4,
 h5,
 h6 {
     text-transform: uppercase;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
     font-weight: 700;
 }
 .form-control:focus {
@@ -86,7 +86,7 @@ h6 {
 .btn {
     background-color: #31abac;
     color: #FFF;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
     font-weight: 700;
 }
 .btn:hover,
@@ -199,7 +199,7 @@ fieldset[disabled] .btn-reverse.active {
     padding: 20px 40px;
     border-radius: 3px;
     text-transform: uppercase;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
     font-size: 18px;
     font-weight: 700;
     color: #fff;
@@ -297,8 +297,8 @@ fieldset[disabled] .btn-xl.active {
 }
 .navbar-default .nav li a {
     text-transform: uppercase;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
-    font-weight: 400;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
+    font-weight: 700;
     letter-spacing: 1px;
     color: #333;
     -webkit-transition: all .3s;
@@ -884,14 +884,14 @@ footer {
 
 footer span.copyright {
     text-transform: none;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
     line-height: 40px;
 }
 
 footer ul.quicklinks {
     margin-bottom: 0;
     text-transform: none;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
     line-height: 40px;
 }
 
@@ -927,6 +927,8 @@ footer ul.quicklinks {
   text-decoration: none;
   border: none;
   width: 100%;
+  white-space: normal;
+  word-break: break-word;
 }
 /*
 .hvr-rectangle-out:before {
@@ -979,7 +981,7 @@ footer ul.quicklinks {
 
 .portfolio-modal p.item-intro {
     margin: 20px 0 30px;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
     font-size: 16px;
     font-weight: 400;
 }
@@ -1223,7 +1225,7 @@ footer ul.quicklinks {
     font-size: 16px;
     color: #b2b2b2;
     text-transform: uppercase;
-    font-family: "Montserrat",Helvetica,Arial,sans-serif;
+    font-family: "Arimo",Helvetica,Arial,sans-serif;
     font-weight: 400;
     border-bottom: 0;
 }

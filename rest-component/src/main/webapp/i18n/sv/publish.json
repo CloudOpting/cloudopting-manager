@@ -1,0 +1,90 @@
+{
+  "publish": {
+    "title": "Publish Service",
+    "service" : {
+      "name": "Service Name",
+      "toscaname": "Service TOSCA Name",
+      "description": "Service Description",
+      "image": "Service Image",
+      "shortDescription" : "Short Description",
+      "termsAndConditions" : "Terms and conditions link",
+      "applicationSubscriberMail" : "Subscriber mail template",
+      "applicationSpMail" : "Provider mail template",
+      "servicePrice" : "Service Price",
+      "platformPrice" : "Platform Price",
+      "applicationIsTryable": "Can the platform be tried",
+      "sizeId": "Size"
+    },
+    "select" : {
+      "addtosca": "+ Add TOSCA Archive",
+      "tosca": "TOSCA Archive",
+      "toscaempty": "TOSCA Archive not selected",
+      "file": "Select File"
+    },
+    "selectedfile": "Selected File",
+    "content" : {
+      "emptylibrary": "The Library is Empty",
+      "library" : "Content Library",
+      "name" : "Name",
+      "file" : "File"
+    },
+    "button" : {
+      "save": "Save",
+      "save_n_next": "Save & Next",
+      "publish": "Publish Service",
+      "add": "+ Add Item in Library",
+      "delete": "Delete File",
+      "service_list":"Service List",
+      "update": "Update",
+      "next": "Next"
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "The name is required.",
+          "minlength": "The name is required to be at least 1 character."
+        },
+        "toscaname": {
+          "required": "The Service TOSCA Name is required.",
+          "minlength": "The Service TOSCA Name is required to be at least 1 character.",
+          "maxlength": "The Service TOSCA Name cannot be longer than 10 characters.",
+          "pattern": "The Service TOSCA Name cannot contain spaces."
+        },
+        "description": {
+          "required": "The description is required.",
+          "minlength": "The description is required to be at least 1 character."
+        },
+        "shortDescription": {
+          "required": "The short description is required."
+        },
+        "termsAndConditions": {
+          "required": "The terms and conditions link is required."
+        },
+        "applicationSubscriberMail": {
+          "required": "The subscriber mail template is required."
+        },
+        "applicationSpMail": {
+          "required": "The provider mail template is required."
+        },
+        "servicePrice": {
+          "required": "The service price is required."
+        },
+        "platformPrice": {
+          "required": "The platform price is required."
+        },
+        "sizeId": {
+          "required": "The size is required."
+        }
+      }
+    },
+    "wizzard": {
+      "one":"Set Global Properties",
+      "tow":"Upload needed files",
+      "three":"Upload TOSCA archive",
+      "four":"Request Status"
+    },
+    "thanks" :"Thanks!",
+    "thanks_2": "Your service has been published"
+  }
+}
+

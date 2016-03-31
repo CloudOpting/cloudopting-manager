@@ -1,0 +1,26 @@
+{
+  "list": {
+    "title": "Services List",
+    "search": {
+      "placeholder": "Search for..."
+    },
+    "button": {
+      "addservice": "New Service",
+      "search": "Search Service",
+      "edit": "Edit",
+      "listinstances": "List Inst.",
+      "delete": "Delete",
+      "createinstance": "New Inst."
+    },
+    "col": {
+      "name": "Service Name",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "published": "Published",
+      "fortesting": "For Testing",
+      "uploaded": "Uploaded"
+    }
+  }
+}
