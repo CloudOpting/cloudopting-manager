@@ -14,8 +14,8 @@
             "status": "Estat"
         },
         "status": {
-            "UP": "UP",
-            "DOWN": "DOWN"
+            "UP": "Actiu",
+            "DOWN": "No Actiu"
         }
     }
 }
