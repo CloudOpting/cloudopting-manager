@@ -8,7 +8,7 @@
       "image": "Imatge principal del Servei",
       "shortDescription" : "Descripció curta",
       "termsAndConditions" : "Enllaç a les condicions d'ús",
-      "applicationSubscriberMail" : "Plantilla de correu electrònic pel Subcriptor",
+      "applicationSubscriberMail" : "Plantilla de correu electrònic pel Subscriptor",
       "applicationSpMail" : "Plantilla de correu electrònic pel Proveïdor",
       "servicePrice" : "Preu del Servei",
       "platformPrice" : "Preu de la Plataforma Cloud",
@@ -30,7 +30,7 @@
     },
     "button" : {
       "save": "Desa",
-      "save_n_next": "Desa & Continua",
+      "save_n_next": "Desa i Continua",
       "publish": "Publica el Servei",
       "add": "+ Afegeix ítem a la llibreria",
       "delete": "Elimina arxiu",
@@ -79,8 +79,8 @@
     },
     "wizzard": {
       "one":"Estableix les propietats globals",
-      "tow":"Puja els arxius necessaris",
-      "three":"Pula l'arxiu TOSCA",
+      "tow":"Adjunta els arxius necessaris",
+      "three":"Adjunta l'arxiu TOSCA",
       "four":"Sol·licita estat"
     },
     "thanks" :"Gràcies!",
