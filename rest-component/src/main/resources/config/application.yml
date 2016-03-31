@@ -23,6 +23,7 @@ async:
 
 spring:
     mail:
+        baseUrl: http://cloudopting1.cloudapp.net
 #        Previous values    
 #        baseUrl: http://cloudopting1.cloudapp.net
 #        protocol: smtp
@@ -33,16 +34,20 @@ spring:
 #        tls: true
 #        auth: true
 #        from: cloudopting@gmail.com
-        baseUrl: http://cloudopting1.cloudapp.net
-        protocol: smtp
-        host: vl23232.dns-privadas.es
-        port: 465
+        host: mail.cloudopting.eu
+        port: 25
         username: dev@cloudopting.eu
         password: CloudOpting@2016
-        tls: true
-        auth: true
         from: dev@cloudopting.eu
-
+        properties:
+          mail.smtp.auth: true
+          mail.smtp.ssl.trust: mail.cloudopting.eu
+          mail.smtp.starttls.enable: false
+          mail.smtp.socketFactory.port: 25
+          #mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+          #mail.smtp.socketFactory.fallback: false
+          mail.smtp.debug: true
+          #mail.transport.protocol: smtp
 
     messageSource:
         cacheSeconds: 1

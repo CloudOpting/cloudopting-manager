@@ -113,8 +113,9 @@ public class MailService {
 		log.debug("Sending activation e-mail to '{}'", user.getEmail());
 		String content = "<html>" + "<body>" + "<p> Hi " + user.getFirstName() + ", </p>"
 				+ "<p>Thanks for joining CloudOpting!</p>"
-				+ "<p>Please, click the following link to verify your email: "
-				+ baseUrl + "/cloudopting/#/activate?key=" + user.getActivationKey() + "</p>" + "<p>Best regards,</p>"
+				+ "<p>Please, click the following link to verify your email: <a href='"
+				+ baseUrl + "/cloudopting/#/activate?key=" + user.getActivationKey() + "'>"+ 
+				baseUrl + "/cloudopting/#/activate?key=" + user.getActivationKey() + "</a></p>" + "<p>Best regards,</p>"
 				+ "<p>CloudOpting team.</p>" + "</body>" + "</html>";
 		String subject = "CloudOpting Catalogue Activation Link";
 		sendEmail(user.getEmail(), subject, content, false, true);

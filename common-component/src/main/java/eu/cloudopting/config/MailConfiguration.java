@@ -1,5 +1,8 @@
 package eu.cloudopting.config;
 
+import java.util.Map;
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
@@ -8,8 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import java.util.Properties;
 
 @Configuration
 public class MailConfiguration implements EnvironmentAware {
@@ -22,9 +23,10 @@ public class MailConfiguration implements EnvironmentAware {
     private static final String PROP_USER = "username";
     private static final String PROP_PASSWORD = "password";
     private static final String PROP_PROTO = "protocol";
-    private static final String PROP_TLS = "tls";
-    private static final String PROP_AUTH = "auth";
+//    private static final String PROP_TLS = "tls";
+//    private static final String PROP_AUTH = "auth";
     private static final String PROP_SMTP_AUTH = "mail.smtp.auth";
+    private static final String PROP_SMTP_DEBUG = "mail.smtp.debug";
     private static final String PROP_STARTTLS = "mail.smtp.starttls.enable";
     private static final String PROP_SSLTRUST = "mail.smtp.ssl.trust";
     private static final String PROP_TRANSPORT_PROTO = "mail.transport.protocol";
@@ -32,7 +34,7 @@ public class MailConfiguration implements EnvironmentAware {
     private final Logger log = LoggerFactory.getLogger(MailConfiguration.class);
 
     private RelaxedPropertyResolver propertyResolver;
-
+    
     @Override
     public void setEnvironment(Environment environment) {
         this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_SPRING_MAIL);
@@ -45,9 +47,9 @@ public class MailConfiguration implements EnvironmentAware {
         int port = propertyResolver.getProperty(PROP_PORT, Integer.class, 0);
         String user = propertyResolver.getProperty(PROP_USER);
         String password = propertyResolver.getProperty(PROP_PASSWORD);
-        String protocol = propertyResolver.getProperty(PROP_PROTO);
-        Boolean tls = propertyResolver.getProperty(PROP_TLS, Boolean.class, false);
-        Boolean auth = propertyResolver.getProperty(PROP_AUTH, Boolean.class, false);
+        //String protocol = propertyResolver.getProperty(PROP_PROTO);
+        //Boolean tls = propertyResolver.getProperty(PROP_TLS, Boolean.class, false);
+        //Boolean auth = propertyResolver.getProperty(PROP_AUTH, Boolean.class, false);
 
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         if (host != null && !host.isEmpty()) {
@@ -58,15 +60,16 @@ public class MailConfiguration implements EnvironmentAware {
             sender.setHost(DEFAULT_HOST);
         }
         sender.setPort(port);
-        sender.setProtocol(protocol);
-        sender.setUsername(user);
+        //sender.setProtocol(protocol);
+        sender.setUsername(user);	
         sender.setPassword(password);
 
         Properties sendProperties = new Properties();
-        sendProperties.setProperty(PROP_SMTP_AUTH, auth.toString());
-        sendProperties.setProperty(PROP_SSLTRUST, host);
-        sendProperties.setProperty(PROP_STARTTLS, tls.toString());
-        sendProperties.setProperty(PROP_TRANSPORT_PROTO, protocol);
+        Map<String, Object> pp = propertyResolver.getSubProperties("properties.");
+        sendProperties.setProperty(PROP_SMTP_AUTH, pp.get(PROP_SMTP_AUTH).toString());
+        sendProperties.setProperty(PROP_SSLTRUST, pp.get(PROP_SSLTRUST).toString());
+        sendProperties.setProperty(PROP_STARTTLS, pp.get(PROP_STARTTLS).toString());
+        sendProperties.setProperty(PROP_SMTP_DEBUG, pp.get(PROP_SMTP_DEBUG).toString());
         sender.setJavaMailProperties(sendProperties);
         return sender;
     }

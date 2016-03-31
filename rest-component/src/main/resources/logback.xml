@@ -29,14 +29,17 @@
 	
 	<logger name="org.activiti.engine" level="ERROR"/>
     <logger name="eu.cloud.cloudopting" level="TRACE"/>
+    <logger name="com.sun.mail.smtp" level="TRACE"/>
     <logger name="eu.cloudopting" level="TRACE"/>
+    <logger name="eu.cloudopting.tosca.ToscaService" level="ERROR"/>
 	<logger name="sun.net.www.protocol.http" level="TRACE"/>
-	<logger name="org.springframework.data.elasticsearch" level="TRACE"/>
-	<logger name="org.spring.data.elasticsearch" level="TRACE"/>
+	<logger name="org.springframework.data.elasticsearch" level="ERROR"/>
+	<logger name="org.spring.data.elasticsearch" level="ERROR"/>
+	<logger name="eu.cloudopting.config.locale" level="ERROR"/>
 	<logger name="org.elasticsearch" level="TRACE"/>
-	<logger name="org.springframework.data.elasticsearch.repository.ElasticsearchRepository" level="TRACE"/>
+	<logger name="org.springframework.data.elasticsearch.repository.ElasticsearchRepository" level="ERROR"/>
     <logger name="javax.activation" level="WARN"/>
-    <logger name="javax.mail" level="WARN"/>
+    <logger name="javax.mail" level="TRACE"/>
     <logger name="javax.xml.bind" level="WARN"/>
     <logger name="ch.qos.logback" level="WARN"/>
     <logger name="com.codahale.metrics" level="WARN"/>
@@ -54,6 +57,7 @@
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.security" level="WARN"/>
     <logger name="org.springframework.cache" level="WARN"/>
+    <logger name="org.springframework.mail" level="TRACE"/>
     <logger name="org.thymeleaf" level="WARN"/>
     <logger name="org.activiti" level="WARN"/>
     <logger name="org.xnio" level="WARN"/>
