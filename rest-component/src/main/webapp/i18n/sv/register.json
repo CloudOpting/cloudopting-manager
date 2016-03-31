@@ -1,0 +1,52 @@
+{
+    "register": {
+        "title": "Register",
+        "form": {
+            "button": "Register",
+            "username.placeholder": "Username",
+            "firstName.placeholder": "First name",
+            "lastName.placeholder": "Last name",
+            "email.placeholder": "E-mail",
+            "password.placeholder": "Password",
+            "confirmpassword.placeholder": "Confirm Password"
+        },
+        "messages": {
+            "validate": {
+                "firstname": {
+                    "required": "Your first name is required."
+                },
+                "lastname": {
+                    "required": "Your last name is required."
+                },
+                "username": {
+                    "required": "Your username is required.",
+                    "minlength": "Your username is required to be at least 1 character",
+                    "maxlength": "Your username cannot be longer than 50 characters",
+                    "pattern": "Your username can only contain lower-case letters and digits"
+                },
+                "password" :{
+                    "required": "Your password is required.",
+                    "minlength": "Your password is required to be at least 5 character",
+                    "maxlength": "Your password cannot be longer than 50 characters"
+                },
+                "password2" :{
+                    "required": "Your password confirmation is required.",
+                    "minlength": "Your password is required to be at least 5 character",
+                    "maxlength": "Your password cannot be longer than 50 characters"
+                },
+                "email" :{
+                    "required": "Your e-mail is required.",
+                    "invalid": "Your e-mail is invalid.",
+                    "minlength": "Your e-mail is required to be at least 5 character",
+                    "maxlength": "Your e-mail cannot be longer than 100 characters"
+                }
+            },
+            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+            "error": {
+                "fail": "<strong>Registration failed!</strong> Please try again later.",
+                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+            }
+        }
+    }
+}

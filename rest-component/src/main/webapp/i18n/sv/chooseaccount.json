@@ -1,0 +1,12 @@
+{
+  "chooseaccount": {
+    "title" : "Cloud Accounts Available",
+    "button" : {
+      "choose" : "Choose"
+    },
+    "col" : {
+      "name" : "Cloud Account Name",
+      "provider" : "Provider"
+    }
+  }
+}
