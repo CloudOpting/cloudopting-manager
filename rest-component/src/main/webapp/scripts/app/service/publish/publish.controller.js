@@ -26,6 +26,8 @@ angular.module('cloudoptingApp')
         } else {
             //If it is a new service we start with diferent parameters.
             $scope.application = {};
+            //Set the default text to the application description.
+            $scope.application.applicationDescription=$translate.instant("publish.description.template");
             $scope.disableUpdate = true;
             $scope.disableSave = false;
             $scope.disableNextOne = true;
