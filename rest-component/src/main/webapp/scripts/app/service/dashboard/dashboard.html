@@ -40,7 +40,7 @@
                                                 <th translate="instances.col.author">Author</th>
                                                 <th translate="instances.col.date">Date</th>
                                                 <th translate="instances.col.status">Status</th>
-                                                <th translate="instances.col.actions">Actions</th>
+                                                <th translate="instances.col.actions" class="table-col-actions actions-large">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -49,14 +49,28 @@
                                                 <td>{{instance.customerOrganizationId.organizationName}}</td>
                                                 <td>{{instance.customizationCreation}}</td>
                                                 <td>{{instance.statusId.status}}</td>
-                                                <td class="text-right">
-                                                    <button type="button" class="btn btn-icon" ng-click="test(instance)" ng-autodisable><i class="fa fa-flask"></i>{{'instances.button.test' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="demo(instance)" ng-autodisable><i class="fa fa-external-link"></i>{{'instances.button.demo' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="deploy(instance)" ng-autodisable><i class="fa fa-rocket"></i>{{'instances.button.deploy' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="start(instance)" ng-autodisable><i class="fa fa-play-circle"></i>{{'instances.button.start' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="stop(instance)" ng-autodisable><i class="fa fa-stop-circle"></i>{{'instances.button.stop' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="monitor(instance)" ng-autodisable><i class="fa fa-bar-chart"></i>{{'instances.button.monitor' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="delete(instance)" ng-autodisable><i class="fa fa-trash-o"></i>{{'instances.button.delete' | translate}}</button>
+                                                <td class="table-col-actions actions-large">
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="test(instance)" ng-autodisable>
+                                                        <i class="fa fa-flask"></i>{{'instances.button.test' | translate | limitTo: 3}}.<span>{{'instances.button.test' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="demo(instance)" ng-autodisable>
+                                                        <i class="fa fa-external-link"></i>{{'instances.button.demo' | translate | limitTo: 3}}.<span>{{'instances.button.demo' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="deploy(instance)" ng-autodisable>
+                                                        <i class="fa fa-rocket"></i>{{'instances.button.deploy' | translate | limitTo: 3}}.<span>{{'instances.button.deploy' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="start(instance)" ng-autodisable>
+                                                        <i class="fa fa-play-circle"></i>{{'instances.button.start' | translate | limitTo: 3}}.<span>{{'instances.button.start' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="stop(instance)" ng-autodisable>
+                                                        <i class="fa fa-stop-circle"></i>{{'instances.button.stop' | translate | limitTo: 3}}.<span>{{'instances.button.stop' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="monitor(instance)" ng-autodisable>
+                                                        <i class="fa fa-bar-chart"></i>{{'instances.button.monitor' | translate | limitTo: 3}}.<span>{{'instances.button.monitor' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="delete(instance)" ng-autodisable>
+                                                        <i class="fa fa-trash-o"></i>{{'instances.button.delete' | translate | limitTo: 3}}.<span>{{'instances.button.delete' | translate}}</span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>

@@ -221,16 +221,20 @@
                                     <tr>
                                         <th translate="cloudaccount.col.name">Cloud Account Name</th>
                                         <th translate="cloudaccount.col.provider">Provider</th>
-                                        <th translate="cloudaccount.col.actions">Actions</th>
+                                        <th translate="cloudaccount.col.actions" class="table-col-actions actions-short">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="cloudAcc in cloudAccList">
                                         <td>{{cloudAcc.name}}</td>
                                         <td>{{cloudAcc.providerId.provider}}</td>
-                                        <td class="text-right">
-                                            <button type="button" class="btn btn-icon" ng-click="goToEdit(cloudAcc)" ><i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate}}</button>
-                                            <button type="button" class="btn btn-icon" ng-click="deleteCloudAccount(cloudAcc)" ng-autodisable><i class="fa fa-trash-o"></i>{{'cloudaccount.button.delete' | translate}}</button>
+                                        <td class="table-col-actions actions-short">
+                                            <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToEdit(cloudAcc)" >
+                                              <i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate | limitTo: 3}}.<span>{{'cloudaccount.button.edit' | translate}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-icon actionsTooltip" ng-click="deleteCloudAccount(cloudAcc)" ng-autodisable>
+                                              <i class="fa fa-trash-o"></i>{{'cloudaccount.button.delete' | translate | limitTo: 3}}.<span>{{'cloudaccount.button.delete' | translate}}</span>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>

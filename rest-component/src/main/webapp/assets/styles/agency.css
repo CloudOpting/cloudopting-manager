@@ -1128,7 +1128,7 @@ footer ul.quicklinks {
 .btn.btn-icon {
     border: 1px solid transparent;
     background-color: #FFF;
-    padding: 3px 6px;
+    padding: 2px 2px;
     color: #485868;
     font-size: 10px;
     line-height: 1;
@@ -1136,6 +1136,9 @@ footer ul.quicklinks {
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
     transition: all .3s;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-transform: capitalize;
 }
 .btn.btn-icon i {
     display: block;
@@ -1862,3 +1865,66 @@ ul.bxslider {
     width: 100%;
 }
 /* end CYTOSCAPE */
+
+
+
+/* CSS3 tooltip */
+.actionsTooltip {
+    outline: none;
+    text-decoration: none;
+    position: relative;
+}
+
+.actionsTooltip > span {
+    width: 80px;
+    padding: 5px 3px 4px 3px;
+    margin-top: 1px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 10;
+    position: absolute;
+    left: 50%;
+    margin-left: -40px;
+    text-align: center;
+    font-family: Arial;
+    font-size: 11px;
+    font-style: normal;
+    border-radius: 3px;
+    box-shadow: 0px 1px 10px #CCC;
+    -webkit-transition-property: opacity, visibility;
+    -webkit-transition-duration: 0.4s, 0.4s;
+    -webkit-transition-timing-function: ease-in-out, ease-in-out;
+    transition-property: opacity, visibility;
+    transition-duration: 0.4s, 0.4s;
+    transition-timing-function: ease-in-out, ease-in-out;
+    color: #31abac;
+    background: #FFF;
+}
+
+/*a.tooltip > span:hover,*/
+.actionsTooltip:hover > span {
+    opacity: 1;
+    text-decoration: none;
+    visibility: visible;
+    overflow: visible;
+    display: inline;
+}
+
+/* CSS3 Tooltip */
+.table-responsive .table {
+    width: 99%;
+}
+.table > thead > tr > .table-col-actions,
+.table > tbody > tr > .table-col-actions {
+    text-align: right;
+    padding-right: 20px;
+}
+.table-col-actions.actions-short {
+    width: 160px;
+}
+.table-col-actions.actions-medium {
+    width: 230px;
+}
+.table-col-actions.actions-large {
+    width: 330px;
+}

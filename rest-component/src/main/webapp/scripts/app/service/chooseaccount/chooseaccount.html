@@ -19,15 +19,17 @@
                                             <tr>
                                                 <th translate="chooseaccount.col.name">Cloud Account Name</th>
                                                 <th translate="chooseaccount.col.provider">Provider</th>
-                                                <th></th>
+                                                <th class="table-col-actions actions-short"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="clAcc in cloudAccountsList">
                                                 <td>{{clAcc.name}}</td>
                                                 <td>{{clAcc.providerId.provider}}</td>
-                                                <td class="text-right">
-                                                    <button type="button" class="btn btn-icon" ng-click="choose(clAcc)" translate="chooseaccount.button.choose" ng-autodisable><i class="fa fa-check-circle-o"></i>Choose</button>
+                                                <td class="table-col-actions actions-short">
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="choose(clAcc)" ng-autodisable>
+                                                        <i class="fa fa-check-circle-o"></i>{{'chooseaccount.button.choose' | translate | limitTo: 3}}.<span>{{'chooseaccount.button.choose' | translate}}</span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -31,7 +31,7 @@
                                                 <th translate="user_org_manager.col.name">Name</th>
                                                 <th translate="user_org_manager.col.email">Email</th>
                                                 <th translate="user_org_manager.col.organization">Organization</th>
-                                                <th translate="user_org_manager.col.actions">Actions</th>
+                                                <th translate="user_org_manager.col.actions" class="table-col-actions actions-short">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -40,9 +40,13 @@
                                                 <td>{{user.firstName}} {{user.lastName}}</td>
                                                 <td>{{user.email}}</td>
                                                 <td>{{user.organizationId.organizationName}}</td>
-                                                <td class="text-right">
-                                                    <button type="button" ng-click="editUser(user)" class="btn btn-icon" ng-autodisable><i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate}}</button>
-                                                    <button type="button" ng-click="deleteUser(user.id)" class="btn btn-icon" ng-autodisable><i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate}}</button>
+                                                <td class="table-col-actions actions-short">
+                                                    <button type="button" ng-click="editUser(user)" class="btn btn-icon actionsTooltip" ng-autodisable>
+                                                        <i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate | limitTo: 3}}.<span>{{'user_org_manager.button.edit' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" ng-click="deleteUser(user.id)" class="btn btn-icon actionsTooltip" ng-autodisable>
+                                                        <i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate | limitTo: 3}}.<span>{{'user_org_manager.button.delete' | translate}}</span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>

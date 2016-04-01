@@ -33,18 +33,26 @@
                                             <tr>
                                                 <th translate="list.col.name">Service name</th>
                                                 <th translate="list.col.status">Status</th>
-                                                <th translate="list.col.actions">Actions</th>
+                                                <th translate="list.col.actions" class="table-col-actions actions-medium">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="app in applicationList | filter:searchTextApplication | startFrom:currentPage*pageSize | limitTo:pageSize">
                                                 <td>{{app.applicationName}}</td>
                                                 <td>{{app.statusId.status}}</td>
-                                                <td class="text-right">
-                                                    <button type="button" class="btn btn-icon" ng-click="goToCreateInstance(app)" ><i class="fa fa-plus-square-o"></i>{{'list.button.createinstance' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="goToEdit(app)" ><i class="fa fa-pencil-square-o"></i>{{'list.button.edit' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="goToInstanceList(app)" ><i class="fa fa-list-ul"></i>{{'list.button.listinstances' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="delete(app)" ng-autodisable><i class="fa fa-trash-o"></i>{{'list.button.delete' | translate}}</button>
+                                                <td class="table-col-actions actions-medium">
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToCreateInstance(app)" >
+                                                        <i class="fa fa-plus-square-o"></i>{{'list.button.createinstance' | translate | limitTo: 3}}.<span>{{'list.button.createinstance' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToEdit(app)" >
+                                                        <i class="fa fa-pencil-square-o"></i>{{'list.button.edit' | translate | limitTo: 3}}.<span>{{'list.button.edit' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToInstanceList(app)" >
+                                                        <i class="fa fa-list-ul"></i>{{'list.button.listinstances' | translate | limitTo: 3}}.<span>{{'list.button.listinstances' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="delete(app)" ng-autodisable>
+                                                        <i class="fa fa-trash-o"></i>{{'list.button.delete' | translate | limitTo: 3}}.<span>{{'list.button.delete' | translate}}</span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
