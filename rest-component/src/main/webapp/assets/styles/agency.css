@@ -109,7 +109,9 @@ h6 {
     color: #fff;
     background-color: #485868;
 }
-
+.btn-secondary {
+    text-transform: uppercase;
+}
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
