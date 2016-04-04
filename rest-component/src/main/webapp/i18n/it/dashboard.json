@@ -1,32 +1,32 @@
 {
   "instances": {
-    "title": "My Instances Service",
-    "placeholder" : "Search for...",
+    "title": "Le Mie Istanze del Servizio",
+    "placeholder" : "Ricerca per...",
     "col" : {
-      "instanceof": "Instance of",
-      "author": "Author",
-      "date": "Date",
-      "status": "Status",
-      "actions": "Actions"
+      "instanceof": "Istanza di",
+      "author": "Autore",
+      "date": "Data",
+      "status": "Stato",
+      "actions": "Azioni"
     },
     "status" : {
-      "requested": "Requested",
-      "deleted": "Deleted",
-      "running": "Running",
-      "todelete": "To Delete",
-      "stopped": "Stopped"
+      "requested": "Richiesto",
+      "deleted": "Cancellato",
+      "running": "In esecuzione",
+      "todelete": "Da Cancellare",
+      "stopped": "Fermato"
     },
     "button" : {
       "test": "Test",
-      "demo" : "Demo",
-      "search" : "Search Service",
-      "go": "GO",
-      "monitor": "Monitor.",
-      "deploy": "Deploy",
+      "demo" : "Dimostrazione",
+      "search" : "Ricerca del Servizio",
+      "go": "VAI",
+      "monitor": "Monitoraggio.",
+      "deploy": "Rilascio",
       "stop": "Stop",
       "start": "Start",
-      "delete": "Delete"
+      "delete": "Cancella"
     },
-    "go_to_tosca_ide" : "Create TOSCA file"
+    "go_to_tosca_ide" : "Creare il file di TOSCA"
   }
 }

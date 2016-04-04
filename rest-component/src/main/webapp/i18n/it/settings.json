@@ -16,21 +16,21 @@
             "success": "<strong>Impostazioni salvate!</strong>",
             "validate": {
                 "alias": {
-                    "required": "Your alias is required.",
-                    "minlength": "Your alias is required to be at least 1 character",
-                    "maxlength": "Your alias cannot be longer than 50 characters",
-                    "pattern": "Your alias can only contain lower-case letters and digits"
+                    "required": "L'alias è necessario.",
+                    "minlength": "L'alias è necessario e deve essere composto da almeno un carattere",
+                    "maxlength": "L'alias non può essere lungo più di cinquanta caratteri",
+                    "pattern": "L'alias può contenere solo lettere minuscole e numeri"
                 },
                 "firstname": {
-                    "required": "Il nome è richiesto.",
-                    "minlength": "Il nome è richiesto e deve esere composto da almeno 1 carattere",
-                    "maxlength": "Il nome non può essere più lungo di 50 caratteri",
-                    "pattern": "Your login can only contain lower-case letters and digits"
+                    "required": "Il nome è necessario.",
+                    "minlength": "Il nome è necessario e deve esere composto da almeno un carattere",
+                    "maxlength": "Il nome non può essere più lungo di cinquanta caratteri",
+                    "pattern": "Il login può contenere solo lettere minuscole e numeri"
                 },
                 "lastname": {
                     "required": "Il cognome è richiesto.",
-                    "minlength": "Il cognome è richiesto e deve esere composto da almeno 1 carattere",
-                    "maxlength": "Il cognome non può essere più lungo di 50 caratteri"
+                    "minlength": "Il cognome è richiesto e deve esere composto da almeno un carattere",
+                    "maxlength": "Il cognome non può essere più lungo di cinquanta caratteri"
                 }
             }
 

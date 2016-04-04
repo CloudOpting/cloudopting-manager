@@ -8,9 +8,9 @@
     "cpu": "CPU Utilizzo:",
     "disk": "Disk Utilizzo:",
     "ram": "RAM Utilizzo:",
-    "reloadGraphs":"Reload graphs",
-    "selecthost": "Select the Host:",
-    "selectitemhost": "Select the item in Host:"
+    "reloadGraphs":"Ricaricare i grafici",
+    "selecthost": "Selezionare l'host:",
+    "selectitemhost": "Selezionare l'elemento nell'Host:"
   }
 }
 

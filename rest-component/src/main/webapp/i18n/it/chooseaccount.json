@@ -1,12 +1,12 @@
 {
   "chooseaccount": {
-    "title" : "Cloud Accounts Available",
+    "title" : "Cloud Account Disponibili",
     "button" : {
-      "choose" : "Choose"
+      "choose" : "Scegliere"
     },
     "col" : {
-      "name" : "Cloud Account Name",
-      "provider" : "Provider"
+      "name" : "Nome Cloud Account",
+      "provider" : "Fornitore"
     }
   }
 }

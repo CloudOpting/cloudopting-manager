@@ -1,7 +1,7 @@
 {
     "global": {
         "title": "cloudopting",
-        "browsehappy": "Si sta utilizzando un browser <strong>obsoleto</strong>. Si prega <a href=\"http://browsehappy.com/?locale=en\">di aggiornare il vostro browser</a> per migliorare la vostra esperienza.",
+        "browsehappy": "Si sta utilizzando un browser <strong>obsoleto</strong>. Si prega <a href=\"http://browsehappy.com/?locale=it\">di aggiornare il vostro browser</a> per migliorare la vostra esperienza.",
         "menu": {
             "home": "Home",
             "entities": {
@@ -32,17 +32,17 @@
         },
         "form": {
             "username": "Login",
-            "username.placeholder": "Il tuo login",
-            "firstName": "First Name",
-            "firstName.placeholder": "First Name",
-            "lastName": "Last Name",
-            "lastName.placeholder": "Last Name",
+            "username.placeholder": "Login",
+            "firstName": "Nome",
+            "firstName.placeholder": "Nome",
+            "lastName": "Cognome",
+            "lastName.placeholder": "Cognome",
             "newpassword": "Nuova password",
             "newpassword.placeholder": "Nuova password",
             "confirmpassword": "Conferma la nuova password",
             "confirmpassword.placeholder": "Confermare la nuova password",
             "email": "E-mail",
-            "email.placeholder": "La tua e-mail"
+            "email.placeholder": "E-mail"
         },
         "messages": {
             "info": {

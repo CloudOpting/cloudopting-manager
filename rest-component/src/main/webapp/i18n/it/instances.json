@@ -18,10 +18,10 @@
     },
     "button" : {
       "test": "Test",
-      "demo" : "Demo",
+      "demo" : "Dimostrazione",
       "search" : "Ricerca Servizio",
-      "go": "GO",
-      "monitor": "Monitor.",
+      "go": "VAI",
+      "monitor": "Monitoraggio.",
       "deploy": "Rilascio",
       "stop": "Stop",
       "start": "Start",

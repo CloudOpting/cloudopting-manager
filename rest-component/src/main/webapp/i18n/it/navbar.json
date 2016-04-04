@@ -1,18 +1,18 @@
 {
   "navbar": {
     "title":"Menu",
-    "publish":"Publish Service",
-    "services.manager":"Services Manager",
-    "user.manager":"User Manager",
-    "org.manager":"Org Manager",
+    "publish":"Pubblicare il Servizio",
+    "services.manager":"Gestione dei Servizi",
+    "user.manager":"Gestore degli Utenti",
+    "org.manager":"Gestore Org",
     "toscaide":"Tosca IDE",
-    "languages": "Languages",
-    "catalogue":"Catalogue of Services",
-    "contact":"Contact",
+    "languages": "Linguaggi",
+    "catalogue":"Catalogo dei Servizi",
+    "contact":"Contatti",
     "dasbhoard":"Dashboard",
-    "signin":"Sign in",
+    "signin":"Accedi",
     "account":"Account",
-    "join":"Join",
-    "logout":"Logout"
+    "join":"Partecipare",
+    "logout":"Log out"
   }
 }

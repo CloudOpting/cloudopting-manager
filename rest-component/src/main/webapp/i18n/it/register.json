@@ -3,42 +3,42 @@
         "title": "Registrazione",
         "form": {
             "button": "Registrazione",
-            "username.placeholder": "Username",
-            "firstName.placeholder": "First name",
-            "lastName.placeholder": "Last name",
+            "username.placeholder": "Nome utente",
+            "firstName.placeholder": "Nome",
+            "lastName.placeholder": "Cognome",
             "email.placeholder": "E-mail",
             "password.placeholder": "Password",
-            "confirmpassword.placeholder": "Confirm Password"
+            "confirmpassword.placeholder": "Confermare la Password"
         },
         "messages": {
             "validate": {
                 "firstname": {
-                    "required": "Your first name is required."
+                    "required": "Il nome è necessario."
                 },
                 "lastname": {
-                    "required": "Your last name is required."
+                    "required": "Il cognome è necessario."
                 },
                 "username": {
-                    "required": "Your username is required.",
-                    "minlength": "Your username is required to be at least 1 character",
-                    "maxlength": "Your username cannot be longer than 50 characters",
-                    "pattern": "Your username can only contain lower-case letters and digits"
+                    "required": "Il nome utente è necessario.",
+                    "minlength": "Il nome utente è necessario e deve essere composto da almeno un carattere",
+                    "maxlength": "Il nome utente non può essere lungo più di cinquanta caratteri",
+                    "pattern": "Il nome utente può contenere solo lettere minuscole e numeri"
                 },
                 "password" :{
-                    "required": "Your password is required.",
-                    "minlength": "Your password is required to be at least 5 character",
-                    "maxlength": "Your password cannot be longer than 50 characters"
+                    "required": "La password è necessaria.",
+                    "minlength": "La password è necessaria e deve essere composta da almeno cinque caratteri",
+                    "maxlength": "La password non può essere lunga più di cinquanta caratteri"
                 },
                 "password2" :{
-                    "required": "Your password confirmation is required.",
-                    "minlength": "Your password is required to be at least 5 character",
-                    "maxlength": "Your password cannot be longer than 50 characters"
+                    "required": "Confermare la password è necessario.",
+                    "minlength": "La password è necessaria e deve essere composta da almeno cinque caratteri",
+                    "maxlength": "La password non può essere lunga più di cinquanta caratteri"
                 },
                 "email" :{
-                    "required": "Your e-mail is required.",
-                    "invalid": "Your e-mail is invalid.",
-                    "minlength": "Your e-mail is required to be at least 5 character",
-                    "maxlength": "Your e-mail cannot be longer than 100 characters"
+                    "required": "L'e-mail è necessaria.",
+                    "invalid": "L'e-mail non è valida.",
+                    "minlength": "L'e-mail è necessaria e deve essere composta da almeno cinque caratteri",
+                    "maxlength": "L'e-mail non può essere lunga più di cento caratteri"
                 }
             },
             "success": "<strong>Registrazione salvata!</strong> Controlla la tua email per la conferma.",
