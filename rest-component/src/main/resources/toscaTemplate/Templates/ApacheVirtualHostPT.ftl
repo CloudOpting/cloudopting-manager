@@ -13,4 +13,5 @@ apache::vhost { '<#if servername?has_content>${servername}</#if>':
       <#if redirect_dest?has_content>redirect_dest => ${redirect_dest},</#if>
       <#if redirect_status?has_content>redirect_status => ${redirect_status},</#if>
       <#if rewrites?has_content>rewrites => ${rewrites},</#if>
+      access_log_file => "/dev/stdout",
 }

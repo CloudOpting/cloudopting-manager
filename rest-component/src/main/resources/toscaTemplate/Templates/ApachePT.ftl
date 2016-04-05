@@ -13,7 +13,7 @@ ${childTemplate}
 file{'/root/start.sh':
   content => "#! /usr/bin/env bash
 set -eu
-tail --pid $$ -n0 -F /var/log/httpd/*_access.log &
+#tail --pid $$ -n0 -F /var/log/httpd/*_access.log &
 exec /usr/sbin/httpd -DFOREGROUND",
   mode => 700,
 }
