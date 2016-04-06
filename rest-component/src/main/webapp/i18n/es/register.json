@@ -1,51 +1,51 @@
 {
     "register": {
-        "title": "Register",
+        "title": "Registro",
         "form": {
-            "button": "Register",
-            "username.placeholder": "Username",
-            "firstName.placeholder": "First name",
-            "lastName.placeholder": "Last name",
+            "button": "Registro",
+            "username.placeholder": "Nombre de usuario",
+            "firstName.placeholder": "Nombre",
+            "lastName.placeholder": "Apellido",
             "email.placeholder": "E-mail",
-            "password.placeholder": "Password",
-            "confirmpassword.placeholder": "Confirm Password"
+            "password.placeholder": "Contraseña",
+            "confirmpassword.placeholder": "Confirmar contraseña"
         },
         "messages": {
             "validate": {
                 "firstname": {
-                    "required": "Your first name is required."
+                    "required": "Se requiere su nombre."
                 },
                 "lastname": {
-                    "required": "Your last name is required."
+                    "required": "Se requiere su apellido."
                 },
                 "username": {
-                    "required": "Your username is required.",
-                    "minlength": "Your username is required to be at least 1 character",
-                    "maxlength": "Your username cannot be longer than 50 characters",
-                    "pattern": "Your username can only contain lower-case letters and digits"
+                    "required": "Se requiere su nombre de usuario.",
+                    "minlength": "Se requiere que su nombre de usuario contenga al menos 1 caracteres",
+                    "maxlength": "Se requiere que su nombre de usuario no contenga mas de 50 caracteres",
+                    "pattern": "Su nombre de usuario solo puede contener letras minúsculas y carcateres numéricos"
                 },
                 "password" :{
-                    "required": "Your password is required.",
-                    "minlength": "Your password is required to be at least 5 character",
-                    "maxlength": "Your password cannot be longer than 50 characters"
+                    "required": "Se requiere su contraseña.",
+                    "minlength": "Se requiere que su contraseña contenga al menos 5 caracteres",
+                    "maxlength": "Se requiere que su contraseña no contenga mas de 50 caracteres"
                 },
                 "password2" :{
-                    "required": "Your password confirmation is required.",
-                    "minlength": "Your password is required to be at least 5 character",
-                    "maxlength": "Your password cannot be longer than 50 characters"
+                    "required": "se requiere la confirmación de su contraseña.",
+                    "minlength": "Se requiere que su contraseña contenga al menos 5 caracteres",
+                    "maxlength": "Se requiere que su contraseña no contenga mas de 50 caracteres"
                 },
                 "email" :{
-                    "required": "Your e-mail is required.",
-                    "invalid": "Your e-mail is invalid.",
-                    "minlength": "Your e-mail is required to be at least 5 character",
-                    "maxlength": "Your e-mail cannot be longer than 100 characters"
+                    "required": "Se requiere su e-mail.",
+                    "invalid": "Su e-mail no es válido.",
+                    "minlength": "Se requiere que su e-mail contenga al menos 5 caracteres.",
+                    "maxlength": "Se requiere que su e-mail no contenga mas de 100 caracteres"
                 }
             },
-            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+            "success": "<strong>Registro guardado!</strong> Por favor compruebe su email para confirmación.",
             "error": {
-                "fail": "<strong>Registration failed!</strong> Please try again later.",
-                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+                "fail": "<strong>Registro fallido!</strong> Por favor inténtelo de nuevo.",
+                "userexists": "<strong>Este nombre de usuario ya está registrado!</strong> Por favor seleccione uno diferente.",
+                "emailexists": "<strong>Este e-mail ya se encuentra en uso!</strong> Por favor seleccione uno diferente."
             }
         }
     }

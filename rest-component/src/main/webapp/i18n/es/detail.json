@@ -1,23 +1,23 @@
 {
   "detail": {
-    "title": "Service Detail",
-    "service": "\"{{service_name}}\" Service",
-    "status": "Status: {{service_status}}",
-    "termsAndConditions": "Agree with Terms and Conditions",
-    "servicePrice" : "Service:",
-    "platformPrice" : "Cloud Hosting:",
-    "serverSizeRequired" : "Size of the Entity:",
-    "applicationCanBeTested" : "<strong>The application can be tested!</strong>",
+    "title": "Detalles del Servicio",
+    "service": "\"{{service_name}}\" Servicio",
+    "status": "Estado: {{service_status}}",
+    "termsAndConditions": "Acepta los Terminos y Condiciones",
+    "servicePrice" : "Servicio:",
+    "platformPrice" : "Alojamiento Cloud:",
+    "serverSizeRequired" : "Tamaño de la Entidad:",
+    "applicationCanBeTested" : "<strong>La aplicación puede ser probada!</strong>",
     "button" : {
-      "register_subscribe": "Register & Subscribe Now",
-      "subscribe": "Subscribe Now",
-      "instances": "See Instances",
-      "completepublish": "COMPLETE PUBLISH"
+      "register_subscribe": "Regístrese & Subscríbase ahora",
+      "subscribe": "Subscríbase ahora",
+      "instances": "Ver Intancias",
+      "completepublish": "Completar Publicación"
     },
     "messages": {
       "validate": {
         "termsAndConditions": {
-          "required": "Accept terms and conditions is required."
+          "required": "Se requiere aceptar los Términos y Condiciones."
         }
       }
     }

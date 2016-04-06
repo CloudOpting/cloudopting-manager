@@ -1,91 +1,91 @@
 {
   "publish": {
-    "title": "Publish Service",
-    "description.template" : "<p></p><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\">[Write the description of the service here]</p>    <p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>FEATURES</b></strong></p><ul><li>[Write the features of the service here]</li><li>[Write the features of the service here]</li><li>[Write the features of the service here]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>BENEFITS</b></strong></p><ul><li>[Write the benefits of the service here]</li><li>[Write the benefits of the service here]</li><li>[Write the benefits of the service here]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>SUPPORT</b></strong></p><ul><li>[Write the support conditions of the service here]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>CONTACT</b></strong></p><ul><li>[Write your name here]</li><li>[Write your phone number here]</li><li>[Write your e-mail here]</li></ul>",
+    "title": "Publicar Servicio",
+    "description.template" : "<p></p><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\">[Escribir la descripcion del servicio aquí]</p>    <p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>FEATURES</b></strong></p><ul><li>[Escribir las características del servicio aquí]</li><li>[Escribir las características del servicio aquí]</li><li>[Escribir las características del servicio aquí]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>BENEFITS</b></strong></p><ul><li>[Escribir las ventajas del servicio aquí]</li><li>[Escribir las ventajas del servicio aquí]</li><li>[Escribir las ventajas del servicio aquí]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>SUPPORT</b></strong></p><ul><li>[Escriba las condiciones de soporte del servicio aquí]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>CONTACT</b></strong></p><ul><li>[Escriba su nombre aquí]</li><li>[Escriba su número de teléfono aquí]</li><li>[Escriba su e-mail aquí]</li></ul>",
     "service" : {
-      "name": "Service Name",
-      "toscaname": "Service TOSCA Name",
-      "description": "Service Description",
-      "image": "Service Image",
-      "shortDescription" : "Short Description",
-      "termsAndConditions" : "Terms and conditions link",
-      "applicationSubscriberMail" : "Subscriber mail template",
-      "applicationSpMail" : "Provider mail template",
-      "servicePrice" : "Service Price",
-      "platformPrice" : "Platform Price",
-      "applicationIsTryable": "Can the platform be tried",
-      "sizeId": "Size"
+      "name": "Nombre del servicio",
+      "toscaname": "Nombre TOSCA del Servicio",
+      "description": "Descripción del servicio",
+      "image": "Imagen del Servicio",
+      "shortDescription" : "Descripción corta",
+      "termsAndConditions" : "Enlace a términosrminos y condiciones",
+      "applicationSubscriberMail" : "Plantilla mail del subscriptor",
+      "applicationSpMail" : "Plantilla mail del proveedor",
+      "servicePrice" : "Precio del servicio",
+      "platformPrice" : "Precio de la Platforma",
+      "applicationIsTryable": "Puede ser probada la plataforma",
+      "sizeId": "Tamaño"
     },
     "select" : {
-      "addtosca": "+ Add TOSCA Archive",
-      "tosca": "TOSCA Archive",
-      "toscaempty": "TOSCA Archive not selected",
-      "file": "Select File"
-    },
-    "selectedfile": "Selected File",
+      "addtosca": "+ Añadir archivo TOSCA",
+      "tosca": "Archivo TOSCA",
+      "toscaempty": "Archivo TOSCA no seleccionado",
+      "file": "Seleccionar archivo"
+    }, 
+    "selectedfile": "Archivo seleccionado",
     "content" : {
-      "emptylibrary": "The Library is Empty",
-      "library" : "Content Library",
-      "name" : "Name",
-      "file" : "File"
+      "emptylibrary": "La librería está vacía",
+      "library" : "Librería de contenidos",
+      "name" : "Nombre",
+      "file" : "Archivo"
     },
     "button" : {
-      "save": "Save",
-      "save_n_next": "Save & Next",
-      "publish": "Publish Service",
-      "add": "+ Add Item in Library",
-      "delete": "Delete File",
-      "service_list":"Service List",
-      "update": "Update",
-      "next": "Next"
+      "save": "Guardar",
+      "save_n_next": "Salvar & Continuar",
+      "publish": "Publicar Servicio",
+      "add": "+ Añadir artículo a la librería",
+      "delete": "Borrar archivo",
+      "service_list":"Lista del Servicios List",
+      "update": "Actulizar",
+      "next": "continuar"
     },
     "messages": {
       "validate": {
         "name": {
-          "required": "The name is required.",
-          "minlength": "The name is required to be at least 1 character."
+          "required": "Se requiere el nombre.",
+          "minlength": "Se requiere que el nombre sea al menos de un caracter."
         },
         "toscaname": {
-          "required": "The Service TOSCA Name is required.",
-          "minlength": "The Service TOSCA Name is required to be at least 1 character.",
-          "maxlength": "The Service TOSCA Name cannot be longer than 10 characters.",
-          "pattern": "The Service TOSCA Name cannot contain spaces."
+          "required": "Se requiere el nombre TOSCA del servicio.",
+          "minlength": "Se requiere que el nombre TOSCA del servicio tenga al menos un caracter.",
+          "maxlength": "Se requiere que el nombre TOSCA del servicio no sea mayor de 10 caracteres.",
+          "pattern": "Se requiere que el nombre TOSCA del servicio no contenga espacios."
         },
         "description": {
-          "required": "The description is required.",
-          "minlength": "The description is required to be at least 1 character."
+          "required": "Se requiere la descripción.",
+          "minlength": "Se requiere que la descripción contenga al menos un caracter."
         },
         "shortDescription": {
-          "required": "The short description is required."
+          "required": "Se requiere la descripción corta del servicio."
         },
         "termsAndConditions": {
-          "required": "The terms and conditions link is required."
+          "required": "Se requiere el enlace a los Términos y COndiciones del servicio."
         },
         "applicationSubscriberMail": {
-          "required": "The subscriber mail template is required."
+          "required": "Se requiere la plantilla mail del Subscriptor."
         },
         "applicationSpMail": {
-          "required": "The provider mail template is required."
+          "required": "Se requiere la plantilla mail del Proveedor."
         },
         "servicePrice": {
-          "required": "The service price is required."
+          "required": "Se requiere el precio del servicio."
         },
         "platformPrice": {
-          "required": "The platform price is required."
+          "required": "Se requiere el precio de la plataforma."
         },
         "sizeId": {
-          "required": "The size is required."
+          "required": "Se requiere el tamaño."
         }
       }
     },
     "wizzard": {
-      "one":"Set Global Properties",
-      "tow":"Upload needed files",
-      "three":"Upload TOSCA archive",
-      "four":"Request Status"
+      "one":"Configurar propiedades globales",
+      "tow":"Subir archivos necesarios",
+      "three":"Subir archivo TOSCA",
+      "four":"Requerir Estado"
     },
-    "thanks" :"Thanks!",
-    "thanks_2": "Your service has been published"
+    "thanks" :"Gracias!",
+    "thanks_2": "Su servicio ha sido publicado"
   }
 }
 
