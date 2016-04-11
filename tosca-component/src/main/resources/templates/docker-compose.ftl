@@ -1,3 +1,8 @@
+<#list dockerDataVolumeContainers as dockerDataVolumeContainer>
+${dockerDataVolumeContainer['container']}:
+  image: ${dockerDataVolumeContainer['image']}
+  entrypoint: ${dockerDataVolumeContainer['entrypoint']}
+</#list>
 <#list dockerContainers as dockerContainer>
 ${dockerContainer['container']}:
   image: ${dockerContainer['image']}

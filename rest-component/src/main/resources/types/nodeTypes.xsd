@@ -180,6 +180,31 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerContainerProperties" type="tDockerContainerProperties" />
+	<xs:complexType name="tDockerDataVolumeContainerProperties">
+		<xs:sequence>
+			<xs:element name="image">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Base image"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="entrypoint">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Entrypoint in the Dockerfile"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DockerDataVolumeContainerProperties" type="tDockerDataVolumeContainerProperties" />
 	<xs:complexType name="tDockerContainerPorts">
 		<xs:sequence>
 			<xs:element name="host">
@@ -212,6 +237,12 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerContainerPortsCaps" type="tDockerContainerPortsCaps" />
+	<xs:complexType name="tDockerDataVolumeContainerPortsCaps">
+		<xs:sequence>
+			<xs:element name="DockerContainerPorts" type="tDockerContainerPorts"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DockerDataVolumeContainerPortsCaps" type="tDockerDataVolumeContainerPortsCaps" />
 	<xs:complexType name="tApacheProperties">
 		<xs:sequence>
 			<xs:element name="default_mods">

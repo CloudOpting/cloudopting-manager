@@ -1732,11 +1732,14 @@ if(listOfFiles!=null){
 	}
 
 	public void generateDockerCompose(String customizationId, String organizationName, String serviceHome,
-			ArrayList<String> dockerNodesList) {
+			ArrayList<String> dockerNodesList, ArrayList<String> dockerDataVolumeNodesList) {
 		ArrayList<HashMap<String, Object>> modData = new ArrayList<HashMap<String, Object>>();
+		ArrayList<HashMap<String, Object>> modVolData = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, String> contImages = new HashMap<String, String>();
 		for (String node : dockerNodesList) {
 			HashMap<String, Object> containerData = new HashMap<String, Object>();
 			String imageName = "cloudopting/" + organizationName + "_" + node.toLowerCase();
+			contImages.put(node, imageName);
 			containerData.put("container", node);
 			containerData.put("image", imageName);
 			log.debug("dockerNodesList element working on: " + node);
@@ -1771,9 +1774,24 @@ if(listOfFiles!=null){
 			modData.add(containerData);
 		}
 		System.out.println(modData.toString());
+		for (String node : dockerDataVolumeNodesList) {
+//			HashMap<String, Object> containerDataVolumeData = new HashMap<String, Object>();
+			HashMap containerDataVolumeData = this.getPropertiesForNode(customizationId, node);
+			containerDataVolumeData.put("container", node);
+			String image = (String) containerDataVolumeData.get("image");
+			if (image.startsWith("%%CONTAINERIMAGE")) {
+				log.debug(image);
+				String contImage = image.substring(16, image.length() - 2);
+				contImage = contImage.trim();
+				containerDataVolumeData.put("image", contImages.get(contImage));
+			}
+			
+			modVolData.add(containerDataVolumeData);
+		}
 
 		HashMap<String, Object> templData = new HashMap<String, Object>();
 		templData.put("dockerContainers", modData);
+		templData.put("dockerDataVolumeContainers", modVolData);
 		// write the "Puppetfile" file
 		toscaUtils.generateDockerCompose(templData, serviceHome);
 	}
