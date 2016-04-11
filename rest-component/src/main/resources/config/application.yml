@@ -2,6 +2,10 @@
 management.security.enabled: true
 security.basic.enabled: false
 
+# Increase the max file upload size
+multipart:
+  max-file-size: 50MB
+
 # Disable Jolokia - An http/json bridge for remote JMX access
 endpoints.jolokia.enabled: false
 
