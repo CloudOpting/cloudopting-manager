@@ -97,30 +97,6 @@ public class BpmnController {
 		return pid;
 	}
 	
-//	@RequestMapping(value = "/bpmn/startProcess/{id}",
-//            method = RequestMethod.POST)
-//    @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
-//    @ResponseBody String startProcessById(@PathVariable String id) {
-//        log.info("REST request to start process with id : {}", id);
-//        return bpmn.startGenericProcess(id, null);
-//    }
-//	
-//	@RequestMapping(value = "/bpmn/availableProcessDefinitions",
-//            method = RequestMethod.GET)
-//    @RolesAllowed(AuthoritiesConstants.ANONYMOUS)
-//    @ResponseBody List<BasicProcessInfo> getAvailableProcessDefinitions() {
-//        log.info("REST request to get processdefinitions");
-//        return bpmn.getAvailableProcessDefinitions();
-//    }
-
-	// @RequestMapping(value = "/processTest", method = RequestMethod.POST,
-	// headers = "content-type=application/x-www-form-urlencoded", produces =
-	// "application/zip")
-	// public @ResponseBody ResponseEntity<InputStreamResource>
-	// testProcessInstance(
-	// @RequestMapping(value = "/processTest", method = RequestMethod.POST,
-	// headers = "content-type=application/x-www-form-urlencoded")
-	// public void testProcessInstance(
 	@RequestMapping(value = "/processTest", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
 	public void testProcessInstance(
 			@RequestParam(value = "customizationId", required = false) String customizationId,
