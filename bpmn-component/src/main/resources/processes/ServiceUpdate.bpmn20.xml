@@ -18,19 +18,19 @@
     <sequenceFlow id="flow1" sourceRef="updatePromoImageStartMsg" targetRef="updatePromoImage"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="updatePromoImage" targetRef="endevent1"></sequenceFlow>
     <startEvent id="updateMetadataStartMsg" name="Update Metadata Start Message">
-      <messageEventDefinition></messageEventDefinition>
+      <messageEventDefinition messageRef="updateMetadataMsgId"></messageEventDefinition>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="updateMetadataStartMsg" targetRef="updateMetadata"></sequenceFlow>
     <startEvent id="updateToscaFileStartMsg" name="Update Tosca File Start Message">
-      <messageEventDefinition></messageEventDefinition>
+      <messageEventDefinition messageRef="updateToscaFileMsgId"></messageEventDefinition>
     </startEvent>
     <sequenceFlow id="flow4" sourceRef="updateToscaFileStartMsg" targetRef="updateToscaFile"></sequenceFlow>
     <startEvent id="updateArtifactAddStartMsg" name="Update Artifact Add Start Message">
-      <messageEventDefinition></messageEventDefinition>
+      <messageEventDefinition messageRef="updateArtifactAddMsgId"></messageEventDefinition>
     </startEvent>
     <sequenceFlow id="flow5" sourceRef="updateArtifactAddStartMsg" targetRef="updateAddArtifact"></sequenceFlow>
     <startEvent id="updateArtifactDelStartMsg" name="Update Artifact Del Start Message">
-      <messageEventDefinition></messageEventDefinition>
+      <messageEventDefinition messageRef="updateArtifactDelMsgId"></messageEventDefinition>
     </startEvent>
     <sequenceFlow id="flow6" sourceRef="updateArtifactDelStartMsg" targetRef="updateDeleteArtifact"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="updateMetadata" targetRef="endevent1"></sequenceFlow>
