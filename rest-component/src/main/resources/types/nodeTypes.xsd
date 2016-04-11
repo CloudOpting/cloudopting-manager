@@ -451,6 +451,26 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="require">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of a component that has to be installed before"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="before">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of a component that has to be installed after"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="ApacheModuleProperties" type="tApacheModuleProperties" />
