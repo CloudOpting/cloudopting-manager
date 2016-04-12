@@ -1,4 +1,4 @@
-<NodeType name="DockerDataVolumeContainer" shape="pentagon" color="#ffffff" image="docker.png">
+<NodeType name="DockerDataVolumeContainer" shape="pentagon" color="#ffffff" image="docker_data.png">
 	<DerivedFrom typeRef="root" />
 	<PropertiesDefinition element="DockerDataVolumeContainerProperties"
 		type="tDockerDataVolumeContainerProperties" />
