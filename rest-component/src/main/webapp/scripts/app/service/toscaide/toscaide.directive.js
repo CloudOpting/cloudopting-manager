@@ -165,6 +165,33 @@ console.debug(scope.elements.nodes);
                         // sample use can be adding a passed variable which will be broadcast on change
                         console.debug(scope.elements);
                         cy.load(scope.elements);
+                        cy.cxtmenu({
+        					selector: 'node',
+
+        					commands: [
+        						{
+        							content: '<span class="fa fa-flash fa-2x"></span>',
+        							select: function(ele){
+        								console.log( ele.id() );
+        							}
+        						},
+
+        						{
+        							content: '<span class="fa fa-star fa-2x"></span>',
+        							select: function(ele){
+        								console.log( ele.data('name') );
+        							},
+        							disabled: true
+        						},
+
+        						{
+        							content: 'Text',
+        							select: function(ele){
+        								console.log( ele.position() );
+        							}
+        						}
+        					]
+        				});
                     }
                 });
 
