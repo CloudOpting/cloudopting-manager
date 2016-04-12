@@ -204,6 +204,43 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 
 		$scope.$apply();
 	};
+	
+	$scope.doRemoveNode = function(value){
+		console.log("in remove node");
+		console.log(value.id);
+		console.debug($scope.mapData);
+		for (var index = 0; index < $scope.mapData.length; index++) {
+            // If current array item equals itemToRemove then
+            if ($scope.mapData[index].id == value.id) {
+                // Remove array item at current index
+            	$scope.mapData.splice(index, 1);
+
+                // Decrement index to iterate current position 
+                // one more time, because we just removed item 
+                // that occupies it, and next item took it place
+                index--;
+            }
+        }
+		console.debug($scope.mapData);
+		console.log("fine remove node");
+	};
+	
+	$scope.doRenameNode = function(value){
+		console.log("in rename node");
+		console.log(value.id);
+		console.debug($scope.mapData);
+		for (var index = 0; index < $scope.mapData.length; index++) {
+            // If current array item equals itemToRemove then
+			console.log($scope.mapData[index]);
+            if ($scope.mapData[index].id == value.id) {
+                // Remove array item at current index
+            	console.log('trovato'+$scope.scheda.obj.name);
+            	$scope.mapData[index].name = $scope.scheda.obj.name;
+
+           }
+        }		console.debug($scope.mapData);
+		console.log("fine rename node");
+	};
 
 	$scope.onSubmit = function(form) {
 		// First we broadcast an event so all fields validate
