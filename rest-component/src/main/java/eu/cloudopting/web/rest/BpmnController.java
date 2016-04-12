@@ -118,12 +118,17 @@ public class BpmnController {
 		} else {
 			cloudId = customization.getCloudAccount().getId();
 		}
+		String path = "/cloudOptingData/test.zip";
+		File f = new File(path);
+		if (f.exists()){
+			f.delete();
+		}
 		String pid = bpmn.startDeployProcess(customizationId, cloudId, isTesting);
 		// wait for a minute to leave run the process
 
 		System.out.println("returning pid: " + pid);
-		String path = "/cloudOptingData/test.zip";
-		File f = new File(path);
+		
+		
 		FileInputStream fis = null;
 		while (!f.exists()) {
 			try {

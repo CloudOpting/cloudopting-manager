@@ -39,6 +39,10 @@ public class ZipDirectory {
 
 	public static String writeZipFile(File directoryToZip, List<File> fileList) {
 		String filename = directoryToZip.getName() + ZIP_EXTENSION;
+		File f = new File(filename);
+		if (f.exists()){
+			f.delete();
+		}
 		try {
 			
 			FileOutputStream fos = new FileOutputStream(filename);

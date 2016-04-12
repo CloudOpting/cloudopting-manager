@@ -101,7 +101,9 @@ public class CytoscapeController {
 			e1.printStackTrace();
 		}
 		File destDir = new File("/tmp/tosca");
+		
 		try {
+			FileUtils.cleanDirectory(destDir);
 			FileUtils.copyDirectory(srcDir, destDir);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

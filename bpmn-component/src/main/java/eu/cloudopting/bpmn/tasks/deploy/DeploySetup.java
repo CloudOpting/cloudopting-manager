@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class DeploySetup implements JavaDelegate {
 		File directory = new File(serviceHome);
 		if (directory.exists()) {
 			System.out.println("Directory already exists ...");
+			FileUtils.cleanDirectory(directory);
 
 		} else {
 			System.out.println("Directory not exists, creating now");
