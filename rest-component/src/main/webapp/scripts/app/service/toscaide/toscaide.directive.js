@@ -172,7 +172,7 @@ console.debug(scope.elements.nodes);
 
         					commands: [
         						{
-        							content: '<span class="fa fa-flash fa-2x"></span>',
+        							content: 'Clear',
         							select: function(ele){
         								console.log( ele.id() );
         								console.log(ele);
