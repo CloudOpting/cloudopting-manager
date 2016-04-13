@@ -11,7 +11,11 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		type : "submit",
 		title : "Save"
 	} ];
-
+	$scope.dynamicPopover = {
+		    content: 'content',
+		    templateUrl: 'myPopoverTemplate.html',
+		    title: 'Import JSON'
+		  };
 	$scope.model = {};
 
 	$scope.schema = {
@@ -290,6 +294,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		$rootScope.$broadcast('appChanged');
 
 	};
+	
 
 	$scope.sendService = function() {
 		console.debug("sending data");
@@ -351,6 +356,24 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 
 		};
 		return ToscaideService.loadTopology(data, callback);
+	};
+	
+	$scope.importJson = function(){
+		console.log($scope.dynamicPopover);
+		var data = JSON.parse($scope.dynamicPopover.content);
+		data.nodes.forEach(function(entry) {
+			console.log(entry);
+			$scope.mapData.push(entry);
+		});
+		data.edges.forEach(function(entry) {
+			console.log(entry);
+			$scope.edgeData.push(entry);
+		});
+		$scope.serviceName = data.serviceName;
+		console.debug(data.nodes);
+		console.debug($scope.mapData);
+		// $scope.edgeData = data.edges;
+		$rootScope.$broadcast('appChanged');
 	}
 
 });

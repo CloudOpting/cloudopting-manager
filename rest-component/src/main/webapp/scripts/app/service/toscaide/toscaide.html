@@ -103,10 +103,20 @@
 							</div>
 						</div>
 						<div class="row row-actions">
-							<div class="col-xs-6">
+							<div class="col-xs-4">
 								<button type="text" class="btn btn-secondary" ng-click="saveService()" ng-disabled="!serviceName.length" translate="toscaide.saveGraph" ng-autodisable>Save graph</button>
 							</div>
-							<div class="col-xs-6">
+							<div class="col-xs-4">
+								<button uib-popover-template="dynamicPopover.templateUrl" popover-title="{{dynamicPopover.title}}" type="text" class="btn btn-secondary"  translate="toscaide.saveGraph" ng-autodisable>Import JSON</button>
+								<script type="text/ng-template" id="myPopoverTemplate.html">
+        <div class="form-group">
+          <label>Paste JSON here:</label>
+          <textarea type="text" ng-model="dynamicPopover.content" class="form-control"></textarea>
+<button type="button" ng-click="importJson()">Import</button>
+        </div>
+    </script>
+							</div>
+							<div class="col-xs-4">
 								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length" translate="toscaide.generateTosca" ng-autodisable>Generate TOSCA</button>
 							</div>
 						</div>
