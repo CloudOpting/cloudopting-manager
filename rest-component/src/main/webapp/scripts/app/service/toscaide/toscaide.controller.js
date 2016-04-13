@@ -223,6 +223,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
         }
 		console.debug($scope.mapData);
 		console.log("fine remove node");
+		$rootScope.$broadcast('appChanged');
 	};
 	
 	$scope.doRenameNode = function(value){
@@ -240,6 +241,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
            }
         }		console.debug($scope.mapData);
 		console.log("fine rename node");
+		$rootScope.$broadcast('appChanged');
 	};
 
 	$scope.onSubmit = function(form) {
