@@ -180,6 +180,7 @@ public class StoreService {
     	}
 		String[] splittedFileName = jackRabbitRemotePath.split(splitRegex);
 		Node lastCreatedNode = session.getRootNode();
+		log.debug("trovato nodo radice");;
 		for (int i = 0; i < splittedFileName.length; i++) {
 			lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
 		}
@@ -196,6 +197,7 @@ public class StoreService {
     	Node childNode = null;
     	childNode = JcrUtils.getOrAddFolder(parent, childFolder);
 	    session.save();
+	    log.debug("aggiunto node");
 		return childNode;
     }
     

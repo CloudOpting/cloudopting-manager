@@ -18,6 +18,7 @@
     "nodeData": "Dati nodo",
     "saveGraph": "Salva il grafico",
     "generateTosca": "Creare TOSCA",
+    "importJson": "Importa JSON",
     "settingNode": "Impostazione nodo"
   }
 }
