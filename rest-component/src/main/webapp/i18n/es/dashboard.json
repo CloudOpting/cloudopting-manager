@@ -1,32 +1,32 @@
 {
   "instances": {
-    "title": "My Instances Service",
-    "placeholder" : "Search for...",
+    "title": "Mi servicio de instancias",
+    "placeholder" : "Buscar ...",
     "col" : {
-      "instanceof": "Instance of",
-      "author": "Author",
-      "date": "Date",
-      "status": "Status",
-      "actions": "Actions"
+      "instanceof": "Instancia de",
+      "author": "Autor",
+      "date": "Fecha",
+      "status": "Estado",
+      "actions": "Acciones"
     },
     "status" : {
-      "requested": "Requested",
-      "deleted": "Deleted",
-      "running": "Running",
-      "todelete": "To Delete",
-      "stopped": "Stopped"
+      "requested": "Requerido",
+      "deleted": "Borrado",
+      "running": "En proceso",
+      "todelete": "Para borrar",
+      "stopped": "Parado"
     },
     "button" : {
-      "test": "Test",
+      "test": "Prueba",
       "demo" : "Demo",
-      "search" : "Search Service",
-      "go": "GO",
-      "monitor": "Monitor.",
-      "deploy": "Deploy",
-      "stop": "Stop",
-      "start": "Start",
-      "delete": "Delete"
+      "search" : "Busqueda de Servicio",
+      "go": "Ir",
+      "monitor": "Monitorizar",
+      "deploy": "Desplegar",
+      "stop": "Parar",
+      "start": "Comenzar",
+      "delete": "Borrar"
     },
-    "go_to_tosca_ide" : "Create TOSCA file"
+    "go_to_tosca_ide" : "Crear archivo Tosca"
   }
 }

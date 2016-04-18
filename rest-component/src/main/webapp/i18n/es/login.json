@@ -1,15 +1,15 @@
 {
     "login": {
-        "title": "Authentication",
+        "title": "Autenticación",
         "form": {
-            "password.placeholder": "Password",
-            "username.placeholder": "Username",
-            "rememberme": "Remember me",
-            "button": "Sign In"
+            "password.placeholder": "contraseña",
+            "username.placeholder": "Nombre de usuario",
+            "rememberme": "Recordarme",
+            "button": "iniicar Sesion"
         },
         "messages": {
             "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                "Autenticación": "<strong>La autenticación ha fallado!</strong> Por favor compruebe los datos introducidos e inténtelo de nuevo."
             }
         }
     }

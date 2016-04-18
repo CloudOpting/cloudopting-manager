@@ -1,38 +1,38 @@
 {
   "contact": {
-    "title": "Contact Us",
+    "title": "Como contactar",
     "form": {
-      "button": "Send Message",
-      "name": "Name",
-      "phone": "Phone",
-      "companyName": "Company name",
-      "message": "Message",
+      "button": "Enviar mensaje",
+      "name": "Nombre",
+      "phone": "Teléfono",
+      "companyName": "Nombre de la empresa",
+      "message": "Mensaje",
       "placeholder": {
-        "name": "Your Name *",
-        "phone": "Your Phone",
-        "email": "Your Email *",
-        "companyName": "Your Company",
-        "message": "Your Message *"
+        "name": "Su Nombre *",
+        "phone": "Su Telefono",
+        "email": "Su correo *",
+        "companyName": "Su empresa",
+        "message": "Su mensaje *"
       },
       "validation": {
-        "name": "Please enter your name.",
-        "phone": "Please enter your phone number.",
-        "email": "Please enter your email address.",
-        "message": "Please enter a message."
+        "name": "Por favor introduzca su nombre.",
+        "phone": "Por favor introduzca su número de teléfono.",
+        "email": "Por favor introduzca su dirección de correo electrónco.",
+        "message": "Por favor introduzca un mensaje."
       }
     },
     "messages": {
       "validate": {
         "name": {
-          "required": "Your name is required."
+          "required": "Su nombre es necesario."
         },
         "lastName": {
-          "required": "Your last name is required."
+          "required": "Su apellido es necesario."
         }
       },
-      "success": "<strong>Message sent!</strong> We will contact with you soon.",
+      "success": "<strong>Mensaje enviado!</strong> En breve nos pondremos en conatcto con usted.",
       "error": {
-        "fail": "<strong>Something went wrong!</strong> Please try again later."
+        "fail": "<strong>Algo ha ido mal!</strong> Por favor inténtelo de nuevo mas tarde."
       }
     }
   }

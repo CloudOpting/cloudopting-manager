@@ -1,26 +1,26 @@
 {
   "list": {
-    "title": "Services List",
+    "title": "Lista de Servicios",
     "search": {
-      "placeholder": "Search for..."
+      "placeholder": "Buscar..."
     },
     "button": {
-      "addservice": "New Service",
-      "search": "Search Service",
-      "edit": "Edit",
-      "listinstances": "List Inst.",
-      "delete": "Delete",
-      "createinstance": "New Inst."
+      "addservice": "Nuevo Servicio",
+      "search": "Buscar Servicio",
+      "edit": "Editar",
+      "listinstances": "Lista de Inst.",
+      "delete": "Borrar",
+      "createinstance": "Nueva Inst."
     },
     "col": {
-      "name": "Service Name",
-      "status": "Status",
-      "actions": "Actions"
+      "name": "Nombre del Servicio",
+      "status": "Estado",
+      "actions": "Acciones"
     },
     "status": {
-      "published": "Published",
-      "fortesting": "For Testing",
-      "uploaded": "Uploaded"
+      "published": "Publicado",
+      "fortesting": "Para prueba",
+      "uploaded": "Subido"
     }
   }
 }

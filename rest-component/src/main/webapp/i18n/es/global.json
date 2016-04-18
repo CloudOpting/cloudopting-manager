@@ -1,94 +1,94 @@
 {
     "global": {
         "title": "cloudopting",
-        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "browsehappy": "Está usted usando un navegador <strong>desactualizado</strong>. Por favor <a href=\"http://browsehappy.com/?locale=en\">actualice su navegador</a> para mejorar la experiencia.",
         "menu": {
-            "home": "Home",
+            "home": "Inicio",
             "entities": {
                 "main": "Cloudopting",
                 "additionalEntity": ""
             },
             "account": {
-                "main": "Account",
-                "settings": "Settings",
-                "password": "Password",
-                "sessions": "Sessions",
-                "login": "Authenticate",
-                "logout": "Log out",
-                "register": "Register"
+                "main": "Cuenta",
+                "settings": "configuración",
+                "password": "Contraseña",
+                "sessions": "Sesiones",
+                "login": "Autenticar",
+                "logout": "Salir de sesión",
+                "register": "Registro"
             },
             "admin": {
                 "main": "Administration",
-                "tracker": "User tracker",
-                "metrics": "Metrics",
-                "health": "Health",
-                "configuration": "Configuration",
+                "tracker": "Seguimiento de usuario",
+                "metrics": "Métricas",
+                "health": "Salud",
+                "configuration": "Configuración",
                 "logs": "Logs",
-                "audits": "Audits",
+                "audits": "Auditorías",
                 "apidocs": "API",
-                "database": "Database"
+                "database": "Base de datos"
             },
-            "language": "Language"
+            "language": "Idioma"
         },
         "form": {
-            "username": "Login",
-            "username.placeholder": "Your login",
-            "firstName": "First Name",
-            "firstName.placeholder": "First Name",
-            "lastName": "Last Name",
-            "lastName.placeholder": "Last Name",
-            "newpassword": "New password",
-            "newpassword.placeholder": "New password",
-            "confirmpassword": "New password confirmation",
-            "confirmpassword.placeholder": "Confirm the new password",
+            "username": "Nombre de usuario",
+            "username.placeholder": "Su nombre de usuario",
+            "firstName": "Nombre",
+            "firstName.placeholder": "Nombre",
+            "lastName": "Apellido",
+            "lastName.placeholder": "Apellido",
+            "newpassword": "Nueva contraseña",
+            "newpassword.placeholder": "Nueva contraseña",
+            "confirmpassword": "Confirmación de la nueva contraseña",
+            "confirmpassword.placeholder": "Confirme la nueva contraseña",
             "email": "E-mail",
-            "email.placeholder": "Your e-mail"
+            "email.placeholder": "Su e-mail"
         },
         "messages": {
             "info": {
-                "authenticated": "If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
-                "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>",
-                "reset": "Did you forget your password? <a href=\"#/reset/request\">Reset your password</a>"
+                "authenticated": "Si quiere <a href=\"#/login\">authenticate</a>, puede intentar la cuenta por defecto:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
+                "register": "Aun no tiene cuenta? <a href=\"#/register\">Register a new account</a>",
+                "reset": "Ha olvidado su contraseña? <a href=\"#/reset/request\">Reset your password</a>"
             },
             "error": {
-                "dontmatch" : "The password and its confirmation do not match!"
+                "dontmatch" : "La contraseña y su confirmación no coinciden!"
             },
             "validate": {
                 "newpassword": {
-                    "required": "Your password is required.",
-                    "minlength": "Your password is required to be at least 5 characters",
-                    "maxlength": "Your password cannot be longer than 50 characters",
-                    "strength": "Password strength:"
+                    "required": "Se requiere contraseña.",
+                    "minlength": "Su contraseña de confirmación no puede ser menor de 5 caracteres",
+                    "maxlength": "Su contraseña no puede ser mayor de 50 caracteres",
+                    "strength": "Seguridad de la contraseña:"
                 },
                 "confirmpassword": {
-                    "required": "Your confirmation password is required.",
-                    "minlength": "Your confirmation password is required to be at least 5 characters",
-                    "maxlength": "Your confirmation password cannot be longer than 50 characters"
+                    "required": "Se requiere la contraseña de confirmación.",
+                    "minlength": "Su contraseña de confirmación no puede ser menor de 5 caracteres",
+                    "maxlength": "Su contraseña de confirmación no puede ser mayor de 50 caracteres."
                 },
                 "email": {
-                    "required": "Your e-mail is required.",
-                    "invalid": "Your e-mail is invalid.",
-                    "minlength": "Your e-mail is required to be at least 5 characters",
-                    "maxlength": "Your e-mail cannot be longer than 50 characters"
+                    "required": "Se requiere su cuenta de correo electrónico.",
+                    "invalid": "Su cuenta de correo no es válida.",
+                    "minlength": "Su cuenta de correo debe tener al menos 5 caracteres",
+                    "maxlength": "Su cuenta de correo no puede ser mayor de 50 caracteres."
                 }
             }
         }
     },
     "entity": {
         "action": {
-            "back": "Back",
-            "cancel": "Cancel",
-            "delete": "Delete",
-            "edit": "Edit",
-            "save": "Save",
-            "view": "View"
+            "back": "Volver",
+            "cancel": "Cancelar",
+            "delete": "Borrar",
+            "edit": "Editar",
+            "save": "Guardar",
+            "view": "Vista"
         },
         "detail": {
-            "field": "Field",
-            "value": "Value"
+            "field": "Campo",
+            "value": "Valor"
         },
         "delete": {
-            "title": "Confirm delete operation"
+            "title": "Confirmar operación de borrado"
         }
     },
     "footer": "This is your footer"

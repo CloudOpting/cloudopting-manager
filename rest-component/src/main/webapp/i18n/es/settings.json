@@ -1,36 +1,36 @@
 {
     "settings": {
-        "title": "User settings for [<b>{{username}}</b>]",
+        "title": "Configuración de usuario para [<b>{{username}}</b>]",
         "form": {
-            "firstname": "First Name",
-            "firstname.placeholder": "Your first name",
-            "lastname": "Last Name",
-            "lastname.placeholder": "Your last name",
-            "button": "Save"
+            "firstname": "Nombre",
+            "firstname.placeholder": "Su primer nombre",
+            "lastname": "Apellido",
+            "lastname.placeholder": "Su apellido",
+            "button": "Guardar"
         },
         "messages": {
             "error": {
-                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+                "fail": "<strong>Haocurrido un error!</strong> La configuración no ha podido ser guardada.",
+                "emailexists": "<strong>LEsta cuenta de e-mail ya se encuentra en uso!</strong> Por favor escoja otra."
             },
-            "success": "<strong>Settings saved!</strong>",
+            "success": "<strong>Configuración guardada!</strong>",
             "validate": {
                 "alias": {
-                    "required": "Your alias is required.",
-                    "minlength": "Your alias is required to be at least 1 character",
-                    "maxlength": "Your alias cannot be longer than 50 characters",
-                    "pattern": "Your alias can only contain lower-case letters and digits"
+                    "required": "Se requiere su alias.",
+                    "minlength": "Se requiere que su alias contenga al menos 1 caracter",
+                    "maxlength": "Su alias no puede contener mas de 50 caracteres",
+                    "pattern": "Su alias puede contener solamente letras minúsculas y caracteres numéricos"
                 },
                 "firstname": {
-                    "required": "Your first name is required.",
-                    "minlength": "Your first name is required to be at least 1 character",
-                    "maxlength": "Your first name cannot be longer than 50 characters",
-                    "pattern": "Your login can only contain lower-case letters and digits"
+                    "required": "Se requiere su nombre.",
+                    "minlength": "Se requiere que su nombre contenga al menos 1 caracter",
+                    "maxlength": "Su nombre no puede contener mas de 50 caracteres",
+                    "pattern": "Su nombre puede contener solamente letras minúsculas y caracteres numéricos"
                 },
                 "lastname": {
-                    "required": "Your last name is required.",
-                    "minlength": "Your last name is required to be at least 1 character",
-                    "maxlength": "Your last name cannot be longer than 50 characters"
+                    "required": "Se requiere su apellido.",
+                    "minlength": "Se requiere que su apellido contenga al menos 1 caracter",
+                    "maxlength": "Su apellido no puede contener mas de 50 caracteres"
                 }
             }
 

@@ -1,36 +1,36 @@
 {
   "user_org_manager": {
     "title": {
-      "user": "User Management",
-      "org": "Organization Management"
+      "user": "Gestión de usuarios",
+      "org": "Gestión de Organizaciones"
     },
-    "title.user_detail": "User Detail",
-    "title.org_detail": "Organization Detail",
-    "search": "Search for...",
+    "title.user_detail": "Detalles de Usuario",
+    "title.org_detail": "Detalles de la Organización",
+    "search": "Buscar...",
     "col": {
-      "name": "Name",
-      "description": "Description",
-      "status":"Status",
-      "type":"Type",
+      "name": "Nombre",
+      "description": "Descripción",
+      "status":"Estado",
+      "type":"Tipo",
       "login": "Alias",
-      "role": "Role",
-      "langKey": "Language",
-      "firstName" : "First Name",
-      "lastName" : "Last Name",
-      "organizationKey": "Key",
+      "role": "Rol",
+      "langKey": "Idioma",
+      "firstName" : "Nombre",
+      "lastName" : "Apellido",
+      "organizationKey": "Clave",
       "email": "Email",
-      "activated": "Activated",
-      "organization": "Organization",
-      "actions": "Actions",
-      "cloudaccounts": "Cloud Account",
-      "password": "Password"
+      "activated": "Activado",
+      "organization": "Organizacion",
+      "actions": "Acciones",
+      "cloudaccounts": "Cuenta Cloud",
+      "password": "Contraseña"
     },
     "button" : {
-      "edit": "Edit",
-      "create": "Create",
-      "cancel": "Cancel",
-      "delete": "Delete"
+      "edit": "Editar",
+      "create": "Crear",
+      "cancel": "Cancelar",
+      "delete": "Borrar"
     },
-    "go.organization": "Go to organization manager to create a new one."
+    "go.organization": "Ir al admnistrador de organizaciones para crear una nueva."
   }
 }

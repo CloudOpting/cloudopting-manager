@@ -1,18 +1,18 @@
 {
   "profile": {
-    "title":"Profile",
+    "title":"Perfil",
     "form_org": {
-      "org_name": "Organization name",
-      "org_description": "Organization description",
-      "org_status": "Organization status",
-      "org_type": "Organization type",
-      "button": "Update"
+      "org_name": "Nombre de la Organización",
+      "org_description": "Descripción de la Organización",
+      "org_status": "Estado de la Organization",
+      "org_type": "Tipo de Organización",
+      "button": "Actualización"
     },
     "tab" : {
-      "settings":"Settings",
-      "passwrod":"Password",
-      "organization":"Organization",
-      "cloudAccounts":"Cloud Accounts"
+      "settings":"Ajustes",
+      "passwrod":"Contraseña",
+      "organization":"Organización",
+      "cloudAccounts":"Cuentas Clouds"
     }
   }
 }

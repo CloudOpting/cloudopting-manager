@@ -1,31 +1,31 @@
 {
   "instances": {
-    "title": "Instances Service",
-    "placeholder" : "Search for...",
+    "title": "Servicio de instancias",
+    "placeholder" : "Buscar...",
     "col" : {
-      "instanceof": "Instance of",
-      "author": "Author",
-      "date": "Date",
-      "status": "Status",
-      "actions": "Actions"
+      "instanceof": "Instancia de",
+      "author": "Autor",
+      "date": "Fecha",
+      "status": "Estado",
+      "actions": "Acciones"
     },
     "status" : {
-      "requested": "Requested",
-      "deleted": "Deleted",
-      "running": "Running",
-      "todelete": "To Delete",
-      "stopped": "Stopped"
+      "requested": "Requerido",
+      "deleted": "Borrado",
+      "running": "En proceso",
+      "todelete": "Para borrar",
+      "stopped": "Parado"
     },
     "button" : {
-      "test": "Test",
+      "test": "Pueba",
       "demo" : "Demo",
-      "search" : "Search Service",
-      "go": "GO",
-      "monitor": "Monitor.",
-      "deploy": "Deploy",
-      "stop": "Stop",
-      "start": "Start",
-      "delete": "Delete"
+      "search" : "Buscar Servicio",
+      "go": "IR",
+      "monitor": "Monitorizar.",
+      "deploy": "Desplegar",
+      "stop": "Parar",
+      "start": "Iniciar",
+      "delete": "Borrar"
     }
   }
 }
