@@ -18,6 +18,7 @@
     "nodeData": "Date despre nod",
     "saveGraph": "Salvează graf",
     "generateTosca": "Generează fisier TOSCA",
+    "importJson": "Import JSON",
     "settingNode": "Parametrii nodului"
   }
 }

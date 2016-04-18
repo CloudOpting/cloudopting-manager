@@ -19,6 +19,7 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.lock.LockException;
 import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -133,6 +134,7 @@ public class StoreService {
 		try {
 			log.debug("[Local]\tFile Path:"+filePath+" - File name:"+theFile);
 			log.debug("[Remote]\tFile Path:"+storePath+" - File name:"+storeFile);
+			log.debug("stream loc:"+filePath+theFile);
 	        stream = new BufferedInputStream(new FileInputStream(filePath+theFile));
 	        //String mimeType = MimeTypeUtils.mimeUtilDetectMimeType(stream);
 	        String mimeType2 = URLConnection.guessContentTypeFromStream(stream);
@@ -140,18 +142,28 @@ public class StoreService {
 	        	log.error("Unable to detect the mime type for file "+theFile+", defaulting to 'application/octet-stream'");
 	        	mimeType2 = "application/octet-stream";
 	        }
+	        log.debug(mimeType2);
 	        //Add the file separator to the local path, if missing
 	        filePath += filePath.endsWith(File.separator)?"":File.separator;
 	        folder = this.createNodesForPath(storePath);
+	        log.debug(folder.getPath());
+	        log.debug("filePath:"+filePath);
+	        log.debug("storePath:"+storePath);
 	        JcrUtils.putFile(folder, storeFile, mimeType2, stream);
+	        log.debug("after put");
 	        session.save();
+	        log.debug("after save");
 	        stream.close();
+	        log.debug("after stream close");
 		} catch (RepositoryException e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
 		}
     }
     
@@ -168,6 +180,7 @@ public class StoreService {
     	}
 		String[] splittedFileName = jackRabbitRemotePath.split(splitRegex);
 		Node lastCreatedNode = session.getRootNode();
+		log.debug("trovato nodo radice");;
 		for (int i = 0; i < splittedFileName.length; i++) {
 			lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
 		}
@@ -184,6 +197,7 @@ public class StoreService {
     	Node childNode = null;
     	childNode = JcrUtils.getOrAddFolder(parent, childFolder);
 	    session.save();
+	    log.debug("aggiunto node");
 		return childNode;
     }
     

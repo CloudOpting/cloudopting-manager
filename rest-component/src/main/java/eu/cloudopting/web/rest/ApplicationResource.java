@@ -171,17 +171,9 @@ public class ApplicationResource extends AbstractController<Applications> {
     @ResponseBody
     public final ActivitiDTO create(@RequestBody ApplicationDTO application, final UriComponentsBuilder uriBuilder,
                                     final HttpServletResponse response, final HttpServletRequest request) {
-       /* String xmlTosca = (String) request.getAttribute("xmlTosca");
-        if(xmlTosca!=null && !xmlTosca.equals("")){
-            applications.setApplicationToscaTemplate(xmlTosca);
-        }*/
-
-
-//        createInternal(application, uriBuilder, response);
     	 User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
          Organizations org = user.getOrganizationId();
- 		
-        return getBpmnService().startPublish(application, org);
+         return getBpmnService().startPublish(application, org);
     }
 
     /**
@@ -229,7 +221,7 @@ public class ApplicationResource extends AbstractController<Applications> {
                                                @RequestBody ApplicationDTO application) throws IOException {
         //TODO: If idApp and application.getId() are not equals should we throw an exception?
         //TODO: THe processId should be sended to the BPMN.
-
+    	//TODO: Guido: distinguish between various types of updates
         return getBpmnService().updateApplication(application, processId);
     }
 

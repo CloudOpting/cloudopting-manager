@@ -50,7 +50,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 	 * @param toscaName
 	 * @param remoteFileNameReduced
 	 */
-	@Transactional
+//	@Transactional
 	private void addArtifactPath(DelegateExecution execution, String orgKey, String toscaName, String remoteFileNameReduced){
 		ApplicationDTO applicationSource = (ApplicationDTO) execution.getVariable("application");
         Applications application = applicationService.findOne(applicationSource.getId());
@@ -106,6 +106,7 @@ public class PublishArtifactStorageTask implements JavaDelegate {
 			log.error("Error in storing Artifact File");
 			e.printStackTrace();
 		} finally {
+			log.debug("about to delete");
 			FileUtils.deleteQuietly(fileToDelete);
 		}
 	}

@@ -14,8 +14,8 @@ import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.service.ApplicationService;
 
 @Service
-public class UpdateMetadataTask implements JavaDelegate {
-	private final Logger log = LoggerFactory.getLogger(UpdateMetadataTask.class);
+public class UpdateMetadata implements JavaDelegate {
+	private final Logger log = LoggerFactory.getLogger(UpdateMetadata.class);
 	@Autowired
 	ApplicationService applicationService;
 	@Autowired

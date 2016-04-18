@@ -13,8 +13,8 @@ import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.service.ApplicationService;
 
 @Service
-public class UpdateUpdateTask implements JavaDelegate {
-	private final Logger log = LoggerFactory.getLogger(UpdateUpdateTask.class);
+public class UpdateArtifactAdd implements JavaDelegate {
+	private final Logger log = LoggerFactory.getLogger(UpdateArtifactAdd.class);
 	@Autowired
 	ApplicationService applicationService;
 	
@@ -22,13 +22,13 @@ public class UpdateUpdateTask implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		log.info("Update - Service Update Task");
-		ApplicationDTO applications = (ApplicationDTO) execution.getVariable("application");
-		Applications application = applicationService.findOne(applications.getId());
-		//Perform all the additional publishing logic here...
-		//... then
-		BeanUtils.copyProperties(applications,application);
-        applicationService.update(application);
-        execution.setVariable("chkPublishMetadataAvailable", true);
+//		ApplicationDTO applications = (ApplicationDTO) execution.getVariable("application");
+//		Applications application = applicationService.findOne(applications.getId());
+//		//Perform all the additional publishing logic here...
+//		//... then
+//		BeanUtils.copyProperties(applications,application);
+//        applicationService.update(application);
+//        execution.setVariable("chkPublishMetadataAvailable", true);
 	}
 
 }

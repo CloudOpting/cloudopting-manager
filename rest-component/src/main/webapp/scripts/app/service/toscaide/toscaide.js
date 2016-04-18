@@ -7,7 +7,7 @@ angular.module('cloudoptingApp')
                 parent: 'service',
                 url: '/toscaide',
                 data: {
-                    roles: []
+                    roles: ['ROLE_ADMIN', 'ROLE_PUBLISHER']
                 },
                 views: {
                     'content@': {

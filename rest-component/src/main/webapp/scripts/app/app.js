@@ -2,7 +2,7 @@
 
 angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vcRecaptcha', 'ngAutodisable',
     'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster', 'textAngular',
-    'ngFileUpload', 'schemaForm', 'ui.bootstrap', 'checklist-model', 'ngFileSaver', 'duScroll', 'daterangepicker'])
+    'ngFileUpload', 'schemaForm', 'ui.bootstrap', 'checklist-model', 'ngFileSaver', 'duScroll', 'daterangepicker', 'ngAnimate'])
 
     .run(function ($rootScope, $location, $http, $state, $translate, Auth, Principal, Language, ENV, VERSION) {
         $rootScope.ENV = ENV;

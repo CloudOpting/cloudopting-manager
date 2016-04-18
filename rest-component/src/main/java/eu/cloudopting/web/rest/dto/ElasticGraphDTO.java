@@ -24,35 +24,35 @@ public class ElasticGraphDTO implements Serializable
     }
 
     public String[] getLabels (){
-        return labels;
+        return labels.clone();
     }
 
     public void setLabels (String[] labels){
-        this.labels = labels;
+        this.labels = labels.clone();
     }
 
     public ElasticData[] getData (){
-        return data;
+        return data.clone();
     }
 
     public void setData (ElasticData[] data){
-        this.data = data;
+        this.data = data.clone();
     }
 
     public String[] getLineColors () {
-        return lineColors;
+        return lineColors.clone();
     }
 
     public void setLineColors (String[] lineColors){
-        this.lineColors = lineColors;
+        this.lineColors = lineColors.clone();
     }
 
     public String[] getYkeys (){
-        return ykeys;
+        return ykeys.clone();
     }
 
     public void setYkeys (String[] ykeys) {
-        this.ykeys = ykeys;
+        this.ykeys = ykeys.clone();
     }
 
     @Override
