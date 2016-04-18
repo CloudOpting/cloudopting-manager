@@ -2,7 +2,7 @@
 
 angular.module('cloudoptingApp')
     .controller('PublishController', function (SERVICE, localStorageService,
-                                               $scope, $state, $log,
+                                               $scope, $state, $log, $translate,
                                                Principal, ApplicationService) {
 
         //If it is a modification we have to prepare everything to be edited.
@@ -26,6 +26,8 @@ angular.module('cloudoptingApp')
         } else {
             //If it is a new service we start with diferent parameters.
             $scope.application = {};
+            //Set the default text to the application description.
+            $scope.application.applicationDescription=$translate.instant("publish.description.template");
             $scope.disableUpdate = true;
             $scope.disableSave = false;
             $scope.disableNextOne = true;
@@ -38,7 +40,7 @@ angular.module('cloudoptingApp')
 
         //Find all sizes for the combo.
         var callbackSizes = function(data, status, headers, config) {
-            if(checkStatusCallback(data, status, headers, config, "")){
+            if(checkStatusCallback(data, status, headers, config)){
                 $scope.applicationSizes = data;
             }
         };
@@ -71,14 +73,14 @@ angular.module('cloudoptingApp')
                 var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
-                    if(checkStatusCallback(data, status, headers, config, "")){
+                    if(checkStatusCallback(data, status, headers, config)){
                         localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                         promoInDatabase = false;
                     }
                 };
 
                 //FIXME: We do not have the file ID
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
+                return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
         };
@@ -88,7 +90,7 @@ angular.module('cloudoptingApp')
                 for (var i = 0; i < $scope.files.length; i++) {
                     var file = $scope.files[i];
                     var callback = function(data, status, headers, config) {
-                        if(checkStatusCallback(data, status, headers, config, "")){
+                        if(checkStatusCallback(data, status, headers, config)){
                             localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                             promoInDatabase = true;
                         }
@@ -105,7 +107,7 @@ angular.module('cloudoptingApp')
          */
         $scope.saveWizardOne = function() {
             var callback = function(data, status, headers, config){
-                if(checkStatusCallback(data, status, headers, config, "")){
+                if(checkStatusCallback(data, status, headers, config)){
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                     //TODO: The processID is only for developmenent. Delete once it is done and validated.
                     $scope.processID = data.processInstanceId;
@@ -122,20 +124,20 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            ApplicationService.create($scope.application, callback);
+            return ApplicationService.create($scope.application, callback);
         };
 
         $scope.updateWizardOne = function() {
             var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
             var callback = function(data, status, headers, config){
-                if(checkStatusCallback(data, status, headers, config, "")){
+                if(checkStatusCallback(data, status, headers, config)){
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                     savePromotionalImage(data);
                 }
             };
 
-            ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
+            return ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
         };
 
         $scope.nextWizardOne = function() {
@@ -186,7 +188,7 @@ angular.module('cloudoptingApp')
                     var file = $scope.libraryList[i];
 
                     var callback = function (data, status, headers, config) {
-                        if (checkStatusCallback(data, status, headers, config, "")) {
+                        if (checkStatusCallback(data, status, headers, config)) {
                             localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                             $state.go('publish3');
                         }
@@ -195,6 +197,7 @@ angular.module('cloudoptingApp')
                     ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
                 }
             }
+            return;
 
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
@@ -222,7 +225,7 @@ angular.module('cloudoptingApp')
             var activiti = localStorageService.get(SERVICE.STORAGE.ACTIVITI);
 
             var callback = function(data, status, headers, config) {
-                if(checkStatusCallback(data, status, headers, config, "")){
+                if(checkStatusCallback(data, status, headers, config)){
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                     promoInDatabase = false;
                 }
@@ -261,7 +264,7 @@ angular.module('cloudoptingApp')
                     var file = $scope.toscaFiles[i];
 
                     var callback = function (data, status, headers, config) {
-                        if (checkStatusCallback(data, status, headers, config, "")) {
+                        if (checkStatusCallback(data, status, headers, config)) {
                             localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                             //TODO: Show a message of completion.
                             $scope.disablePublish = false;
@@ -274,6 +277,7 @@ angular.module('cloudoptingApp')
                     ApplicationService.addToscaArchive(activiti.applicationId, activiti.processInstanceId, file, callback);
                 }
             }
+            return;
         };
 
         /**
@@ -292,13 +296,13 @@ angular.module('cloudoptingApp')
                 var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
-                    if(checkStatusCallback(data, status, headers, config, "")){
+                    if(checkStatusCallback(data, status, headers, config)){
                         localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                         toscaArchiveInDatabase = false;
                     }
                 };
 
-                ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
+                return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
         };
@@ -311,14 +315,14 @@ angular.module('cloudoptingApp')
             var application = localStorageService.get(SERVICE.STORAGE.PUBLISH.APPLICATION);
 
             var callback = function (data, status, headers, config){
-                if(checkStatusCallback(data, status, headers, config, "")){
+                if(checkStatusCallback(data, status, headers, config)){
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.APPLICATION, null);
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, null);
                     $state.go('publish4');
                 }
             };
 
-            requestPublication(activiti, application, callback);
+            return requestPublication(activiti, application, callback);
         };
 
         /**
@@ -330,7 +334,7 @@ angular.module('cloudoptingApp')
             //activiti.processInstanceId, activiti.applicationId
             application.status = "Requested";
             $log.debug("Requesting publication for application: " + angular.toJson(application, true));
-            ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
+            return ApplicationService.update(application.id, activiti.processInstanceId, application, callback);
         };
 
         //////////
@@ -341,14 +345,14 @@ angular.module('cloudoptingApp')
         $scope.infoMessage = null;
 
         //function to check possible outputs for the end user information.
-        var checkStatusCallback = function(data, status, headers, config, message){
+        var checkStatusCallback = function(data, status, headers, config){
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    $scope.errorMessage = $translate.instant("callback.no_permissions");
                     return false;
                 } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $scope.errorMessage = $translate.instant("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
@@ -356,11 +360,11 @@ angular.module('cloudoptingApp')
                 }
             }else if(status!=200 && status!=201) {
                 //Show message
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                $scope.errorMessage = $translate.instant("callback.generic_error");
                 return false;
             } else {
                 //Return to the list
-                $scope.infoMessage = message + " Successfully done!";
+                $scope.infoMessage = $translate.instant("callback.success");
                 return true;
             }
         };

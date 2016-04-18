@@ -1,0 +1,39 @@
+{
+  "contact": {
+    "title": "Contactez nous",
+    "form": {
+      "button": "Envoyer un message",
+      "name": "Nom",
+      "phone": "Téléphone",
+      "companyName": "Nom de la compagnie",
+      "message": "Message",
+      "placeholder": {
+        "name": "Votre Nom *",
+        "phone": "Votre Téléphone",
+        "email": "Votre Email *",
+        "companyName": "Nom de votre Companie",
+        "message": "Votre Message *"
+      },
+      "validation": {
+        "name": "S'il vous plaît entrez votre nom.",
+        "phone": "S'il vous plait, entrez votre numéro de téléphone.",
+        "email": "S'il vous plaît entrer votre adresse e-mail.",
+        "message": "S'il vous plaît entrer un message."
+      }
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "Votre prénom est requis."
+        },
+        "lastName": {
+          "required": "Votre nom est requis."
+        }
+      },
+      "success": "<strong>Message envoyé!</strong> Nous prendrons contact avec vous bientôt.",
+      "error": {
+        "fail": "<strong>Quelque chose n'a pas fonctionné!</strong> Veuillez réessayer plus tard."
+      }
+    }
+  }
+}

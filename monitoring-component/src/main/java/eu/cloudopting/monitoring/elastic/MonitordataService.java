@@ -83,7 +83,7 @@ public class MonitordataService {
 	}
 
 	public ElasticData[] getAggregatedMonitorData(String container, String condition, String fields, String type,
-			Long pagination) {
+			Long pagination, String startDate, String endDate) {
 		log.debug("pagination:" + pagination.toString());
 		log.debug("condit:" + condition);
 		ElasticData graphData[] = null;
@@ -96,7 +96,7 @@ public class MonitordataService {
 				.interval(DateHistogram.Interval.DAY).format("yyyy-MM-dd hh:mm:ss");
 		log.debug(dayly.toString());
 		// we need to filter the data for time range AND data match
-		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte("2016-02-20T10:55:28+01:00");
+		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte(startDate);
 		log.debug(rangeFilter.toString());
 		// we need to match on the path AND containername
 		MatchQueryBuilder pathMatch = QueryBuilders.matchQuery(fields, condition)
@@ -164,7 +164,7 @@ public class MonitordataService {
 		return graphData;
 	}
 
-	public ArrayList<ElasticGraphData> getAllAggregatedMonitorData(Long customizationId) {
+	public ArrayList<ElasticGraphData> getAllAggregatedMonitorData(Long customizationId, String startDate, String endDate) {
 		// recover the customization
 		Customizations cust = customizationService.findOne(customizationId);
 		// get info on elastic form Db
@@ -176,7 +176,7 @@ public class MonitordataService {
 		for (MonitoringInfoElastic ei : elastinfo) {
 			log.debug(ei.getContainer());
 			ElasticData[] graphData = this.getAggregatedMonitorData(ei.getContainer(), ei.getCondition(),
-					ei.getFields(), ei.getType(), ei.getPagination());
+					ei.getFields(), ei.getType(), ei.getPagination(), startDate, endDate);
 			ElasticGraphData egd = new ElasticGraphData();
 			// log.debug(new Integer(graphData.size()).toString());
 			// if (!graphData.isEmpty()) {

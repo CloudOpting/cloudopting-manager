@@ -6,29 +6,33 @@
                     <ul class="nav nav-wizard">
                         <li class="done">
                             <div class="nav-wizard-content">
-                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                                <span class="badge">1</span> <span class="text" translate="publish.wizzard.one">Set Global Properties</span>
                             </div>
                         </li>
                         <li class="done">
                             <div class="nav-wizard-content">
-                                <span class="badge">2</span> <span class="text">Upload needed files</span>
+                                <span class="badge">2</span> <span class="text" translate="publish.wizzard.tow">Upload needed files</span>
                             </div>
                         </li>
                         <li class="done">
                             <div class="nav-wizard-content">
-                                <span class="badge">3</span> <span class="text">Upload TOSCA archive</span>
+                                <span class="badge">3</span> <span class="text" translate="publish.wizzard.three">Upload TOSCA archive</span>
                             </div>
                         </li>
                         <li class="active">
                             <div class="nav-wizard-content">
-                                <span class="badge">4</span> <span class="text">Request Status</span>
+                                <span class="badge">4</span> <span class="text" translate="publish.wizzard.four">Request Status</span>
                             </div>
                         </li>
                     </ul>
                     <div class="backend-box-content">
                         <div class="alert alert-danger hide">
-                            <!-- FIXME: Has no sense -->
-                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                            <div class="alert alert-info" ng-show="infoMessage">
+                                {{infoMessage}}
+                            </div>
+                            <div class="alert alert-danger" ng-show="errorMessage">
+                                {{errorMessage}}
+                            </div>
                         </div>
                         <form class="form" role="form dropzone">
                             <div class="row">
@@ -38,14 +42,14 @@
                             </div>
 
                             <div class="thanks">
-                                <h4>Thanks!</h4>
-                                <h5>Your service has been published</h5>
+                                <h4 translate="publish.thanks">Thanks!</h4>
+                                <h5 translate="publish.thanks_2">Your service has been published</h5>
                             </div>
 
                             <div class="row row-actions">
                                 <div class="col-xs-6"></div>
                                 <div class="col-xs-6">
-                                    <a ui-sref="list" data-target="#list" class="btn btn-primary pull-right">Service List</a>
+                                    <a ui-sref="list" data-target="#list" class="btn btn-primary pull-right" translate="publish.button.service_list">Service List</a>
                                 </div>
                             </div>
                         </form>

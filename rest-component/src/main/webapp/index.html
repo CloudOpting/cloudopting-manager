@@ -35,7 +35,8 @@
 
         <!-- Custom Fonts -->
         <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css" />
-        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css" />
+        <link href='https://fonts.googleapis.com/css?family=Arimo:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css assets/styles/main.css -->
@@ -106,15 +107,18 @@
         <script src="bower_components/angular-file-saver/dist/angular-file-saver.min.js"></script>
         <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js"></script>
         <script src="bower_components/angular-scroll/angular-scroll.min.js"></script>
+        <script src="bower_components/angular-autodisable/angular-autodisable.js"></script>
 
-        <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit" async defer></script>
-        <script src="bower_components/angular-recaptcha/release/angular-recaptcha.min.js"></script>
+        <script src="bower_components/angular-recaptcha/release/angular-recaptcha.js"></script>
 
 
         <!-- endbower -->
 
         <!-- MANUAL DEPENDENCY -->
-        <script src="bower_components/ui-bootstrap-tpls/ui-bootstrap-tpls-0.13.4.js"></script>
+        <!-- LG chenged for TOSCA IDE if problems arises we need to check this -->
+<!--         <script src="bower_components/ui-bootstrap-tpls/ui-bootstrap-tpls-0.13.4.js"></script>
+ -->    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-animate.js"></script>
+         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.1.js"></script>
         <!-- endbuild -->
 
         <!-- For Look & feel -->
@@ -227,18 +231,8 @@
         <script src="scripts/app/service/instances/instances.controller.js"></script>
         <script src="scripts/app/service/publish/publish.js"></script>
         <script src="scripts/app/service/publish/publish.controller.js"></script>
-        <script src="scripts/app/service/taylor/taylor.js"></script>
-        <script src="scripts/app/service/taylor/taylor.controller.js"></script>
-        <script src="scripts/app/service/subscriber/subscriber.js"></script>
-        <script src="scripts/app/service/subscriber/subscriber.controller.js"></script>
-        <script src="scripts/app/service/add_deploy/addDeploy.js"></script>
-        <script src="scripts/app/service/add_deploy/addDeploy.controller.js"></script>
-        <script src="scripts/app/service/logs/logs.js"></script>
-        <script src="scripts/app/service/logs/logs.controller.js"></script>
         <script src="scripts/app/service/monitoring/monitoring.js"></script>
         <script src="scripts/app/service/monitoring/monitoring.controller.js"></script>
-        <script src="scripts/app/service/management/management.js"></script>
-        <script src="scripts/app/service/management/management.controller.js"></script>
         <script src="scripts/app/service/profile/profile.js"></script>
         <script src="scripts/app/service/profile/profile.controller.js"></script>
         <script src="scripts/app/service/user_org_manager/user_org_manager.js"></script>
@@ -256,6 +250,10 @@
         <script src="scripts/app/service/toscaide/toscaide.controller.js"></script>
         <script src="scripts/app/service/activiti/activiti.js"></script>
         <script src="scripts/app/service/activiti/activiti.controller.js"></script>
+        <script src="scripts/app/service/terms_n_conditions/terms_n_conditions.controller.js"></script>
+        <script src="scripts/app/service/terms_n_conditions/terms_n_conditions.js"></script>
+        <script src="scripts/app/service/privacy_policy/privacy_policy.controller.js"></script>
+        <script src="scripts/app/service/privacy_policy/privacy_policy.js"></script>
 
         <!-- BUTTON SCREEN IS TO EXECUTE DIRECT ACTIONS -->
         <script src="scripts/app/service/button/button.js"></script>
@@ -266,6 +264,7 @@
         <script src="scripts/app/service/form_generation/form_generation.controller.js"></script>
 
         <script src="assets/js/cytoscape.js"></script>
+        <script src="assets/js/cytoscape-cxtmenu.js"></script>
 
 
         <!-- cloudopting-manager-webui end -->

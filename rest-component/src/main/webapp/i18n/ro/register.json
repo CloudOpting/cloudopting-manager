@@ -1,23 +1,51 @@
 {
     "register": {
-        "title": "Registration",
+        "title": "Înregistrare",
         "form": {
-            "button": "Register"
+            "button": "Înregistrare",
+            "username.placeholder": "Utilizator",
+            "firstName.placeholder": "Prenume",
+            "lastName.placeholder": "Nume",
+            "email.placeholder": "E-mail",
+            "password.placeholder": "Parolă",
+            "confirmpassword.placeholder": "Confirmă parola"
         },
         "messages": {
             "validate": {
-                "login": {
-                    "required": "Your login is required.",
-                    "minlength": "Your login is required to be at least 1 character",
-                    "maxlength": "Your login cannot be longer than 50 characters",
-                    "pattern": "Your login can only contain lower-case letters and digits"
+                "firstname": {
+                    "required": "Prenumele este obligatoriu."
+                },
+                "lastname": {
+                    "required": "Numele este obligatoriu."
+                },
+                "username": {
+                    "required": "Utilizatorul este obligatoriu.",
+                    "minlength": "Utilizatorul trebuie să conțină cel puțin 1 caracter",
+                    "maxlength": "Utilizatorul trebuie să conțină cel mult 50 caractere",
+                    "pattern": "Utilizatorul poate conține doar caratere alfabetice"
+                },
+                "password" :{
+                    "required": "Parola este obligatorie",
+                    "minlength": "Parola trebuie să conțină cel puțin 5 caractere",
+                    "maxlength": "Parola trebuie să conțină cel mult 50 caractere"
+                },
+                "password2" :{
+                    "required": "Conformarea parolei este obligatorie",
+                    "minlength": "Parola trebuie să conțină cel puțin 5 caractere",
+                    "maxlength": "Parola trebuie să conțină cel mult 50 caractere"
+                },
+                "email" :{
+                    "required": "Adresa de e-mail este obligatorie.",
+                    "invalid": "Adresa de e-mail este invalidă.",
+                    "minlength": "Adresa de e-mail trebuie să conțină cel puțin 5 caractere",
+                    "maxlength": "Adresa de e-amil trebuie să conțină cel mult 100 caractere"
                 }
             },
-            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+            "success": "<strong>Înregistrarea a fost salvată cu succes!</strong> Vă rugăm să vă verificați căsuța de e-mail.",
             "error": {
-                "fail": "<strong>Registration failed!</strong> Please try again later.",
-                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+                "fail": "<strong>Înregistrarea a eșuat!</strong> Vă rugăm să încercați mai târziu.",
+                "userexists": "<strong>Utilizatorul există deja!</strong> Vă rugăm să alegeți altul.",
+                "emailexists": "<strong>Adresa de email este înregistrată!</strong> Vă rugăm să alegeți alta."
             }
         }
     }

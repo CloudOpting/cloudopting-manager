@@ -1,0 +1,39 @@
+{
+  "contact": {
+    "title": "Contactează-ne",
+    "form": {
+      "button": "trimite mesaj",
+      "name": "Nume",
+      "phone": "Telefon",
+      "companyName": "Numele companiei",
+      "message": "Mesaj",
+      "placeholder": {
+        "name": "Numele dvs. *",
+        "phone": "Numărul de telefon",
+        "email": "Adresa de email *",
+        "companyName": "Numele companiei",
+        "message": "Mesajul dvs. *"
+      },
+      "validation": {
+        "name": "Introduceți numele.",
+        "phone": "Introduceți numărul de telefon.",
+        "email": "Introduceți adresa de email.",
+        "message": "Introduceți un mesaj."
+      }
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "Numele dumneavostră este obligatoriu."
+        },
+        "lastName": {
+          "required": "Prenumele este obligatoriu."
+        }
+      },
+      "success": "<strong>Mesajul a fost trimis!</strong> Vă vom contacta în curând.",
+      "error": {
+        "fail": "<strong>A avut loc o eroare!</strong> Vă rugăm să încercați mai târziu."
+      }
+    }
+  }
+}

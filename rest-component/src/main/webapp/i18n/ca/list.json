@@ -1,26 +1,26 @@
 {
   "list": {
-    "title": "Services List",
+    "title": "Llistat de Serveis",
     "search": {
-      "placeholder": "Search for..."
+      "placeholder": "Cerca per..."
     },
     "button": {
-      "addservice": "+ Add New Service",
-      "search": "Search Service",
-      "edit": "Edit",
-      "listinstances": "List instances",
-      "delete": "Delete",
-      "createinstance": "Create Instance"
+      "addservice": "Nou Servei",
+      "search": "Cerca Servei",
+      "edit": "Edita",
+      "listinstances": "Llista Instàncies",
+      "delete": "Elimina",
+      "createinstance": "Nova Instància"
     },
     "col": {
-      "name": "Service Name",
-      "status": "Status",
-      "edit": "Edit Service"
+      "name": "Nom del Servei",
+      "status": "Estat",
+      "actions": "Accions"
     },
     "status": {
-      "published": "Published",
-      "fortesting": "For Testing",
-      "uploaded": "Uploaded"
+      "published": "Publicat",
+      "fortesting": "Per Provar",
+      "uploaded": "Carregat"
     }
   }
 }

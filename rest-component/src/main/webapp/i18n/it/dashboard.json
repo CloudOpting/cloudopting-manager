@@ -1,0 +1,32 @@
+{
+  "instances": {
+    "title": "Le Mie Istanze del Servizio",
+    "placeholder" : "Ricerca per...",
+    "col" : {
+      "instanceof": "Istanza di",
+      "author": "Autore",
+      "date": "Data",
+      "status": "Stato",
+      "actions": "Azioni"
+    },
+    "status" : {
+      "requested": "Richiesto",
+      "deleted": "Cancellato",
+      "running": "In esecuzione",
+      "todelete": "Da Cancellare",
+      "stopped": "Fermato"
+    },
+    "button" : {
+      "test": "Test",
+      "demo" : "Dimostrazione",
+      "search" : "Ricerca del Servizio",
+      "go": "VAI",
+      "monitor": "Monitoraggio.",
+      "deploy": "Rilascio",
+      "stop": "Stop",
+      "start": "Start",
+      "delete": "Cancella"
+    },
+    "go_to_tosca_ide" : "Creare il file di TOSCA"
+  }
+}

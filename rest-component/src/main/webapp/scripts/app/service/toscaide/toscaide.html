@@ -4,19 +4,19 @@
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="backend-box">
-					<div class="backend-box-cabecera text-center" translate="">
+					<div class="backend-box-cabecera text-center" translate="toscaide.title">
 						TOSCA IDE
 					</div>
 					<div class="backend-box-content">
 						<div class="form">
 							<div class="form-group">
-								 <label for="serviceName" translate="">Service name:</label>
-								 <input type="text" class="form-control" ng-model="serviceName"
+								 <label for="serviceName" translate="toscaide.serviceName">Service name:</label>
+								 <input id="serviceName" type="text" class="form-control" ng-model="serviceName"
 								  		  name="serviceName" required />
 							</div>
 							<div class="form-group">
 								 <button type="button" class="btn btn-reverse"
-								  			ng-click="loadTopology()" ng-disabled="!serviceName.length">Load graph</button>
+								  			ng-click="loadTopology()" ng-disabled="!serviceName.length" translate="toscaide.loadGraph">Load graph</button>
 							</div>
 						</div>
 
@@ -24,60 +24,60 @@
 							<div id="content" class="col-lg-12">
 								<div class="form row">
 									<div class="col-lg-12">
-										<h4>Setting node</h4>
+										<h4 translate="toscaide.settingNode">Setting node</h4>
 									</div>
 									<div class="col-md-5">
 										<div class="form-group">
-											 <label for="nameNode" translate="">Node name:</label>
-											 <input class="form-control" type="text" ng-model="scheda.obj.name" name="nameNode" />
+											 <label for="nameNode" translate="toscaide.nameNode">Node name:</label>
+											 <input id="nameNode" class="form-control" type="text" ng-model="scheda.obj.name" name="nameNode" />
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
-											 <label for="nodeType" translate="">Node type:</label>
-											 <select class="form-control" name="nodeType" ng-model="scheda.obj.objTypes"
+											 <label for="nodeType" translate="toscaide.nodeType">Node type:</label>
+											 <select id="nodeType" class="form-control" name="nodeType" ng-model="scheda.obj.objTypes"
 											   		ng-options="name for name in objTypes"></select>
 										</div>
 									</div>
 									<div class="col-md-3">
-										<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addObj()">+ Add node</button>
+										<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addObj()" translate="toscaide.addNode">+ Add node</button>
 									</div>
 								</div>
 
 								<div class="form row">
 									<div class="col-lg-12">
-										<h4 ng-show="mapData.length>1">Relationship (between 2 nodes)</h4>
+										<h4 ng-show="mapData.length>1" translate="toscaide.addNode">Relationship (between 2 nodes)</h4>
 
 										<div class="form-group" ng-hide="mapData.length>1">
-											 <label translate=""><small>**After adding 2 nodes, you can start connecting relationships</small></label>
+											 <label translate="toscaide.infoNodes"><small>**After adding 2 nodes, you can start connecting relationships</small></label>
 										</div>
 
 										<div class="row" ng-show="mapData.length>1">
 											<div class="col-md-3">
 												<div class="form-group">
-													<label for="fromNode" translate="">Select node 1:</label>
-	  												<select name="fromNode" class="form-control" ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
-	  			 										<option value="">From</option>
+													<label for="fromNode" translate="toscaide.select_1">Select node 1:</label>
+	  												<select id="fromNode" name="fromNode" class="form-control" ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
+	  			 										<option value="" translate="toscaide.from">From</option>
 	  			 									</select>
 												</div>
 											</div>
 											<div class="col-md-3">
 												<div class="form-group">
-													<label for="toNode" translate="">Select node 2:</label>
-													<select name="toNode" class="form-control" ng-model="formEdges.toName" ng-options="c.name for c in mapData">
-														<option value="">To</option>
+													<label for="toNode" translate="toscaide.select_2">Select node 2:</label>
+													<select id="toNode" name="toNode" class="form-control" ng-model="formEdges.toName" ng-options="c.name for c in mapData">
+														<option value="" translate="toscaide.to">To</option>
 													</select>
 												</div>
 											</div>
 											<div class="col-md-3">
 												<div class="form-group">
-													<label for="connectionType" translate="">Select relationship:</label>
-													<select name="connectionType" class="form-control" ng-model="formEdges.type" ng-options="name for name in formArr">
+													<label for="connectionType" translate="toscaide.selectRelationship">Select relationship:</label>
+													<select id="connectionType" name="connectionType" class="form-control" ng-model="formEdges.type" ng-options="name for name in formArr">
 				 									</select>
 												</div>
 											</div>
 											<div class="col-md-3">
-												<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addEdge()">+ Add relationship</button>
+												<button type="button" class="btn btn-reverse btn-block btn-form-cols" ng-click="addEdge()" translate="toscaide.addRelatonship">+ Add relationship</button>
 											</div>
 										</div>
 									</div>
@@ -88,14 +88,14 @@
 							<div class="col-md-7">
 								<cytoscape cy-data="mapData" cy-edges="edgeData"
 											  cy-templates="templateData" cy-edgetemplates="templateEdgeData"
-											  cy-click="doClick(value)" cy-edgeclick="doEdgeClick(value)"></cytoscape>
+											  cy-click="doClick(value)" cy-edgeclick="doEdgeClick(value)" cy-remove="doRemoveNode(value)" cy-renamenode="doRenameNode(value)"></cytoscape>
 								<div class="form-group">
-									<button type="text" class="btn btn-reverse" ng-click="reset()">Reset graph</button>
+									<button type="text" class="btn btn-reverse" ng-click="reset()" translate="toscaide.resetGraph">Reset graph</button>
 								</div>
 							</div>
 							<div class="col-md-5">
 								<div class="form form-nodedata">
-									<h4>Node data</h4>
+									<h4 translate="toscaide.nodeData">Node data</h4>
 
 									<form name="myForm" sf-schema="schema" sf-form="form"
 										sf-model="model" ng-submit="onSubmit(myForm)"></form>
@@ -103,11 +103,21 @@
 							</div>
 						</div>
 						<div class="row row-actions">
-							<div class="col-xs-6">
-								<button type="text" class="btn" ng-click="saveService()" ng-disabled="!serviceName.length">Save graph</button>
+							<div class="col-xs-4">
+								<button type="text" class="btn btn-secondary" ng-click="saveService()" ng-disabled="!serviceName.length" translate="toscaide.saveGraph" ng-autodisable>Save graph</button>
 							</div>
-							<div class="col-xs-6">
-								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length">Generate TOSCA</button>
+							<div class="col-xs-4">
+								<button uib-popover-template="dynamicPopover.templateUrl" popover-title="{{dynamicPopover.title}}" type="text" class="btn btn-secondary"  translate="toscaide.importJson" ng-autodisable>Import JSON</button>
+								<script type="text/ng-template" id="myPopoverTemplate.html">
+        <div class="form-group">
+          <label>Paste JSON here:</label>
+          <textarea type="text" ng-model="dynamicPopover.content" class="form-control"></textarea>
+<button type="button" ng-click="importJson()">Import</button>
+        </div>
+    </script>
+							</div>
+							<div class="col-xs-4">
+								<button type="text" class="btn btn-primary pull-right" ng-click="sendService()" ng-disabled="!serviceName.length" translate="toscaide.generateTosca" ng-autodisable>Generate TOSCA</button>
 							</div>
 						</div>
 					</div>

@@ -1,23 +1,23 @@
 {
     "metrics": {
-        "title": "Application Metrics",
-        "refresh.button": "Refresh",
-        "updating": "Updating...",
+        "title": "Mètriques de l'Aplicació",
+        "refresh.button": "Actualitza",
+        "updating": "Actualitzant...",
         "jvm": {
-            "title": "JVM Metrics",
+            "title": "Mètriques JVM",
             "memory": {
-                "title": "Memory",
-                "total": "Total Memory",
+                "title": "Memòria",
+                "total": "Memòria Total",
                 "heap": "Heap Memory",
                 "nonheap": "Non-Heap Memory"
             },
             "threads": {
                 "title": "Threads",
-                "all": "All",
+                "all": "Tots",
                 "runnable": "Runnable",
                 "timedwaiting": "Timed waiting",
-                "waiting": "Waiting",
-                "blocked": "Blocked",
+                "waiting": "Esperant",
+                "blocked": "Bloquejat",
                 "dump": {
                     "title": "Threads dump",
                     "id": "Id: ",
@@ -27,8 +27,8 @@
                     "waitedcount": "Waited Count",
                     "lockname": "Lock name",
                     "stacktrace": "Stacktrace",
-                    "show": "Show",
-                    "hide": "Hide"
+                    "show": "Mostra",
+                    "hide": "Amaga"
                 }
             },
             "gc": {
@@ -40,29 +40,29 @@
             },
             "http": {
                 "title": "HTTP requests (events per second)",
-                "active": "Active requests:",
-                "total": "Total requests:",
+                "active": "Peticions actives:",
+                "total": "Peticions totals:",
                 "table": {
-                    "code": "Code",
-                    "count": "Count",
-                    "mean": "Mean",
-                    "average": "Average"
+                    "code": "Codi",
+                    "count": "Total",
+                    "mean": "Mitja",
+                    "average": "Mitjana"
                 },
                 "code": {
                     "ok": "Ok",
-                    "notfound": "Not found",
-                    "servererror": "Server Error"
+                    "notfound": "No trobat",
+                    "servererror": "Error del servidor"
                 }
             }
         },
         "servicesstats": {
-            "title": "Services statistics (time in millisecond)",
+            "title": "Estadístiques dels serveis (temps en mil·lisegons)",
             "table": {
-                "name": "Service name",
-                "count": "Count",
-                "mean": "Mean",
-                "min": "Min",
-                "max": "Max",
+                "name": "Nom del servei",
+                "count": "Total",
+                "mean": "Mitja",
+                "min": "Mínim",
+                "max": "Màxim",
                 "p50": "p50",
                 "p75": "p75",
                 "p95": "p95",
@@ -70,22 +70,22 @@
             }
         },
         "ehcache": {
-            "title": "Ehcache statistics",
-            "cachename": "Cache name",
-            "objects": "Objects",
-            "hits": "Hits",
-            "misses": "Misses",
-            "evictioncount": "Eviction count",
+            "title": "Estadístiques Ehcache",
+            "cachename": "Nom Cache",
+            "objects": "Objectes",
+            "hits": "Accessos",
+            "misses": "Errors",
+            "evictioncount": "Recompte de desallotjament",
             "mean": "Mean get time (ms)"
         },
         "datasource": {
-        	"usage": "Usage",
-            "title": "DataSource statistics (time in millisecond)",
+        	"usage": "Utilització",
+            "title": "Estadístiques DataSource (temps en mil·lisegons)",
             "name": "Pool usage",
-            "count": "Count",
-            "mean": "Mean",
-            "min": "Min",
-            "max": "Max",
+            "count": "Total",
+            "mean": "Mitja",
+            "min": "Mínim",
+            "max": "Màxim",
             "p50": "p50",
             "p75": "p75",
             "p95": "p95",

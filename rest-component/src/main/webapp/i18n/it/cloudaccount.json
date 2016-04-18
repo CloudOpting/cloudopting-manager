@@ -1,0 +1,40 @@
+{
+  "cloudaccount": {
+    "title" : "Cloud Account",
+    "form" : {
+      "name" : "Nome Cloud Account",
+      "apiKey" : "API Key",
+      "secretKey" : "Chiave Privata",
+      "endpoint" : "Endpoint",
+      "provider" : "Fornitore",
+      "placeholder" : {
+        "name" : "Il Nome del Cloud Account",
+        "apiKey" : "L'API Key",
+        "secretKey" : "La Chiave Privata",
+        "endpoint" : "L'Endpoint"
+      },
+      "button" : {
+        "back" : "Indietro",
+        "save" : "Salva",
+        "delete" : "Cancella",
+        "update" : "Aggiorna"
+      }
+    },
+    "col" : {
+      "name": "Nome Cloud Account",
+      "provider": "Fornitore",
+      "actions": "Azioni"
+    },
+    "button" : {
+      "add" : "Aggiungi",
+      "edit" : "Modifica",
+      "delete" : "Cancella"
+    },
+    "alert" : {
+      "sent" : "Messaggio inviato!",
+      "wrong" : "Qualcosa non ha funzionato!",
+      "contact_you" : "La contatteremo al più presto.",
+      "try_again" : "Si prega di riprovare più tardi."
+    }
+  }
+}

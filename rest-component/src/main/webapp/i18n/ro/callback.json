@@ -1,0 +1,8 @@
+{
+  "callback": {
+    "no_permissions":"Nu aveți permisiunea pentru această acțiune. Cereți mai multe permisiuni administratorului",
+    "session_ended":"Sesiunea dvs. s-a terminat.Autentificați-vă din nou. Trimitere automată către pagina de autentificare...",
+    "generic_error":"A apărut o eroare. Așteptați un moment și încercați din nou. Dacă problema persistă contactați administratorul",
+    "success":" Finalizat cu succes!"
+  }
+}

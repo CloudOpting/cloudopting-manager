@@ -17,9 +17,11 @@
       "stopped": "Fermato"
     },
     "button" : {
+      "test": "Test",
+      "demo" : "Dimostrazione",
       "search" : "Ricerca Servizio",
-      "go": "GO",
-      "monitor": "Monitoraggio",
+      "go": "VAI",
+      "monitor": "Monitoraggio.",
       "deploy": "Rilascio",
       "stop": "Stop",
       "start": "Start",

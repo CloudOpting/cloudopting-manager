@@ -30,7 +30,7 @@
                                                 <th translate="user_org_manager.col.name">Name</th>
                                                 <th translate="user_org_manager.col.status">Status</th>
                                                 <th translate="user_org_manager.col.type">Type</th>
-                                                <th translate="user_org_manager.col.actions">Actions</th>
+                                                <th translate="user_org_manager.col.actions" class="table-col-actions actions-short">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -38,9 +38,13 @@
                                                 <td>{{org.organizationName}}</td>
                                                 <td>{{org.organizationStatus.status}}</td>
                                                 <td>{{org.organizationType.types}}</td>
-                                                <td class="text-right">
-                                                    <button type="button" class="btn btn-icon" ng-click="editOrganization(org)" ><i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="deleteOrganization(org.id)" ><i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate}}</button>
+                                                <td class="table-col-actions actions-short">
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="editOrganization(org)" ng-autodisable>
+                                                        <i class="fa fa-pencil-square-o"></i>{{'user_org_manager.button.edit' | translate | limitTo: 3}}.<span>{{'user_org_manager.button.edit' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="deleteOrganization(org.id)" ng-autodisable>
+                                                        <i class="fa fa-trash-o"></i>{{'user_org_manager.button.delete' | translate | limitTo: 3}}.<span>{{'user_org_manager.button.delete' | translate}}</span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -64,39 +68,3 @@
         </div>
     </div>
 </section>
-<!--
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="user_org_manager.title.org">Organization Management</div>
-        <div class="panel-body">
-            <div class="col-md-12">
-                <label>{{'user_org_manager.search' | translate}}</label>
-                <input ng-model="searchTextOrg">
-                <button type="button" ng-click="createOrganizationPage()" class="btn btn-default"  translate="user_org_manager.button.create_organization">Create Organization</button>
-                <hr>
-                <table id="searchTextResults" cellspacing="1" cellpadding="1" class="table-responsive"  style="width: 100%;">
-                    <thead>
-                    <tr>
-                        <th translate="user_org_manager.col.name">Name</th>
-                        <th translate="user_org_manager.col.status">Status</th>
-                        <th translate="user_org_manager.col.type">Type</th>
-                        <th translate="user_org_manager.col.actions">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="org in organizations | filter:searchTextOrg">
-                        <td>{{org.organizationName}}</td>
-                        <td>{{org.organizationStatus.status}}</td>
-                        <td>{{org.organizationType.types}}</td>
-                        <td class="text-right">
-                            <button type="button" class="btn btn-icon" ng-click="editOrganization(org)" ><i class="icon"><img src="assets/img/auth/icn_edit.png" /></i>{{'user_org_manager.button.edit' | translate}}</button>
-                            <button type="button" class="btn btn-icon" ng-click="deleteOrganization(org.id)" ><img src="assets/img/auth/icn_delete.png" /></i>{{'user_org_manager.button.delete' | translate}}</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
--->

@@ -1,0 +1,36 @@
+{
+  "user_org_manager": {
+    "title": {
+      "user": "Gestione Utenti",
+      "org": "Gestione Organizzazione"
+    },
+    "title.user_detail": "Dettaglio Utente",
+    "title.org_detail": "Dettaglio Organizzazione",
+    "search": "Ricerca per...",
+    "col": {
+      "name": "Nome",
+      "description": "Descrizione",
+      "status":"Stato",
+      "type":"Tipo",
+      "login": "Alias",
+      "role": "Ruolo",
+      "langKey": "Linguaggio",
+      "firstName" : "Nome",
+      "lastName" : "Cognome",
+      "organizationKey": "Chiave",
+      "email": "Email",
+      "activated": "Attivato",
+      "organization": "Organizzazione",
+      "actions": "Azioni",
+      "cloudaccounts": "Cloud Account",
+      "password": "Password"
+    },
+    "button" : {
+      "edit": "Modifica",
+      "create": "Crea",
+      "cancel": "Annulla",
+      "delete": "Cancella"
+    },
+    "go.organization": "Vai dal gestore dell'organizzazione per crearne uno nuovo."
+  }
+}

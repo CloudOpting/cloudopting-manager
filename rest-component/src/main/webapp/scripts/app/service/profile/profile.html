@@ -2,13 +2,13 @@
   <div class="row">
     <div class="bs-example col-md-offset-1 col-md-10">
       <div class="backend-box">
-        <h3 class="sr-only">Profile</h3>
+        <h3 class="sr-only" translate="profile.title">Profile</h3>
 
         <ul class="nav nav-tabs">
-            <li ng-class="{'active': tab_selected === 'tab_settings'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')">Settings</a></li>
-            <li ng-class="{'active': tab_selected === 'tab_password'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')">Password</a></li>
-            <li ng-class="{'active': tab_selected === 'tab_organization'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_organization')">Organization</a></li>
-            <li ng-class="{'active': tab_selected === 'tab_cloudaccounts'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')">Cloud Accounts</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_settings'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_settings')" translate="profile.tab.settings">Settings</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_password'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_password')" translate="profile.tab.passwrod">Password</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_organization'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_organization')" translate="profile.tab.organization">Organization</a></li>
+            <li ng-class="{'active': tab_selected === 'tab_cloudaccounts'}"><a data-toggle="tab" href="#" ng-click="changeTab('tab_cloudaccounts')" translate="profile.tab.cloudAccounts">Cloud Accounts</a></li>
         </ul>
         <div class="tab-content backend-box-content">
             <div id="tab_settings" class="tab-pane" ng-class="{active: tab_selected == 'tab_settings'}">
@@ -27,7 +27,7 @@
                     <strong>An error has occurred!</strong> Settings could not be saved.
                 </div>
 
-                <form name="form_settings" novalidate ng-submit="save()" show-validation>
+                <form name="form_settings" novalidate ng-submit="save()" show-validation ng-autodisable>
 
                     <div class="form-group">
                         <label translate="settings.form.firstname">First Name</label>
@@ -116,7 +116,7 @@
                     The password and its confirmation do not match!
                 </div>
 
-                <form name="form_pass" novalidate ng-submit="changePassword()" show-validation>
+                <form name="form_pass" novalidate ng-submit="changePassword()" show-validation ng-autodisable>
 
                     <div class="form-group">
                         <label translate="global.form.newpassword">New password</label>
@@ -136,7 +136,7 @@
                                 Your password cannot be longer than 50 characters
                             </p>
                         </div>
-                        <password-strength-bar password-to-check="password" class="strength-bar"></password-strength-bar>
+                        <password-strength-bar password-to-check="password"></password-strength-bar>
                     </div>
                     <div class="form-group">
                         <label translate="global.form.confirmpassword">New password confirmation</label>
@@ -170,7 +170,7 @@
 
                 <!-- <h3 translate="password.title" translate-values="{username: '{{passAccount.login}}'}">Organization {{passAccount.login}}</h3> -->
 
-                <form name="form_org" novalidate ng-submit="updateOrganization()" show-validation>
+                <form name="form_org" novalidate ng-submit="updateOrganization()" show-validation ng-autodisable>
 
                     <div class="form-group">
                         <label translate="profile.form_org.org_name">Organization name</label>
@@ -221,16 +221,20 @@
                                     <tr>
                                         <th translate="cloudaccount.col.name">Cloud Account Name</th>
                                         <th translate="cloudaccount.col.provider">Provider</th>
-                                        <th translate="cloudaccount.col.actions">Actions</th>
+                                        <th translate="cloudaccount.col.actions" class="table-col-actions actions-short">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="cloudAcc in cloudAccList">
                                         <td>{{cloudAcc.name}}</td>
                                         <td>{{cloudAcc.providerId.provider}}</td>
-                                        <td class="text-right">
-                                            <button type="button" class="btn btn-icon" ng-click="goToEdit(cloudAcc)"><i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate}}</button>
-                                            <button type="button" class="btn btn-icon" ng-click="deleteCloudAccount(cloudAcc)"><i class="fa fa-trash-o"></i>{{'cloudaccount.button.delete' | translate}}</button>
+                                        <td class="table-col-actions actions-short">
+                                            <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToEdit(cloudAcc)" >
+                                              <i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate | limitTo: 3}}.<span>{{'cloudaccount.button.edit' | translate}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-icon actionsTooltip" ng-click="deleteCloudAccount(cloudAcc)" ng-autodisable>
+                                              <i class="fa fa-trash-o"></i>{{'cloudaccount.button.delete' | translate | limitTo: 3}}.<span>{{'cloudaccount.button.delete' | translate}}</span>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>

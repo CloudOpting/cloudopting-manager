@@ -1,90 +1,95 @@
 {
     "global": {
-        "title": "cloudopting",
-        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "title": "CloudOpting",
+        "browsehappy": "Esteu utilitzant un navegador <strong>obsolet</strong>. Si us plau <a href=\"http://browsehappy.com/?locale=en\">actualitzeu-lo</a> per millorar-ne l'experiència.",
         "menu": {
-            "home": "Home",
+            "home": "Inici",
             "entities": {
-                "main": "Cloudopting",
+                "main": "CloudOpting",
                 "additionalEntity": ""
             },
             "account": {
-                "main": "Account",
-                "settings": "Settings",
-                "password": "Password",
+                "main": "Compte",
+                "settings": "Configuració",
+                "password": "Contrasenya",
                 "sessions": "Sessions",
-                "login": "Authenticate",
-                "logout": "Log out",
-                "register": "Register"
+                "login": "Inicia sessió",
+                "logout": "Tanca sessió",
+                "register": "Registra't"
             },
             "admin": {
-                "main": "Administration",
-                "tracker": "User tracker",
-                "metrics": "Metrics",
-                "health": "Health",
-                "configuration": "Configuration",
-                "logs": "Logs",
-                "audits": "Audits",
+                "main": "Administració",
+                "tracker": "Seguidor d'Usuari",
+                "metrics": "Mètriques",
+                "health": "Salut",
+                "configuration": "Configuració",
+                "logs": "Registres",
+                "audits": "Revisions",
                 "apidocs": "API",
-                "database": "Database"
+                "database": "Base de Dades"
             },
-            "language": "Language"
+            "language": "Idioma"
         },
         "form": {
-            "username": "Login",
-            "username.placeholder": "Your login",
-            "newpassword": "New password",
-            "newpassword.placeholder": "New password",
-            "confirmpassword": "New password confirmation",
-            "confirmpassword.placeholder": "Confirm the new password",
-            "email": "E-mail",
-            "email.placeholder": "Your e-mail"
+            "username": "Inicia sessió",
+            "username.placeholder": "Nom d'usuari",
+            "firstName": "Nom",
+            "firstName.placeholder": "Nom",
+            "lastName": "Cognom",
+            "lastName.placeholder": "Cognom",
+            "newpassword": "Nova contrasenya",
+            "newpassword.placeholder": "Nova contrasenya",
+            "confirmpassword": "Confirmació de nova contrasenya",
+            "confirmpassword.placeholder": "Torneu a escriure la nova contrasenya",
+            "email": "Correu electrònic",
+            "email.placeholder": "Correu electrònic"
         },
         "messages": {
             "info": {
-                "authenticated": "If you want to <a href=\"#/login\">authenticate</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
-                "register": "You don't have an account yet? <a href=\"#/register\">Register a new account</a>"
+                "authenticated": "Si voleu <a href=\"#/login\">iniciar sessió</a>, podeu provar els comptes per defecte:<br/>- Administrador (login=\"admin\" and password=\"admin\") <br/>- Usuari (login=\"user\" and password=\"user\").",
+                "register": "No teniu un compte encara?? <a href=\"#/register\">Registreu-vos!</a>",
+                "reset": "¿Heu oblidat la contrasenya? <a href=\"#/reset/request\">Restabliu-la.</a>"
             },
             "error": {
-                "dontmatch" : "The password and its confirmation do not match!"
+                "dontmatch" : "La contrasenya i la vostre confirmació no coincideixen!"
             },
             "validate": {
                 "newpassword": {
-                    "required": "Your password is required.",
-                    "minlength": "Your password is required to be at least 5 characters",
-                    "maxlength": "Your password cannot be longer than 50 characters",
-                    "strength": "Password strength:"
+                    "required": "Es requereix la contrasenya.",
+                    "minlength": "La contrasenya ha de tenir almenys 5 caràcters.",
+                    "maxlength": "La contrasenya no pot excedir els 50 caràcters.",
+                    "strength": "Solidesa de la contrasenya:"
                 },
                 "confirmpassword": {
-                    "required": "Your confirmation password is required.",
-                    "minlength": "Your confirmation password is required to be at least 5 characters",
-                    "maxlength": "Your confirmation password cannot be longer than 50 characters"
+                    "required": "Es requereix la clau de confirmació.",
+                    "minlength": "La contrasenya de confirmació ha de tenir almenys 5 caràcters.",
+                    "maxlength": "La contrasenya de confirmació no pot excedir els 50 caràcters."
                 },
                 "email": {
-                    "required": "Your e-mail is required.",
-                    "invalid": "Your e-mail is invalid.",
-                    "minlength": "Your e-mail is required to be at least 5 characters",
-                    "maxlength": "Your e-mail cannot be longer than 50 characters"
+                    "required": "Es requereix el vostre correu electrònic.",
+                    "invalid": "El vostre correu electrònic no és vàlid.",
+                    "minlength": "El correu electrònic ha de tenir almenys 5 caràcters.",
+                    "maxlength": "El correu electrònic no pot excedir els 50 caràcters."
                 }
             }
         }
     },
     "entity": {
         "action": {
-            "back": "Back",
-            "cancel": "Cancel",
-            "delete": "Delete",
-            "edit": "Edit",
-            "save": "Save",
-            "view": "View"
+            "back": "Torna",
+            "cancel": "Cancel·la",
+            "delete": "Elimina",
+            "edit": "Edita",
+            "save": "Desa",
+            "view": "Visualitza"
         },
         "detail": {
-            "field": "Field",
-            "value": "Value"
+            "field": "Camp",
+            "value": "Valor"
         },
         "delete": {
-            "title": "Confirm delete operation"
+            "title": "Confirma l'eliminació"
         }
     },
-    "footer": "This is your footer"
+    "footer": "Aquest és el vostre peu de pàgina"
 }

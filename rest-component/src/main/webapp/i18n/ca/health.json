@@ -1,21 +1,21 @@
 {
     "health": {
         "title": "Health checks",
-        "refresh.button": "Refresh",
+        "refresh.button": "Actualitza",
         "stacktrace": "Stacktrace",
         "indicator": {
-            "db": "Database",
-            "diskSpace": "Disk space",
-            "mail": "Email",
+            "db": "Base de dades",
+            "diskSpace": "Espai del disc",
+            "mail": "Correu electrònic",
             "mongo": "Mongo DB"
         },
         "table": {
-            "service": "Service name",
-            "status": "Status"
+            "service": "Nom del Servei",
+            "status": "Estat"
         },
         "status": {
-            "UP": "UP",
-            "DOWN": "DOWN"
+            "UP": "Actiu",
+            "DOWN": "No Actiu"
         }
     }
 }

@@ -4,17 +4,17 @@
             <div class="col-md-offset-1 col-md-10">
                 <div class="backend-box">
                     <div class="backend-box-cabecera text-center" translate="cloudaccount.title">
-                        Contact
+                        Cloud Accounts
                     </div>
                     <div class="backend-box-content">
                         <div class="alert alert-success" ng-show="successNew" translate="cloudaccount.messages.success.new">
-                            <strong>Message sent!</strong> We will contact with you soon.
+                            <strong>{{'cloudaccount.alert.sent' | translate}}</strong> {{'cloudaccount.alert.contact_you' | translate}}
                         </div>
                         <div class="alert alert-success" ng-show="successUpdate" translate="cloudaccount.messages.success.update">
-                            <strong>Message sent!</strong> We will contact with you soon.
+                            <strong>{{'cloudaccount.alert.sent' | translate}}</strong> {{'cloudaccount.alert.contact_you' | translate}}
                         </div>
                         <div class="alert alert-danger" ng-show="error" translate="cloudaccount.messages.error.fail">
-                            <strong>Something went wrong!</strong> Please try again later.
+                            <strong>{{'cloudaccount.alert.wrong' | translate}}</strong> {{'cloudaccount.alert.try_again' | translate}}
                         </div>
 
                         <form class="form" ng-show="!success" name="form" role="form" novalidate ng-submit="createCloudAccount()" show-validation>
@@ -48,9 +48,9 @@
 
                             <div class="row row-actions">
                                 <div class="col-xs-6">
-                                    <button ng-hide="cloudAcc.id" type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="cloudaccount.form.button.save">Save</button>
-                                    <button ng-show="cloudAcc.id" ng-disabled="form.$invalid" class="btn btn-primary" ng-click="updateCloudAccount()" translate="cloudaccount.form.button.update">Update</button>
-                                    <button ng-show="cloudAcc.id" class="btn btn-secondary" ng-click="deleteCloudAccount()" translate="cloudaccount.form.button.delete">Delete</button>
+                                    <button ng-hide="cloudAcc.id" type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="cloudaccount.form.button.save" ng-autodisable>Save</button>
+                                    <button ng-show="cloudAcc.id" ng-disabled="form.$invalid" class="btn btn-primary" ng-click="updateCloudAccount()" translate="cloudaccount.form.button.update" ng-autodisable>Update</button>
+                                    <button ng-show="cloudAcc.id" class="btn btn-secondary" ng-click="deleteCloudAccount()" translate="cloudaccount.form.button.delete" ng-autodisable>Delete</button>
                                 </div>
                                 <div class="col-xs-6">
                                     <button ng-click="goToProfile()" class="btn btn-secondary pull-right" translate="cloudaccount.form.button.back">Back</button>

@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "title":"Menu",
+    "publish":"Pubblicare il Servizio",
+    "services.manager":"Gestione dei Servizi",
+    "user.manager":"Gestore degli Utenti",
+    "org.manager":"Gestore Org",
+    "toscaide":"Tosca IDE",
+    "languages": "Linguaggi",
+    "catalogue":"Catalogo dei Servizi",
+    "contact":"Contatti",
+    "dasbhoard":"Dashboard",
+    "signin":"Accedi",
+    "account":"Account",
+    "join":"Partecipare",
+    "logout":"Log out"
+  }
+}

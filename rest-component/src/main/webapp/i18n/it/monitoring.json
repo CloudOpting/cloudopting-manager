@@ -7,7 +7,10 @@
     },
     "cpu": "CPU Utilizzo:",
     "disk": "Disk Utilizzo:",
-    "ram": "RAM Utilizzo:"
+    "ram": "RAM Utilizzo:",
+    "reloadGraphs":"Ricaricare i grafici",
+    "selecthost": "Selezionare l'host:",
+    "selectitemhost": "Selezionare l'elemento nell'Host:"
   }
 }
 

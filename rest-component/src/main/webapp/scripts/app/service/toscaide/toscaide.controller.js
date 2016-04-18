@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cloudoptingApp').controller('ToscaideController', function(SERVICE, $rootScope, $scope, $http, ToscaideService) {
+angular.module('cloudoptingApp').controller('ToscaideController', function(SERVICE, $rootScope, $scope, $http, ToscaideService,Blob, FileSaver) {
 	// TODO: Write a controller here
 	$scope.mapData = [];
 	$scope.edgeData = [];
@@ -11,7 +11,11 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		type : "submit",
 		title : "Save"
 	} ];
-
+	$scope.dynamicPopover = {
+		    content: 'content',
+		    templateUrl: 'myPopoverTemplate.html',
+		    title: 'Import JSON'
+		  };
 	$scope.model = {};
 
 	$scope.schema = {
@@ -203,7 +207,46 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		$scope.$broadcast('schemaFormRedraw');
 
 		$scope.$apply();
-	}
+	};
+	
+	$scope.doRemoveNode = function(value){
+		console.log("in remove node");
+		console.log(value.id);
+		console.debug($scope.mapData);
+		for (var index = 0; index < $scope.mapData.length; index++) {
+            // If current array item equals itemToRemove then
+            if ($scope.mapData[index].id == value.id) {
+                // Remove array item at current index
+            	$scope.mapData.splice(index, 1);
+
+                // Decrement index to iterate current position 
+                // one more time, because we just removed item 
+                // that occupies it, and next item took it place
+                index--;
+            }
+        }
+		console.debug($scope.mapData);
+		console.log("fine remove node");
+		$rootScope.$broadcast('appChanged');
+	};
+	
+	$scope.doRenameNode = function(value){
+		console.log("in rename node");
+		console.log(value.id);
+		console.debug($scope.mapData);
+		for (var index = 0; index < $scope.mapData.length; index++) {
+            // If current array item equals itemToRemove then
+			console.log($scope.mapData[index]);
+            if ($scope.mapData[index].id == value.id) {
+                // Remove array item at current index
+            	console.log('trovato'+$scope.scheda.obj.name);
+            	$scope.mapData[index].name = $scope.scheda.obj.name;
+
+           }
+        }		console.debug($scope.mapData);
+		console.log("fine rename node");
+		$rootScope.$broadcast('appChanged');
+	};
 
 	$scope.onSubmit = function(form) {
 		// First we broadcast an event so all fields validate
@@ -231,10 +274,16 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 
 			);
 			var callback = function(data) {
-				console.debug("sendCustomForm succeeded with data: " + data);
+				console.debug("in the callback");
+//				console.debug("sendCustomForm succeeded with data: " + data);
+                if(data) {
+                    var zip = new Blob([data], {type: 'application/zip'});
+                    var fileName = 'TOSCA_Archive.zip';
+					return FileSaver.saveAs(zip, fileName);
+                }
 			};
 		}
-	}
+	};
 
 	// reset the sample nodes
 	$scope.reset = function() {
@@ -244,7 +293,8 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		$scope.$apply();
 		$rootScope.$broadcast('appChanged');
 
-	}
+	};
+	
 
 	$scope.sendService = function() {
 		console.debug("sending data");
@@ -255,10 +305,15 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		});
 
 		var callback = function(data, status, headers, config) {
-			console.debug(data);
+//			console.debug(data);
+            if(data) {
+                var zip = new Blob([data], {type: 'application/zip'});
+                var fileName = 'TOSCA_Archive.zip';
+                FileSaver.saveAs(zip, fileName);
+            }
 		};
-		ToscaideService.sendData(data, callback);
-	}
+		return ToscaideService.sendData(data, callback);
+	};
 
 	$scope.saveService = function() {
 		console.debug("sending data for save");
@@ -271,8 +326,9 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		var callback = function(data, status, headers, config) {
 			console.debug(data);
 		};
-		ToscaideService.saveData(data, callback);
-	}
+		return ToscaideService.saveData(data, callback);
+	};
+
 	$scope.loadTopology = function() {
 		console.debug("loading saved data");
 		var data = JSON.stringify({
@@ -299,7 +355,25 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			$rootScope.$broadcast('appChanged');
 
 		};
-		ToscaideService.loadTopology(data, callback);
+		return ToscaideService.loadTopology(data, callback);
+	};
+	
+	$scope.importJson = function(){
+		console.log($scope.dynamicPopover);
+		var data = JSON.parse($scope.dynamicPopover.content);
+		data.nodes.forEach(function(entry) {
+			console.log(entry);
+			$scope.mapData.push(entry);
+		});
+		data.edges.forEach(function(entry) {
+			console.log(entry);
+			$scope.edgeData.push(entry);
+		});
+		$scope.serviceName = data.serviceName;
+		console.debug(data.nodes);
+		console.debug($scope.mapData);
+		// $scope.edgeData = data.edges;
+		$rootScope.$broadcast('appChanged');
 	}
 
 });

@@ -1,0 +1,12 @@
+{
+  "chooseaccount": {
+    "title" : "Conturi de cloud disponibile",
+    "button" : {
+      "choose" : "Alege"
+    },
+    "col" : {
+      "name" : "Numele contului de cloud",
+      "provider" : "Furnizor"
+    }
+  }
+}

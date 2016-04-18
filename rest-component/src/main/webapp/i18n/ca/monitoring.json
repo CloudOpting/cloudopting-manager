@@ -1,13 +1,16 @@
 {
   "monitoring": {
-    "title": "Service Monitoring",
+    "title": "Monitorització del Servei",
     "titles" : {
-      "monitor": "Service Monitor",
-      "alerts": "Service Alerts"
+      "monitor": "Monitorització",
+      "alerts": "Alertes"
     },
-    "cpu": "CPU Usage:",
-    "disk": "Disk Usage:",
-    "ram": "RAM Usage:"
+    "cpu": "Ús de la CPU:",
+    "disk": "Ús del Disk:",
+    "ram": "Ús de la RAM:",
+    "reloadGraphs":"Actualitza gràfics",
+    "selecthost": "Selecciona el Host:",
+    "selectitemhost": "Selecciona l'element del Host:"
   }
 }
 

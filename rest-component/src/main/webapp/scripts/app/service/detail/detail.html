@@ -8,10 +8,15 @@
                     <p class="item-intro text-muted">{{currentApp.shortDescription}}</p>
                     <img class="img-responsive img-centered" src="{{currentApp.applicationLogoReference}}" alt="" />
                     <p><div ta-bind ng-model="currentApp.applicationDescription"></div></p>
-                    <p>SERVICE PRICE: {{currentApp.servicePrice}}</p>
-                    <p>PLATFORM PRICE: {{currentApp.platformPrice}}</p>
-                    <p>SIZE: {{currentApp.size.size}}</p>
-                    <h4 ng-show="currentApp.applicationIsTryable">NEW SECTION: The application can BE TESTED!!!</h4>
+
+                    <p style="color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);margin-bottom: 10px;"><strong><b>PRICE</b></strong></p>
+                    <ul>
+                    <li>{{'detail.serverSizeRequired' | translate}}  {{currentApp.size.size}}</li>
+                    <li>{{'detail.servicePrice' | translate}} {{currentApp.servicePrice}}</li>
+                    <li>{{'detail.platformPrice' | translate}} {{currentApp.platformPrice}}</li>
+                    </ul>
+
+                    <h4 ng-show="currentApp.applicationIsTryable">{{'detail.applicationCanBeTested' | translate}}</h4>
                 </div>
             </div>
         </div>

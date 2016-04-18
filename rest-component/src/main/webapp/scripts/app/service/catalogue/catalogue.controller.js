@@ -9,16 +9,24 @@ angular.module('cloudoptingApp').filter('startFrom', function() {
 
 angular.module('cloudoptingApp')
     .controller('CatalogueController', function (SERVICE, localStorageService,
-                                                 $scope, $log, $state, $stateParams, $document, $timeout,
+                                                 $scope, $log, $state, $stateParams, $document, $timeout, $translate,
                                                  ApplicationService, Principal, JackrabbitService) {
+
+        $scope.scrollTo = function(element) {
+            $( 'html, body').animate({
+                scrollTop: $(element).offset().top
+            }, 500);
+        };
+        
         $scope.scrollToSection = function () {
             $timeout(function () {
                 if($stateParams.section!=null && $stateParams.section!=undefined && $stateParams.section!="") {
                     var someElement = angular.element(document.getElementById('contact'));
-                    $document.scrollToElementAnimated( someElement, 30, 5000 );
+                    //$document.scrollToElementAnimated( someElement, 30, 500 );
+                    $scope.scrollTo( "#contact");
                     $stateParams.section = null;
                 }
-            }, 1000);
+            }, 500);
         };
 
         $scope.applicationList = null;
@@ -130,16 +138,16 @@ angular.module('cloudoptingApp')
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    $scope.errorMessage = $translate.instant("callback.no_permissions");
                 } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $scope.errorMessage = $translate.instant("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
                 }
                 return false;
             }else if(status!=200 && status!=201) {
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                $scope.errorMessage = $translate.instant("callback.generic_error");
                 return false;
             } else {
                 return true;

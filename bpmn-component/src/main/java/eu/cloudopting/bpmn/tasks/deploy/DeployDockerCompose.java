@@ -30,7 +30,8 @@ public class DeployDockerCompose implements JavaDelegate {
 		String organizationName = (String) execution.getVariable("organizationName");
 		String serviceHome = (String) execution.getVariable("serviceHome");
 		ArrayList<String> dockerNodesList = (ArrayList<String>) execution.getVariable("dockerNodesList");
-		toscaService.generateDockerCompose(customizationId, organizationName, serviceHome, dockerNodesList);
+		ArrayList<String> dockerDataVolumeNodesList = (ArrayList<String>) execution.getVariable("dockerDataVolumeNodesList");
+		toscaService.generateDockerCompose(customizationId, organizationName, serviceHome, dockerNodesList, dockerDataVolumeNodesList);
 //		dockerService.deployComposition(serviceHome+"docker-compose.yml");
 	}
 

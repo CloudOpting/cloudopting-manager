@@ -3,13 +3,14 @@
     <div class="container padding-top-big padding-bottom-big">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Catalogue of Services</h2>
+                <h2 class="section-heading" translate="catalogue.title">Catalogue of Services</h2>
                 <!--
                     <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
                 -->
             </div>
         </div>
         <!-- pre services -->
+        <!--
         <div class="row text-center filters-wrapper">
             <div class="col-lg-12 filter-options">
                 <button class="btn btn-energy" data-group="energy">
@@ -17,6 +18,7 @@
                 </button>
                 <button class="btn btn-data" data-group="data"><i class="icon"></i>Open Data</button>
                 <button class="btn btn-apps" data-group="apps"><i class="icon"></i>Mobile Applications</button>
+                -->
                 <!--
                 <button id="searchlink" class="btn btn-search">
                     <i class="icon"></i>Search
@@ -26,8 +28,10 @@
                     </form>
                 </button>
                 -->
+        <!--
             </div>
         </div>
+        -->
         <!-- services catalogue -->
         <div class="row portfolio-wrapper" id="portfolio-grid">
             <!-- TODO: The data-groups have to be defined somwhere -->
@@ -55,21 +59,33 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="text-center h4">
-                    OUR <strong>CONSORTIA</strong>:
+                    {{'catalogue.our' | translate}} <strong>{{'catalogue.consortia' | translate}}</strong>:
                     <br /><br /><br />
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <img src="assets/img/partners/img_consortia.png" class="img-responsive img-centered" alt="" />
+                <img src="assets/img/partners/img_consortia.png" class="img-responsive img-centered" alt="" usemap="#Map" />
+                <map name="Map" id="Map">
+                    <area alt="Ajuntament de Barcelona" title="" href="http://www.barcelona.cat/" shape="rect" coords="257,46,0,0" />
+                    <area alt="Teamnet" title="" href="http://www.teamnet.ro/" shape="rect" coords="261,47,430,5" />
+                    <area alt="Wellness Telecom" title="" href="http://www.wtelecom.es/" shape="rect" coords="449,1,624,45" />
+                    <area alt="Worldline" title="" href="http://worldline.com/" shape="rect" coords="633,45,760,1" />
+                    <area alt="Smartpartners" title="" href="http://www.smartpartners.eu/" shape="rect" coords="115,54,4,123" />
+                    <area alt="CSI" title="" href="http://www.csipiemonte.it/" shape="rect" coords="121,55,224,121" />
+                    <area alt="SDG Group" title="" href="http://www.sdggroup.com/" shape="rect" coords="229,55,349,122" />
+                    <area alt="NetPort" title="" href="http://www.netport.se/" shape="rect" coords="354,56,473,124" />
+                    <area alt="Electric Corby" title="" href="http://www.electriccorby.co.uk/" shape="rect" coords="477,56,629,123" />
+                    <area alt="Profesia" title="" href="http://www.profesia.it/" shape="rect" coords="635,57,761,123" />
+                </map>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="">
+<section id="contact" class="" ng-controller="ContactController">
     <div class="container wrapper-white padding-top-big padding-bottom-big">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -81,21 +97,27 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <form id="contactForm" ng-show="!success" name="form" role="form" novalidate ng-submit="contact()" show-validation>
+                <div class="alert alert-info" ng-show="infoMessage" translate="contact.messages.success">
+                    <strong>Message sent!</strong> We will contact with you soon.
+                </div>
+                <div class="alert alert-danger" ng-show="errorMessage" translate="contact.messages.error.fail">
+                    <strong>Something went wrong!</strong> Please try again later.
+                </div>
+                <form id="contactForm" ng-show="!success" name="form" role="form" novalidate ng-submit="contact()" show-validation ng-autodisable>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="name" name="name" required data-validation-required-message="Please enter your name."
+                                <input type="text" class="form-control" id="name" name="name" required data-validation-required-message="{{'contact.form.validation.name' | translate}}"
                                        placeholder="{{'contact.form.placeholder.name' | translate}}" ng-model="message.name" />
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <input type="email" class="form-control" id="email" name="email" required data-validation-required-message="Please enter your email address."
+                                <input type="email" class="form-control" id="email" name="email" required data-validation-required-message="{{'contact.form.validation.email' | translate}}"
                                        placeholder="{{'contact.form.placeholder.email' | translate}}" ng-model="message.email" ng-minlength=5 ng-maxlength=100 />
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                                <input type="tel" class="form-control" id="phone" name="phone" required data-validation-required-message="Please enter your phone number."
+                                <input type="tel" class="form-control" id="phone" name="phone"
                                        placeholder="{{'contact.form.placeholder.phone' | translate}}" ng-model="message.phone" ng-minlength=5 ng-maxlength=100 />
                                 <p class="help-block text-danger"></p>
                             </div>
@@ -106,12 +128,12 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="form-group">
-                              <div vc-recaptcha key="'6LcGBRgTAAAAAC_6oLaySPQbfvSBM2T9JxaHi3Wl'"></div>
+                              <div id="multilingual_recaptcha" vc-recaptcha key="'6LcGBRgTAAAAAC_6oLaySPQbfvSBM2T9JxaHi3Wl'"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <textarea class="form-control" id="message" name="message" required data-validation-required-message="Please enter a message."
+                                <textarea class="form-control" id="message" name="message" required data-validation-required-message="{{'contact.form.validation.phone' | translate}}"
                                           placeholder="{{'contact.form.placeholder.message' | translate}}"
                                           ng-model="message.message" ng-minlength=5 ng-maxlength=100 ></textarea>
                                 <p class="help-block text-danger"></p>

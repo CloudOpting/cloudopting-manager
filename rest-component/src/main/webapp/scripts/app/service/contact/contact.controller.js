@@ -1,24 +1,24 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('ContactController', function($scope, Contact) {
+    .controller('ContactController', function($scope, $translate, Contact) {
 
-        $scope.success = null;
-        $scope.error = null;
-        $scope.message = null;
+        $scope.infoMessage = null;
+        $scope.errorMessage = null;
 
         $scope.contact = function () {
-            $scope.error = null;
+            $scope.infoMessage = null;
+            $scope.errorMessage = null;
 
             var callback = function (data){
                 if(data) {
-                    $scope.success = true;
+                    $scope.infoMessage = true;
                 } else {
-                    $scope.error = true;
+                    $scope.errorMessage = true;
                 }
             };
 
-            Contact.save($scope.message, callback);
+            return Contact.save($scope.message, callback);
         };
 
     }

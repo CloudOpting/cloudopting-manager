@@ -1,0 +1,23 @@
+<NodeType name="Package" shape="ellipse" color="#ffffff" image="rpm-package.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="PackageProperties"
+		type="tPackageProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="Package"
+	name="PackageImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="PackagePT.ftl"
+			artifactType="PuppetTemplate" artifactRef="PackagePT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="PackagePT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/PackagePT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

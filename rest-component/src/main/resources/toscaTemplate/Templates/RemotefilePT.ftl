@@ -12,7 +12,13 @@ archive::extract{<#if archive?has_content>'${archive}':</#if>
 <#if target?has_content>target => '${target}',</#if>
 <#if destination?has_content>src_target => '${destination}',</#if>
 <#if extension?has_content>extension => '${extension}',</#if>
-<#if archive_user?has_content>user => '${archive_user}',</#if>
+user => 'root',
 <#if root_dir?has_content>root_dir => ${root_dir},</#if>
+}
+->
+file{<#if target?has_content>'${target}'</#if>:
+ensure => directory,
+recurse => true,
+<#if archive_user?has_content>owner => '${archive_user}',</#if>
 }
 </#if>

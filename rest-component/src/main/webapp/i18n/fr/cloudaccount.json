@@ -1,0 +1,40 @@
+{
+  "cloudaccount": {
+    "title" : "Comptes Cloud",
+    "form" : {
+      "name" : "Nom du Compte Cloud",
+      "apiKey" : "Clé de l'API",
+      "secretKey" : "Clé secrète",
+      "endpoint" : "Point final",
+      "provider" : "Fournisseur",
+      "placeholder" : {
+        "name" : "Le Nom du Compte Cloud",
+        "apiKey" : "La Clé de l'API",
+        "secretKey" : "La Clé secrète",
+        "endpoint" : "Le Point final"
+      },
+      "button" : {
+        "back" : "Arrière",
+        "save" : "Sauvegarder",
+        "delete" : "Effacer",
+        "update" : "Mise à jour"
+      }
+    },
+    "col" : {
+      "name": "Nom du Compte Cloud",
+      "provider": "Fournisseur",
+      "actions": "Actions"
+    },
+    "button" : {
+      "add" : "Ajouter",
+      "edit" : "Edit",
+      "delete" : "Effacer"
+    },
+    "alert" : {
+      "sent" : "Message envoyé!",
+      "wrong" : "Quelque chose n'a pas fonctionné!",
+      "contact_you" : "Nous prendrons contact avec vous bientôt.",
+      "try_again" : "Veuillez réessayer plus tard."
+    }
+  }
+}

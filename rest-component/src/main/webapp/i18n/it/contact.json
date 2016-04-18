@@ -1,0 +1,39 @@
+{
+  "contact": {
+    "title": "Contattaci",
+    "form": {
+      "button": "Invia Messaggio",
+      "name": "Nome",
+      "phone": "Telefono",
+      "companyName": "Nome dell'azienda",
+      "message": "Messaggio",
+      "placeholder": {
+        "name": "Nome *",
+        "phone": "Telefono",
+        "email": "Email *",
+        "companyName": "Azienda",
+        "message": "Messaggio *"
+      },
+      "validation": {
+        "name": "Si prega d'inserire il proprio nome.",
+        "phone": "Si prega d'inserire il proprio numero di telefono.",
+        "email": "Si prega d'inserire il proprio indirizzo e-mail.",
+        "message": "Si prega d'inserire un messaggio."
+      }
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "Il Nome è obbligatorio."
+        },
+        "lastName": {
+          "required": "Il Cognome è obbligatorio."
+        }
+      },
+      "success": "<strong>Messaggio inviato!</strong> La contatteremo al più presto.",
+      "error": {
+        "fail": "<strong>Qualcosa non ha funzionato!</strong> Si prega di riprovare più tardi."
+      }
+    }
+  }
+}

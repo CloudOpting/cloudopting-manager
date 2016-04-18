@@ -1,0 +1,24 @@
+{
+  "toscaide": {
+    "title": "Tosca IDE",
+    "serviceName": "Nome Servizio:",
+    "loadGraph": "Caricare grafico",
+    "nameNode": "Nome nodo:",
+    "nodeType": "Tipo nodo:",
+    "addNode": "+ Aggiung nodo",
+    "relationship": "Relazione (fra due nodi)",
+    "infoNodes":"<small>**Dopo l'aggiunta di due nodi, puoi iniziare a creare le relazioni</small>",
+    "select_1": "Selezionare il nodo 1:",
+    "select_2": "Selezionare il nodo 2:",
+    "from": "Da",
+    "to": "A",
+    "selectRelationship": "Selezionare la relazione:",
+    "addRelatonship": "+ Aggiungi relazione",
+    "resetGraph": "Ripristina il grafico",
+    "nodeData": "Dati nodo",
+    "saveGraph": "Salva il grafico",
+    "generateTosca": "Creare TOSCA",
+    "importJson": "Importa JSON",
+    "settingNode": "Impostazione nodo"
+  }
+}

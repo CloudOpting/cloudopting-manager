@@ -2,7 +2,7 @@
 
 angular.module('cloudoptingApp')
     .controller('UserOrgManagerController', function (SERVICE, localStorageService,
-                                                      $scope, $filter, $state, $log, $window, $timeout,
+                                                      $scope, $filter, $state, $log, $window, $timeout, $translate,
                                                       Principal, Auth, UserService, OrganizationService) {
 
         /// USERS ////////////////////////////////
@@ -57,7 +57,7 @@ angular.module('cloudoptingApp')
                 };
 
                 //Delete user
-                UserService.delete(idUser, deleteCallback);
+                return UserService.delete(idUser, deleteCallback);
             } else {
                 //Nothing to do.
             }
@@ -65,9 +65,9 @@ angular.module('cloudoptingApp')
 
         $scope.submitUserForm = function(userId) {
             if(userId) {
-                saveUser();
+                return saveUser();
             } else {
-                createUser();
+                return createUser();
             }
         };
 
@@ -80,14 +80,14 @@ angular.module('cloudoptingApp')
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'user_manager');
             };
-            UserService.create($scope.user, callback);
+            return UserService.create($scope.user, callback);
         };
 
         var saveUser = function() {
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'user_manager');
             };
-            UserService.update($scope.user, callback);
+            return UserService.update($scope.user, callback);
         };
         //////////////////////////////////////////
 
@@ -146,7 +146,7 @@ angular.module('cloudoptingApp')
                     checkStatusCallback(data, status, headers, config, 'org_manager');
                 };
                 //Delete organization.
-                OrganizationService.delete(idOrganization, deleteCallback);
+                return OrganizationService.delete(idOrganization, deleteCallback);
             } else {
                 //Nothing to do.
             }
@@ -154,9 +154,9 @@ angular.module('cloudoptingApp')
 
         $scope.submitOrganizationForm = function(orgId) {
             if(orgId) {
-                saveOrganization();
+                return saveOrganization();
             } else {
-                createOrganization();
+                return createOrganization();
             }
         };
 
@@ -169,14 +169,14 @@ angular.module('cloudoptingApp')
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'org_manager');
             };
-            OrganizationService.create($scope.org, callback);
+            return OrganizationService.create($scope.org, callback);
         };
 
         var saveOrganization = function() {
             var callback = function(data, status, headers, config){
                 checkStatusCallback(data, status, headers, config, 'org_manager');
             };
-            OrganizationService.update($scope.org, callback);
+            return OrganizationService.update($scope.org, callback);
         };
 
         /////////////////
@@ -190,16 +190,16 @@ angular.module('cloudoptingApp')
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    $scope.errorMessage = $translate.instant("callback.no_permissions");
                 } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $scope.errorMessage = $translate.instant("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
                 }
             }else if(status!=200 && status!=201) {
                 //Show message
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                $scope.errorMessage = $translate.instant("callback.generic_error");
 
             } else {
                 //Return to the list

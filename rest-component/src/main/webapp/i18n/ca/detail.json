@@ -1,12 +1,25 @@
 {
   "detail": {
-    "title": "Service Detail",
-    "service": "\"{{service_name}}\" Service",
-    "status": "Status: {{service_status}}",
+    "title": "Detalls del Servei",
+    "service": "\"{{service_name}}\" Servei",
+    "status": "Estat: {{service_status}}",
+    "termsAndConditions": "D'acord amb les condicions d'ús",
+    "servicePrice" : "Servei:",
+    "platformPrice" : "Cloud Hosting:",
+    "serverSizeRequired" : "Mida de l'Entitat:",
+    "applicationCanBeTested" : "<strong>L'aplicació es pot provar!</strong>",
     "button" : {
-      "subscribe": "SUBSCRIBE",
-      "instances": "SEE INSTANCES",
-      "completepublish": "COMPLETE PUBLISH"
+      "register_subscribe": "Registreu-vos i Subscriviu-vos ara",
+      "subscribe": "Subscriviu-vos ara",
+      "instances": "Veure instàncies",
+      "completepublish": "PUBLICACIÓ COMPLETA"
+    },
+    "messages": {
+      "validate": {
+        "termsAndConditions": {
+          "required": "Es requereix l'acceptació de les condicions d'ús."
+        }
+      }
     }
   }
 }

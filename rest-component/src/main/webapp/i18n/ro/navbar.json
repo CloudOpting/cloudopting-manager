@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "title":"Meniu",
+    "publish":"Publică serviciu",
+    "services.manager":"Administrare servicii",
+    "user.manager":"Administrare utilizatori",
+    "org.manager":"Administrare organizații",
+    "toscaide":"IDE TOSCA",
+    "languages": "Limbi",
+    "catalogue":"Catalog de servicii",
+    "contact":"Contact",
+    "dasbhoard":"Dashboard",
+    "signin":"Intrare",
+    "account":"Cont",
+    "join":"Înregistrare",
+    "logout":"Ieșire"
+  }
+}

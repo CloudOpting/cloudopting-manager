@@ -1,6 +1,6 @@
 {
     "errors": {
-        "title": "Error page!",
-        "403": "You are not authorized to access the page."
+        "title": "Pàgina d'error!",
+        "403": "No teniu autorització per accedir a la pàgina."
     }
 }

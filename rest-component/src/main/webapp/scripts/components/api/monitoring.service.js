@@ -91,7 +91,8 @@ angular.module('cloudoptingApp')
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            findZabbixHistory: function(instanceId, hostId, itemId, callback) {
+            findZabbixHistory: function(instanceId, hostId, itemId, tsStart, tsEnd, callback) {
+            	console.log(tsStart);
                 var endpoint = baseURI +
                     SERVICE.SEPARATOR +
                     'history' +
@@ -101,7 +102,7 @@ angular.module('cloudoptingApp')
                     hostId +
                     SERVICE.SEPARATOR +
                     itemId;
-                return $http.get(endpoint)
+                return $http.get(endpoint,{params:{startts:tsStart, endts: tsEnd}})
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
@@ -173,13 +174,14 @@ angular.module('cloudoptingApp')
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            findOneDataById: function(instanceId, callback) {
+            findOneDataById: function(instanceId, startDate, endDate, callback) {
+            	console.log(startDate);
                 var endpoint = baseURI +
                     SERVICE.SEPARATOR +
                     'elastic' +
                     SERVICE.SEPARATOR +
                     instanceId;
-                return $http.get(endpoint)
+                return $http.get(endpoint,{params:{startdate:startDate, enddate: endDate}})
                     .success(function(data, status, headers, config) {
                         callback(data, status, headers, config);
                     })
@@ -208,6 +210,29 @@ angular.module('cloudoptingApp')
                     })
                     .error(function(data, status, headers, config) {
                         $log.error("MonitoringService.findByCustomizationId error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
+            },
+
+            /**
+             * Method to retrieve the status for the instance with identification 'instanceId'.
+             * @param instanceId Identification of the instance.
+             * @param callback Function that will take care of the returned objects.
+             * @returns {*}
+             */
+            getStatusById: function(instanceId, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    'status' +
+                    SERVICE.SEPARATOR +
+                    instanceId;
+                return $http.get(endpoint)
+                    .success(function(data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.error("MonitoringService.getStatusById error. " +
                             "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });

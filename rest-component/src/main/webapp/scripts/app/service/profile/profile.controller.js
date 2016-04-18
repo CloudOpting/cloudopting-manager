@@ -22,7 +22,7 @@ angular.module('cloudoptingApp')
         });
 
         $scope.save = function () {
-            Auth.updateAccount($scope.settingsAccount).then(function() {
+            return Auth.updateAccount($scope.settingsAccount).then(function() {
                 $scope.settingsError = null;
                 $scope.settingsSuccess = 'OK';
                 Principal.identity().then(function(account) {
@@ -47,7 +47,7 @@ angular.module('cloudoptingApp')
                 $scope.doNotMatch = 'ERROR';
             } else {
                 $scope.doNotMatch = null;
-                Auth.changePassword($scope.password).then(function () {
+                return Auth.changePassword($scope.password).then(function () {
                     $scope.passError = null;
                     $scope.passSuccess = 'OK';
                 }).catch(function () {
@@ -106,7 +106,7 @@ angular.module('cloudoptingApp')
                 }
             };
 
-            OrganizationService.deleteCloudAccount($scope.settingsAccount.organizationId.id, cloudAccount.id, callback);
+            return OrganizationService.deleteCloudAccount($scope.settingsAccount.organizationId.id, cloudAccount.id, callback);
         };
 
         $scope.goToEdit = function(cloudAccount){

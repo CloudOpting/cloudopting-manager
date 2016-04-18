@@ -1,0 +1,39 @@
+{
+  "contact": {
+    "title": "Contacta",
+    "form": {
+      "button": "Envia missatge",
+      "name": "Nom",
+      "phone": "Telèfon",
+      "companyName": "Organització",
+      "message": "Missatge",
+      "placeholder": {
+        "name": "El vostre nom *",
+        "phone": "El vostre telèfon",
+        "email": "El vostre correu electrònic *",
+        "companyName": "La vostra organització",
+        "message": "El vostre missatge *"
+      },
+      "validation": {
+        "name": "Si us plau, introduïu el vostre nom.",
+        "phone": "Si us plau, introduïu el vostre telèfon.",
+        "email": "Si us plau, introduïu la vostra adreça.",
+        "message": "Si us plau, escriviu el missatge."
+      }
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "Es requereix el vostre nom."
+        },
+        "lastName": {
+          "required": "Es requereix el vostre cognom."
+        }
+      },
+      "success": "<strong>Missatge enviat!</strong> Ens posarem en contacte ben aviat.",
+      "error": {
+        "fail": "<strong>Alguna cosa ha anat malament!</strong> Si us plau, intenta-ho més tard."
+      }
+    }
+  }
+}

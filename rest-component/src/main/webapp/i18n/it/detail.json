@@ -3,10 +3,23 @@
     "title": "Dettagli del Servizio",
     "service": "\"{{service_name}}\" Servizio",
     "status": "Stato: {{service_status}}",
+    "termsAndConditions": "Accordo Termini e Condizioni",
+    "servicePrice" : "Servizio:",
+    "platformPrice" : "Cloud Hosting:",
+    "serverSizeRequired" : "Dimensioni dell'Entità:",
+    "applicationCanBeTested" : "<strong>L'applicazione può essere testata!</strong>",
     "button" : {
+      "register_subscribe": "Registrati ed Iscriviti Ora",
       "subscribe": "SOTTOSCRIVI",
       "instances": "VEDI LE ISTANZE",
       "completepublish": "COMPLETA LA PUBBLICAZIONE"
+    },
+    "messages": {
+      "validate": {
+        "termsAndConditions": {
+          "required": "É necessario accettare i Termini e le Condizioni."
+        }
+      }
     }
   }
 }

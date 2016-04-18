@@ -1,0 +1,18 @@
+{
+  "profile": {
+    "title":"Profil",
+    "form_org": {
+      "org_name": "Nume organizație",
+      "org_description": "Descriere organizație",
+      "org_status": "Stare organizație",
+      "org_type": "Tip organizație",
+      "button": "Modifică"
+    },
+    "tab" : {
+      "settings":"Setări",
+      "passwrod":"Parolă",
+      "organization":"Organizație",
+      "cloudAccounts":"Conturi Cloud"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "instances": {
+    "title": "Les meves Instàncies del Servei",
+    "placeholder" : "Cerca...",
+    "col" : {
+      "instanceof": "Instància de",
+      "author": "Autor",
+      "date": "Data",
+      "status": "Estat",
+      "actions": "Accions"
+    },
+    "status" : {
+      "requested": "Sol·licitat",
+      "deleted": "Eliminat",
+      "running": "En curs",
+      "todelete": "Per eliminar",
+      "stopped": "Aturat"
+    },
+    "button" : {
+      "test": "Test",
+      "demo" : "Demo",
+      "search" : "Busca Servei",
+      "go": "Vés-hi",
+      "monitor": "Monitoritza",
+      "deploy": "Desplega",
+      "stop": "Atura",
+      "start": "Comença",
+      "delete": "Elimina"
+    },
+    "go_to_tosca_ide" : "Crea arxiu TOSCA"
+  }
+}

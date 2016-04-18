@@ -1,8 +1,7 @@
 {
   "catalogue": {
-    "title" : "Services available in CloudOpting",
-    "button" : {
-      "choose" : "Service Info"
-    }
+    "title" : "Servicii disponibile în CloudOpting",
+    "our" : "NOSTRU",
+    "consortia" : "CONSORȚIUL"
   }
 }

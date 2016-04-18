@@ -6,29 +6,33 @@
                     <ul class="nav nav-wizard">
                         <li class="done">
                             <div class="nav-wizard-content">
-                                <span class="badge">1</span> <span class="text">Set Global Properties</span>
+                                <span class="badge">1</span> <span class="text" translate="publish.wizzard.one">Set Global Properties</span>
                             </div>
                         </li>
                         <li class="active">
                             <div class="nav-wizard-content">
-                                <span class="badge">2</span> <span class="text">Upload needed files</span>
+                                <span class="badge">2</span> <span class="text" translate="publish.wizzard.tow">Upload needed files</span>
                             </div>
                         </li>
                         <li class="">
                             <div class="nav-wizard-content">
-                                <span class="badge">3</span> <span class="text">Upload TOSCA archive</span>
+                                <span class="badge">3</span> <span class="text" translate="publish.wizzard.three">Upload TOSCA archive</span>
                             </div>
                         </li>
                         <li class="">
                             <div class="nav-wizard-content">
-                                <span class="badge">4</span> <span class="text">Request Status</span>
+                                <span class="badge">4</span> <span class="text" translate="publish.wizzard.four">Request Status</span>
                             </div>
                         </li>
                     </ul>
                     <div class="backend-box-content">
                         <div class="alert alert-danger hide">
-                            <!-- FIXME: Wrong text -->
-                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                            <div class="alert alert-info" ng-show="infoMessage">
+                                {{infoMessage}}
+                            </div>
+                            <div class="alert alert-danger" ng-show="errorMessage">
+                                {{errorMessage}}
+                            </div>
                         </div>
                         <form class="form" role="form dropzone">
                             <div class="row hidden">
@@ -79,7 +83,7 @@
                                 </div>
                                 <div class="col-xs-6">
                                     <!-- ng-disabled="isLibraryEmpty()" -->
-                                    <button type="button" class="btn btn-primary pull-right" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next" ng-autodisable>Save Configuration & Next</button>
                                 </div>
                             </div>
                         </form>
@@ -89,37 +93,3 @@
         </div>
     </div>
 </section>
-
-<!--
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="publish.title">Publish Service</div>
-        <div class="panel-body">
-            <form novalidate class="">
-                <div class="form-group row">
-                    <div class="btn btn-info" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
-                </div>
-                <div class="form-group row" ng-show="isLibraryEmpty()">
-                    <label class="darkgreen" translate="publish.content.library">Content Library</label>
-                    <input class="form-control" type="text" autocomplete="off" value="{{'publish.content.emptylibrary' | translate}}" disabled />
-                </div>
-                <div class="form-group row" ng-hide="isLibraryEmpty()">
-                    <label class="darkgreen" translate="publish.content.library">Content Library</label>
-                    <div  ng-repeat="content in libraryList">
-                        <div class="input-group">
-                            <span class="input-group-addon" translate="publish.content.file">File</span>
-                            <input class="form-control" type="text" autocomplete="off" value="{{content.name}}" disabled/>
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-danger" ng-click="deleteLib(content)" translate="publish.button.delete">Delete Item in Library</button>
-                        </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <button type="button" class="btn btn-success" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next">Save Configuration & Next</button>
-            </form>
-        </div>
-    </div>
-</div>
--->

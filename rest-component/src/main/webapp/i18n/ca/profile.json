@@ -1,0 +1,18 @@
+{
+  "profile": {
+    "title":"Perfil",
+    "form_org": {
+      "org_name": "Nom de l'Organització",
+      "org_description": "Descripció de l'Organització",
+      "org_status": "Estat de l'Organització",
+      "org_type": "Tipologia d'Organització",
+      "button": "Actualitza"
+    },
+    "tab" : {
+      "settings":"Configuració",
+      "passwrod":"Contrasenya",
+      "organization":"Organització",
+      "cloudAccounts":"Comptes de Cloud"
+    }
+  }
+}

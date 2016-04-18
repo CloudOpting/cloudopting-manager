@@ -6,7 +6,7 @@ angular.module('cloudoptingApp')
         return {
             replace: true,
             restrict: 'E',
-            template: '<div id="strength">' +
+            template: '<div id="strength" class="strength-bar">' +
                 '<small translate="global.messages.validate.newpassword.strength">Password strength:</small>' +
                 '<ul id="strengthBar">' +
                 '<li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li>' +

@@ -14,7 +14,9 @@ angular.module('cloudoptingApp').directive('cytoscape', function($rootScope,$htt
             cyEdgetemplates: '=',
             // controller function to be triggered when clicking on a node
             cyClick:'&',
-            cyEdgeclick:'&'
+            cyEdgeclick:'&',
+            cyRenamenode:'&',
+            cyRemove:'&'
         },
         link: function(scope, element, attrs, fn) {
             // dictionary of colors by types. Just to show some design options
@@ -165,6 +167,41 @@ console.debug(scope.elements.nodes);
                         // sample use can be adding a passed variable which will be broadcast on change
                         console.debug(scope.elements);
                         cy.load(scope.elements);
+                        cy.cxtmenu({
+        					selector: 'node',
+
+        					commands: [
+        						{
+        							content: 'Clear',
+        							select: function(ele){
+        								console.log( ele.id() );
+        								console.log(ele);
+        							}
+        						},
+
+        						{
+        							content: 'Rename',
+        							select: function(ele){
+        								console.log('Directive rename');
+        								console.log( ele.data('name') );
+        								console.log( 'id:'+ele.id() );
+        								scope.cyRenamenode({value:{id:ele.id()}});
+        							},
+        						},
+
+        						{
+        							content: 'Remove',
+        							select: function(ele){
+        								console.log('Directive remove');
+        								console.log( 'position:'+ele.position() );
+        								console.log( 'id:'+ele.id() );
+        								console.log(scope.elements);
+        								scope.cyRemove({value:{id:ele.id()}});
+        								console.log(scope.elements);
+        							}
+        						}
+        					]
+        				});
                     }
                 });
 

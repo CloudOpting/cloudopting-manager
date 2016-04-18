@@ -31,6 +31,12 @@
 			<xs:enumeration value="tgz2" />
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="tpkgprovider">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="rpm" />
+			<xs:enumeration value="yum" />
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="tcpu">
 		<xs:restriction base="xs:int">
 			<xs:enumeration value="1" />
@@ -174,6 +180,31 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerContainerProperties" type="tDockerContainerProperties" />
+	<xs:complexType name="tDockerDataVolumeContainerProperties">
+		<xs:sequence>
+			<xs:element name="image">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Base image"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="entrypoint">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Entrypoint in the Dockerfile"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DockerDataVolumeContainerProperties" type="tDockerDataVolumeContainerProperties" />
 	<xs:complexType name="tDockerContainerPorts">
 		<xs:sequence>
 			<xs:element name="host">
@@ -206,6 +237,12 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerContainerPortsCaps" type="tDockerContainerPortsCaps" />
+	<xs:complexType name="tDockerDataVolumeContainerPortsCaps">
+		<xs:sequence>
+			<xs:element name="DockerContainerPorts" type="tDockerContainerPorts"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DockerDataVolumeContainerPortsCaps" type="tDockerDataVolumeContainerPortsCaps" />
 	<xs:complexType name="tApacheProperties">
 		<xs:sequence>
 			<xs:element name="default_mods">
@@ -409,6 +446,26 @@
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
 							<xs:attribute name="title" fixed="Module settings"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="require">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of a component that has to be installed before"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="before">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of a component that has to be installed after"></xs:attribute>
 							<xs:attribute name="formtype" fixed="string"></xs:attribute>
 						</xs:extension>
 					</xs:simpleContent>
@@ -1357,6 +1414,73 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="RemotefileProperties" type="tRemotefileProperties" />
+	<xs:complexType name="tPackageProperties">
+		<xs:sequence>
+			<xs:element name="package_name">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Package"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="source">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Source of the package"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="provider">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="tpkgprovider">
+							<xs:attribute name="title" fixed="Extension of the archive"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+							<xs:attribute name="enum"
+								fixed="['rpm','yum']"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="install_options">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Install options for the provider"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="require">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of a component that has to be installed before"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="before">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of a component that has to be installed after"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PackageProperties" type="tPackageProperties" />
 	<xs:complexType name="tSLA">
 		<xs:sequence>
 			<xs:element default="1" name="NumCpus">

@@ -3,38 +3,40 @@
       <div class="row">
          <div class="col-xs-12 col-md-10 col-md-offset-1">
          	<div class="backend-box">
+
             	<div class="backend-box-cabecera text-center" translate="monitoring.title">
                   Service Monitoring
-               </div>
+                </div>
 					<!-- Div that will contain all graphs for Zabbix -->
-               <div class="backend-box-content" id="space-for-zabbix-charts">
+                <div class="backend-box-content" id="space-for-zabbix-charts">
 
-						<div class="alert alert-danger" ng-show="errorMessage">
-							{{errorMessage}}
+					<div class="alert alert-danger" ng-show="errorMessage">
+						{{errorMessage}}
+					</div>
+					<div class="form-group">
+						<div>
+							<input date-range-picker id="daterange" ng-model="dater" class="form-control date-picker" type="text" min="dater.startDate"/>
+							<button type="button" class="btn btn-success" ng-click="changeDate()" translate="monitoring.reloadGraphs">Reload graphs</button>
 						</div>
+						<label for="hostSelect" translate="monitoring.selecthost">Select the Host:</label>
+						<select class="form-control" name="" id="hostSelect" ng-model="zabbixdata.hostSelect"
+								ng-options="optionHost as optionHost.host for optionHost in zabbixdata.hostOptions track by optionHost.hostid"
+								ng-change="updateItems(zabbixdata.hostSelect.hostid)">
+						</select>
+					</div>
 
+					<div class="form-group">
+						<label for="itemsSelect" translate="monitoring.selectitemhost">Select the item in Host:</label>
+						<select class="form-control" name="" id="itemsSelect" ng-model="zabbixdata.itemsSelect"
+								ng-options="optionItems as optionItems.name for optionItems in zabbixdata.itemsOptions track by optionItems.itemid"
+								ng-change="updateChart(zabbixdata.itemsSelect.itemid);">
+						</select>
+					</div>
 
-						<div class="form-group">
-						<input date-range-picker id="daterange" ng-model="dater" class="form-control date-picker" type="text" min="'2016-3-1'"/>
-							<label for="hostSelect">Select the Host:</label>
-							<select class="form-control" name="" id="hostSelect" ng-model="zabbixdata.hostSelect"
-									ng-options="optionHost as optionHost.host for optionHost in zabbixdata.hostOptions track by optionHost.hostid"
-									ng-change="updateItems(zabbixdata.hostSelect.hostid)">
-							</select>
-						</div>
-
-						<div class="form-group">
-							<label for="itemsSelect">Select the item in Host:</label>
-							<select class="form-control" name="" id="itemsSelect" ng-model="zabbixdata.itemsSelect"
-									ng-options="optionItems as optionItems.name for optionItems in zabbixdata.itemsOptions track by optionItems.itemid"
-									ng-change="updateChart(zabbixdata.itemsSelect.itemid);">
-							</select>
-						</div>
-
-						<div class="wrapper-graph">
-							<h3>{{zabbixGraphTitle}}</h3>
-							<div id="itemSelected" class="graph-content"></div>
-						</div>
+					<div class="wrapper-graph">
+						<h3>{{zabbixGraphTitle}}</h3>
+						<div id="itemSelected" class="graph-content"></div>
+					</div>
 
 					</div>
 					<!-- Div that will contain all graphs in the grpahsList -->

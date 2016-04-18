@@ -1,0 +1,24 @@
+{
+  "toscaide": {
+    "title": "IDE TOSCA",
+    "serviceName": "Numele serviciului:",
+    "loadGraph": "Încarcă graf",
+    "nameNode": "Numele nodului:",
+    "nodeType": "Tipul nodului:",
+    "addNode": "+ Adaugă nod",
+    "relationship": "Relație (între două noduri)",
+    "infoNodes":"<small>**După adăugarea a două noduri puteți adăuga conexiuni între ele</small>",
+    "select_1": "Selectează nodul 1:",
+    "select_2": "Selectează nodul 2:",
+    "from": "De la",
+    "to": "Pănă la",
+    "selectRelationship": "Selectează relație:",
+    "addRelatonship": "+ Adaugă relație",
+    "resetGraph": "Resetează graf",
+    "nodeData": "Date despre nod",
+    "saveGraph": "Salvează graf",
+    "generateTosca": "Generează fisier TOSCA",
+    "importJson": "Import JSON",
+    "settingNode": "Parametrii nodului"
+  }
+}

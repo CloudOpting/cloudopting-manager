@@ -1,0 +1,40 @@
+<NodeType name="DockerDataVolumeContainer" shape="pentagon" color="#ffffff" image="docker_data.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="DockerDataVolumeContainerProperties"
+		type="tDockerDataVolumeContainerProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="writePuppetDockerTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+	<CapabilityDefinitions>
+		<CapabilityDefinition capabilityType="DockerDataVolumeContainerPortsCaps" />
+	</CapabilityDefinitions>
+</NodeType>
+<NodeTypeImplementation nodeType="DockerDataVolumeContainer"
+	name="DockerDataVolumeContainerImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="DockerDataVolumeContainer.dockerfile"
+			artifactType="DockerfileTemplate" artifactRef="DockerDataVolumeContainerDT">
+		</DeploymentArtifact>
+		<DeploymentArtifact name="sd" artifactType="PuppetTemplate"
+			artifactRef="DockerDataVolumeContainerPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<CapabilityType name="DockerDataVolumeContainerPortsCaps">
+	<PropertiesDefinition element="DockerDataVolumeContainerPortsCaps"
+		type="tDockerDataVolumeContainerPortsCaps" />
+</CapabilityType>
+<ArtifactTemplate type="DockerfileTemplate" id="DockerDataVolumeContainerDT"
+	name="">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/DockerDataVolumeContainerDT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetTemplate" id="DockerDataVolumeContainerPT"
+	name="">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/DockerDataVolumeContainerPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

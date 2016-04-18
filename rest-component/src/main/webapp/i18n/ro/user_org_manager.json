@@ -1,0 +1,36 @@
+{
+  "user_org_manager": {
+    "title": {
+      "user": "Administrare utilizatori",
+      "org": "Administrare organizații"
+    },
+    "title.user_detail": "Detalii utilizator",
+    "title.org_detail": "Detalii organizație",
+    "search": "Caută...",
+    "col": {
+      "name": "Nume",
+      "description": "Descriere",
+      "status":"Stare",
+      "type":"Tip",
+      "login": "Poreclă",
+      "role": "Rol",
+      "langKey": "Limbă",
+      "firstName" : "Prenume",
+      "lastName" : "Nume",
+      "organizationKey": "Cheie",
+      "email": "Email",
+      "activated": "Activat",
+      "organization": "Organizație",
+      "actions": "Acțiuni",
+      "cloudaccounts": "Cont Cloud",
+      "password": "Parolă"
+    },
+    "button" : {
+      "edit": "Modifică",
+      "create": "Creează",
+      "cancel": "Anulează",
+      "delete": "Șterge"
+    },
+    "go.organization": "Mergi spre administrarea de organizații pentru a crea una nouă."
+  }
+}

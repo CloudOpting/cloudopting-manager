@@ -2,8 +2,9 @@
 
 angular.module('cloudoptingApp')
     .controller('InstancesController', function (SERVICE, localStorageService,
-                                                 $scope, $state, $log, $location, $window, $filter,
-                                                 Principal, InstanceService, ProcessService, Blob, FileSaver) {
+                                                 $scope, $state, $log, $location, $window, $filter, $translate,
+                                                 Principal, InstanceService, ProcessService, MonitoringService,
+                                                 Blob, FileSaver) {
 
         $scope.currentPage = 0;
         $scope.pageSize = 8;
@@ -21,6 +22,10 @@ angular.module('cloudoptingApp')
         $scope.instancesList = $scope.currentApp.customizationss;
         angular.forEach($scope.instancesList, function(instance, key) {
             instance.applicationName = $scope.currentApp.applicationName;
+            var callback = function(data, status, headers, config){
+                instance.monitoringStatus = data;
+            };
+            MonitoringService.getStatusById(instance.id, callback);
         });
 
         $scope.test = function(instance) {
@@ -33,7 +38,7 @@ angular.module('cloudoptingApp')
                     }
                 }
             };
-            ProcessService.test(instance.id, callback);
+            return ProcessService.test(instance.id, callback);
         };
 
         $scope.demo = function(instance) {
@@ -42,7 +47,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            ProcessService.demo(instance.id, callback);
+            return ProcessService.demo(instance.id, callback);
         };
 
         $scope.deploy = function(instance) {
@@ -52,7 +57,7 @@ angular.module('cloudoptingApp')
                     $state.go("activiti");
                 }
             };
-            ProcessService.deploy(instance.id, callback);
+            return ProcessService.deploy(instance.id, callback);
         };
 
         $scope.stop = function(instance) {
@@ -62,7 +67,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            //ProcessService.stop(instance);
+            //return ProcessService.stop(instance);
         };
         $scope.delete = function(instance) {
             $scope.errorMessage = "Delete not implemented yet";
@@ -71,7 +76,7 @@ angular.module('cloudoptingApp')
                     //Do something here if all went ok.
                 }
             };
-            //ProcessService.delete(instance.id, callback);
+            //return ProcessService.delete(instance.id, callback);
         };
 
         $scope.monitor = function(instance) {
@@ -89,8 +94,8 @@ angular.module('cloudoptingApp')
                 if(checkStatusCallback(data, status, headers, config, "Start requested.")){
                     //Do something here if all went ok.
                 }
-            }
-            //ProcessService.start(instance);
+            };
+            //return ProcessService.start(instance);
         };
         //Checks for showing the buttons.
         $scope.showDeploy = function(str){
@@ -117,9 +122,9 @@ angular.module('cloudoptingApp')
             if(status==401) {
                 //Unauthorised. Check if signed in.
                 if(Principal.isAuthenticated()){
-                    $scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
+                    $scope.errorMessage = $translate.instant("callback.no_permissions");
                 } else {
-                    $scope.errorMessage = "Your session has ended. Sign in again. Redirecting to login...";
+                    $scope.errorMessage = $translate.instant("callback.session_ended");
                     $timeout(function() {
                         $state.go('login');
                     }, 3000);
@@ -127,14 +132,14 @@ angular.module('cloudoptingApp')
                 return false;
             }else if(status!=200 && status!=201) {
                 //Show message
-                $scope.errorMessage = "An error occurred. Wait a moment and try again, if problem persists contact the administrator";
+                $scope.errorMessage = $translate.instant("callback.generic_error");
                 return false;
             } else {
                 //Return to the list
                 if(message==null){
                     $log.info("Successfully done!");
                 } else {
-                    $scope.infoMessage = message + " Successfully done!";
+                    $scope.infoMessage = message + $translate.instant("callback.success");
                 }
                 return true;
             }

@@ -1,0 +1,11 @@
+{
+  "menu": {
+    "title":"Menu",
+    "publish":"Pubblicare il Servizio",
+    "service.catalogue":"Catalogo dei Servizi",
+    "services.manager":"Gestione dei Servizi",
+    "user.manager":"Gestore degli Utenti",
+    "org.manager":"Gestore Org",
+    "toscaide":"Tosca IDE"
+  }
+}

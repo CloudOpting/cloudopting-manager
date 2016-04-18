@@ -1,31 +1,91 @@
 {
   "publish": {
-    "title": "Publish Service",
+    "title": "Publică serviciu",
+    "description.template" : "<p></p><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\">[Detaliați descrierea serviciului aici]</p>    <p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>Funcționalități</b></strong></p><ul><li>[Descriere funcționalitate]</li><li>[Descriere funcționalitate]</li><li>Descriere funcționalitate]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>Beneficii</b></strong></p><ul><li>[Descriere beneficiu]</li><li>[Descriere beneficiu]</li><li>[Descriere beneficiu]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>Suport</b></strong></p><ul><li>[Descriere servicii suport]</li></ul><p style=\"color: rgb(51, 51, 51);background-color: rgb(255, 255, 255);\"><strong><b>Contact</b></strong></p><ul><li>[Descriere contact]</li><li>[Scrie aici numărul tău de telefon]</li><li>[Scrie aici adresa ta de email]</li></ul>",
     "service" : {
-      "name": "Service Name",
-      "description": "Service Description",
-      "image": "Service Image"
+      "name": "Nume serviciu",
+      "toscaname": "Nume TOSCA aferent serviciu",
+      "description": "Descriere serviciu",
+      "image": "Logo serviciu",
+      "shortDescription" : "Scurtă descriere",
+      "termsAndConditions" : "Adresă termeni și condiții",
+      "applicationSubscriberMail" : "Machetă mesaj abonat",
+      "applicationSpMail" : "Machetă mesaj furnizor",
+      "servicePrice" : "Preț serviciu",
+      "platformPrice" : "Preț platformă",
+      "applicationIsTryable": "Platforma poate fi încercată",
+      "sizeId": "Dimensiune"
     },
     "select" : {
-      "addtosca": "+ Add TOSCA Archive",
-      "tosca": "TOSCA Archive",
-      "toscaempty": "TOSCA Archive not selected",
-      "file": "Select File"
+      "addtosca": "+ Adaugă arhivă TOSCA",
+      "tosca": "Arhivă TOSCA",
+      "toscaempty": "Arhiva TOSCA nu a fost aleasă",
+      "file": "Alege fișier"
     },
-    "selectedfile": "Selected File",
+    "selectedfile": "Fișier ales",
     "content" : {
-      "emptylibrary": "The Library is Empty",
-      "libarary" : "Content Library",
-      "name" : "name",
-      "file" : "file"
+      "emptylibrary": "Libraria este goală",
+      "library" : "Librarie de conținut",
+      "name" : "Nume",
+      "file" : "Fișier"
     },
     "button" : {
-      "save": "Save Configuration",
-      "save_n_next": "Save Configuration & Next",
-      "publish": "Publish Service",
-      "add": "+ Add Item in Library",
-      "delete": "Delete Item in Library"
-    }
+      "save": "Salvează",
+      "save_n_next": "Salvează & Următorul",
+      "publish": "Publică serviciu",
+      "add": "+ Adaugă element în librărie",
+      "delete": "Șterge fișier"
+      "service_list": "Listă servicii",
+      "update": "Salvează modificarea",
+      "next": "Următorul"
+    },
+    "messages": {
+      "validate": {
+        "name": {
+          "required": "Numele serviciului este obligatoriu.",
+          "minlength": "Numele serviciului trebuie să conțină cel puțin 1 caracter."
+        },
+        "toscaname": {
+          "required": "Numele TOSCA aferent serviciului este obligatoriu.",
+          "minlength": "Numele TOSCA aferent serviciului trebuie să conțină cel puțin 1 caracter.",
+          "maxlength": "Numele TOSCA aferent serviciului trebuie să conțină cel mult 10 caractere.",
+          "pattern": "Numele TOSCA aferent serviciului nu trebuie să conțină spații."
+        },
+        "description": {
+          "required": "Descrierea serviciului este obligatorie.",
+          "minlength": "Descrierea serviciului trebuie să conțină cel puțin 1 caracter."
+        },
+        "shortDescription": {
+          "required": "Descrierea scurtă a serviciului este obligatorie."
+        },
+        "termsAndConditions": {
+          "required": "Adresa termenilor și a condițiilor este obligatorie."
+        },
+        "applicationSubscriberMail": {
+          "required": "Macheta mesajului către abonat este obligatorie."
+        },
+        "applicationSpMail": {
+          "required": "Macheta mesajului către furnizor este obligatorie."
+        },
+        "servicePrice": {
+          "required": "Prețul serviciului este obligatoriu."
+        },
+        "platformPrice": {
+          "required": "Prețul platformei este obligatoriu."
+        },
+        "sizeId": {
+          "required": "Dimensiunea serviciului este obligatorie."
+        }
+      }
+    },
+    "wizzard": {
+      "one":"Stabilește proprietățile globale",
+      "tow":"Încarcă fișierele necesare",
+      "three":"Încarcă arhiva TOSCA",
+      "four":"Starea cererii"
+    },
+    "thanks" :"Mulțumesc!",
+    "thanks_2": "Serviciul dumneavoastră a fost publicat"
   }
 }
 

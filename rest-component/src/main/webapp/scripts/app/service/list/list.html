@@ -7,9 +7,8 @@
                         Service List
                     </div>
                     <div class="backend-box-content">
-                        <div class="alert alert-danger hide">
-                            <!-- FIXME: This do not have any sense -->
-                            <strong>Authentication failed!</strong> Please check your credentials and try again.
+                        <div class="alert alert-danger" ng-show="errorMessage">
+                            {{errorMessage}}
                         </div>
                         <form class="form" role="form dropzone">
                             <div class="form-group">
@@ -34,18 +33,26 @@
                                             <tr>
                                                 <th translate="list.col.name">Service name</th>
                                                 <th translate="list.col.status">Status</th>
-                                                <th translate="list.col.actions">Actions</th>
+                                                <th translate="list.col.actions" class="table-col-actions actions-medium">Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="app in applicationList | filter:searchTextApplication | startFrom:currentPage*pageSize | limitTo:pageSize">
                                                 <td>{{app.applicationName}}</td>
                                                 <td>{{app.statusId.status}}</td>
-                                                <td class="text-right">
-                                                    <button type="button" class="btn btn-icon" ng-click="goToCreateInstance(app)" ><i class="fa fa-plus-square-o"></i>{{'list.button.createinstance' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="goToEdit(app)" ><i class="fa fa-pencil-square-o"></i>{{'list.button.edit' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="goToInstanceList(app)" ><i class="fa fa-list-ul"></i>{{'list.button.listinstances' | translate}}</button>
-                                                    <button type="button" class="btn btn-icon" ng-click="goToDelete(app)" ><i class="fa fa-trash-o"></i>{{'list.button.delete' | translate}}</button>
+                                                <td class="table-col-actions actions-medium">
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToCreateInstance(app)" >
+                                                        <i class="fa fa-plus-square-o"></i>{{'list.button.createinstance' | translate | limitTo: 3}}.<span>{{'list.button.createinstance' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToEdit(app)" >
+                                                        <i class="fa fa-pencil-square-o"></i>{{'list.button.edit' | translate | limitTo: 3}}.<span>{{'list.button.edit' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToInstanceList(app)" >
+                                                        <i class="fa fa-list-ul"></i>{{'list.button.listinstances' | translate | limitTo: 3}}.<span>{{'list.button.listinstances' | translate}}</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon actionsTooltip" ng-click="delete(app)" ng-autodisable>
+                                                        <i class="fa fa-trash-o"></i>{{'list.button.delete' | translate | limitTo: 3}}.<span>{{'list.button.delete' | translate}}</span>
+                                                    </button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -76,52 +83,3 @@
         </div>
     </div>
 </section>
-
-<!--
-<div class="row">
-    <div class="bs-example col-md-offset-1 col-md-10">
-        <div class="panel-heading darkgreen" translate="list.title">Services List</div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-lg-12">
-                    <span class="input-group-btn">
-                        <button class="btn btn-success pull-right" type="button" ng-click="goToPublish()" translate="list.button.addservice">+ Add New Service</button>
-                    </span>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="{{'list.search.placeholder' | translate}}">
-                        <span class="input-group-btn">
-                            <button class="btn btn-success" type="button" translate="list.button.search">Search Service</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <br />
-
-            <table cellspacing="1" cellpadding="1" class="table-responsive" style="width: 100%;">
-                <tr>
-                    <th class="darkgreen" translate="list.col.name">Service Name</th>
-                    <th class="darkgreen" translate="list.col.status">Status</th>
-                    <th class="darkgreen" translate="list.col.edit">Edit Service</th>
-                </tr>
-                <tr ng-repeat="app in applicationList">
-                    <td>{{app.applicationName}}</td>
-                    <td>{{app.statusId.status}}</td>
-                    <td>
-                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default" ng-click="goToEdit(app)" translate="list.button.edit">Edit</button>
-                            <button type="button" class="btn btn-default" ng-click="goToInstanceList(app)" translate="list.button.listinstances">List instances</button>
-                            <button type="button" class="btn btn-default" ng-click="goToDelete(app)" translate="list.button.delete">Delete</button>
-                            <button type="button" class="btn btn-default" ng-click="goToCreateInstance(app)" translate="list.button.createinstance">Create Instance</button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
--->

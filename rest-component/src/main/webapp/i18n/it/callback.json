@@ -1,0 +1,8 @@
+{
+  "callback": {
+    "no_permissions":"Non hai i permessi per farlo. Richiedere all'amministratore ulteriori autorizzazioni",
+    "session_ended":"La sessione è terminata. Autenticarsi nuovamente. Rinvio alla pagina di login...",
+    "generic_error":"Si è verificato un errore. Attendere un istante e riprovare, se il problema persiste contattare l'amministratore",
+    "success":" Successo!"
+  }
+}

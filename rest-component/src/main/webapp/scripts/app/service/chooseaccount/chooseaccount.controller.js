@@ -2,8 +2,9 @@
 
 angular.module('cloudoptingApp')
     .controller('ChooseAccountController',
-    function (SERVICE, Principal, $rootScope, $scope, $state, $timeout, $log,
-              localStorageService, OrganizationService, InstanceService) {
+    function (SERVICE, localStorageService,
+              $rootScope, $scope, $state, $timeout, $log, $translate,
+              Principal, OrganizationService, InstanceService) {
 
         var instance = localStorageService.get(SERVICE.STORAGE.CHOOSE_ACCOUNT.INSTANCE);
 
@@ -26,7 +27,7 @@ angular.module('cloudoptingApp')
             var instanceWithAccount = {};
             instanceWithAccount.id = instance.id;
             instanceWithAccount.cloudAccountId = cloudAccount.id;
-            InstanceService.update(instanceWithAccount, callback);
+            return InstanceService.update(instanceWithAccount, callback);
         };
 
         //Error handling

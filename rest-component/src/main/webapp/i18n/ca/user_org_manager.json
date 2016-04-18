@@ -1,0 +1,36 @@
+{
+  "user_org_manager": {
+    "title": {
+      "user": "Administració d'Usuari",
+      "org": "Administració d'Organització"
+    },
+    "title.user_detail": "Detalls de l'Usuari",
+    "title.org_detail": "Detalls de l'Organització",
+    "search": "Cerca per...",
+    "col": {
+      "name": "Nom",
+      "description": "Descripció",
+      "status":"Estat",
+      "type":"Tipus",
+      "login": "Àlies",
+      "role": "Rol",
+      "langKey": "Idioma",
+      "firstName" : "Nom",
+      "lastName" : "Cognom",
+      "organizationKey": "Clau",
+      "email": "Correu electrònic",
+      "activated": "Activat",
+      "organization": "Organització",
+      "actions": "Accions",
+      "cloudaccounts": "Compte de Cloud",
+      "password": "Contrasenya"
+    },
+    "button" : {
+      "edit": "Edita",
+      "create": "Crea",
+      "cancel": "Cancel·la",
+      "delete": "Elimina"
+    },
+    "go.organization": "Vés a l'Administrador d'Organització per crear-ne una de nova."
+  }
+}

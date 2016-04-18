@@ -1,15 +1,15 @@
 {
     "login": {
-        "title": "Authentication",
+        "title": "Autentificare",
         "form": {
-            "password": "Password",
-            "password.placeholder": "Your password",
-            "rememberme": "Automatic Login",
-            "button": "Authenticate"
+            "password.placeholder": "Parolă",
+            "username.placeholder": "Utilizator",
+            "rememberme": "Ține-mă minte",
+            "button": "Autentifică"
         },
         "messages": {
             "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                "authentication": "<strong>Autentificarea a eșuat!</strong> Verificați datele introduse și încercați din nou."
             }
         }
     }

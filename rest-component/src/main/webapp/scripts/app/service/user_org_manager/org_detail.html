@@ -40,8 +40,8 @@
 
                                 <div class="row row-actions">
                                     <div class="col-xs-6">
-                                        <button ng-show="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.edit">Edit</button>
-                                        <button ng-hide="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.create">Create</button>
+                                        <button ng-show="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.edit" ng-autodisable>Edit</button>
+                                        <button ng-hide="org.id" type="submit" ng-disabled="org_form.$invalid" class="btn btn-primary" translate="user_org_manager.button.create" ng-autodisable>Create</button>
                                     </div>
                                     <div class="col-xs-6">
                                         <button type="submit" ng-click="cancel('org_manager')" class="btn btn-secondary pull-right" translate="user_org_manager.button.cancel">Cancel</button>

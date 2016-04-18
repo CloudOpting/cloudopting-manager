@@ -4,7 +4,7 @@
             <div class="col-md-offset-1 col-md-10">
                 <div class="backend-box">
                     <div class="backend-box-cabecera text-center" translate="form_generation.title">
-                        Form Generation Screen
+                        Taylor your service
                     </div>
                     <div class="backend-box-content">
 
@@ -12,13 +12,11 @@
                             {{errorMessage}}
                         </div>
 
-                        <p translate="form_generation.subtitle">Form</p>
-
                         <form name="myForm"
                               sf-schema="schema"
                               sf-form="form"
                               sf-model="model"
-                              ng-submit="onSubmit(myForm)">
+                              ng-submit="onSubmit(myForm)" ng-autodisable>
                         </form>
 
                     </div>
