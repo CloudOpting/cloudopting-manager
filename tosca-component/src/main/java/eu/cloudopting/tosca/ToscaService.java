@@ -1803,7 +1803,7 @@ if(listOfFiles!=null){
 
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or @toscaAuthorization.hasWriteCustomizationPermission(#idApp)")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUBSCRIBER') or @toscaAuthorization.hasWriteCustomizationPermission(#idApp)")
 	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data, String organizationkey, String serviceName) {
 		return customizationUtils.generateCustomizedTosca(idApp, csarPath, data, organizationkey, serviceName);
 
