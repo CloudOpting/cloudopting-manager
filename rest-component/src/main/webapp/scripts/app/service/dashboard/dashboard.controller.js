@@ -70,14 +70,15 @@ angular.module('cloudoptingApp')
         $scope.deploy = function(instance) {
             var callback = function (data, status, headers, config) {
                 if(checkStatusCallback(data, status, headers, config, "Deploy requested.")){
-                    //Do something here if all went ok.
+                    localStorageService.set(SERVICE.STORAGE.ACTIVITI.PROCESS_ID, data);
+                    $state.go("activiti");
                 }
             };
             return ProcessService.deploy(instance.id, callback);
         };
 
         $scope.stop = function(instance) {
-            $window.alert('Not implemented yet');
+            $scope.errorMessage = "Stop not implemented yet";
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "Stop requested.")){
                     //Do something here if all went ok.
@@ -86,7 +87,7 @@ angular.module('cloudoptingApp')
             //return InstanceService.stop(instance);
         };
         $scope.delete = function(instance) {
-            $window.alert('Not implemented yet');
+            $scope.errorMessage = "Delete not implemented yet";
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "Delete requested.")){
                     //Do something here if all went ok.
@@ -96,12 +97,16 @@ angular.module('cloudoptingApp')
         };
 
         $scope.monitor = function(instance) {
-            localStorageService.set(SERVICE.STORAGE.MONITORING.INSTANCE, instance);
-            $state.go('monitoring');
+            if(instance.statusId.status!="Running") {
+                $scope.errorMessage = "Cannot check monitoring, the instance is not running.";
+            } else {
+                localStorageService.set(SERVICE.STORAGE.MONITORING.INSTANCE, instance);
+                $state.go('monitoring');
+            }
         };
 
         $scope.start = function(instance) {
-            $window.alert('Not implemented yet');
+            $scope.errorMessage = "Start not implemented yet";
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config, "Start requested.")){
                     //Do something here if all went ok.
@@ -154,7 +159,6 @@ angular.module('cloudoptingApp')
                 } else {
                     $scope.infoMessage = message + $translate.instant("callback.success");
                 }
-
                 return true;
             }
         };
