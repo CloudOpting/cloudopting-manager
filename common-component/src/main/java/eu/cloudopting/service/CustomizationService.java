@@ -13,7 +13,7 @@ import eu.cloudopting.events.api.service.BaseService;
  */
 public interface CustomizationService extends BaseService<Customizations> {
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or @customizationAuthorization.hasWriteCustomizationPermission(#customizationDTO.id)")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUBSCRIBER') or @customizationAuthorization.hasWriteCustomizationPermission(#customizationDTO.id)")
 	void update(CustomizationDTO customizationDTO);
 	
 	@Override

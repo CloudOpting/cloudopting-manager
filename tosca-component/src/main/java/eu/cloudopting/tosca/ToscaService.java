@@ -1796,7 +1796,7 @@ if(listOfFiles!=null){
 		toscaUtils.generateDockerCompose(templData, serviceHome);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or @toscaAuthorization.hasReadCustomizationPermission(#idApp)")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUBSCRIBER') or @toscaAuthorization.hasReadCustomizationPermission(#idApp)")
 	public JSONObject getCustomizationFormData(Long idApp, String csarPath) {
 
 		return customizationUtils.getCustomizationFormData(idApp, csarPath);
