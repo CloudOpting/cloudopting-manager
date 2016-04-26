@@ -153,7 +153,7 @@ public class ToscaService {
 	public String readXsd(String element) {
 		// String PATH_TO_XSD = null;
 		log.debug("ToscaService.readXsd starting.");
-		ClassPathResource nodetypes = new ClassPathResource("types/nodeTypes.xsd");
+		ClassPathResource nodetypes = new ClassPathResource("toscaTemplate/Types/CloudOptingTypes.xsd");
 		File file = null;
 		try {
 			file = nodetypes.getFile();

@@ -27,8 +27,8 @@
 	<Properties
 		xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
 		<co:PuppetModuleProperties>
-			<co:module>liferay</co:module>
-			<co:git>https://github.com/gioppoluca/puppet-liferay.git</co:git>
+			<co:module>ckan</co:module>
+			<co:git>https://bitbucket.org/landcareresearch/puppet-ckan.git</co:git>
 		</co:PuppetModuleProperties>
 	</Properties>
 </ArtifactTemplate>
