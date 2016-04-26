@@ -129,7 +129,10 @@ public class BpmnService {
 		if (isTesting){
 			
 		}else{
-			v.put("cloudId", account.getProviderId().getProvider());
+//			v.put("cloudId", account.getProviderId().getProvider());
+			// TODO fix this
+			v.put("cloudId", 1);
+
 			v.put("cloudAccountId", account.getId());
 			cloudService.setUpCloud(account.getApiKey(), account.getSecretKey(), account.getEndpoint(), account.getProviderId().getProvider(), account.getId());
 			log.info("apikey: "+account.getApiKey());
