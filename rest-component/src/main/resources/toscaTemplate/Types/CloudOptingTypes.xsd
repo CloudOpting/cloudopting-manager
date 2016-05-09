@@ -164,6 +164,16 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="workdir">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Working directory for the container"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="logtype">
 				<xs:complexType>
 					<xs:simpleContent>
@@ -1148,7 +1158,7 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="version">
+			<xs:element name="solr_version">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
@@ -1352,7 +1362,17 @@
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:boolean">
-							<xs:attribute name="title" fixed="doyou need to uncompress?"></xs:attribute>
+							<xs:attribute name="title" fixed="do you need to uncompress?"></xs:attribute>
+							<xs:attribute name="formtype" fixed="boolean"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="is_internal">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:boolean">
+							<xs:attribute name="title" fixed="is the file uploaded in the platform?"></xs:attribute>
 							<xs:attribute name="formtype" fixed="boolean"></xs:attribute>
 						</xs:extension>
 					</xs:simpleContent>
@@ -1372,8 +1392,9 @@
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
-							<xs:attribute name="title" fixed="Name of the archive"></xs:attribute>
+							<xs:attribute name="title" fixed="Name of the archive or file"></xs:attribute>
 							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+							<xs:attribute name="description" fixed="if an archive omit the extension if a file the complete name with extension"></xs:attribute>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>

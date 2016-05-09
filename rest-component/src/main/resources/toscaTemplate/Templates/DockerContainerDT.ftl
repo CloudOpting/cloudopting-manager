@@ -18,4 +18,5 @@ VOLUME <#if volume['container']?has_content>${volume['container']}</#if>
 
 # SET ENTRYPOINT AND CMD
 <#if entrypoint?has_content>ENTRYPOINT ${entrypoint}</#if>
-CMD <#if cmd?has_content>${cmd}</#if>
+<#if workdir?has_content>WORKDIR ${workdir}</#if>
+<#if cmd?has_content>CMD ${cmd}</#if>
