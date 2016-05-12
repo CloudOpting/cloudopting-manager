@@ -1,40 +1,40 @@
 {
   "cloudaccount": {
-    "title" : "Cloud Accounts",
+    "title" : "Cuentas Cloud",
     "form" : {
-      "name" : "Cloud Account Name",
-      "apiKey" : "API Key",
-      "secretKey" : "Secret Key",
-      "endpoint" : "Endpoint",
-      "provider" : "Provider",
+      "name" : "Nombre de la cuenta Cloud",
+      "apiKey" : "Clave API",
+      "secretKey" : "Clave Secreta",
+      "endpoint" : "Punto final",
+      "provider" : "Proveedor",
       "placeholder" : {
-        "name" : "The Cloud Account Name",
-        "apiKey" : "The API Key",
-        "secretKey" : "The Secret Key",
-        "endpoint" : "The Endpoint"
+        "name" : "Nombre de la cuenta Cloud",
+        "apiKey" : "Clave API",
+        "secretKey" : "Clave Secreta",
+        "endpoint" : "Punto final"
       },
       "button" : {
-        "back" : "Back",
-        "save" : "Save",
-        "delete" : "Delete",
-        "update" : "Update"
+        "back" : "Volver",
+        "save" : "Salvar",
+        "delete" : "Borrar",
+        "update" : "Actualizar"
       }
     },
     "col" : {
-      "name": "Cloud Account Name",
-      "provider": "Provider",
-      "actions": "Actions"
+      "name": "Nombre de la cuenta Cloud",
+      "provider": "Proveedor",
+      "actions": "Acciones"
     },
     "button" : {
-      "add" : "Add",
-      "edit" : "Edit",
-      "delete" : "Delete"
+      "add" : "Añadir",
+      "edit" : "Editar",
+      "delete" : "Borrar"
     },
     "alert" : {
-      "sent" : "Message sent!",
-      "wrong" : "Something went wrong!",
-      "contact_you" : "We will contact with you soon.",
-      "try_again" : "Please try again later."
+      "sent" : "Mensaje enviado!",
+      "wrong" : "Algo ha ido mal!",
+      "contact_you" : "En breve nos pondremos en contacto con usted.",
+      "try_again" : "Por favor reinténtelo de nuevo más tarde."
     }
   }
 }

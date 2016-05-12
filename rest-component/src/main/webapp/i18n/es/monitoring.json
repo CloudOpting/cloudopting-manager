@@ -1,16 +1,16 @@
 {
   "monitoring": {
-    "title": "Service Monitoring",
+    "title": "Monitorización del Servicio",
     "titles" : {
-      "monitor": "Service Monitor",
-      "alerts": "Service Alerts"
+      "monitor": "Monitor del Servicio",
+      "alerts": "Alerta del Servicio"
     },
-    "cpu": "CPU Usage:",
-    "disk": "Disk Usage:",
-    "ram": "RAM Usage:",
-    "reloadGraphs":"Reload graphs",
-    "selecthost": "Select the Host:",
-    "selectitemhost": "Select the item in Host:"
+    "cpu": "Uso de CPU:",
+    "disk": "Uso de Disco:",
+    "ram": "Uso de RAM:",
+    "reloadGraphs":"Recargar gráficos",
+    "selecthost": "Seleccionar alojamiento:",
+    "selectitemhost": "Seleccionar artículo en el alojamiento:"
   }
 }
 

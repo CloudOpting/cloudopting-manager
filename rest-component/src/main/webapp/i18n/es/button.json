@@ -1,9 +1,8 @@
 {
   "button": {
-    "title": "Button Screen",
-    "subtitle": "Buttons",
-    "buttonOne": "Api Process One"
+    "title": "Botón de pantalla",
+    "subtitle": "Botones",
+    "buttonOne": "Proceso API"
   }
 }
-
 

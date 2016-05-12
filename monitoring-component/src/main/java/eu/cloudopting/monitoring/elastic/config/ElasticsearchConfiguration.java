@@ -1,9 +1,13 @@
 package eu.cloudopting.monitoring.elastic.config;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Resource;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
 
@@ -25,6 +29,7 @@ public class ElasticsearchConfiguration {
 
 	@Bean
 	public Client client() {
+//		TransportClient client = new TransportClient(ImmutableSettings.settingsBuilder().put("cluster.name", environment.getProperty("elasticsearch.cluster.name")).put("client.transport.sniff", true).put("client.transport.ping_timeout", 20, TimeUnit.SECONDS).build());
 		TransportClient client = new TransportClient();
 		TransportAddress address = new InetSocketTransportAddress(environment.getProperty("elasticsearch.host"),
 				Integer.parseInt(environment.getProperty("elasticsearch.port")));

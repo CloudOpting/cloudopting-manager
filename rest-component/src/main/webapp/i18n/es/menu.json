@@ -1,11 +1,11 @@
 {
   "menu": {
-    "title":"Menu",
-    "publish":"Publish Service",
-    "service.catalogue":"Service Catalogue",
-    "services.manager":"Services Manager",
-    "user.manager":"User Manager",
-    "org.manager":"Org Manager",
+    "title":"Menú",
+    "publish":"Publicar Servicio",
+    "service.catalogue":"Catálogo de Servicios",
+    "services.manager":"Administrador de Servicios",
+    "user.manager":"Administrador de usuario",
+    "org.manager":"Administrador Org",
     "toscaide":"Tosca IDE"
   }
 }

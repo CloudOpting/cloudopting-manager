@@ -234,7 +234,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway14" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow25" sourceRef="exclusivegateway14" targetRef="vmTask">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cloudId == 'cloudstack'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cloudId == 1}]]></conditionExpression>
     </sequenceFlow>
     <subProcess id="azure" name="Azure VM process">
       <startEvent id="startevent1" name="Start"></startEvent>
@@ -244,7 +244,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <sequenceFlow id="flow34" sourceRef="generateAzureVm" targetRef="endevent1"></sequenceFlow>
     </subProcess>
     <sequenceFlow id="flow26" sourceRef="exclusivegateway14" targetRef="azure">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cloudId == 'azure'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cloudId == 2}]]></conditionExpression>
     </sequenceFlow>
     <subProcess id="vmware" name="VMware VM">
       <startEvent id="startevent2" name="Start"></startEvent>
@@ -254,7 +254,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <sequenceFlow id="flow32" sourceRef="generateVMwareVM" targetRef="endevent2"></sequenceFlow>
     </subProcess>
     <sequenceFlow id="flow27" sourceRef="exclusivegateway14" targetRef="vmware">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cloudId == 'vmware'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cloudId == 3}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway15" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway15" targetRef="servicetask1"></sequenceFlow>

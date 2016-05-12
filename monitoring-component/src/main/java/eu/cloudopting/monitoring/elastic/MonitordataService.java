@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
@@ -122,22 +123,30 @@ public class MonitordataService {
 				.withTypes("fluentd").addAggregation(containerFilter).build();
 
 		// do the query
-		Aggregations aggregations = elasticsearchTemplate.query(searchQ, new ResultsExtractor<Aggregations>() {
-			@Override
-			public Aggregations extract(SearchResponse response) {
-				// TODO Auto-generated method stub
-				// response.
-				log.debug(response.toString());
-				log.debug(response.getHits().toString());
-				return response.getAggregations();
-			}
+		Aggregations aggregations = null;
+		try {
+			aggregations = elasticsearchTemplate.query(searchQ, new ResultsExtractor<Aggregations>() {
+				@Override
+				public Aggregations extract(SearchResponse response) {
+					// TODO Auto-generated method stub
+					// response.
+//					log.debug(response.toString());
+//					log.debug(response.getHits().toString());
+					return response.getAggregations();
+				}
 
-		});
+			});
+		} catch (NoNodeAvailableException e) {
+			// TODO: handle exception
+			log.debug(e.getDetailedMessage());
+			log.error("problems in the connection with the elastic search server - nodes problem");
+			return graphData;
+		}
 		log.debug("PARSING---------------");
 		for (Aggregation aAgg : aggregations.asList()) {
 			InternalFilter cnt = (InternalFilter) aAgg;
 			log.debug("aggregation name:" + cnt.getName());
-			log.debug(cnt.toString());
+	//		log.debug(cnt.toString());
 
 			for (Aggregation theA : cnt.getAggregations().asList()) {
 				InternalDateHistogram idh = (InternalDateHistogram) theA;
@@ -148,7 +157,7 @@ public class MonitordataService {
 					// new Long(entry.getDocCount()).toString());
 					// logger.debug(new Long(entry.getDocCount()).toString());
 					ElasticData ed = new ElasticData(entry.getKey(), new Long(entry.getDocCount()).toString());
-					log.debug(ed.toString());
+//					log.debug(ed.toString());
 					graphData[gdi] = ed;
 					gdi++;
 				}
@@ -164,7 +173,8 @@ public class MonitordataService {
 		return graphData;
 	}
 
-	public ArrayList<ElasticGraphData> getAllAggregatedMonitorData(Long customizationId, String startDate, String endDate) {
+	public ArrayList<ElasticGraphData> getAllAggregatedMonitorData(Long customizationId, String startDate,
+			String endDate) {
 		// recover the customization
 		Customizations cust = customizationService.findOne(customizationId);
 		// get info on elastic form Db

@@ -13,11 +13,11 @@ import eu.cloudopting.events.api.service.BaseService;
  */
 public interface CustomizationService extends BaseService<Customizations> {
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or @customizationAuthorization.hasWriteCustomizationPermission(#customizationDTO.id)")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUBSCRIBER') or @customizationAuthorization.hasWriteCustomizationPermission(#customizationDTO.id)")
 	void update(CustomizationDTO customizationDTO);
 	
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN') or (principal.organizationId == #customization.customerOrganizationId.id)")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUBSCRIBER') or (principal.organizationId == #customization.customerOrganizationId.id)")
 	Customizations create(Customizations customization);
 	
 	Customizations findOneByCurrentUserOrg(long customizationId);

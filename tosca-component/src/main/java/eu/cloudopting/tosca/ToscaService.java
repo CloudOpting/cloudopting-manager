@@ -153,7 +153,7 @@ public class ToscaService {
 	public String readXsd(String element) {
 		// String PATH_TO_XSD = null;
 		log.debug("ToscaService.readXsd starting.");
-		ClassPathResource nodetypes = new ClassPathResource("types/nodeTypes.xsd");
+		ClassPathResource nodetypes = new ClassPathResource("toscaTemplate/Types/CloudOptingTypes.xsd");
 		File file = null;
 		try {
 			file = nodetypes.getFile();
@@ -1796,14 +1796,14 @@ if(listOfFiles!=null){
 		toscaUtils.generateDockerCompose(templData, serviceHome);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or @toscaAuthorization.hasReadCustomizationPermission(#idApp)")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUBSCRIBER') or @toscaAuthorization.hasReadCustomizationPermission(#idApp)")
 	public JSONObject getCustomizationFormData(Long idApp, String csarPath) {
 
 		return customizationUtils.getCustomizationFormData(idApp, csarPath);
 
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or @toscaAuthorization.hasWriteCustomizationPermission(#idApp)")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUBSCRIBER') or @toscaAuthorization.hasWriteCustomizationPermission(#idApp)")
 	public String generateCustomizedTosca(Long idApp, String csarPath, JSONObject data, String organizationkey, String serviceName) {
 		return customizationUtils.generateCustomizedTosca(idApp, csarPath, data, organizationkey, serviceName);
 

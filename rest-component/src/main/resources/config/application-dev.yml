@@ -73,6 +73,7 @@ zabbix:
 elasticsearch:
     host: cloudoptingmaster.cloudopen.csipiemonte.it
     port: 9300
+    cluster.name: elasticsearch
 
 cloud:
     doDeploy: true
