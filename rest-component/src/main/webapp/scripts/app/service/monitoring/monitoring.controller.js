@@ -246,7 +246,7 @@ angular.module('cloudoptingApp')
 					var checkStatusCallback = function(data, status, headers,
 							config) {
 						$scope.errorMessage = null;
-						if (status == 401) {
+						if (status == 401 || status==403) {
 							// Unauthorised. Check if signed in.
 							if (Principal.isAuthenticated()) {
 								$scope.errorMessage = $translate.instant("callback.no_permissions");

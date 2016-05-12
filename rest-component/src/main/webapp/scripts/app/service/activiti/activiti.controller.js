@@ -46,7 +46,7 @@ angular.module('cloudoptingApp')
 
 		//function to check possible outputs for the end user information.
 		var checkStatusCallback = function(data, status, headers, config){
-			if(status==401) {
+			if(status==401 || status==403) {
 				//Unauthorised. Check if signed in.
 				if(Principal.isAuthenticated()){
 					$scope.errorMessage = "You have no permissions to do so. Ask for more permissions to the administrator";
