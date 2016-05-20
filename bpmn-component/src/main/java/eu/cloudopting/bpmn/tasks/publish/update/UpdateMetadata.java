@@ -1,5 +1,7 @@
 package eu.cloudopting.bpmn.tasks.publish.update;
 
+import java.util.Map;
+
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
@@ -24,12 +26,14 @@ public class UpdateMetadata implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		log.info("Update - Metadata Update");
-		ApplicationDTO applications = (ApplicationDTO) execution.getVariable("application");
-		Applications application = applicationService.findOne(applications.getId());
-		BeanUtils.copyProperties(applications,application);
+		ApplicationDTO applicationData = (ApplicationDTO) execution.getVariable("application");
+		Applications application = applicationService.findOne(applicationData.getId());
+		BeanUtils.copyProperties(applicationData,application);
         applicationService.update(application);
-        execution.setVariable("toscaname", application.getApplicationToscaName());
-        execution.setVariable("chkPublishMetadataAvailable", true);
+        
+        Map<String, Object> processVars = execution.getVariables();
+	    processVars.put("applicationmetadataupdatedsuccess", true);
+	    runtimeService.setVariables(execution.getProcessInstanceId(), processVars);
 	}
 
 }
