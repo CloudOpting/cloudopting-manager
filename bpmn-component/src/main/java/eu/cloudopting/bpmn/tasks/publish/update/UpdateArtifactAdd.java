@@ -41,7 +41,7 @@ public class UpdateArtifactAdd implements JavaDelegate {
 		log.info("Update - Service Update Task - add media file");
 		log.info("Update - Service Update Task");
 		String uploadName = (String) execution.getVariable("name");
-	    String uploadFilePath = (String) execution.getVariable("newtoscapath");
+	    String uploadFilePath = (String) execution.getVariable("mediafilepath");
 	    
 	    Long id = (Long)execution.getVariable("applicationid");
 	    Applications application = applicationService.findOne(id);

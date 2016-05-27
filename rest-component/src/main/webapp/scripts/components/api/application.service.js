@@ -261,6 +261,69 @@ angular.module('cloudoptingApp')
                             "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
+            },
+
+
+            updateLogo: function (applicationId, file, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'updatelogo';
+                return Upload.upload({
+                    method: 'POST',
+                    url: endpoint,
+                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.PROMO_IMAGE },
+                    file: file
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    $log.debug('ApplicationService.updateLogo progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                    callback(data, status, headers, config);
+                }).error(function (data, status, headers, config) {
+                    $log.error("ApplicationService.updateLogo error. Data: " + data +
+                        ", status: " + status + ", headers: " + headers + ", config: " + config);
+                    callback(data, status, headers, config);
+                });
+            },
+
+            updateMetadata: function(applicationId, application, callback){
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'updatemetadata';
+                return $http.put(endpoint, application)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.update error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
+            },
+            addMediaFile: function(applicationId, file, callback){
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'mediafile';
+                return Upload.upload({
+                    method: 'POST',
+                    url: endpoint,
+                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY },
+                    file: file
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    $log.debug('ApplicationService.addMediaFile progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                    callback(data, status, headers, config);
+                }).error(function (data, status, headers, config) {
+                    $log.error("ApplicationService.addMediaFile error. Data: " + data +
+                        ", status: " + status + ", headers: " + headers + ", config: " + config);
+                    callback(data, status, headers, config);
+                });
             }
         }
     }

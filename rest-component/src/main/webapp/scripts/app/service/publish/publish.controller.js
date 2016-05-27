@@ -101,6 +101,24 @@ angular.module('cloudoptingApp')
             }
         }
 
+        function updatePromotionalImage(applicationId) {
+            if ($scope.files && $scope.files.length) {
+                for (var i = 0; i < $scope.files.length; i++) {
+                    var file = $scope.files[i];
+                    if(file.lastModified!=null && file.lastModified!=undefined) {
+                        var callback = function (data, status, headers, config) {
+                            if (checkStatusCallback(data, status, headers, config)) {
+                                promoInDatabase = true;
+                            }
+                        };
+
+
+                        ApplicationService.updateLogo(applicationId, file, callback);
+                    }
+                }
+            }
+        }
+
         /**
          * Function to create an application with a 'name', 'description' and 'promoImage'
          * with status 'Draft'
@@ -128,16 +146,25 @@ angular.module('cloudoptingApp')
         };
 
         $scope.updateWizardOne = function() {
-            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
-
+            var applicationId = $scope.application.id;
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config)){
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
-                    savePromotionalImage(data);
+
+                    //TODO: UPDATE PROMOTIONAL IMAGE
+                    updatePromotionalImage(applicationId);
+
                 }
             };
 
-            return ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
+            if(isEdition=="true"){
+                //TODO: UPDATE INFORMATION WITHOUT
+                //TODO: GET THE applicationID
+                return ApplicationService.updateMetadata(applicationId, $scope.application, callback);
+            } else {
+                var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
+                return ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
+            }
         };
 
         $scope.nextWizardOne = function() {
@@ -181,24 +208,40 @@ angular.module('cloudoptingApp')
          * Function to save the content files added by the user
          */
         $scope.saveConfigurationWizardTwo = function () {
-            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
-
-            if ($scope.libraryList && $scope.libraryList.length) {
-                for (var i = 0; i < $scope.libraryList.length; i++) {
-                    var file = $scope.libraryList[i];
-
-                    var callback = function (data, status, headers, config) {
-                        if (checkStatusCallback(data, status, headers, config)) {
-                            localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
-                            $state.go('publish3');
+            if(isEdition){
+                if ($scope.libraryList && $scope.libraryList.length) {
+                    for (var i = 0; i < $scope.libraryList.length; i++) {
+                        var file = $scope.libraryList[i];
+                        if(file.lastModified!=null && file.lastModified!=undefined) {
+                            var callback = function (data, status, headers, config) {
+                                if (checkStatusCallback(data, status, headers, config)) {
+                                    $state.go('publish3');
+                                }
+                            };
+                            ApplicationService.addMediaFile($scope.application.id, file, callback);
                         }
-                    };
-
-                    ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
+                    }
                 }
-            }
-            return;
+                return;
+            } else {
+                var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
+                if ($scope.libraryList && $scope.libraryList.length) {
+                    for (var i = 0; i < $scope.libraryList.length; i++) {
+                        var file = $scope.libraryList[i];
+
+                        var callback = function (data, status, headers, config) {
+                            if (checkStatusCallback(data, status, headers, config)) {
+                                localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
+                                $state.go('publish3');
+                            }
+                        };
+
+                        ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
+                    }
+                }
+                return;
+            }
             /*
              if ($scope.libraryList && $scope.libraryList.length) {
              for (var i = 0; i < $scope.libraryList.length; i++) {

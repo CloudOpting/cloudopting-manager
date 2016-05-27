@@ -288,7 +288,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     }
     
     //update application logo
-    @RequestMapping(value = "/application/{idApp}/updatelogo/", method = RequestMethod.PUT,
+    @RequestMapping(value = "/application/{idApp}/updatelogo", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -308,7 +308,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     }
     
   //update tosca file
-    @RequestMapping(value = "/application/{idApp}/updatetoscafile/", method = RequestMethod.PUT,
+    @RequestMapping(value = "/application/{idApp}/updatetoscafile", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -327,7 +327,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     
     
     //update application metadata
-    @RequestMapping(value = "/application/{idApp}/updatemetadata/", method = RequestMethod.PUT,
+    @RequestMapping(value = "/application/{idApp}/updatemetadata", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -339,7 +339,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     }
     
   //add media file
-    @RequestMapping(value = "/application/{idApp}/mediafile/", method = RequestMethod.POST,
+    @RequestMapping(value = "/application/{idApp}/mediafile", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
