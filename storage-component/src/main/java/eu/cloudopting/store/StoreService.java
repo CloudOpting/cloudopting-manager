@@ -225,6 +225,10 @@ public class StoreService {
     
     public void deleteFile(String filePath) {
     	log.debug("File to remove: " + filePath);
+    	if (filePath.startsWith("/")) {
+    		filePath = filePath.substring(1);
+    	}
+    	log.debug("Path: " + filePath);
     	Node nodeToRemove;
     try {
 		nodeToRemove = session.getRootNode().getNode(filePath);

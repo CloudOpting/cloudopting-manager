@@ -1,6 +1,7 @@
 package eu.cloudopting.bpmn.tasks.publish.update;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,7 +11,6 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,6 @@ import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.ApplicationMedia;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
-import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.exception.ToscaException;
 import eu.cloudopting.service.ApplicationMediaService;
 import eu.cloudopting.service.ApplicationService;
@@ -47,7 +46,7 @@ public class UpdateArtifactAdd implements JavaDelegate {
 	    Applications application = applicationService.findOne(id);
 	    String uploadToscaName = application.getApplicationToscaName();
 	    
-	    Set<ApplicationMedia> medias = application.getApplicationMedias();
+	    
 	    
 	    Organizations org = (Organizations) execution.getVariable("org");
 		log.debug("Media file UPLOAD Name: "+uploadName);
@@ -74,7 +73,7 @@ public class UpdateArtifactAdd implements JavaDelegate {
 				);
 				log.debug("mediafile UPLOAD performed");
 				//Add entry in referring persistent here
-				addMedia(application, medias, org.getOrganizationKey(), uploadToscaName, remoteFileNameReduced);
+				updateMedia(application, org.getOrganizationKey(), uploadToscaName, remoteFileNameReduced);
 				
 				
 				 Map<String, Object> processVars = execution.getVariables();
@@ -90,22 +89,43 @@ public class UpdateArtifactAdd implements JavaDelegate {
 		}
 	}
 	
-	private void addMedia(Applications application, Set<ApplicationMedia> medias, String orgKey, String toscaName,
+	private void updateMedia(Applications application, String orgKey, String toscaName,
 			String remoteFileNameReduced) {
+		Set<ApplicationMedia> medias = application.getApplicationMedias();
 		String path = storeService.getTemplatePath(orgKey,toscaName, true)+"/"+remoteFileNameReduced;
+		log.debug("templatepath from storeservice: " + path);
 		
-		ApplicationMedia newMedia = new ApplicationMedia();
-		newMedia.setApplicationId(application);
-		newMedia.setMediaContent(path);
+		log.debug("Actual size of medias: " + medias.size());
 		
-		mediaService.create(newMedia);
-		
-		medias.add(newMedia);
-		
-		application.setApplicationMedias(medias);
-		
-        applicationService.update(application);
-		
+		if (medias.size() == 1) {
+			log.debug("Update existing media");
+			Object[] mediasList = medias.toArray();
+			ApplicationMedia m = (ApplicationMedia)mediasList[0];
+			String oldPath = m.getMediaContent();
+			m.setMediaContent(path);
+			
+			//remove old file from jackrabbit
+			
+			String jrHttp = storeService.getJrHttp();
+			String removePath = "/" + oldPath.replaceAll(jrHttp, "");
+			log.debug("Oldpath: " + oldPath);
+			log.debug("old jackrabbit path to remove: " + removePath);
+			storeService.deleteFile(removePath);
+			
+			mediaService.update(m);
+		}
+		else if (medias.size() == 0) {
+			log.debug("create new media");
+			ApplicationMedia newMedia = new ApplicationMedia();
+			newMedia.setApplicationId(application);
+			newMedia.setMediaContent(path);
+			mediaService.create(newMedia);
+			
+			medias.add(newMedia);
+			
+			application.setApplicationMedias(medias);
+			applicationService.update(application);
+		}
 	}
 
 }
