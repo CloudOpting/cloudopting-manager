@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import eu.cloudopting.cloud.CloudService;
 import eu.cloudopting.domain.Applications;
@@ -36,6 +37,7 @@ import eu.cloudopting.domain.CloudAccounts;
 import eu.cloudopting.domain.Customizations;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.Status;
+import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
 import eu.cloudopting.dto.UploadDTO;
@@ -354,6 +356,77 @@ public class BpmnService {
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#applicationDTO.id)")
+	public boolean updateApplicationLogo(ApplicationDTO application, MultipartFile newLogoFile, String name, String type, User user, Organizations org) {
+		String uploadTempFilePath = "";
+		try {
+			File f = BpmnService.stream2file(name, newLogoFile.getInputStream());
+			if (f!=null){
+	    		uploadTempFilePath = f.getAbsolutePath();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			log.error("Error while reading UPLOAD logo file.",e);
+		}
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", name);
+		params.put("type", type);
+		params.put("user", user);
+		params.put("org", org);
+		params.put("newlogopath", uploadTempFilePath);
+		params.put("applicationid", application.getId());
+		
+		ProcessInstance pi = runtimeService.startProcessInstanceByMessage("updatePromoImageMsgRef", params);
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		Boolean bol = new Boolean(((VariableInstanceEntity)map.get("applicationlogoupdatedsuccess")).getTextValue());
+		return bol;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#applicationDTO.id)")
+	public boolean updateToscaFile(ApplicationDTO application, MultipartFile newToscaFile, String name, String type,
+			User user, Organizations org) {
+		String uploadTempFilePath = "";
+		try {
+			File f = BpmnService.stream2file(name, newToscaFile.getInputStream());
+			if (f!=null){
+	    		uploadTempFilePath = f.getAbsolutePath();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			log.error("Error while reading UPLOAD tosca file.",e);
+		}
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", name);
+		params.put("type", type);
+		params.put("user", user);
+		params.put("org", org);
+		params.put("newtoscapath", uploadTempFilePath);
+		params.put("applicationid", application.getId());
+		
+		ProcessInstance pi = runtimeService.startProcessInstanceByMessage("updateToscaFileMsgRef", params);
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		Boolean bol = new Boolean(((VariableInstanceEntity)map.get("applicationtoscafileupdatedsuccess")).getTextValue());
+		return bol;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#applicationDTO.id)")
+	public boolean updateApplicationMetadata(ApplicationDTO application, User user, Organizations org) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+		params.put("org", org);
+		params.put("application", application);
+		
+		ProcessInstance pi = runtimeService.startProcessInstanceByMessage("updateMetadataMsgRef", params);
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		Boolean bol = new Boolean(((VariableInstanceEntity)map.get("applicationmetadataupdatedsuccess")).getTextValue());
+		return false;
+	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#applicationDTO.id)")
 	public ActivitiDTO deleteApplication(ApplicationDTO applicationDTO) {
@@ -438,4 +511,49 @@ public class BpmnService {
 		activitiDTO.setProcessInstanceId(pi.getProcessInstanceId());
 		return activitiDTO;
 	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#applicationDTO.id)")
+	public boolean addMediaFile(ApplicationDTO application, MultipartFile mediaFile, String name, String type,
+			User user, Organizations org) {
+		String uploadTempFilePath = "";
+		try {
+			File f = BpmnService.stream2file(name, mediaFile.getInputStream());
+			if (f!=null){
+	    		uploadTempFilePath = f.getAbsolutePath();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			log.error("Error while reading UPLOAD tosca file.",e);
+		}
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", name);
+		params.put("type", type);
+		params.put("user", user);
+		params.put("org", org);
+		params.put("mediafilepath", uploadTempFilePath);
+		params.put("applicationid", application.getId());
+		
+		ProcessInstance pi = runtimeService.startProcessInstanceByMessage("updateArtifactAddMsgRef", params);
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		Boolean bol = new Boolean(((VariableInstanceEntity)map.get("addmediafilesuccess")).getTextValue());
+		return bol;
+	}
+
+	public boolean deleteMediaFile(ApplicationDTO application, Long idMedia, User user, Organizations org) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+		params.put("org", org);
+		params.put("applicationid", application.getId());
+		params.put("mediaid", idMedia);
+		
+		ProcessInstance pi = runtimeService.startProcessInstanceByMessage("updateArtifactDelMsgRef", params);
+		Map map = ((ExecutionEntity) pi).getVariableInstances();
+		Boolean bol = new Boolean(((VariableInstanceEntity)map.get("deletemediafilesuccess")).getTextValue());
+		return bol;
+	}
+
+	
+	
 }

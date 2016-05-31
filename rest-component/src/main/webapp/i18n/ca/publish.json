@@ -37,7 +37,8 @@
       "delete": "Elimina arxiu",
       "service_list":"Llista de Serveis",
       "update": "Actualitza",
-      "next": "Següent"
+      "next": "Següent",
+      "finish": "Finalitzar"
     },
     "messages": {
       "validate": {

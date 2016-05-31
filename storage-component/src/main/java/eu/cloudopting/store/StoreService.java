@@ -223,6 +223,24 @@ public class StoreService {
 		}
     }  
     
+    public void deleteFile(String filePath) {
+    	log.debug("File to remove: " + filePath);
+    	if (filePath.startsWith("/")) {
+    		filePath = filePath.substring(1);
+    	}
+    	log.debug("Path: " + filePath);
+    	Node nodeToRemove;
+    try {
+		nodeToRemove = session.getRootNode().getNode(filePath);
+		nodeToRemove.remove();
+		session.save();
+	} catch (RepositoryException e) {
+		// TODO Auto-generated catch block
+		log.error("Repository Exception: "+e.getLocalizedMessage());
+		//e.printStackTrace();
+	}
+    }
+    
     /**
      * Returns the set of file paths for each element below the provided
      * root path.

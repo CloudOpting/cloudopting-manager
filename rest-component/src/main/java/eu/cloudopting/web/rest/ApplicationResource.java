@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import eu.cloudopting.bpmn.BpmnService;
+import eu.cloudopting.domain.ApplicationMedia;
 import eu.cloudopting.domain.Applications;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
@@ -284,5 +285,89 @@ public class ApplicationResource extends AbstractController<Applications> {
         dto.setIdApp(idApp);
         dto.setProcessId(processId);
         return getBpmnService().deleteFile(dto);
+    }
+    
+    //update application logo
+    @RequestMapping(value = "/application/{idApp}/updatelogo", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean updateApplicationLogo(@PathVariable Long idApp, 
+    											HttpServletRequest request, 
+    											@RequestParam("file") MultipartFile file) throws IOException {
+        ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        //the path of the logo image must come from the frontend
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().updateApplicationLogo(application, file, request.getParameter("name"), request.getParameter("type"), user, org);
+        
+        
+        return result;
+        //return getBpmnService().deleteApplication(application);
+    }
+    
+  //update tosca file
+    @RequestMapping(value = "/application/{idApp}/updatetoscafile", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean updateToscaFile(@PathVariable Long idApp, 
+    											HttpServletRequest request, 
+    											@RequestParam("file") MultipartFile file) throws IOException {
+        ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().updateToscaFile(application, file, request.getParameter("name"), request.getParameter("type"), user, org);
+
+        return result;
+        //return getBpmnService().deleteApplication(application);
+    }
+    
+    
+    //update application metadata
+    @RequestMapping(value = "/application/{idApp}/updatemetadata", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean updateApplicationMetadata(@RequestBody ApplicationDTO application, @PathVariable Long idApp, HttpServletRequest request) {
+    	User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().updateApplicationMetadata(application, user, org);
+        return result;
+    }
+    
+  //add media file
+    @RequestMapping(value = "/application/{idApp}/mediafile", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean addMediaFile(@PathVariable Long idApp, 
+    											HttpServletRequest request, 
+    											@RequestParam("file") MultipartFile file) throws IOException {
+        ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().addMediaFile(application, file, request.getParameter("name"), request.getParameter("type"), user, org);
+
+        return result;
+        //return getBpmnService().deleteApplication(application);
+    }
+    
+    //delete media file
+    @RequestMapping(value = "/application/{idApp}/mediafile/{idMedia}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean addMediaFile(@PathVariable Long idApp, @PathVariable Long idMedia, HttpServletRequest request){
+    	ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().deleteMediaFile(application, idMedia, user, org);
+
+    	return result;
     }
 }

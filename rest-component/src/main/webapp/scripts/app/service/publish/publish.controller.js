@@ -13,16 +13,27 @@ angular.module('cloudoptingApp')
             $scope.disableUpdate = false;
             $scope.disableSave = true;
             $scope.disableNextOne = false;
+            $scope.disableNextTwo = false;
             var promoInDatabase = true;
 
-            //Prepare the name of the file
-            if($scope.application.applicationLogoReference) {
-                var tokensFile = $scope.application.applicationLogoReference.split('/');
-                var name = tokensFile[tokensFile.length - 1];
-                $scope.files = [];
-                $scope.files.push({name: name});
-            }
+            if($scope.application!= null && $scope.application!=undefined){
+                //Prepare the name of the file
+                if($scope.application.applicationLogoReference) {
+                    var tokensFile = $scope.application.applicationLogoReference.split('/');
+                    var name = tokensFile[tokensFile.length - 1];
+                    $scope.files = [];
+                    $scope.files.push({name: name});
+                }
+                //Prepare the name of the tosca
+                if($scope.application.applicationToscaTemplate) {
+                    var tokensFile = $scope.application.applicationToscaTemplate.split('/');
+                    var name = tokensFile[tokensFile.length - 1];
+                    $scope.toscaFiles = [];
+                    $scope.toscaFiles.push({name: name});
+                    var toscaArchiveInDatabase = true;
 
+                }
+            }
         } else {
             //If it is a new service we start with diferent parameters.
             $scope.application = {};
@@ -31,7 +42,11 @@ angular.module('cloudoptingApp')
             $scope.disableUpdate = true;
             $scope.disableSave = false;
             $scope.disableNextOne = true;
+            $scope.disableNextTwo = true;
             var promoInDatabase = false;
+            //Prepare tosca
+            $scope.toscaFiles = [];
+            var toscaArchiveInDatabase = false;
         }
 
         /*
@@ -69,7 +84,7 @@ angular.module('cloudoptingApp')
             }
 
             //If already saved into database we have to delete it from there also.
-            if(promoInDatabase){
+            if(promoInDatabase && !isEdition){
                 var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
@@ -83,6 +98,9 @@ angular.module('cloudoptingApp')
                 return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
+            if(isEdition) {
+                $scope.disableNextOne = true;
+            }
         };
 
         function savePromotionalImage(activiti) {
@@ -93,10 +111,30 @@ angular.module('cloudoptingApp')
                         if(checkStatusCallback(data, status, headers, config)){
                             localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
                             promoInDatabase = true;
+                            $scope.disableNextOne = false;
                         }
                     };
 
                     ApplicationService.addPromotionalImage(activiti.applicationId, activiti.processInstanceId, file, callback);
+                }
+            }
+        }
+
+        function updatePromotionalImage(applicationId) {
+            if ($scope.files && $scope.files.length) {
+                for (var i = 0; i < $scope.files.length; i++) {
+                    var file = $scope.files[i];
+                    if(file.lastModified!=null && file.lastModified!=undefined) {
+                        var callback = function (data, status, headers, config) {
+                            if (checkStatusCallback(data, status, headers, config)) {
+                                promoInDatabase = true;
+                                $scope.disableNextOne = false;
+                            }
+                        };
+
+
+                        ApplicationService.updateLogo(applicationId, file, callback);
+                    }
                 }
             }
         }
@@ -128,16 +166,25 @@ angular.module('cloudoptingApp')
         };
 
         $scope.updateWizardOne = function() {
-            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
-
+            var applicationId = $scope.application.id;
             var callback = function(data, status, headers, config){
                 if(checkStatusCallback(data, status, headers, config)){
                     localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
-                    savePromotionalImage(data);
+
+                    //TODO: UPDATE PROMOTIONAL IMAGE
+                    updatePromotionalImage(applicationId);
+
                 }
             };
 
-            return ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
+            if(isEdition=="true"){
+                //TODO: UPDATE INFORMATION WITHOUT
+                //TODO: GET THE applicationID
+                return ApplicationService.updateMetadata(applicationId, $scope.application, callback);
+            } else {
+                var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
+                return ApplicationService.update(activiti.applicationId, activiti.processInstanceId, $scope.application, callback);
+            }
         };
 
         $scope.nextWizardOne = function() {
@@ -149,6 +196,7 @@ angular.module('cloudoptingApp')
          */
         $scope.libraryList = [];
         $scope.contentLib = null;
+
 
         $scope.isLibraryEmpty = function() {
             return $scope.libraryList.length==0;
@@ -166,6 +214,9 @@ angular.module('cloudoptingApp')
                 }
             }
         );*/
+        $scope.nextWizardTwo = function() {
+            $state.go('publish3');
+        };
 
         /**
          * Function to save the content libraries into an array.
@@ -181,20 +232,36 @@ angular.module('cloudoptingApp')
          * Function to save the content files added by the user
          */
         $scope.saveConfigurationWizardTwo = function () {
-            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
-
-            if ($scope.libraryList && $scope.libraryList.length) {
-                for (var i = 0; i < $scope.libraryList.length; i++) {
-                    var file = $scope.libraryList[i];
-
-                    var callback = function (data, status, headers, config) {
-                        if (checkStatusCallback(data, status, headers, config)) {
-                            localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
-                            $state.go('publish3');
+            if(isEdition){
+                if ($scope.libraryList && $scope.libraryList.length) {
+                    for (var i = 0; i < $scope.libraryList.length; i++) {
+                        var file = $scope.libraryList[i];
+                        if(file.lastModified!=null && file.lastModified!=undefined) {
+                            var callback = function (data, status, headers, config) {
+                                if (checkStatusCallback(data, status, headers, config)) {
+                                    $state.disableNextTwo=false;
+                                }
+                            };
+                            ApplicationService.addMediaFile($scope.application.id, file, callback);
                         }
-                    };
+                    }
+                }
+            } else {
+                var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
-                    ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
+                if ($scope.libraryList && $scope.libraryList.length) {
+                    for (var i = 0; i < $scope.libraryList.length; i++) {
+                        var file = $scope.libraryList[i];
+
+                        var callback = function (data, status, headers, config) {
+                            if (checkStatusCallback(data, status, headers, config)) {
+                                localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
+                                $state.disableNextTwo=false;
+                            }
+                        };
+
+                        ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
+                    }
                 }
             }
             return;
@@ -240,8 +307,7 @@ angular.module('cloudoptingApp')
          * WIZARD - SCREEN THREE
          */
         $scope.disablePublish = true;
-        $scope.toscaFiles = [];
-        var toscaArchiveInDatabase = false;
+        $scope.disablePublishEdition = false;
 
         $scope.isToscaFilesEmpty = function() {
             return $scope.toscaFiles.length==0;
@@ -257,25 +323,39 @@ angular.module('cloudoptingApp')
          * Function to send the TOSCA Archive to be saved.
          */
         $scope.saveConfiguration = function () {
-            var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
-
-            if ($scope.toscaFiles && $scope.toscaFiles.length) {
-                for (var i = 0; i < $scope.toscaFiles.length; i++) {
-                    var file = $scope.toscaFiles[i];
-
-                    var callback = function (data, status, headers, config) {
-                        if (checkStatusCallback(data, status, headers, config)) {
-                            localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
-                            //TODO: Show a message of completion.
-                            $scope.disablePublish = false;
-                            toscaArchiveInDatabase = true;
-                            //TODO: Enable button of publication.
-
+            if(isEdition){
+                if ($scope.toscaFiles && $scope.toscaFiles.length) {
+                    for (var i = 0; i < $scope.toscaFiles.length; i++) {
+                        var file = $scope.toscaFiles[i];
+                        if(file.lastModified!=null && file.lastModified!=undefined) {
+                            var callback = function (data, status, headers, config) {
+                                if (checkStatusCallback(data, status, headers, config)) {
+                                    toscaArchiveInDatabase = true;
+                                    $scope.disablePublishEdition = false;
+                                }
+                            };
+                            ApplicationService.updateToscaFile($scope.application.id, file, callback);
                         }
-                    };
-
-                    ApplicationService.addToscaArchive(activiti.applicationId, activiti.processInstanceId, file, callback);
+                    }
                 }
+            } else {
+                var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
+
+                if ($scope.toscaFiles && $scope.toscaFiles.length) {
+                    for (var i = 0; i < $scope.toscaFiles.length; i++) {
+                        var file = $scope.toscaFiles[i];
+
+                        var callback = function (data, status, headers, config) {
+                            if (checkStatusCallback(data, status, headers, config)) {
+                                localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
+                                $scope.disablePublish = false;
+                                toscaArchiveInDatabase = true;
+                            }
+                        };
+                        ApplicationService.addToscaArchive(activiti.applicationId, activiti.processInstanceId, file, callback);
+                    }
+                }
+
             }
             return;
         };
@@ -292,7 +372,7 @@ angular.module('cloudoptingApp')
             }
 
             //If already saved into database we have to delete it from there also.
-            if(toscaArchiveInDatabase){
+            if(toscaArchiveInDatabase && !isEdition){
                 var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
@@ -303,6 +383,10 @@ angular.module('cloudoptingApp')
                 };
 
                 return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
+            }
+
+            if(isEdition) {
+                $scope.disablePublishEdition = true;
             }
 
         };
@@ -323,6 +407,10 @@ angular.module('cloudoptingApp')
             };
 
             return requestPublication(activiti, application, callback);
+        };
+
+        $scope.finish = function () {
+            $state.go('publish4');
         };
 
         /**
