@@ -84,19 +84,17 @@ angular.module('cloudoptingApp')
                 return true;
             }
             else if(Principal.isInRole(SERVICE.ROLE.OPERATOR)){
-                if(item=='catalogue' || item=='detail' || item=='detail') {
+                if(item=='drop_down' || item=='publish' || item=='list' || item=='user_manager' || item=='org_manager' ) {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
-                if(item=='catalogue' || item=='detail' || item=='instances' || item=='publish' || item=='list' || item=='toscaide') {
+                if(item=='drop_down' || item=='publish' || item=='list' || item=='toscaide') {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)){
-                if(item=='catalogue' || item=='detail' || item=='instances') {
-                    return true;
-                }
+                return false;
             }
         };
 
