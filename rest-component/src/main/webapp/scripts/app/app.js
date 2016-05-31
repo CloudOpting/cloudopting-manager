@@ -91,6 +91,8 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
 
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage('NG_TRANSLATE_LANG_KEY');
+
+        $locationProvider.html5Mode(true);
     });
 
 function loadScript(url, callback)

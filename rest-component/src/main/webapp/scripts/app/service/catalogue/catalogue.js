@@ -5,7 +5,7 @@ angular.module('cloudoptingApp')
         $stateProvider
             .state('catalogue', {
                 parent: 'service',
-                url: '/catalogue',
+                url: '/',
                 params: {
                     section: null,
                 },
