@@ -37,7 +37,8 @@
       "delete": "Delete File",
       "service_list":"Service List",
       "update": "Update",
-      "next": "Next"
+      "next": "Next",
+      "finish": "Finish"
     },
     "messages": {
       "validate": {

@@ -308,7 +308,7 @@ public class ApplicationResource extends AbstractController<Applications> {
     }
     
   //update tosca file
-    @RequestMapping(value = "/application/{idApp}/updatetoscafile", method = RequestMethod.PUT,
+    @RequestMapping(value = "/application/{idApp}/updatetoscafile", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

@@ -75,10 +75,10 @@ public class UpdateToscaFile implements JavaDelegate {
 				storeService.deleteFile(oldToscaPath);
 				
 				 Map<String, Object> processVars = execution.getVariables();
-			     processVars.put("addmediafilesuccess", true);
+			     processVars.put("applicationtoscafileupdatedsuccess", true);
 			     runtimeService.setVariables(execution.getProcessInstanceId(), processVars);
 		} catch (eu.cloudopting.exceptions.StorageGeneralException e) {
-			log.error("Error in storing media file");
+			log.error("Error in storing tosca file");
 			e.printStackTrace();
 		} catch (ToscaException e) {
 			throw e;

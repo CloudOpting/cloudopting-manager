@@ -76,14 +76,11 @@
 
                             <div class="row row-actions">
                                 <div class="col-xs-6">
-                                    <!--
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                    <button type="submit" class="btn btn-secondary">Update</button>
-                                    -->
+                                    <button type="button" class="btn btn-primary" ng-disabled="form_publish.$invalid" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save" ng-autodisable>Save</button>
                                 </div>
                                 <div class="col-xs-6">
                                     <!-- ng-disabled="isLibraryEmpty()" -->
-                                    <button type="button" class="btn btn-primary pull-right" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next" ng-autodisable>Save Configuration & Next</button>
+                                    <button type="button" class="btn btn-primary pull-right" ng-disabled="disableNextTwo" ng-click="nextWizardTwo()" translate="publish.button.next" ng-autodisable>Save Configuration & Next</button>
                                 </div>
                             </div>
                         </form>

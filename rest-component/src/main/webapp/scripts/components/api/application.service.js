@@ -263,7 +263,6 @@ angular.module('cloudoptingApp')
                     });
             },
 
-
             updateLogo: function (applicationId, file, callback) {
                 var endpoint = baseURI +
                     SERVICE.SEPARATOR +
@@ -324,7 +323,30 @@ angular.module('cloudoptingApp')
                         ", status: " + status + ", headers: " + headers + ", config: " + config);
                     callback(data, status, headers, config);
                 });
-            }
+            },
+
+            updateToscaFile: function (applicationId, file, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'updatetoscafile';
+                return Upload.upload({
+                    method: 'POST',
+                    url: endpoint,
+                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.TOSCA_ARCHIVE },
+                    file: file
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    $log.debug('ApplicationService.updateToscaFile progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                    callback(data, status, headers, config);
+                }).error(function (data, status, headers, config) {
+                    $log.error("ApplicationService.updateToscaFile error. Data: " + data +
+                        ", status: " + status + ", headers: " + headers + ", config: " + config);
+                    callback(data, status, headers, config);
+                });
+            },
         }
     }
 );

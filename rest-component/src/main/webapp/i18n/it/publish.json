@@ -37,7 +37,8 @@
       "delete": "Cancella File",
       "service_list":"Lista Servizi",
       "update": "Aggiorna",
-      "next": "Successivo"
+      "next": "Successivo",
+      "finish": "Finire"
     },
     "messages": {
       "validate": {

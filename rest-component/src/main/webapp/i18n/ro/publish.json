@@ -37,7 +37,8 @@
       "delete": "Șterge fișier"
       "service_list": "Listă servicii",
       "update": "Salvează modificarea",
-      "next": "Următorul"
+      "next": "Următorul",
+      "finish": "Finalizarea"
     },
     "messages": {
       "validate": {

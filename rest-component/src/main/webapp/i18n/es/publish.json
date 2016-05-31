@@ -37,7 +37,8 @@
       "delete": "Borrar archivo",
       "service_list":"Lista del Servicios List",
       "update": "Actulizar",
-      "next": "continuar"
+      "next": "continuar",
+      "finish": "Finalizar"
     },
     "messages": {
       "validate": {

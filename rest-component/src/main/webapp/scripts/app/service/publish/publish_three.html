@@ -76,7 +76,8 @@
                                     <!--<button type="submit" class="btn btn-secondary">Update</button>-->
                                 </div>
                                 <div class="col-xs-6">
-                                    <button ng-disabled="disablePublish" type="button" class="btn btn-primary pull-right" ng-click="publishService()" translate="publish.button.publish" ng-autodisable>Publish Service</button>
+                                    <button ng-show="isEdition" ng-disabled="disablePublish" type="button" class="btn btn-primary pull-right" ng-click="publishService()" translate="publish.button.publish" ng-autodisable>Publish Service</button>
+                                    <button ng-hide="isEdition" ng-disabled="disablePublishEdition" type="button" class="btn btn-primary pull-right" ng-click="finish()" translate="publish.button.finish" ng-autodisable>Finish</button>
                                 </div>
                             </div>
                         </form>
