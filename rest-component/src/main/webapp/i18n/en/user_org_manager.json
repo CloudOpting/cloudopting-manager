@@ -2,10 +2,10 @@
   "user_org_manager": {
     "title": {
       "user": "User Management",
-      "org": "Organization Management"
+      "org": "Organisation Management"
     },
     "title.user_detail": "User Detail",
-    "title.org_detail": "Organization Detail",
+    "title.org_detail": "Organisation Detail",
     "search": "Search for...",
     "col": {
       "name": "Name",
@@ -20,7 +20,7 @@
       "organizationKey": "Key",
       "email": "Email",
       "activated": "Activated",
-      "organization": "Organization",
+      "organization": "Organisation",
       "actions": "Actions",
       "cloudaccounts": "Cloud Account",
       "password": "Password"
@@ -31,6 +31,6 @@
       "cancel": "Cancel",
       "delete": "Delete"
     },
-    "go.organization": "Go to organization manager to create a new one."
+    "go.organization": "Go to organisation manager to create a new one."
   }
 }
