@@ -30,7 +30,7 @@
           "required": "Your last name is required."
         }
       },
-      "success": "<strong>Message sent!</strong> We will contact with you soon.",
+      "success": "<strong>Message sent!</strong> We will contact you soon.",
       "error": {
         "fail": "<strong>Something went wrong!</strong> Please try again later."
       }
