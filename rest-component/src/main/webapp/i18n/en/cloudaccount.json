@@ -33,7 +33,7 @@
     "alert" : {
       "sent" : "Message sent!",
       "wrong" : "Something went wrong!",
-      "contact_you" : "We will contact with you soon.",
+      "contact_you" : "We will contact you soon.",
       "try_again" : "Please try again later."
     }
   }
