@@ -46,6 +46,7 @@ public class AccountResource {
     @Inject
     private UserRepository userRepository;
 
+
     @Inject
     private UserService userService;
 
@@ -150,11 +151,19 @@ public class AccountResource {
     @RequestMapping(value = "/account/change_password",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> changePassword(@RequestBody String password) {
+    public ResponseEntity<?> changePassword(@RequestBody String password, HttpServletRequest request) {
         if (StringUtils.isEmpty(password)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         userService.changePassword(password);
+        Optional<User> maybeUser = userRepository.findOneByLogin(SecurityUtils.getCurrentLogin());
+        User user = maybeUser.get();
+        String baseUrl = request.getScheme() + // "http"
+                "://" +                                // "://"
+                request.getServerName() +              // "myhost"
+                ":" +                                  // ":"
+                request.getServerPort();               // "80"
+        mailService.sendPasswordChangeMail(user, baseUrl);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
