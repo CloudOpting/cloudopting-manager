@@ -84,7 +84,7 @@ angular.module('cloudoptingApp')
             }
 
             //If already saved into database we have to delete it from there also.
-            if(promoInDatabase && !isEdition){
+            if(promoInDatabase && isEdition!="true"){
                 var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
@@ -98,7 +98,7 @@ angular.module('cloudoptingApp')
                 return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
-            if(isEdition) {
+            if(isEdition=="true") {
                 $scope.disableNextOne = true;
             }
         };
@@ -232,14 +232,14 @@ angular.module('cloudoptingApp')
          * Function to save the content files added by the user
          */
         $scope.saveConfigurationWizardTwo = function () {
-            if(isEdition){
+            if(isEdition=="true"){
                 if ($scope.libraryList && $scope.libraryList.length) {
                     for (var i = 0; i < $scope.libraryList.length; i++) {
                         var file = $scope.libraryList[i];
                         if(file.lastModified!=null && file.lastModified!=undefined) {
                             var callback = function (data, status, headers, config) {
                                 if (checkStatusCallback(data, status, headers, config)) {
-                                    $state.disableNextTwo=false;
+                                    $scope.disableNextTwo=false;
                                 }
                             };
                             ApplicationService.addMediaFile($scope.application.id, file, callback);
@@ -256,7 +256,7 @@ angular.module('cloudoptingApp')
                         var callback = function (data, status, headers, config) {
                             if (checkStatusCallback(data, status, headers, config)) {
                                 localStorageService.set(SERVICE.STORAGE.PUBLISH.ACTIVITI, data);
-                                $state.disableNextTwo=false;
+                                $scope.disableNextTwo=false;
                             }
                         };
 
@@ -323,7 +323,7 @@ angular.module('cloudoptingApp')
          * Function to send the TOSCA Archive to be saved.
          */
         $scope.saveConfiguration = function () {
-            if(isEdition){
+            if(isEdition=="true"){
                 if ($scope.toscaFiles && $scope.toscaFiles.length) {
                     for (var i = 0; i < $scope.toscaFiles.length; i++) {
                         var file = $scope.toscaFiles[i];
@@ -372,7 +372,7 @@ angular.module('cloudoptingApp')
             }
 
             //If already saved into database we have to delete it from there also.
-            if(toscaArchiveInDatabase && !isEdition){
+            if(toscaArchiveInDatabase && isEdition!="true"){
                 var activiti = localStorageService.get(SERVICE.STORAGE.PUBLISH.ACTIVITI);
 
                 var callback = function(data, status, headers, config) {
@@ -385,7 +385,7 @@ angular.module('cloudoptingApp')
                 return ApplicationService.deleteAppFile(activiti.processInstanceId, activiti.applicationId, activiti.jrPath, callback);
             }
 
-            if(isEdition) {
+            if(isEdition=="true") {
                 $scope.disablePublishEdition = true;
             }
 
