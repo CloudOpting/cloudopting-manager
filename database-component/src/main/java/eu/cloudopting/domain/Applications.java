@@ -1,6 +1,9 @@
 package eu.cloudopting.domain;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -135,8 +138,8 @@ public class Applications implements BaseEntity {
         return merged;
     }
 
-	@OneToMany(mappedBy = "applicationId")
-    private Set<ApplicationMedia> applicationMedias;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "applicationId", cascade = CascadeType.ALL)
+    private Set<ApplicationMedia> applicationMedias = new HashSet<ApplicationMedia>();
 
 	@ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
@@ -353,5 +356,25 @@ public class Applications implements BaseEntity {
 
 	public void setApplicationLogoReference(String applicationLogoReference) {
 		this.applicationLogoReference = applicationLogoReference;
+	}
+	
+	public Set<ApplicationFile> getAllFiles() {
+		String applicationToscaTemplate = this.getApplicationToscaTemplate();
+        String applicationLogoReference = this.getApplicationLogoReference();
+        Set<ApplicationMedia> applicationMedias = this.getApplicationMedias();
+        
+        Set<ApplicationFile> out = new HashSet<ApplicationFile>();
+        if (applicationToscaTemplate != null) {
+        	out.add(new ApplicationFile(applicationToscaTemplate, ApplicationFile.TYPE_TOSCA));
+        }
+        if (applicationLogoReference != null) {
+        	out.add(new ApplicationFile(applicationLogoReference, ApplicationFile.TYPE_PROMO));
+        }
+        
+        for(ApplicationMedia media : applicationMedias) {
+        	out.add(new ApplicationFile(media.getMediaContent(), ApplicationFile.TYPE_CONTENT));
+        }
+        
+        return out;
 	}
 }
