@@ -1502,6 +1502,31 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="PackageProperties" type="tPackageProperties" />
+	<xs:complexType name="tRedisProperties">
+		<xs:sequence>
+			<xs:element name="bind">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Binding IP"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="requirepass">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Password for Redis"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RedisProperties" type="tRedisProperties" />
 	<xs:complexType name="tSLA">
 		<xs:sequence>
 			<xs:element default="1" name="NumCpus">
