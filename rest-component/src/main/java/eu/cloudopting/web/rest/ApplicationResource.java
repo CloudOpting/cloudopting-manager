@@ -1,9 +1,6 @@
 package eu.cloudopting.web.rest;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -32,7 +29,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import eu.cloudopting.bpmn.BpmnService;
 import eu.cloudopting.domain.ApplicationMedia;
 import eu.cloudopting.domain.Applications;
-import eu.cloudopting.domain.ApplicationFile;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
@@ -190,16 +186,16 @@ public class ApplicationResource extends AbstractController<Applications> {
      * @return The set of of associated files paths.
      */
     @RequestMapping(value = "/application/{idApp}/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final @ResponseBody Map<String, Set<ApplicationFile>> getApplicationFiles(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
+    public final @ResponseBody Set<String> getApplicationFiles(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
                                                final HttpServletResponse response, final HttpServletRequest request) {
         Applications app = getService().findOne(idApp);
-        
-        Set<ApplicationFile> allFiles = app.getAllFiles();
-        
-        Map<String, Set<ApplicationFile>> outObject = new HashMap<String, Set<ApplicationFile>>();
-        outObject.put("files", allFiles);
-        return outObject;
-
+        String toscaName = app.getApplicationToscaName();
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        String orgKey = org.getOrganizationKey();
+        String path = getStoreService().getTemplatePath(orgKey, toscaName);
+        StoreService ss = this.getStoreService(); 
+        return ss.getFilesStartingFromPath(path);
     }
     
     /**
