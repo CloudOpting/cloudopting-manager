@@ -1158,12 +1158,12 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="solr_version">
+			<xs:element name="auth">
 				<xs:complexType>
 					<xs:simpleContent>
-						<xs:extension base="xs:string">
-							<xs:attribute name="title" fixed="MongoDB version"></xs:attribute>
-							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						<xs:extension base="xs:boolean">
+							<xs:attribute name="title" fixed="Does the engine require authorization?"></xs:attribute>
+							<xs:attribute name="formtype" fixed="boolean"></xs:attribute>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
@@ -1173,7 +1173,7 @@
 	<xs:element name="MongoDBProperties" type="tMongoDBProperties" />
 	<xs:complexType name="tMongoDBDatabaseProperties">
 		<xs:sequence>
-			<xs:element name="password">
+			<xs:element name="mongodb_password">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
@@ -1183,7 +1183,7 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="user">
+			<xs:element name="mongodb_user">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
@@ -1193,7 +1193,7 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="dbname">
+			<xs:element name="mongodb_dbname">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
@@ -1206,6 +1206,61 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="MongoDBDatabaseProperties" type="tMongoDBDatabaseProperties" />
+	<xs:complexType name="tMongodataloadProperties">
+		<xs:sequence>
+			<xs:element name="mongodl_password">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="DB password"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongodl_user">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Mongo DB user"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongodl_dbname">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Mongo DB name"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongodl_datafile">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="file source for the import data"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongoshell">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:boolean">
+							<xs:attribute name="title" fixed="Checked = mongo shell, unchecked = mongo import"></xs:attribute>
+							<xs:attribute name="formtype" fixed="boolean"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MongodataloadProperties" type="tMongodataloadProperties" />
 	<xs:complexType name="tCronProperties">
 		<xs:sequence>
 			<xs:element name="installed">
