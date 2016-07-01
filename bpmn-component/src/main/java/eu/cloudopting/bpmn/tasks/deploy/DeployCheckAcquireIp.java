@@ -1,5 +1,7 @@
 package eu.cloudopting.bpmn.tasks.deploy;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.activiti.engine.delegate.DelegateExecution;
@@ -24,15 +26,13 @@ public class DeployCheckAcquireIp implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		// TODO Auto-generated method stub
 		log.debug("in DeployCheckAcquireIp");
-		String acquireJobId = (String) execution.getVariable("acquireJobId");
-		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
+		Map<String, Object> cloudParams = constructCloudParams(execution);
 		if (this.doDeploy) {
 //			TimeUnit.SECONDS.sleep(20);
-			boolean check = cloudService.checkAssociateIp(cloudAccountId, acquireJobId);
+			boolean check = cloudService.checkAssociateIp(cloudParams);
 			if (check) {
-				JSONObject ipInfo = cloudService.getAssociatedIpinfo(cloudAccountId, acquireJobId);
+				JSONObject ipInfo = cloudService.getAssociatedIpinfo(cloudParams);
 				execution.setVariable("ipId", ipInfo.get("ipId"));
 				execution.setVariable("ip", ipInfo.get("ip"));
 			}
@@ -52,4 +52,15 @@ public class DeployCheckAcquireIp implements JavaDelegate {
 		execution.setVariable("chkAcquiredIp", checkIp);
 	}
 
+	private Map<String, Object> constructCloudParams(DelegateExecution execution){
+		Map<String, Object> result = new HashMap<String, Object>();
+		String acquireJobId = (String) execution.getVariable("acquireJobId");
+		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
+		String vmId = (String) execution.getVariable("vmId");
+		
+		result.put("acquireJobId", acquireJobId);
+		result.put("cloudAccountId", cloudAccountId);
+		result.put("vmId", vmId);
+		return result;
+	}
 }
