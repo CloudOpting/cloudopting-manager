@@ -68,11 +68,12 @@ public class UpdateToscaFile implements JavaDelegate {
 				);
 				log.debug("toscafile UPLOAD performed");
 				//Add entry in referring persistent here
-				updateToscaFilePath(application, org.getOrganizationKey(), uploadToscaName, remoteFileNameReduced);
+				String newPath = updateToscaFilePath(application, org.getOrganizationKey(), uploadToscaName, remoteFileNameReduced);
 				
-				String jrHttp = storeService.getJrHttp();
-				oldToscaPath = "/" + oldToscaPath.replaceAll(jrHttp, "");
-				storeService.deleteFile(oldToscaPath);
+				if (oldToscaPath != null && !oldToscaPath.equals(newPath)) {
+					String jrHttp = storeService.getJrHttp();
+					storeService.deleteFile(oldToscaPath);
+				}
 				
 				 Map<String, Object> processVars = execution.getVariables();
 			     processVars.put("applicationtoscafileupdatedsuccess", true);
@@ -87,12 +88,12 @@ public class UpdateToscaFile implements JavaDelegate {
 		}
 	}
 	
-	private void updateToscaFilePath(Applications application, String orgKey, String toscaName,
+	private String updateToscaFilePath(Applications application, String orgKey, String toscaName,
 			String remoteFileNameReduced) {
 		String path = storeService.getTemplatePath(orgKey,toscaName, true)+"/"+remoteFileNameReduced;
 		application.setApplicationToscaTemplate(path);
         applicationService.update(application);
-		
+		return path;
 	}
 
 }
