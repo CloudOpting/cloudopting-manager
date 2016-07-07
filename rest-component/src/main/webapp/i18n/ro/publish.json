@@ -32,6 +32,7 @@
     "button" : {
       "save": "Salvează",
       "save_n_next": "Salvează & Următorul",
+      "skip": "Skip",
       "publish": "Publică serviciu",
       "add": "+ Adaugă element în librărie",
       "delete": "Șterge fișier"

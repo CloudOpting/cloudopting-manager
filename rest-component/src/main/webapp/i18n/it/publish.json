@@ -32,6 +32,7 @@
     "button" : {
       "save": "Salva Configurazione",
       "save_n_next": "Salva Configurazione & Prosegui",
+      "skip": "Skip",
       "publish": "Pubblica il Servizio",
       "add": "+ Aggiungi un Elemento alla Libreria",
       "delete": "Cancella File",

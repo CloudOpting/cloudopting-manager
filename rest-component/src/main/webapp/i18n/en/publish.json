@@ -32,6 +32,7 @@
     "button" : {
       "save": "Save",
       "save_n_next": "Save & Next",
+      "skip": "Skip",
       "publish": "Publish Service",
       "add": "+ Add Item in Library",
       "delete": "Delete File",

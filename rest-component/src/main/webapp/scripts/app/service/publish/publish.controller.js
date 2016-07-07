@@ -217,6 +217,10 @@ angular.module('cloudoptingApp')
         $scope.nextWizardTwo = function() {
             $state.go('publish3');
         };
+        $scope.skipWizardTwo = function() {
+            //FIXME: do we have to do something with activity in order to skip this step?
+            $state.go('publish3');
+        }
 
         /**
          * Function to save the content libraries into an array.
