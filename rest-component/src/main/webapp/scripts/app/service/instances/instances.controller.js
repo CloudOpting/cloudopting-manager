@@ -20,6 +20,7 @@ angular.module('cloudoptingApp')
         //get only the instances of the current application.
         $scope.currentApp = localStorageService.get(SERVICE.STORAGE.INSTANCES.APPLICATION);
         $scope.instancesList = $scope.currentApp.customizationss;
+        //Load status for all instances
         angular.forEach($scope.instancesList, function(instance, key) {
             instance.applicationName = $scope.currentApp.applicationName;
             var callback = function(data, status, headers, config){
