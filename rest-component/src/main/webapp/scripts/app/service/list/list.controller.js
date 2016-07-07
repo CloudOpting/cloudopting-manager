@@ -8,22 +8,55 @@ angular.module('cloudoptingApp')
         $scope.currentPage = 0;
         $scope.pageSize = 8;
         $scope.applicationList = [];
-        $scope.searchTextApplication = '';
+        $scope.searchTextApplication = "";
+        $scope.numberOfPages = 0;
+        $scope.dataLength = 0;
+        var sortBy = "applicationName";
+        var sortOrder = "ASC";
+/*
         $scope.numberOfPages = function(){
             return Math.ceil($scope.dataLength()/$scope.pageSize);
         };
         $scope.dataLength = function(){
             return $filter('filter')($scope.applicationList, $scope.searchTextApplication).length;
         };
+ */
+
+        var callback_findAll = function (data, status, headers, config) {
+            if(checkStatusCallback(data, status, headers, config)) {
+                $scope.applicationList = data.content;
+                $scope.numberOfPages = data.totalPages;
+                $scope.dataLength = data.totalElements;
+                //Hide waiting gif
+            }
+        };
+
+        $scope.disableLeftArrow = function(){
+            return $scope.currentPage == 0;
+        };
+        $scope.disableRightArrow = function(){
+            return $scope.currentPage >= $scope.dataLength/$scope.pageSize - 1;
+        };
+        $scope.clickLeftArrow = function() {
+            $scope.currentPage = $scope.currentPage - 1;
+            ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, null, callback_findAll);
+            //Show waiting gif.
+        };
+        $scope.clickRightArrow = function(){
+            $scope.currentPage = $scope.currentPage+1;
+            ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, null, callback_findAll);
+            //Show waiting gif.
+        };
+        $scope.searchText = function() {
+            $scope.currentPage = 0;
+            ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, $scope.searchTextApplication, callback_findAll);
+        };
 
         //Depending on the role, give the user a different list
         if(Principal.isInRole(SERVICE.ROLE.ADMIN)) {
-            var callback = function (data, status, headers, config) {
-                if(checkStatusCallback(data, status, headers, config)) {
-                    $scope.applicationList = data.content;
-                }
-            };
-            ApplicationService.findAllUnpaginated(callback);
+            //ApplicationService.findAllUnpaginated(callback);
+            //var filter;
+            ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, null, callback_findAll);
         }
         else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)) {
             var callback = function (data, status, headers, config) {
