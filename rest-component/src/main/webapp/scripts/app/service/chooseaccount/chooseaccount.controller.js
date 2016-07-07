@@ -22,7 +22,13 @@ angular.module('cloudoptingApp')
         $scope.choose = function(cloudAccount) {
             var callback = function(data, status, headers, config) {
                 checkStatusCallback(data, status, headers, config);
-                $state.go('dashboard');
+                if(Principal.isInRole(SERVICE.ROLE.ADMIN))
+                {
+                    $state.go('list');
+                } else {
+                    $state.go('dashboard');
+                }
+
             };
             var instanceWithAccount = {};
             instanceWithAccount.id = instance.id;
