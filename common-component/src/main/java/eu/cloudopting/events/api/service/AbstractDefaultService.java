@@ -2,9 +2,6 @@ package eu.cloudopting.events.api.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import eu.cloudopting.domain.User;
-import eu.cloudopting.repository.UserRepository;
-import eu.cloudopting.security.SecurityUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
@@ -74,17 +71,8 @@ public abstract class AbstractDefaultService<T extends BaseEntity> implements Ba
     @SuppressWarnings("all")
     @Override
     public final List<T> searchAll(final String queryString) {
-        Preconditions.checkNotNull(queryString);
-        List<Triple<String, ClientOperation, String>> parsedQuery;
-        try {
-            parsedQuery = SearchCommonUtil.parseQueryString(queryString);
-        } catch (final IllegalStateException illState) {
-            logger.error("IllegalStateException on find operation");
-            logger.warn("IllegalStateException on find operation", illState);
-            throw new BadRequestException(illState);
-        }
-
-        return searchAll(parsedQuery.toArray(new ImmutableTriple[parsedQuery.size()]));
+        Triple<String, ClientOperation, String>[] constraints = createConstraints(queryString);
+        return searchAll(constraints);
     }
 
     @SuppressWarnings({"all"})
@@ -321,5 +309,30 @@ public abstract class AbstractDefaultService<T extends BaseEntity> implements Ba
         return getDao().findAll(new PageRequest(page, size, sortInfo));
     }
 
+    @SuppressWarnings("all")
+    private Triple<String, ClientOperation, String>[] createConstraints(final String queryString){
+    	Preconditions.checkNotNull(queryString);
+        List<Triple<String, ClientOperation, String>> parsedQuery;
+        try {
+            parsedQuery = SearchCommonUtil.parseQueryString(queryString);
+        } catch (final IllegalStateException illState) {
+            logger.error("IllegalStateException on find operation");
+            logger.warn("IllegalStateException on find operation", illState);
+            throw new BadRequestException(illState);
+        }
 
+        return parsedQuery.toArray(new ImmutableTriple[parsedQuery.size()]);
+    }
+    
+    protected Specification<T> createFilterSpecifications(final String queryString){
+    	Triple<String, ClientOperation, String>[] constraints = createConstraints(queryString);
+    	Preconditions.checkState(constraints != null);
+    	Preconditions.checkState(constraints.length > 0);
+    	final Specification<T> firstSpec = resolveConstraint(constraints[0]);
+    	Specifications<T> specifications = Specifications.where(firstSpec);
+    	for (int i = 1; i < constraints.length; i++) {
+    		specifications = specifications.and(resolveConstraint(constraints[i]));
+    	}
+    	return specifications;
+    }
 }
