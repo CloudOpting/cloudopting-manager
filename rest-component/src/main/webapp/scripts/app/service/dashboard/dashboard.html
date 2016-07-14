@@ -48,7 +48,11 @@
                                                 <td>{{instance.applicationId.applicationName}}</td>
                                                 <td>{{instance.customerOrganizationId.organizationName}}</td>
                                                 <td>{{instance.customizationCreation}}</td>
-                                                <td>{{instance.statusId.status}}</td>
+                                                <td>
+                                                    <i ng-show="instance.monitoringStatus" class="fa fa-circle" style="color:green;"></i>
+                                                    <i ng-hide="instance.monitoringStatus" class="fa fa-circle" style="color:red;"></i>
+                                                    {{instance.statusId.status}}
+                                                </td>
                                                 <td class="table-col-actions actions-large">
                                                     <button type="button" class="btn btn-icon actionsTooltip" ng-click="test(instance)" ng-autodisable>
                                                         <i class="fa fa-flask"></i>{{'instances.button.test' | translate | limitTo: 3}}.<span>{{'instances.button.test' | translate}}</span>

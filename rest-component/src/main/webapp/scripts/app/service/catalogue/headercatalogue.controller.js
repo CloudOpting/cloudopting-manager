@@ -7,6 +7,8 @@ angular.module('cloudoptingApp')
 
         function localizedImages() {
             var lang = $translate.use();
+            //Trick to reset slider images.
+            $(".slide").remove();
             $scope.sliderImages = [
                 {src: sliderPath + 'img_slide1_'+lang+'.png' },
                 {src: sliderPath + 'img_slide2_'+lang+'.png' },

@@ -77,9 +77,9 @@
                       <a class="page-scroll" href="#" ng-click="contact()" translate="navbar.contact">Contact</a>
                   </li>
 
-                  <li ng-show="logoutButton" role="separator" class="divider hidden-xs">|</li>
-                  <li ng-show="logoutButton">
-                      <a href="#" ng-show="showMenu('dashboard')" ng-click="dashboard()" translate="navbar.dasbhoard">Dashboard</a>
+                  <li ng-show="logoutButton && showMenu('dashboard')" role="separator" class="divider hidden-xs">|</li>
+                  <li ng-show="logoutButton && showMenu('dashboard')">
+                      <a href="#" ng-click="dashboard()" translate="navbar.dasbhoard">Dashboard</a>
                   </li>
 
                   <li role="separator" class="divider hidden-xs">|</li>

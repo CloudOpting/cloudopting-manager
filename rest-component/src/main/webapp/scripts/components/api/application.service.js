@@ -57,10 +57,10 @@ angular.module('cloudoptingApp')
             findAll: function (page, size, sortBy, sortOrder, filter, callback) {
                 var endpoint = baseURI +
                     '?page=' + page +
-                    '&size=' + size +
-                    '&sortBy=' + sortBy +
-                    '&sortOrder=' + sortOrder +
-                    '&filter=' + filter;
+                    '&size=' + size;
+                if(sortBy != null && sortBy != undefined) { endpoint += '&sortBy=' + sortBy; }
+                if(sortOrder != null && sortOrder != undefined) { endpoint += '&sortOrder=' + sortOrder; }
+                if(filter != null && filter != undefined) { endpoint += '&filter=' + filter; }
                 return $http.get(endpoint)
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);

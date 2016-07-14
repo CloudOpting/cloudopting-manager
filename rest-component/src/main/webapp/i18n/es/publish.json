@@ -32,6 +32,7 @@
     "button" : {
       "save": "Guardar",
       "save_n_next": "Salvar & Continuar",
+      "skip": "Skip",
       "publish": "Publicar Servicio",
       "add": "+ Añadir artículo a la librería",
       "delete": "Borrar archivo",

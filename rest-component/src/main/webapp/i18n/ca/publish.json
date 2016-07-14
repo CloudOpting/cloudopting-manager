@@ -32,6 +32,7 @@
     "button" : {
       "save": "Desa",
       "save_n_next": "Desa i Continua",
+      "skip": "Skip",
       "publish": "Publica el Servei",
       "add": "+ Afegeix ítem a la llibreria",
       "delete": "Elimina arxiu",
