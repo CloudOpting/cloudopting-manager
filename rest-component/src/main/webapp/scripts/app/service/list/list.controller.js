@@ -35,7 +35,7 @@ angular.module('cloudoptingApp')
             return $scope.currentPage == 0;
         };
         $scope.disableRightArrow = function(){
-            return $scope.currentPage >= $scope.dataLength/$scope.pageSize - 1;
+            return $scope.currentPage >= $scope.numberOfPages;
         };
         $scope.clickLeftArrow = function() {
             $scope.currentPage = $scope.currentPage - 1;
@@ -43,13 +43,13 @@ angular.module('cloudoptingApp')
             //Show waiting gif.
         };
         $scope.clickRightArrow = function(){
-            $scope.currentPage = $scope.currentPage+1;
+            $scope.currentPage = $scope.currentPage + 1;
             ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, null, callback_findAll);
             //Show waiting gif.
         };
         $scope.searchText = function() {
             $scope.currentPage = 0;
-            ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, $scope.searchTextApplication, callback_findAll);
+            ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, "applicationName="+$scope.searchTextApplication, callback_findAll);
         };
 
         //Depending on the role, give the user a different list
