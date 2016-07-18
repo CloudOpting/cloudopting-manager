@@ -61,7 +61,13 @@ angular.module('cloudoptingApp')
 						var zabbixItemsCallback = function(data, status,
 								headers, config) {
 							checkStatusCallback(data, status, headers, config);
+							console.log(data);
 							if (data) {
+								for(var i = data.length; i--;){
+									if(data[i].value_type != 3){
+										data.slice(i,1);
+									}
+								}
 								$scope.zabbixdata.itemsOptions = angular
 										.fromJson(data);
 							}
