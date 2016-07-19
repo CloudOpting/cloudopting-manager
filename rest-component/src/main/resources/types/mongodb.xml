@@ -1,4 +1,4 @@
-<NodeType name="MongoDB" shape="ellipse" color="#332299" image="docker.png">
+<NodeType name="MongoDB" shape="ellipse" color="#332299" image="MongoDB.png">
 	<DerivedFrom typeRef="root" />
 	<PropertiesDefinition element="MongoDBProperties"
 		type="tMongoDBProperties" />

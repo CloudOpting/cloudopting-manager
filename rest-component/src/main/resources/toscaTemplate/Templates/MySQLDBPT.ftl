@@ -1,16 +1,10 @@
-mysql::db { '<#if dbname?has_content>${dbname}</#if>':
-  user     => '<#if user?has_content>${user}</#if>',
-  password => '<#if password?has_content>${password}</#if>',
-  host     => '<#if host?has_content>${host}</#if>',
-  grant    => ['SELECT', 'UPDATE'],
-}
-mysql::db { "<#if dbname?has_content>${dbname}</#if>_${fqdn}":
-  user     => '<#if user?has_content>${user}</#if>',
-  password => '<#if password?has_content>${password}</#if>',
-  dbname   => '<#if dbname?has_content>${dbname}</#if>',
-  host     => $::fqdn,
-  grant    => ['SELECT', 'UPDATE'],
-  tag      => $domain,
+mysql::db { "<#if dbname?has_content>${dbname}</#if>":
+  <#if user?has_content>user     => '${user}',</#if>
+  <#if password?has_content>password => '${password}',</#if>
+  <#if dbname?has_content>dbname   => '${dbname}',</#if>
+  <#if host?has_content>host     => "${host}",</#if>
+  <#if sql?has_content>sql     => "${sql}",</#if>
+  <#if grant?has_content>grant     => "${grant}",</#if>
 }
 
 <#foreach childTemplate in childtemplates>
