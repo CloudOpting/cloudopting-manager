@@ -16,6 +16,7 @@ angular.module('cloudoptingApp')
 													  MonitoringService, Principal) {
 
 					var instance = localStorageService.get(SERVICE.STORAGE.MONITORING.INSTANCE);
+					$scope.applicationName = instance.applicationName;
 					var activationDate = instance.customizationActivation;
 					console.log(activationDate);
 					$scope.dater = {
