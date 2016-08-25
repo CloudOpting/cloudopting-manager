@@ -23,11 +23,13 @@ angular.module('cloudoptingApp')
  */
 
         var callback_findAll = function (data, status, headers, config) {
+
             if(checkStatusCallback(data, status, headers, config)) {
                 $scope.applicationList = data.content;
                 $scope.numberOfPages = data.totalPages;
                 $scope.dataLength = data.totalElements;
                 //Hide waiting gif
+                $rootScope.loading = false;
             }
         };
 
@@ -38,16 +40,19 @@ angular.module('cloudoptingApp')
             return $scope.currentPage >= $scope.numberOfPages;
         };
         $scope.clickLeftArrow = function() {
+            $rootScope.loading = true;
             $scope.currentPage = $scope.currentPage - 1;
             ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, null, callback_findAll);
             //Show waiting gif.
         };
         $scope.clickRightArrow = function(){
+            $rootScope.loading = true;
             $scope.currentPage = $scope.currentPage + 1;
             ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, null, callback_findAll);
             //Show waiting gif.
         };
         $scope.searchText = function() {
+            $rootScope.loading = true;
             $scope.currentPage = 0;
             ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, "applicationName="+$scope.searchTextApplication, callback_findAll);
         };
@@ -56,9 +61,11 @@ angular.module('cloudoptingApp')
         if(Principal.isInRole(SERVICE.ROLE.ADMIN)) {
             //ApplicationService.findAllUnpaginated(callback);
             //var filter;
+            $rootScope.loading = true;
             ApplicationService.findAll($scope.currentPage, $scope.pageSize, sortBy, sortOrder, null, callback_findAll);
         }
         else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)) {
+            $rootScope.loading = true;
             var callback = function (data, status, headers, config) {
                 if(checkStatusCallback(data, status, headers, config)) {
 
@@ -70,6 +77,7 @@ angular.module('cloudoptingApp')
                             }
                         }
                     });
+                    $rootScope.loading = false;
 
                 }
             };

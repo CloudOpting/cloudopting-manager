@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('InstancesController', function (SERVICE, localStorageService,
+    .controller('InstancesController', function (SERVICE, localStorageService, $rootScope,
                                                  $scope, $state, $log, $location, $window, $filter, $translate,
                                                  Principal, InstanceService, ProcessService, MonitoringService,
                                                  Blob, FileSaver) {
@@ -23,12 +23,13 @@ angular.module('cloudoptingApp')
         //Load status for all instances
         angular.forEach($scope.instancesList, function(instance, key) {
             instance.applicationName = $scope.currentApp.applicationName;
+            $rootScope.loading = true;
             var callback = function(data, status, headers, config){
                 instance.monitoringStatus = false;
                 if(typeof(data) === "boolean"){
                     instance.monitoringStatus = data==true;
                 }
-
+                $rootScope.loading = false;
             };
             MonitoringService.getStatusById(instance.id, callback);
         });

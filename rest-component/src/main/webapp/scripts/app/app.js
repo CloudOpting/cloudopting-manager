@@ -122,3 +122,19 @@ function loadScript(url, callback)
 function vcRecaptchaApiLoaded(){
     grecaptcha.render();
 }*/
+angular.module('cloudoptingApp')
+    .directive('loading', function () {
+        return {
+            restrict: 'E',
+            replace:true,
+            template: '<div class="loading"><i class="fa-4x fa fa-spinner fa-spin"></i></div>',
+            link: function (scope, element, attr) {
+                scope.$watch('loading', function (val) {
+                    if (val)
+                        $(element).show();
+                    else
+                        $(element).hide();
+                });
+            }
+        }
+    });
