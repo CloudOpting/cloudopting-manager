@@ -127,6 +127,7 @@ public class MonitoringService {
 	public boolean getStatus(Long customizationId) {
 		JSONArray hosts = getHostId(customizationId);
 		boolean status = true;
+		if(hosts==null) return false;
 		for (int i = 0; i < hosts.length(); i++) {
 			JSONObject host = null;
 			try {

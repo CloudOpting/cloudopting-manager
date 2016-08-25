@@ -24,7 +24,11 @@ angular.module('cloudoptingApp')
         angular.forEach($scope.instancesList, function(instance, key) {
             instance.applicationName = $scope.currentApp.applicationName;
             var callback = function(data, status, headers, config){
-                instance.monitoringStatus = data;
+                instance.monitoringStatus = false;
+                if(typeof(data) === "boolean"){
+                    instance.monitoringStatus = data==true;
+                }
+
             };
             MonitoringService.getStatusById(instance.id, callback);
         });
