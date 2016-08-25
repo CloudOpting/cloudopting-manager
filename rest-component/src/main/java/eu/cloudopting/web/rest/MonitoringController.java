@@ -206,7 +206,8 @@ public class MonitoringController {
 		// whti the instance id I get the Db fqdn
 
 		// need to login to zabbix
-		monitoringService.loginZabbix();
+		if (!monitoringService.loginZabbix())
+			return new ResponseEntity<Boolean>(false,HttpStatus.SERVICE_UNAVAILABLE);
 		return new ResponseEntity<Boolean>(monitoringService.getStatus(instanceId), HttpStatus.OK);
 	}
 
