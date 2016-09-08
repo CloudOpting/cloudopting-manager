@@ -6,7 +6,3 @@ mysql::db { "<#if dbname?has_content>${dbname}</#if>":
   <#if sql?has_content>sql     => "${sql}",</#if>
   <#if grant?has_content>grant     => "${grant}",</#if>
 }
-
-<#foreach childTemplate in childtemplates>
-${childTemplate}
-</#foreach>
