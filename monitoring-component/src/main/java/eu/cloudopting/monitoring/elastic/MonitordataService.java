@@ -99,7 +99,7 @@ public class MonitordataService {
 				.interval(DateHistogram.Interval.DAY).format("yyyy-MM-dd hh:mm:ss");
 		log.debug(dayly.toString());
 		// we need to filter the data for time range AND data match
-		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte(startDate);
+		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte(startDate).lte(endDate);
 		log.debug(rangeFilter.toString());
 		// we need to match on the path AND containername
 		MatchQueryBuilder pathMatch = QueryBuilders.matchQuery(fields, condition)

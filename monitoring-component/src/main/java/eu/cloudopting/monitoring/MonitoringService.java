@@ -30,6 +30,9 @@ public class MonitoringService {
 	private final Logger log = LoggerFactory.getLogger(MonitoringService.class);
 
 	private int discardThreashold = 50;
+	
+	@Value("${zabbix.maxPoints}")
+	private int maxPoints = 100;
 
 	@Value("${zabbix.user}")
 	private String zabbix_user;
@@ -154,12 +157,19 @@ public class MonitoringService {
 		JSONObject filter = new JSONObject();
 		try {
 			filter.put("value_type", "3");
+//			filter.put("key_", "net");
+//			filter.put("key_", "system.cpu");
+			JSONArray mykeys = new JSONArray();
+			mykeys.put("net");
+			mykeys.put("kernel");
+			mykeys.put("system.cpu");
+			filter.put("key_", mykeys);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Request getRequest = RequestBuilder.newBuilder().method("item.get").paramEntry("output", "extend")
-				.paramEntry("hostids", hostid).paramEntry("sortfield", "name").paramEntry("search", filter).build();
+				.paramEntry("hostids", hostid).paramEntry("searchByAny", "true").paramEntry("sortfield", "name").paramEntry("search", filter).build();
 
 		JSONObject getResponse = this.zabbixApi.call(getRequest);
 		System.err.println(getResponse);
@@ -200,6 +210,7 @@ public class MonitoringService {
 		Request getRequest = null;
 		log.debug(startTs);
 		log.debug(endTs);
+		log.debug("limit:"+limit);
 
 		if (limit == null || limit.isEmpty()) {
 			getRequest = RequestBuilder.newBuilder().method("history.get").paramEntry("output", "extend")
@@ -220,8 +231,11 @@ public class MonitoringService {
 		try {
 			data = getResponse.getJSONArray("result");
 			int discardCounter = 0;
-			for (int i = 0; i < data.length(); i++) {
-				if (discardCounter > this.discardThreashold) {
+//			int jump = (Integer.parseInt(endTs)-Integer.parseInt(startTs))/60/this.maxPoints;
+			int jump = data.length()/this.maxPoints;
+			log.debug("jump is:"+jump);
+			for (int i = 0; i < data.length(); i+=jump) {
+//				if (discardCounter > this.discardThreashold) {
 					JSONObject measure = new JSONObject();
 					// log.debug(measure.getString("clock"));
 					measure.put("clock", data.getJSONObject(i).optLong("clock") * 1000);
@@ -229,13 +243,13 @@ public class MonitoringService {
 
 					dataRet.put(measure);
 					discardCounter = 0;
-				}
+//				}
 				// data.getJSONObject(i).put("clock",
 				// data.getJSONObject(i).optLong("clock")*1000);
 				// data.getJSONObject(i).put("value",
 				// data.getJSONObject(i).optInt("value"));
 				// log.debug(measure.toString());
-				discardCounter++;
+	//			discardCounter++;
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
