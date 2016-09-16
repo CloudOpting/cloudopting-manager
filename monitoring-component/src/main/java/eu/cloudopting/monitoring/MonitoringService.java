@@ -1,6 +1,8 @@
 package eu.cloudopting.monitoring;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +35,9 @@ public class MonitoringService {
 	
 	@Value("${zabbix.maxPoints}")
 	private int maxPoints = 100;
+
+	@Value("${zabbix.items}")
+	private String items = "";
 
 	@Value("${zabbix.user}")
 	private String zabbix_user;
@@ -159,10 +164,11 @@ public class MonitoringService {
 			filter.put("value_type", "3");
 //			filter.put("key_", "net");
 //			filter.put("key_", "system.cpu");
+			List<String> zabItems = Arrays.asList(this.items.split("\\s*,\\s*"));
 			JSONArray mykeys = new JSONArray();
-			mykeys.put("net");
-			mykeys.put("kernel");
-			mykeys.put("system.cpu");
+			for(String zabItem : zabItems){
+				mykeys.put(zabItem);
+			}
 			filter.put("key_", mykeys);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

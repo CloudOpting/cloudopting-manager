@@ -57,16 +57,16 @@ public class DefaultZabbixApi implements ZabbixApi {
 
 	@Override
 	public void init() {
-		if (httpClient == null) {
-			httpClient = HttpClients.custom().build();
+		if (this.httpClient == null) {
+			this.httpClient = HttpClients.custom().build();
 		}
 	}
 
 	@Override
 	public void destory() {
-		if (httpClient != null) {
+		if (this.httpClient != null) {
 			try {
-				httpClient.close();
+				this.httpClient.close();
 			} catch (Exception e) {
 				log.error("close httpclient error!", e);
 			}
@@ -193,12 +193,16 @@ public class DefaultZabbixApi implements ZabbixApi {
 					.setEntity(new StringEntity(request.toString()))
 					.build();
 			try{
-			response = httpClient.execute(httpRequest);
+				response = this.httpClient.execute(httpRequest);
 			}catch(ClientProtocolException e){
-				response.close();
+				if (response != null){ 
+					response.close();
+				}
 				log.debug(e.getMessage());
 			}catch(IOException e){
-				response.close();
+				if (response != null){ 
+					response.close();
+				}
 				log.debug(e.getMessage());
 			}
 			log.debug("response"+response.toString());
