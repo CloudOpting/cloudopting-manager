@@ -11,6 +11,7 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -427,6 +428,8 @@ if(listOfFiles!=null){
 			this.edgeTypeList.add(edgeName);
 			String color = edges.item(i).getAttributes().getNamedItem("color").getNodeValue();
 			String style = edges.item(i).getAttributes().getNamedItem("style").getNodeValue();
+			String sourcearrow = edges.item(i).getAttributes().getNamedItem("sourcearrow").getNodeValue();
+			String targetarrow = edges.item(i).getAttributes().getNamedItem("targetarrow").getNodeValue();
 
 			// managing properties for relationship
 			JSONObject props = new JSONObject();
@@ -462,6 +465,8 @@ if(listOfFiles!=null){
 			try {
 				data.put("style", style);
 				data.put("color", color);
+				data.put("sourcearrow", sourcearrow);
+				data.put("targetarrow", targetarrow);
 				data.put("props", template);
 				dataType.put("props", template);
 				dataType.put("propName", theProperty);
@@ -475,6 +480,9 @@ if(listOfFiles!=null){
 			}
 			log.debug(this.edgeJsonList.toString());
 		}
+		// here could sort names
+		
+		Collections.sort(this.nodeTypeList, String.CASE_INSENSITIVE_ORDER);
 
 	}
 
@@ -646,6 +654,8 @@ if(listOfFiles!=null){
 	}
 
 	public void writeToscaDefinition(JSONObject data, String destDir) {
+		// need to reread the definition template or we generate multiple version in the same file
+		readDefinitionTemplate();
 		// recover the definition template.
 		try {
 			String serviceName = data.getString("serviceName");

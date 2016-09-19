@@ -195,15 +195,15 @@ public class DefaultZabbixApi implements ZabbixApi {
 			try{
 				response = this.httpClient.execute(httpRequest);
 			}catch(ClientProtocolException e){
-				if (response != null){ 
+/*				if (response != null){ 
 					response.close();
 				}
-				log.debug(e.getMessage());
+	*/			log.debug(e.getMessage());
 			}catch(IOException e){
-				if (response != null){ 
+	/*			if (response != null){ 
 					response.close();
 				}
-				log.debug(e.getMessage());
+		*/		log.debug(e.getMessage());
 			}
 			log.debug("response"+response.toString());
 //			HttpEntity entity = response.getEntity();

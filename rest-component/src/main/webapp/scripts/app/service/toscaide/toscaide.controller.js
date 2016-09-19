@@ -323,6 +323,10 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			serviceName : $scope.serviceName
 		});
 
+		var jsonFile = new Blob([data], {type: 'application/json'});
+        var fileName = $scope.serviceName+'.json';
+        FileSaver.saveAs(jsonFile, fileName);
+		
 		var callback = function(data, status, headers, config) {
 			console.debug(data);
 		};
@@ -352,6 +356,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			console.debug(data.nodes);
 			console.debug($scope.mapData);
 			// $scope.edgeData = data.edges;
+			$scope.$apply();
 			$rootScope.$broadcast('appChanged');
 
 		};
@@ -360,6 +365,8 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	
 	$scope.importJson = function(){
 		console.log($scope.dynamicPopover);
+		$scope.mapData = [];
+		$scope.edgeData = [];
 		var data = JSON.parse($scope.dynamicPopover.content);
 		data.nodes.forEach(function(entry) {
 			console.log(entry);
@@ -373,6 +380,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		console.debug(data.nodes);
 		console.debug($scope.mapData);
 		// $scope.edgeData = data.edges;
+		$scope.$apply();
 		$rootScope.$broadcast('appChanged');
 	}
 
