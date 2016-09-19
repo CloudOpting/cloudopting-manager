@@ -650,6 +650,8 @@ if(listOfFiles!=null){
 	}
 
 	public void writeToscaDefinition(JSONObject data, String destDir) {
+		// need to reread the definition template or we generate multiple version in the same file
+		readDefinitionTemplate();
 		// recover the definition template.
 		try {
 			String serviceName = data.getString("serviceName");
