@@ -352,6 +352,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			console.debug(data.nodes);
 			console.debug($scope.mapData);
 			// $scope.edgeData = data.edges;
+			$scope.$apply();
 			$rootScope.$broadcast('appChanged');
 
 		};
@@ -375,6 +376,7 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		console.debug(data.nodes);
 		console.debug($scope.mapData);
 		// $scope.edgeData = data.edges;
+		$scope.$apply();
 		$rootScope.$broadcast('appChanged');
 	}
 
