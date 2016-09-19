@@ -11,6 +11,7 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -479,6 +480,9 @@ if(listOfFiles!=null){
 			}
 			log.debug(this.edgeJsonList.toString());
 		}
+		// here could sort names
+		
+		Collections.sort(this.nodeTypeList, String.CASE_INSENSITIVE_ORDER);
 
 	}
 
