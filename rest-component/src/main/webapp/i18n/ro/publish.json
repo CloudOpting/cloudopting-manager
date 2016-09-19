@@ -14,6 +14,7 @@
       "servicePrice" : "Preț serviciu",
       "platformPrice" : "Preț platformă",
       "applicationIsTryable": "Platforma poate fi încercată",
+      "isZipFile": "Is a .ZIP file?",
       "sizeId": "Dimensiune"
     },
     "select" : {

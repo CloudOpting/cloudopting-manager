@@ -17,7 +17,7 @@ angular.module('cloudoptingApp')
          * @param type Type of the file that will be uploaded.
          * @param callback Function that will take care of the returned objects.
          */
-        function upload(applicationId, processID, file, type, callback) {
+        function upload(applicationId, processID, file, type, isZipFile, callback) {
             var endpoint = baseURI +
                 SERVICE.SEPARATOR +
                 applicationId +
@@ -28,7 +28,7 @@ angular.module('cloudoptingApp')
             Upload.upload({
                 method: 'POST',
                 url: endpoint,
-                fields: { 'name': file.name, 'type' : type },
+                fields: { 'name': file.name, 'type' : type, 'isZipFile' : isZipFile },
                 file: file
             }).progress(function (evt) {
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -188,7 +188,7 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             addPromotionalImage: function (applicationId, processID, file, callback) {
-                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.PROMO_IMAGE, callback);
+                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.PROMO_IMAGE, false, callback);
             },
 
             /**
@@ -200,8 +200,8 @@ angular.module('cloudoptingApp')
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            addContentLibrary: function (applicationId, processID, file, callback) {
-                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.CONTENT_LIBRARY, callback);
+            addContentLibrary: function (applicationId, processID, file, isZipFile, callback) {
+                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.CONTENT_LIBRARY, isZipFile, callback);
             },
 
             /**
@@ -214,7 +214,7 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             addToscaArchive: function (applicationId, processID, file, callback) {
-                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, callback);
+                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, false, callback);
             },
 
             /**
@@ -302,7 +302,7 @@ angular.module('cloudoptingApp')
                         callback(data, status, headers, config);
                     });
             },
-            addMediaFile: function(applicationId, file, callback){
+            addMediaFile: function(applicationId, file, isZipFile, callback){
                 var endpoint = baseURI +
                     SERVICE.SEPARATOR +
                     applicationId +
@@ -311,7 +311,7 @@ angular.module('cloudoptingApp')
                 return Upload.upload({
                     method: 'POST',
                     url: endpoint,
-                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY },
+                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY, 'isZipFile' :  isZipFile },
                     file: file
                 }).progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);

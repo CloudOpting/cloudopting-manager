@@ -196,12 +196,12 @@ angular.module('cloudoptingApp')
          */
         $scope.libraryList = [];
         $scope.contentLib = null;
+        $scope.isZipFile = false;
 
 
         $scope.isLibraryEmpty = function() {
             return $scope.libraryList.length==0;
         };
-
         /**
          * Watch the contentLib to refresh the internal list of files that the user wants to upload.
          */
@@ -220,16 +220,14 @@ angular.module('cloudoptingApp')
         $scope.skipWizardTwo = function() {
             //FIXME: do we have to do something with activity in order to skip this step?
             $state.go('publish3');
-        }
+        };
 
         /**
          * Function to save the content libraries into an array.
          * @param contentLib
          */
         $scope.newContentLib = function(contentLib){
-            if(contentLib) {
-                $scope.libraryList.push.apply($scope.libraryList, contentLib);
-            }
+            $scope.libraryList = contentLib;
         };
 
         /**
@@ -246,7 +244,7 @@ angular.module('cloudoptingApp')
                                     $scope.disableNextTwo=false;
                                 }
                             };
-                            ApplicationService.addMediaFile($scope.application.id, file, callback);
+                            ApplicationService.addMediaFile($scope.application.id, file, $scope.isZipFile, callback);
                         }
                     }
                 }
@@ -264,7 +262,7 @@ angular.module('cloudoptingApp')
                             }
                         };
 
-                        ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, callback);
+                        ApplicationService.addContentLibrary(activiti.applicationId, activiti.processInstanceId, file, $scope.isZipFile, callback);
                     }
                 }
             }
