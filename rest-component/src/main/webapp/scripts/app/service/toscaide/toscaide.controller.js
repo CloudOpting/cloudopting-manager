@@ -323,6 +323,10 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			serviceName : $scope.serviceName
 		});
 
+		var jsonFile = new Blob([data], {type: 'application/json'});
+        var fileName = $scope.serviceName+'.json';
+        FileSaver.saveAs(jsonFile, fileName);
+		
 		var callback = function(data, status, headers, config) {
 			console.debug(data);
 		};
