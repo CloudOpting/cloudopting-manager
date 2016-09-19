@@ -427,6 +427,8 @@ if(listOfFiles!=null){
 			this.edgeTypeList.add(edgeName);
 			String color = edges.item(i).getAttributes().getNamedItem("color").getNodeValue();
 			String style = edges.item(i).getAttributes().getNamedItem("style").getNodeValue();
+			String sourcearrow = edges.item(i).getAttributes().getNamedItem("sourcearrow").getNodeValue();
+			String targetarrow = edges.item(i).getAttributes().getNamedItem("targetarrow").getNodeValue();
 
 			// managing properties for relationship
 			JSONObject props = new JSONObject();
@@ -462,6 +464,8 @@ if(listOfFiles!=null){
 			try {
 				data.put("style", style);
 				data.put("color", color);
+				data.put("sourcearrow", sourcearrow);
+				data.put("targetarrow", targetarrow);
 				data.put("props", template);
 				dataType.put("props", template);
 				dataType.put("propName", theProperty);

@@ -360,6 +360,8 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	
 	$scope.importJson = function(){
 		console.log($scope.dynamicPopover);
+		$scope.mapData = [];
+		$scope.edgeData = [];
 		var data = JSON.parse($scope.dynamicPopover.content);
 		data.nodes.forEach(function(entry) {
 			console.log(entry);
