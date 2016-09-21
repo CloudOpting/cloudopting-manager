@@ -45,7 +45,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <!--<button type="button" class="btn btn-reverse">+ Add item in library</button>-->
-                                        <div class="btn btn-reverse" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
+                                        <div class="btn btn-reverse" ngf-select ngf-multiple="false" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
                                     </div>
                                 </div>
                             </div>
@@ -70,6 +70,19 @@
                                                 <button type="button" class="btn" ng-click="deleteLib(content)" translate="publish.button.delete">Delete file</button>
                                             </span>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                        <!-- FIXME: Deleted sr-only class -->
+                                        <label for="isZipFile">
+                                            <input type="checkbox" id="isZipFile" placeholder="{{'publish.service.isZipFile' | translate}}"
+                                                   autocomplete="off" name="isZipFile" ng-model="isZipFile" />
+                                            {{'publish.service.isZipFile' | translate}}
+                                        </label>
                                     </div>
                                 </div>
                             </div>

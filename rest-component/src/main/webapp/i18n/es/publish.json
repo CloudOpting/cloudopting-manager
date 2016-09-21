@@ -14,6 +14,7 @@
       "servicePrice" : "Precio del servicio",
       "platformPrice" : "Precio de la Platforma",
       "applicationIsTryable": "Puede ser probada la plataforma",
+      "isZipFile": "Es un fichero .ZIP?",
       "sizeId": "Tamaño"
     },
     "select" : {
