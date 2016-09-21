@@ -182,12 +182,31 @@ public class StoreService {
 		Node lastCreatedNode = session.getRootNode();
 		log.debug("trovato nodo radice");;
 		for (int i = 0; i < splittedFileName.length; i++) {
-			lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
+			if (!this.nodeAlreadyExist(splittedFileName[i], lastCreatedNode)) {
+				lastCreatedNode = this.addChildToNode(lastCreatedNode, splittedFileName[i]);
+			}
+			else {
+				lastCreatedNode = JcrUtils.getNodeIfExists(lastCreatedNode, splittedFileName[i]);
+			}
 		}
 		return lastCreatedNode;
     }
     
-    /**
+    private boolean nodeAlreadyExist(String nodeToCreate, Node path) throws RepositoryException {
+    	log.debug("Check if jackrabbit node exists");
+    	log.debug("Path "+path.getPath());
+    	log.debug("Node.to create: "+nodeToCreate);
+    	Node nodeIfExists = JcrUtils.getNodeIfExists(path, nodeToCreate);
+    	if (nodeIfExists == null) {
+    		log.debug("Node does not exists");
+    	}
+    	else {
+    		log.debug("Node exists");
+    	}
+		return !(nodeIfExists == null);
+	}
+
+	/**
      * Creates a JCR Child Node for the provided parent node
      * @param parent The containing node
      * @param childFolder The name of the child node

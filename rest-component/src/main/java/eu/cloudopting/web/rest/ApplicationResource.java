@@ -1,15 +1,28 @@
 package eu.cloudopting.web.rest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileAttribute;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -37,6 +50,7 @@ import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.dto.MultipleUploadDTO;
 import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.events.api.constants.QueryConstants;
 import eu.cloudopting.events.api.controller.AbstractController;
@@ -248,17 +262,54 @@ public class ApplicationResource extends AbstractController<Applications> {
     public final ActivitiDTO upload( HttpServletRequest request, @PathVariable String idApp,
                                      @PathVariable String processId,
                                      @RequestParam("file") MultipartFile file) throws IOException {
+    	String isZipFile = request.getParameter("isZipFile");  
     	User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         Organizations org = user.getOrganizationId();
-		UploadDTO dto = new UploadDTO();
-        dto.setName(request.getParameter("name"));
-        dto.setType(request.getParameter("type"));
-        dto.setProcessId(processId);
-        dto.setIdApp(idApp);
-        dto.setFile(file.getInputStream());
-        dto.setOrg(org);
-        dto.setUser(user);
-        return getBpmnService().upload(dto);
+    	if (isZipFile == null || !isZipFile.equals("true")) {
+	    	
+			UploadDTO dto = new UploadDTO();
+	        dto.setName(request.getParameter("name"));
+	        dto.setType(request.getParameter("type"));
+	        dto.setProcessId(processId);
+	        dto.setIdApp(idApp);
+	        dto.setFile(file.getInputStream());
+	        dto.setOrg(org);
+	        dto.setUser(user);
+	        return getBpmnService().upload(dto);
+    	}
+    	else {
+    		File tempFile = Files.createTempFile(null, ".zip").toFile();
+    		File tempDir = Files.createTempDirectory(null).toFile();
+    		OutputStream out  = new FileOutputStream(tempFile);
+    		IOUtils.copy(file.getInputStream(), out);
+    		out.close();
+    		ZipFile zipFile = new ZipFile(tempFile);
+    		List<File> imageList = new ArrayList<File>();
+    		
+    		 MultipleUploadDTO dto = new MultipleUploadDTO();
+		      dto.setType(request.getParameter("type"));
+		        dto.setProcessId(processId);
+		        dto.setIdApp(idApp);
+		        dto.setOrg(org);
+		        dto.setUser(user);
+    		try {
+    			  Enumeration<? extends ZipEntry> entries = zipFile.entries();
+    			  while (entries.hasMoreElements()) {
+    			    ZipEntry entry = entries.nextElement();
+    			    File entryDestination = new File(tempDir,  entry.getName());
+    			    if (entry.isDirectory()) {
+    			        entryDestination.mkdirs();
+    			    } else {
+    			        dto.addImage(entry.getName(), zipFile.getInputStream(entry));
+    			    }
+    			    imageList.add(entryDestination);
+    			  }
+    			  
+    			  return getBpmnService().uploadMultiple(dto);
+    			} finally {
+    			  zipFile.close();
+    			}
+    	}
     }
 
     @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}", method = RequestMethod.PUT,

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ExecutionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,8 @@ import eu.cloudopting.domain.Status;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.dto.ImageDTO;
+import eu.cloudopting.dto.MultipleUploadDTO;
 import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.service.ApplicationService;
 import eu.cloudopting.service.CloudAccountService;
@@ -344,6 +348,91 @@ public class BpmnService {
 		activitiDTO.setProcessInstanceId(uploadProcessInstanceId);
 		return activitiDTO;
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#dto.idApp)")
+	public ActivitiDTO uploadMultiple(MultipleUploadDTO uploadDTO) {
+		//String uploadName = uploadDTO.getName();
+	    String uploadType = uploadDTO.getType();
+	    String uploadFileId = uploadDTO.getFileId();
+	    List<ImageDTO> images = uploadDTO.getImages();
+	    String uploadTempFilePath = "";
+	    
+	    List<Pair> filesList = new ArrayList<Pair>();
+	    for(ImageDTO img : images) {
+	    	try {
+		    	File f = BpmnService.stream2file(img.getName(), img.getInputStream());
+		    	if (f!=null){
+		    		uploadTempFilePath = f.getAbsolutePath();
+		    	}
+		    	Pair pair = Pair.of(img.getName(), uploadTempFilePath);
+		    	filesList.add(pair);
+			} catch (IOException e) {
+				log.error("Error while reading UPLOAD file.",e);
+			}
+	    }
+	    
+	    
+	    String uploadIdApp = uploadDTO.getIdApp();
+	    String uploadProcessInstanceId = uploadDTO.getProcessId();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("type",uploadType);
+        params.put("fileId",uploadFileId);
+        params.put("appId",uploadIdApp);
+        params.put("processId",uploadProcessInstanceId);
+        params.put("org",uploadDTO.getOrg());
+        params.put("user",uploadDTO.getUser());
+        params.put("filesList", filesList);
+        
+        String messageName = "",
+        	   postMessageName = "",
+        	   latestPathVariableName="";
+        if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_CONTENT_LIBRARY.toString())){
+        	messageName = BpmnServiceConstants.MSG_START_ARTIFACTS_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_ARTIFACTS_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedArtifactPath";
+        }
+        if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_TOSCA_ARCHIVE.toString())){
+        	messageName = BpmnServiceConstants.MSG_START_TOSCAFILE_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_TOSCAFILE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedToscaFilePath";
+        }
+        if (uploadType.equals(BpmnServiceConstants.SERVICE_FILE_TYPE_PROMO_IMAGE.toString())){
+        	messageName = BpmnServiceConstants.MSG_START_PROMOIMAGE_UPLOAD.toString();
+        	postMessageName = BpmnServiceConstants.MSG_DONE_PROMOIMAGE_UPLOAD.toString();
+        	latestPathVariableName = "latestUploadedPromoImagePath";
+        }
+        
+        //Return the updated value of the model
+        ActivitiDTO activitiDTO = new ActivitiDTO();
+		
+        Execution preUploadExec = runtimeService.createExecutionQuery().processInstanceId(uploadProcessInstanceId).activityId(BpmnService.gatewayActivityId)/*.messageEventSubscriptionName(messageName)*/.singleResult();
+        if (preUploadExec!=null){
+        	log.debug("ProcessInstanceId:"+uploadProcessInstanceId+", Upload Execution:"+preUploadExec.toString()+", message:"+messageName);
+        	String executionId = preUploadExec.getId();
+            //Perform the upload
+            runtimeService.messageEventReceived(messageName, executionId, params);
+        }else{
+        	log.warn("[Pre Upload] No Execution found for message:"+messageName);
+        }
+        //Release the process by calling the POST UPLOAD intermediate message
+        Map<String, Object> processVars = runtimeService.getVariables(uploadProcessInstanceId);
+        String latestUploadPath = (String) processVars.get(latestPathVariableName);
+        activitiDTO.setJrPath(latestUploadPath!=null?latestUploadPath:"");
+        Execution postUploadExecution = runtimeService.createExecutionQuery().processInstanceId(uploadProcessInstanceId).messageEventSubscriptionName(postMessageName).singleResult();
+        if (postUploadExecution!=null){
+            	String pueId = postUploadExecution.getId();
+            	log.debug("Post Upload Execution ID:"+pueId+".");
+            	runtimeService.messageEventReceived(postMessageName, pueId, processVars);
+        }else{
+        	log.warn("[Post Upload] No Execution found for message:"+postMessageName);
+        }
+        activitiDTO.setApplicationId(uploadIdApp);
+		activitiDTO.setProcessInstanceId(uploadProcessInstanceId);
+		return activitiDTO;
+	}
+	
+	
+	
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or @bpmnAuthorization.hasWriteApplicationPermission(#uploadDTO.idApp)")
 	public ActivitiDTO deleteFile(UploadDTO uploadDTO) {
@@ -553,6 +642,8 @@ public class BpmnService {
 		Boolean bol = new Boolean(((VariableInstanceEntity)map.get("deletemediafilesuccess")).getTextValue());
 		return bol;
 	}
+
+	
 
 	
 	
