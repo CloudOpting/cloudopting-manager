@@ -518,14 +518,14 @@ if(listOfFiles!=null){
 				String parentFormTitle = document.getElementsByTagName(element).item(0).getAttributes()
 						.getNamedItem("formtype").getNodeValue();
 				switch (parentFormType) {
-				case "array":
-					JSONObject arr = new JSONObject("{\"type\":\"array\"}");
-					arr.put("items", new JSONObject().put("type", "object").put("properties", props));
-					returnObj.put(element, arr);
-					break;
-
-				default:
-					break;
+					case "array":
+						JSONObject arr = new JSONObject("{\"type\":\"array\"}");
+						arr.put("items", new JSONObject().put("type", "object").put("properties", props));
+						returnObj.put(element, arr);
+						break;
+	
+					default:
+						break;
 				}
 			} else {
 				returnObj = props;
@@ -567,8 +567,8 @@ if(listOfFiles!=null){
 			case "array":
 				// need to cycle in the node
 				JSONObject childprops = new JSONObject();
-				log.debug("/*/*/*");
-				DTMNodeList childnodes = (DTMNodeList) this.xpath.evaluate("/*/*/*", document, XPathConstants.NODESET);
+				log.debug("/*/default:"+ name +"/*");
+				DTMNodeList childnodes = (DTMNodeList) this.xpath.evaluate("/*/co:"+ name +"/*", document, XPathConstants.NODESET);
 				log.debug(new Integer(childnodes.getLength()).toString());
 				for (int n = 0; n < childnodes.getLength(); n++) {
 					JSONObject childform = new JSONObject();
@@ -1621,6 +1621,23 @@ if(listOfFiles!=null){
 
 		return null;
 	}
+	
+	public ArrayList<HashMap> getEnvironments(String customizationId, String id) {
+		log.debug("in getEnvironments");
+		DocumentImpl theDoc = this.xdocHash.get(customizationId);
+		if (theDoc == null)
+			return null;
+
+		HashMap props = getPropertiesForNode(customizationId, id);
+		ArrayList<HashMap> volumesList = null;
+		if (props.containsKey("environments")) {
+			return (ArrayList<HashMap>) props.get("environments");
+		}
+
+		// ArrayList<HashMap> volumesList = new ArrayList<HashMap>();
+
+		return null;
+	}
 
 	public String getLogType(String customizationId, String id) {
 		log.debug("in getLogType");
@@ -1779,6 +1796,10 @@ if(listOfFiles!=null){
 			if (volumes != null && !volumes.isEmpty()) {
 				containerData.put("volumes", volumes);
 			}
+			ArrayList<HashMap> environments = getEnvironments(customizationId, node);
+			if (environments != null && !environments.isEmpty()) {
+				containerData.put("environments", environments);
+			}
 
 			System.out.println(node);
 			modData.add(containerData);
@@ -1796,9 +1817,14 @@ if(listOfFiles!=null){
 				containerDataVolumeData.put("image", contImages.get(contImage));
 			}
 			
+			ArrayList<HashMap> volumes = getVolumes(customizationId, node);
+			if (volumes != null && !volumes.isEmpty()) {
+				containerDataVolumeData.put("volumes", volumes);
+			}
+			
 			modVolData.add(containerDataVolumeData);
 		}
-
+		System.out.println(modVolData.toString());
 		HashMap<String, Object> templData = new HashMap<String, Object>();
 		templData.put("dockerContainers", modData);
 		templData.put("dockerDataVolumeContainers", modVolData);

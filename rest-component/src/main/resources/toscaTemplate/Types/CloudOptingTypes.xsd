@@ -132,6 +132,58 @@
 		<xs:attribute name="title" fixed="Volume"></xs:attribute>
 		<xs:attribute name="formtype" fixed="array"></xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="tDockerDataVolumeContainerVolumes">
+		<xs:sequence>
+			<xs:element name="host">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Path of the host"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="container">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Path in the container"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="title" fixed="Volume"></xs:attribute>
+		<xs:attribute name="formtype" fixed="array"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tDockerEnvironment">
+		<xs:sequence>
+			<xs:element name="envvar">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Variable name"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="envvalue">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Value of the variable"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="title" fixed="Environment"></xs:attribute>
+		<xs:attribute name="formtype" fixed="array"></xs:attribute>
+	</xs:complexType>
 	<xs:complexType name="tDockerContainerProperties">
 		<xs:sequence>
 			<xs:element name="image">
@@ -187,6 +239,7 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="volumes" type="tDockerVolumes"/>
+			<xs:element name="environments" type="tDockerEnvironment"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerContainerProperties" type="tDockerContainerProperties" />
@@ -212,6 +265,7 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="volumes" type="tDockerDataVolumeContainerVolumes"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerDataVolumeContainerProperties" type="tDockerDataVolumeContainerProperties" />
