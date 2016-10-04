@@ -6,7 +6,8 @@ angular.module('cloudoptingApp')
                                             $state, $scope, $document, $rootScope, $window, $translate, $timeout, $cookieStore,
                                             Principal, Auth) {
 
-        $scope.logoutButton = Principal.isAuthenticated();
+    $scope.showDropDownMenu = false;
+    $scope.logoutButton = Principal.isAuthenticated();
         //$scope.name = Principal.isAuthenticated ? Principal.identity().login : '';
         if (Principal.isAuthenticated()) {
             Principal.identity().then(function (account) {
@@ -85,16 +86,17 @@ angular.module('cloudoptingApp')
                 return true;
             }
             else if(Principal.isInRole(SERVICE.ROLE.OPERATOR)){
-                if(item=='dashboard' || item=='drop_down' || item=='publish' || item=='list' || item=='user_manager' || item=='org_manager' ) {
+                if(item=='dashboard' || item=='list' || item=='user_manager' || item=='org_manager' ) {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
-                if(item=='dashboard' || item=='drop_down' || item=='publish' || item=='list' || item=='toscaide') {
+                if(item=='dashboard' || item=='publish' || item=='toscaide') {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)){
+                $scope.showDropDownMenu = false;
                 if(item=='dashboard') return true;
                 return false;
             }
