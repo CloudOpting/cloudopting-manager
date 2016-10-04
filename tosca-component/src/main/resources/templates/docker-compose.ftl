@@ -2,8 +2,8 @@
 ${dockerDataVolumeContainer['container']}:
   image: ${dockerDataVolumeContainer['image']}
   entrypoint: ${dockerDataVolumeContainer['entrypoint']}
-<#if dockerContainer['volumes']?has_content>  volumes:
-<#list dockerContainer['volumes'] as volume>
+<#if dockerDataVolumeContainer['volumes']?has_content>  volumes:
+<#list dockerDataVolumeContainer['volumes'] as volume>
     - <#if volume['container']?has_content>${volume['container']}</#if>
 </#list></#if>
 </#list>
