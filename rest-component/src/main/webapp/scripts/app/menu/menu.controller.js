@@ -6,7 +6,7 @@ angular.module('cloudoptingApp')
                                             $state, $scope, $document, $rootScope, $window, $translate, $timeout, $cookieStore,
                                             Principal, Auth) {
 
-    $scope.showDropDownMenu = false;
+    $scope.showDropDownMenu = true;
     $scope.logoutButton = Principal.isAuthenticated();
         //$scope.name = Principal.isAuthenticated ? Principal.identity().login : '';
         if (Principal.isAuthenticated()) {
