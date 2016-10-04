@@ -9,9 +9,9 @@
         <div class="col-lg-12">
             <ul class="nav navbar-nav navbar-right pre-header">
                 <!-- Development only -->
-                <li ng-show="logoutButton" class="dropdown" ng-controller="MenuController" >
-                    <a ng-show="showMenu('drop_down')" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">{{'navbar.title'| translate}}<span class="caret"></span></a>
-                    <ul ng-show="showMenu('drop_down')" class="dropdown-menu" aria-labelledby="dropdownMenu1" >
+                <li ng-show="logoutButton && showDropDownMenu" class="dropdown" ng-controller="MenuController" >
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">{{'navbar.title'| translate}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" >
                         <li ng-show="showMenu('publish')"><a ui-sref="publish" data-target="#publish" translate="navbar.publish">Publish Service</a></li>
                         <li ng-show="showMenu('list')"><a ui-sref="list" data-target="#list" translate="navbar.services.manager">Services Manager</a></li>
                         <li ng-show="showMenu('user_manager')"><a ui-sref="user_manager" data-target="#user_manager" translate="navbar.user.manager">User Manager</a></li>
