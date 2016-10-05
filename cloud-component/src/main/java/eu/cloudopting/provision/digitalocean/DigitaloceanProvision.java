@@ -1,5 +1,6 @@
 package eu.cloudopting.provision.digitalocean;
 
+import java.lang.reflect.Field;
 import java.util.Comparator;
 
 import org.jclouds.ContextBuilder;
@@ -37,13 +38,18 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		Size machineType = getMachineType(api); 
 		Region region = getRegion(api, machineType);
 		Image image = getImage(api, region);
-		Key sshKey = api.keyApi().get(request.getIdentity());
-		if(sshKey == null){
-			throw new RuntimeException("Ssh Key not found for fingerprint " + request.getIdentity());
-		}
-		
 		CreateDropletOptions digitalOceanSpecificParams = 
-				CreateDropletOptions.builder().backupsEnabled(false).privateNetworking(false).addSshKeyId(sshKey.id()).build();
+				CreateDropletOptions.builder().backupsEnabled(false).privateNetworking(false).build();
+		// CreateDropletOptions builder does not have a method for setting userData field.
+		// We set userData field by reflection
+		try {
+			Field userData = CreateDropletOptions.class.getDeclaredField("userData");
+			userData.setAccessible(true);
+			userData.set(digitalOceanSpecificParams, request.getUserData());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error setting user data info at digitalocean provision");
+		} 
 		DropletCreate result = api.dropletApi().create("testOcean", region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
 		
 		return String.valueOf(result.droplet().id());
@@ -90,7 +96,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		return new Predicate<Image>() {
 			@Override
 			public boolean apply(Image image) {
-				return image.regions().contains(region.slug()) && image.distribution().equals("CentOS");
+				return image.regions().contains(region.slug()) && image.distribution().equals("CentOS") && image.name().equals("7.2 x64");
 			}
 		};
 	}

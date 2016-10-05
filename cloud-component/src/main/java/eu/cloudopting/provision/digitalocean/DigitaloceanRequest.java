@@ -8,6 +8,7 @@ public class DigitaloceanRequest implements ProvisionRequest {
     String credential;
     String endpoint;
     String virtualMachineId;
+    String userData;
     
 	public String getIdentity() {
 		return identity;
@@ -32,5 +33,11 @@ public class DigitaloceanRequest implements ProvisionRequest {
 	}
 	public void setVirtualMachineId(String virtualMachineId) {
 		this.virtualMachineId = virtualMachineId;
+	}
+	public String getUserData() {
+		return userData;
+	}
+	public void setUserData(String userData) {
+		this.userData = userData;
 	}
 }
