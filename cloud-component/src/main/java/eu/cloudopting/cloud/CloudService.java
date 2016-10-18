@@ -89,12 +89,17 @@ public class CloudService {
 		if (theAccount == null)
 			return null;
 		String cloudTaskId = null;
-		String unencodedData = null;
+		
+		log.debug("theAccount hashmap:");
+		for(String k : theAccount.keySet()) {
+			log.debug(k + ": " + theAccount.get(k));
+		}
+		
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
 			log.debug("before creating the cloudstack VM");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
-			unencodedData = "#cloud-config\n"
+			String unencodedData = "#cloud-config\n"
 					+"runcmd:\n"
 					+"  - touch /root/cloudinitexecuted.txt\n"
 					+"phone_home:\n"
@@ -108,29 +113,10 @@ public class CloudService {
 			log.debug("after creation" + cloudTaskId.toString());
 			break;
 		case "digitalocean":
+			
+			log.debug("**** DIGITALOCEAN ****");
 			log.debug("before creating the digitalocean VM");
 			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
-			unencodedData = "#cloud-config\n" +
-					"yum_repos:\n" +
-					"    docker:\n" +
-					"        baseurl: https://yum.dockerproject.org/repo/main/centos/7\n" +
-					"        enabled: 1\n" +
-					"        gpgcheck: 1\n" +
-					"        gpgkey: https://yum.dockerproject.org/gpg\n" +
-					"        name: Docker Repository\n" +
-					"packages:\n" +
-					"- docker-engine\n" +
-					"write_files:\n" +
-					"- path: /etc/systemd/system/docker.service.d/docker.conf\n" +
-					"  content: |\n" +
-					"    [Service]\n" +
-					"    ExecStart=\n" +
-					"    ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:2375\n" +
-					"runcmd:\n" +
-					"- 'systemctl daemon-reload'\n" +
-					"- 'systemctl enable docker'\n" +
-					"- 'systemctl start docker'";
-			doRequest.setUserData(unencodedData);
 			cloudTaskId = digitaloceanProvision.provisionVM(doRequest);
 			log.debug("after creation" + cloudTaskId.toString());
 			break;

@@ -249,15 +249,15 @@ public class StoreService {
     	}
     	log.debug("Path: " + filePath);
     	Node nodeToRemove;
-    try {
-		nodeToRemove = session.getRootNode().getNode(filePath);
-		nodeToRemove.remove();
-		session.save();
-	} catch (RepositoryException e) {
-		// TODO Auto-generated catch block
-		log.error("Repository Exception: "+e.getLocalizedMessage());
-		//e.printStackTrace();
-	}
+	    try {
+			nodeToRemove = session.getRootNode().getNode(filePath);
+			nodeToRemove.remove();
+			session.save();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			log.error("Repository Exception: "+e.getLocalizedMessage());
+			//e.printStackTrace();
+		}
     }
     
     /**
