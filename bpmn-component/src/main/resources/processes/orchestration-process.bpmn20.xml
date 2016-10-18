@@ -273,9 +273,13 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <exclusiveGateway id="exclusivegateway17" name="Exclusive Gateway"></exclusiveGateway>
       <sequenceFlow id="flow40" sourceRef="exclusivegateway16" targetRef="checkDOVMcreated"></sequenceFlow>
       <sequenceFlow id="flow41" sourceRef="checkDOVMcreated" targetRef="exclusivegateway17"></sequenceFlow>
-      <sequenceFlow id="flow42" sourceRef="exclusivegateway17" targetRef="exclusivegateway16"></sequenceFlow>
+      <sequenceFlow id="flow42" sourceRef="exclusivegateway17" targetRef="exclusivegateway16">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkDOCreated==false}]]></conditionExpression>
+      </sequenceFlow>
       <serviceTask id="acquireDOIP" name="Acquire IP" activiti:delegateExpression="${deployDoVmIp}"></serviceTask>
-      <sequenceFlow id="flow43" sourceRef="exclusivegateway17" targetRef="acquireDOIP"></sequenceFlow>
+      <sequenceFlow id="flow43" sourceRef="exclusivegateway17" targetRef="acquireDOIP">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkDOCreated==true}]]></conditionExpression>
+      </sequenceFlow>
       <sequenceFlow id="flow44" sourceRef="acquireDOIP" targetRef="endevent3"></sequenceFlow>
     </subProcess>
     <sequenceFlow id="flow38" sourceRef="exclusivegateway14" targetRef="digitalocean">
@@ -561,7 +565,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="738.0" y="1120.0"></omgdi:waypoint>
         <omgdi:waypoint x="738.0" y="1048.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="36.0" width="65.0" x="926.0" y="1067.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="65.0" x="926.0" y="1067.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toTimerInstall" id="BPMNEdge_toTimerInstall">
@@ -572,7 +576,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="983.0" y="1008.0"></omgdi:waypoint>
         <omgdi:waypoint x="853.0" y="868.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="36.0" width="41.0" x="963.0" y="984.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="41.0" x="963.0" y="984.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSwarm" id="BPMNEdge_toSwarm">
