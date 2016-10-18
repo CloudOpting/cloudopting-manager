@@ -33,12 +33,12 @@ public class DeployDoVmCheck implements JavaDelegate {
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		HashMap<String, String> data = toscaService.getCloudData(customizationId);
 		
-		String cloudtask = "";
-		if (this.doDeploy) {
-			cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"),execution.getProcessInstanceId());
-		}
+		String cloudtask = (String) execution.getVariable("cloudtask");
+		boolean created = cloudService.checkVM(-1l, cloudtask);
+		log.debug("VM created: " + created);
 
-		execution.setVariable("cloudtask", cloudtask);
+		execution.setVariable("checkDOCreated", created);
+		
 
 	}
 

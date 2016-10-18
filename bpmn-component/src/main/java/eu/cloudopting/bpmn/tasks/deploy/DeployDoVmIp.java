@@ -1,9 +1,12 @@
 package eu.cloudopting.bpmn.tasks.deploy;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +36,19 @@ public class DeployDoVmIp implements JavaDelegate {
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		HashMap<String, String> data = toscaService.getCloudData(customizationId);
 		
-		String cloudtask = "";
-		if (this.doDeploy) {
-			cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"),execution.getProcessInstanceId());
+		String cloudtask = (String) execution.getVariable("cloudtask");
+		
+		Map<String, Object> cloudParams = new HashMap<>();
+		cloudParams.put("vmId", cloudtask);
+		cloudParams.put("cloudAccountId", -1l);
+		JSONObject result = cloudService.getAssociatedIpinfo(cloudParams);
+		Iterator it = result.keys();
+		while(it.hasNext()) {
+			String key = (String)it.next();
+			log.debug(key + ": " +result.get(key));
 		}
-
-		execution.setVariable("cloudtask", cloudtask);
+		String ip = "";
+		execution.setVariable("ip", ip);
 
 	}
 
