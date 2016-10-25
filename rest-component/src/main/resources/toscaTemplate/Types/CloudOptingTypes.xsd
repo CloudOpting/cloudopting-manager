@@ -1315,6 +1315,21 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="MongodataloadProperties" type="tMongodataloadProperties" />
+	<xs:complexType name="tGenericPuppetProperties">
+		<xs:sequence>
+			<xs:element name="module">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Content of the custom puppet"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GenericPuppetProperties" type="tGenericPuppetProperties" />
 	<xs:complexType name="tCronProperties">
 		<xs:sequence>
 			<xs:element name="installed">

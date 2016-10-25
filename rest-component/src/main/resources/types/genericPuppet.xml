@@ -1,0 +1,22 @@
+<NodeType name="GenericPuppet" shape="ellipse" color="#ffffff" image="puppet.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="GenericPuppetProperties"
+		type="tGenericPuppetProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="GenericPuppet" name="GenericPuppetImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="GenericPuppetPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="GenericPuppetPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="GenericPuppetPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/GenericPuppetPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
