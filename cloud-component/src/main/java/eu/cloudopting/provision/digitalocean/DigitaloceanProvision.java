@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.google.common.primitives.Floats;
 
 import eu.cloudopting.cloud.CloudProvider;
@@ -31,6 +32,21 @@ import eu.cloudopting.provision.AbstractProvision;
 public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult, DigitaloceanRequest> {
 	private final Logger log = LoggerFactory.getLogger(DigitaloceanProvision.class);
 
+	private static final String OS_TYPE = "CentOS";
+	
+	private enum OS_VERSION{
+		V7("7"), V6("6"), V5("5");
+		
+		private String name;
+		private OS_VERSION(String name){
+			this.name = name;
+		}
+		
+		public String getName(){
+			return name;
+		}
+	}
+	
 	@Override
 	public DigitaloceanResult provision(DigitaloceanRequest request) {
 		// TODO Auto-generated method stub
@@ -100,15 +116,28 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 	}
 	
 	private Image getImage(DigitalOcean2Api api, Region region){
-		Optional<? extends Image> image = api.imageApi().list(ImageListOptions.Builder.type("distribution")).firstMatch(isImageOk(region));
-		return image.orNull();
+		FluentIterable<Image> images = api.imageApi().
+				list(ImageListOptions.Builder.type("distribution")).
+				filter(new Predicate<Image>() {
+					@Override
+					public boolean apply(Image image) {
+						return image.regions().contains(region.slug()) && image.distribution().equals(OS_TYPE);
+					}
+				});
+		for(OS_VERSION osVersion : OS_VERSION.values()){
+			Optional<? extends Image> image = images.firstMatch(isVersionOk(osVersion));
+			if(image.isPresent()){
+				return image.get();
+			}
+		}
+		throw new RuntimeException("Cannot find image for OS " + OS_TYPE + " in region " + region.name());
 	}
 	
-	private static Predicate<Image> isImageOk(Region region) {
+	private static Predicate<Image> isVersionOk(OS_VERSION osVersion) {
 		return new Predicate<Image>() {
 			@Override
 			public boolean apply(Image image) {
-				return image.regions().contains(region.slug()) && image.distribution().equals("CentOS") && image.name().equals("7.2 x64");
+				return image.name().startsWith(osVersion.getName());
 			}
 		};
 	}
