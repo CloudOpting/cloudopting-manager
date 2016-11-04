@@ -16,6 +16,9 @@ import org.jclouds.digitalocean2.domain.options.CreateDropletOptions;
 import org.jclouds.digitalocean2.domain.options.ImageListOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -24,7 +27,9 @@ import com.google.common.primitives.Floats;
 import eu.cloudopting.cloud.CloudProvider;
 import eu.cloudopting.provision.AbstractProvision;
 
+@Service
 public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult, DigitaloceanRequest> {
+	private final Logger log = LoggerFactory.getLogger(DigitaloceanProvision.class);
 
 	@Override
 	public DigitaloceanResult provision(DigitaloceanRequest request) {
@@ -34,10 +39,15 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 
 	@Override
 	public String provisionVM(DigitaloceanRequest request) {
+		log.debug("in DO ProvisionVM");
 		DigitalOcean2Api api = getClient(request);
 		Size machineType = getMachineType(api); 
+		log.debug("Size: " + machineType.toString());
 		Region region = getRegion(api, machineType);
+		log.debug("Region null? " + (region == null));
+		log.debug("Region: " + region);
 		Image image = getImage(api, region);
+		log.debug("Image: " + image.name());
 		CreateDropletOptions digitalOceanSpecificParams = 
 				CreateDropletOptions.builder().backupsEnabled(false).privateNetworking(false).build();
 		// CreateDropletOptions builder does not have a method for setting userData field.
@@ -49,8 +59,10 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error setting user data info at digitalocean provision");
-		} 
+		}
+		log.debug("Before calling create");
 		DropletCreate result = api.dropletApi().create("testOcean", region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
+		log.debug("After calling create");
 		
 		return String.valueOf(result.droplet().id());
 	}
