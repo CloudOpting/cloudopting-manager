@@ -109,6 +109,8 @@ public class CloudService {
 			break;
 		case "digitalocean":
 			log.debug("before creating the digitalocean VM");
+			
+			//TODO: per Luca Gioppo: questi sono i valori passati allo userData alla creazione della VM
 			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
 			unencodedData = "#cloud-config\n" +
 					"yum_repos:\n" +
@@ -153,6 +155,15 @@ public class CloudService {
 		log.debug("in checkVM");
 		// TODO this will have to be set to false in production
 		boolean theCheck = true;
+		log.debug("***ACCOUNTS***");
+		for(Long acc : this.accounts.keySet()) {
+			log.debug("ID: " + acc);
+			HashMap<String, String> hashMap = this.accounts.get(acc);
+			for (String k: hashMap.keySet()) {
+				log.debug(k + ": " + hashMap.get(k));
+			}
+		}
+		log.debug("***FINE ACCOUNTS***");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
 			return false;

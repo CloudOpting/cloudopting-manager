@@ -66,6 +66,8 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		log.debug("Image: " + image.name());
 		CreateDropletOptions digitalOceanSpecificParams = 
 				CreateDropletOptions.builder().backupsEnabled(false).privateNetworking(false).build();
+		
+		//TODO: per Luca Gioppo: qui viene settato il campo userData nell'oggetto che rappresenta le opzioni delle droplte DigitalOcean
 		// CreateDropletOptions builder does not have a method for setting userData field.
 		// We set userData field by reflection
 		try {
