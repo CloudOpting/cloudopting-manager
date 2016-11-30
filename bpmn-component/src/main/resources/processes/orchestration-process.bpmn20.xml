@@ -267,20 +267,15 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <endEvent id="endevent3" name="End"></endEvent>
       <serviceTask id="generateDOVM" name="Generate Digital OceanVM" activiti:delegateExpression="${deployGenerateDoVm}"></serviceTask>
       <sequenceFlow id="flow36" sourceRef="startevent3" targetRef="generateDOVM"></sequenceFlow>
-      <sequenceFlow id="flow37" sourceRef="generateDOVM" targetRef="exclusivegateway16"></sequenceFlow>
-      <serviceTask id="checkDOVMcreated" name="Check VM created" activiti:delegateExpression="${deployDoVmCheck}"></serviceTask>
-      <exclusiveGateway id="exclusivegateway16" name="Exclusive Gateway"></exclusiveGateway>
-      <exclusiveGateway id="exclusivegateway17" name="Exclusive Gateway"></exclusiveGateway>
-      <sequenceFlow id="flow40" sourceRef="exclusivegateway16" targetRef="checkDOVMcreated"></sequenceFlow>
-      <sequenceFlow id="flow41" sourceRef="checkDOVMcreated" targetRef="exclusivegateway17"></sequenceFlow>
-      <sequenceFlow id="flow42" sourceRef="exclusivegateway17" targetRef="exclusivegateway16">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkDOCreated==false}]]></conditionExpression>
-      </sequenceFlow>
+      <sequenceFlow id="flow37" sourceRef="generateDOVM" targetRef="eventgateway1"></sequenceFlow>
       <serviceTask id="acquireDOIP" name="Acquire IP" activiti:delegateExpression="${deployDoVmIp}"></serviceTask>
-      <sequenceFlow id="flow43" sourceRef="exclusivegateway17" targetRef="acquireDOIP">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkDOCreated==true}]]></conditionExpression>
-      </sequenceFlow>
       <sequenceFlow id="flow44" sourceRef="acquireDOIP" targetRef="endevent3"></sequenceFlow>
+      <eventBasedGateway id="eventgateway1" name="Event Gateway"></eventBasedGateway>
+      <intermediateCatchEvent id="doVmFinished" name="MessageCatchEvent">
+        <messageEventDefinition messageRef="machineInstalledId"></messageEventDefinition>
+      </intermediateCatchEvent>
+      <sequenceFlow id="flow45" sourceRef="eventgateway1" targetRef="doVmFinished"></sequenceFlow>
+      <sequenceFlow id="flow46" sourceRef="doVmFinished" targetRef="acquireDOIP"></sequenceFlow>
     </subProcess>
     <sequenceFlow id="flow38" sourceRef="exclusivegateway14" targetRef="digitalocean">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cloudId == 4}]]></conditionExpression>
@@ -535,17 +530,14 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <bpmndi:BPMNShape bpmnElement="generateDOVM" id="BPMNShape_generateDOVM">
         <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="31.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="checkDOVMcreated" id="BPMNShape_checkDOVMcreated">
-        <omgdc:Bounds height="55.0" width="105.0" x="790.0" y="31.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway16" id="BPMNShape_exclusivegateway16">
-        <omgdc:Bounds height="40.0" width="40.0" x="720.0" y="38.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway17" id="BPMNShape_exclusivegateway17">
-        <omgdc:Bounds height="40.0" width="40.0" x="930.0" y="38.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="acquireDOIP" id="BPMNShape_acquireDOIP">
         <omgdc:Bounds height="55.0" width="105.0" x="1000.0" y="31.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="eventgateway1" id="BPMNShape_eventgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="781.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="doVmFinished" id="BPMNShape_doVmFinished">
+        <omgdc:Bounds height="35.0" width="35.0" x="860.0" y="164.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="fromStart" id="BPMNEdge_fromStart">
         <omgdi:waypoint x="36.0" y="1035.0"></omgdi:waypoint>
@@ -565,7 +557,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="738.0" y="1120.0"></omgdi:waypoint>
         <omgdi:waypoint x="738.0" y="1048.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="65.0" x="926.0" y="1067.0"></omgdc:Bounds>
+          <omgdc:Bounds height="36.0" width="65.0" x="926.0" y="1067.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toTimerInstall" id="BPMNEdge_toTimerInstall">
@@ -576,7 +568,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="983.0" y="1008.0"></omgdi:waypoint>
         <omgdi:waypoint x="853.0" y="868.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="41.0" x="963.0" y="984.0"></omgdc:Bounds>
+          <omgdc:Bounds height="36.0" width="41.0" x="963.0" y="984.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="toSwarm" id="BPMNEdge_toSwarm">
@@ -920,31 +912,20 @@ This task will probably be transformed into a subprocess, but at the moment we n
         <omgdi:waypoint x="580.0" y="58.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="685.0" y="58.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="58.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="760.0" y="58.0"></omgdi:waypoint>
-        <omgdi:waypoint x="790.0" y="58.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="895.0" y="58.0"></omgdi:waypoint>
-        <omgdi:waypoint x="930.0" y="58.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="950.0" y="78.0"></omgdi:waypoint>
-        <omgdi:waypoint x="950.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="842.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="740.0" y="112.0"></omgdi:waypoint>
-        <omgdi:waypoint x="740.0" y="78.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="970.0" y="58.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1000.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="86.0"></omgdi:waypoint>
+        <omgdi:waypoint x="801.0" y="161.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="1105.0" y="58.0"></omgdi:waypoint>
         <omgdi:waypoint x="1197.0" y="88.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="821.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="860.0" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="877.0" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1052.0" y="86.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="494.0" y="1011.0"></omgdi:waypoint>

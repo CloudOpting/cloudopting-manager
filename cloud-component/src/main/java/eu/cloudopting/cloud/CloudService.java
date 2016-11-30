@@ -98,7 +98,7 @@ public class CloudService {
 					+"runcmd:\n"
 					+"  - touch /root/cloudinitexecuted.txt\n"
 					+"phone_home:\n"
-					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId+"\n"
+					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
 					+"  post: all";
 			myRequest.setUserData(unencodedData);
 			myRequest.setDiskId(this.diskId);
@@ -131,7 +131,10 @@ public class CloudService {
 					"runcmd:\n" +
 					"- 'systemctl daemon-reload'\n" +
 					"- 'systemctl enable docker'\n" +
-					"- 'systemctl start docker'";
+					"- 'systemctl start docker'"
+					+"phone_home:\n"
+					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
+					+"  post: all";
 			doRequest.setUserData(unencodedData);
 			cloudTaskId = digitaloceanProvision.provisionVM(doRequest);
 			log.debug("after creation" + cloudTaskId.toString());

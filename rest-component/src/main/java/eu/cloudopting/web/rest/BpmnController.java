@@ -162,7 +162,9 @@ public class BpmnController {
 	}
 
 	@RequestMapping(value = "/bpmnunlock/configuredVM/{processInstanceId}", method = RequestMethod.POST)
-	public @ResponseBody void configuredVM(@PathVariable String processInstanceId) {
+	public @ResponseBody void configuredVM(@PathVariable String processInstanceId, @RequestBody  String vmdata) {
+		log.info("VMDATA");
+		log.info(vmdata);
 		bpmn.configuredVM(processInstanceId);
 	}
 
