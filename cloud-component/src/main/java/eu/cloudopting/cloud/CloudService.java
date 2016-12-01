@@ -131,7 +131,7 @@ public class CloudService {
 					"runcmd:\n" +
 					"- 'systemctl daemon-reload'\n" +
 					"- 'systemctl enable docker'\n" +
-					"- 'systemctl start docker'"
+					"- 'systemctl start docker'\n"
 	*/				+"phone_home:\n"
 //					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
                     +"  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html\n"
