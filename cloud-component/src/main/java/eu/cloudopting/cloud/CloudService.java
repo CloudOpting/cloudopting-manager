@@ -133,7 +133,8 @@ public class CloudService {
 					"- 'systemctl enable docker'\n" +
 					"- 'systemctl start docker'"
 					+"phone_home:\n"
-					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
+//					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
+                    +"  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html\n"
 					+"  post: all";
 			doRequest.setUserData(unencodedData);
 			cloudTaskId = digitaloceanProvision.provisionVM(doRequest);
