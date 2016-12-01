@@ -112,14 +112,14 @@ public class CloudService {
 			
 			//TODO: per Luca Gioppo: questi sono i valori passati allo userData alla creazione della VM
 			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
-			unencodedData = "#cloud-config\n" +
-					"yum_repos:\n" +
-					"    docker:\n" +
-					"        baseurl: https://yum.dockerproject.org/repo/main/centos/7\n" +
-					"        enabled: 1\n" +
-					"        gpgcheck: 1\n" +
-					"        gpgkey: https://yum.dockerproject.org/gpg\n" +
-					"        name: Docker Repository\n" +
+			unencodedData = "#cloud-config\n"
+/*					"yum_repos:\n" +
+					"  docker:\n" +
+					"    baseurl: https://yum.dockerproject.org/repo/main/centos/7\n" +
+					"    enabled: 1\n" +
+					"    gpgcheck: 1\n" +
+					"    gpgkey: https://yum.dockerproject.org/gpg\n" +
+					"    name: Docker Repository\n" +
 					"packages:\n" +
 					"- docker-engine\n" +
 					"write_files:\n" +
@@ -132,7 +132,7 @@ public class CloudService {
 					"- 'systemctl daemon-reload'\n" +
 					"- 'systemctl enable docker'\n" +
 					"- 'systemctl start docker'"
-					+"phone_home:\n"
+	*/				+"phone_home:\n"
 //					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
                     +"  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html\n"
 					+"  post: all";
