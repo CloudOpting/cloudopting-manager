@@ -209,7 +209,7 @@
                 <!-- <h3 translate="cloudaccount.title">Cloud Accounts</h3> -->
 
                 <div class="form-group">
-                  <button type="button" class="btn btn-reverse" ng-click="goToAdd()">+ {{'cloudaccount.button.add' | translate}}</button>
+                  <button ng-hide="hideAddEditButton" type="button" class="btn btn-reverse" ng-click="goToAdd()">+ {{'cloudaccount.button.add' | translate}}</button>
                 </div>
 
                 <div class="panel panel-default">
@@ -221,14 +221,14 @@
                                     <tr>
                                         <th translate="cloudaccount.col.name">Cloud Account Name</th>
                                         <th translate="cloudaccount.col.provider">Provider</th>
-                                        <th translate="cloudaccount.col.actions" class="table-col-actions actions-short">Actions</th>
+                                        <th ng-hide="hideAddEditButton" translate="cloudaccount.col.actions" class="table-col-actions actions-short">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="cloudAcc in cloudAccList">
                                         <td>{{cloudAcc.name}}</td>
                                         <td>{{cloudAcc.providerId.provider}}</td>
-                                        <td class="table-col-actions actions-short">
+                                        <td ng-hide="hideAddEditButton" class="table-col-actions actions-short">
                                             <button type="button" class="btn btn-icon actionsTooltip" ng-click="goToEdit(cloudAcc)" >
                                               <i class="fa fa-pencil-square-o"></i>{{'cloudaccount.button.edit' | translate | limitTo: 3}}.<span>{{'cloudaccount.button.edit' | translate}}</span>
                                             </button>

@@ -69,7 +69,10 @@ zabbix:
     user: Admin
     password: ENC(Vxfao9qTZpixb7TREt0S/nwsU0HbrinU)
     endpoint: http://cloudoptingmaster.cloudopen.csipiemonte.it/zabbix/api_jsonrpc.php
+    maxPoints: 100
+    items: net,kernel,system.cpu
 
+    
 elasticsearch:
     host: cloudoptingmaster.cloudopen.csipiemonte.it
     port: 9300

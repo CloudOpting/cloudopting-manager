@@ -1,6 +1,9 @@
 package eu.cloudopting.domain;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -24,6 +27,8 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import eu.cloudopting.events.api.entity.BaseEntity;
 
@@ -135,8 +140,8 @@ public class Applications implements BaseEntity {
         return merged;
     }
 
-	@OneToMany(mappedBy = "applicationId")
-    private Set<ApplicationMedia> applicationMedias;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "applicationId", cascade = CascadeType.ALL)
+    private Set<ApplicationMedia> applicationMedias = new HashSet<ApplicationMedia>();
 
 	@ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
@@ -206,7 +211,7 @@ public class Applications implements BaseEntity {
         this.customizationss = customizationss;
     }
 
-
+    @JsonIgnore //annotation to resolve recursion issue
     public Set<ApplicationMedia> getApplicationMedias() {
         return applicationMedias;
     }
@@ -353,5 +358,25 @@ public class Applications implements BaseEntity {
 
 	public void setApplicationLogoReference(String applicationLogoReference) {
 		this.applicationLogoReference = applicationLogoReference;
+	}
+	
+	public Set<ApplicationFile> getAllFiles() {
+		String applicationToscaTemplate = this.getApplicationToscaTemplate();
+        String applicationLogoReference = this.getApplicationLogoReference();
+        Set<ApplicationMedia> applicationMedias = this.getApplicationMedias();
+        
+        Set<ApplicationFile> out = new HashSet<ApplicationFile>();
+        if (applicationToscaTemplate != null) {
+        	out.add(new ApplicationFile(applicationToscaTemplate, ApplicationFile.TYPE_TOSCA));
+        }
+        if (applicationLogoReference != null) {
+        	out.add(new ApplicationFile(applicationLogoReference, ApplicationFile.TYPE_PROMO));
+        }
+        
+        for(ApplicationMedia media : applicationMedias) {
+        	out.add(new ApplicationFile(media.getMediaContent(), ApplicationFile.TYPE_CONTENT));
+        }
+        
+        return out;
 	}
 }

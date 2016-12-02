@@ -1,0 +1,23 @@
+<NodeType name="Mongodataload" shape="ellipse" color="#ffffff" image="apache_mod.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="MongodataloadProperties"
+		type="tMongodataloadProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="Mongodataload"
+	name="MongodataloadImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="MongodataloadPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="MongodataloadPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="MongodataloadPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/MongodataloadPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

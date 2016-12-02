@@ -3,7 +3,8 @@
 angular.module('cloudoptingApp')
     .controller('DashboardController', function (SERVICE, localStorageService,
                                                  $scope, $state, $log, $location, $filter, $window, $translate,
-                                                 Principal, InstanceService, ProcessService, Blob, FileSaver) {
+                                                 Principal, InstanceService, ProcessService, MonitoringService,
+                                                 Blob, FileSaver) {
 
         $scope.currentPage = 0;
         $scope.pageSize = 8;
@@ -44,6 +45,15 @@ angular.module('cloudoptingApp')
             };
             InstanceService.findAll(callback);
         }
+
+        //Load status for all instances
+        angular.forEach($scope.instancesList, function(instance, key) {
+            //instance.applicationName = $scope.currentApp.applicationName;
+            var callback = function(data, status, headers, config){
+                instance.monitoringStatus = data;
+            };
+            MonitoringService.getStatusById(instance.id, callback);
+        });
 
         $scope.test = function(instance) {
             var callback = function (data, status, headers, config) {

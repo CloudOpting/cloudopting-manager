@@ -5,7 +5,7 @@ angular.module('cloudoptingApp')
         $stateProvider
             .state('home', {
                 parent: 'site',
-                url: '/',
+                url: '/main',
                 data: {
                     roles: []
                 },

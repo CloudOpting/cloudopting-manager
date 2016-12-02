@@ -1,0 +1,37 @@
+<NodeType name="Redis" shape="ellipse" color="#ffffff" image="apache.png">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="RedisProperties"
+		type="tRedisProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+	<CapabilityDefinitions>
+		<CapabilityDefinition capabilityType="portsExposeCaps" />
+	</CapabilityDefinitions>
+</NodeType>
+<NodeTypeImplementation nodeType="Redis" name="RedisImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="RedisPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="RedisPT">
+		</DeploymentArtifact>
+		<DeploymentArtifact artifactType="PuppetModule"
+			artifactRef="RedisPM">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="RedisPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/RedisPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>
+<ArtifactTemplate type="PuppetModule" id="RedisPM">
+	<Properties
+		xmlns:co="http://docs.oasis-open.org/tosca/ns/2011/12/CloudOptingTypes">
+		<co:PuppetModuleProperties>
+			<co:module>redis</co:module>
+			<co:git>https://github.com/arioch/puppet-redis.git</co:git>
+		</co:PuppetModuleProperties>
+	</Properties>
+</ArtifactTemplate>

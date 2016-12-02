@@ -25,7 +25,7 @@ tomcat::config::server::connector { '<#if tomcat?has_content>${tomcat}</#if>-ajp
   protocol              => 'AJP/1.3',
   <#if additional_attributes_ajp_conn?has_content>additional_attributes => {${additional_attributes_ajp_conn} },</#if>
 }</#if>->
-tomcat::service { 'default':
+tomcat::service { '<#if tomcat?has_content>${tomcat}</#if>':
 <#if catalina_base?has_content>catalina_base => '${catalina_base}',</#if>
 service_ensure => 'stopped',
 }

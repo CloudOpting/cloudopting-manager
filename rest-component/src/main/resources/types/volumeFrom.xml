@@ -1,4 +1,4 @@
-<RelationshipType name="volumeFrom" style="solid" color="#992299">
+<RelationshipType name="volumeFrom" style="solid" color="#992299" sourcearrow="none" targetarrow="triangle">
 	<PropertiesDefinition element="volumeFromProperties"
 		type="tvolumeFromProperties" />
 </RelationshipType>

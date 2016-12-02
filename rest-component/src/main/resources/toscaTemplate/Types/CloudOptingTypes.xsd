@@ -132,6 +132,58 @@
 		<xs:attribute name="title" fixed="Volume"></xs:attribute>
 		<xs:attribute name="formtype" fixed="array"></xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="tDockerDataVolumeContainerVolumes">
+		<xs:sequence>
+			<xs:element name="host">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Path of the host"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="container">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Path in the container"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="title" fixed="Volume"></xs:attribute>
+		<xs:attribute name="formtype" fixed="array"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="tDockerEnvironment">
+		<xs:sequence>
+			<xs:element name="envvar">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Variable name"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="envvalue">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Value of the variable"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="title" fixed="Environment"></xs:attribute>
+		<xs:attribute name="formtype" fixed="array"></xs:attribute>
+	</xs:complexType>
 	<xs:complexType name="tDockerContainerProperties">
 		<xs:sequence>
 			<xs:element name="image">
@@ -187,6 +239,7 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="volumes" type="tDockerVolumes"/>
+			<xs:element name="environments" type="tDockerEnvironment"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerContainerProperties" type="tDockerContainerProperties" />
@@ -212,6 +265,7 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="volumes" type="tDockerDataVolumeContainerVolumes"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="DockerDataVolumeContainerProperties" type="tDockerDataVolumeContainerProperties" />
@@ -866,6 +920,51 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="TomcatProperties" type="tTomcatProperties" />
+	<xs:complexType name="tWildflyProperties">
+		<xs:sequence>
+			<xs:element name="version">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Wildfly version"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="install_source">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Source for the installation"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="public_bind">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Public binding address"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="public_http_port">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:integer">
+							<xs:attribute name="title" fixed="Public port"></xs:attribute>
+							<xs:attribute name="formtype" fixed="integer"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="WildflyProperties" type="tWildflyProperties" />
 	<xs:complexType name="tWarProperties">
 		<xs:sequence>
 			<xs:element name="catalina_base">
@@ -901,6 +1000,41 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="WarProperties" type="tWarProperties" />
+	<xs:complexType name="tWarWildflyProperties">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="War name"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="source">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Souce location of the WAR"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="require">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of a component that has to be installed before"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="WarWildflyProperties" type="tWarWildflyProperties" />
 	<xs:complexType name="tLiferayProperties">
 		<xs:sequence>
 			<xs:element name="catalina_base">
@@ -1158,12 +1292,12 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="solr_version">
+			<xs:element name="auth">
 				<xs:complexType>
 					<xs:simpleContent>
-						<xs:extension base="xs:string">
-							<xs:attribute name="title" fixed="MongoDB version"></xs:attribute>
-							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						<xs:extension base="xs:boolean">
+							<xs:attribute name="title" fixed="Does the engine require authorization?"></xs:attribute>
+							<xs:attribute name="formtype" fixed="boolean"></xs:attribute>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
@@ -1173,7 +1307,7 @@
 	<xs:element name="MongoDBProperties" type="tMongoDBProperties" />
 	<xs:complexType name="tMongoDBDatabaseProperties">
 		<xs:sequence>
-			<xs:element name="password">
+			<xs:element name="mongodb_password">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
@@ -1183,7 +1317,7 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="user">
+			<xs:element name="mongodb_user">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
@@ -1193,7 +1327,7 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="dbname">
+			<xs:element name="mongodb_dbname">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:string">
@@ -1206,6 +1340,76 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="MongoDBDatabaseProperties" type="tMongoDBDatabaseProperties" />
+	<xs:complexType name="tMongodataloadProperties">
+		<xs:sequence>
+			<xs:element name="mongodl_password">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="DB password"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongodl_user">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Mongo DB user"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongodl_dbname">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Mongo DB name"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongodl_datafile">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="file source for the import data"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mongoshell">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:boolean">
+							<xs:attribute name="title" fixed="Checked = mongo shell, unchecked = mongo import"></xs:attribute>
+							<xs:attribute name="formtype" fixed="boolean"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MongodataloadProperties" type="tMongodataloadProperties" />
+	<xs:complexType name="tGenericPuppetProperties">
+		<xs:sequence>
+			<xs:element name="module">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Content of the custom puppet"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="GenericPuppetProperties" type="tGenericPuppetProperties" />
 	<xs:complexType name="tCronProperties">
 		<xs:sequence>
 			<xs:element name="installed">
@@ -1502,6 +1706,31 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="PackageProperties" type="tPackageProperties" />
+	<xs:complexType name="tRedisProperties">
+		<xs:sequence>
+			<xs:element name="bind">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Binding IP"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="requirepass">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Password for Redis"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RedisProperties" type="tRedisProperties" />
 	<xs:complexType name="tSLA">
 		<xs:sequence>
 			<xs:element default="1" name="NumCpus">

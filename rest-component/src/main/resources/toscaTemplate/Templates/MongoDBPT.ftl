@@ -6,6 +6,8 @@ class { '::mongodb::server':
       <#if admin_password?has_content>admin_password => '${admin_password}',</#if>
       <#if port?has_content>port => ${port},</#if>
       <#if admin_username?has_content>admin_username => '${admin_username}',</#if>
+      <#if auth?has_content>auth => ${auth},</#if>
+
     }
 
 <#foreach childTemplate in childtemplates>

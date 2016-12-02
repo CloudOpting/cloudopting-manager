@@ -127,6 +127,8 @@ public class CustomizationUtils {
 			
 		}
 		theDoc = getServUrl(theDoc, organizationkey, serviceName);
+		// TODO need to fix that fact that now these do the same thing one will get to return the doc from URL
+		theDoc = getServPath(theDoc, organizationkey, serviceName);
 		log.debug("CustomizationUtils.generateCustomizedTosca theDoc: " + theDoc.saveXML(null));
 		log.debug("CustomizationUtils.generateCustomizedTosca --------ORIGINAL--------: \n" + getToscaTemplateDesc(idApp, csarPath).saveXML(null));
 		return theDoc.saveXML(null);
@@ -243,6 +245,40 @@ public class CustomizationUtils {
 				father.setTextContent(jackHttp+organizationkey + "/" + serviceName + "/template/" + fileName);
 			} catch (DOMException e) {
 				log.error("DOMException in CustomizationUtils.getServUrl.");
+				e.printStackTrace();
+			}
+
+		}
+		return theDoc;
+	}
+
+	private DocumentImpl getServPath(DocumentImpl theDoc, String organizationkey, String serviceName) {
+		log.debug("CustomizationUtils.getServUrl starting.");
+		log.debug("CustomizationUtils.getServUrl theDoc: " + theDoc.saveXML(null));
+
+		JSONObject properties = new JSONObject();
+		DTMNodeList nodes = null;
+		String xPathProcInt = "//processing-instruction('servPath')";
+		try {
+			nodes = (DTMNodeList) this.xpath.evaluate(xPathProcInt, theDoc, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			log.error("XPathExpressionException in CustomizationUtils.getServPath evaluating xpath.");
+			log.debug(e.getMessage());
+			e.printStackTrace();
+		}
+
+		log.debug("CustomizationUtils.getServPath nodes with PI: " + new Integer(nodes.getLength()).toString());
+		for (int i = 0; i < nodes.getLength(); ++i) {
+			log.debug("CustomizationUtils.getServPath Item NodeValue: " + nodes.item(i).getNodeValue() + ", NodeName: " + nodes.item(i).getNodeName());
+			Node father = nodes.item(i).getParentNode();
+			log.debug("CustomizationUtils.getServPath Item father NodeName: " + father.getNodeName());
+			try {
+				String fileName = new String(nodes.item(i).getNodeValue());
+				log.debug("CustomizationUtils.getServPath fileName: " + fileName);
+				father.removeChild(nodes.item(i));
+				father.setTextContent(jackHttp+organizationkey + "/" + serviceName + "/template/" + fileName);
+			} catch (DOMException e) {
+				log.error("DOMException in CustomizationUtils.getServPath.");
 				e.printStackTrace();
 			}
 

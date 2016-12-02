@@ -14,6 +14,7 @@
       "servicePrice" : "Prezzo Servizio",
       "platformPrice" : "Prezzo Piattaforma",
       "applicationIsTryable": "La piattaforma può essere provata",
+      "isZipFile": "Is a .ZIP file?",
       "sizeId": "Dimensione"
     },
     "select" : {
@@ -32,12 +33,14 @@
     "button" : {
       "save": "Salva Configurazione",
       "save_n_next": "Salva Configurazione & Prosegui",
+      "skip": "Skip",
       "publish": "Pubblica il Servizio",
       "add": "+ Aggiungi un Elemento alla Libreria",
       "delete": "Cancella File",
       "service_list":"Lista Servizi",
       "update": "Aggiorna",
-      "next": "Successivo"
+      "next": "Successivo",
+      "finish": "Finire"
     },
     "messages": {
       "validate": {

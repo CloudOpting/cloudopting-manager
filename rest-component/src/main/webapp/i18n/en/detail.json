@@ -3,7 +3,7 @@
     "title": "Service Detail",
     "service": "\"{{service_name}}\" Service",
     "status": "Status: {{service_status}}",
-    "termsAndConditions": "Agree with Terms and Conditions",
+    "termsAndConditions": "Agree with the Terms and Conditions",
     "servicePrice" : "Service:",
     "platformPrice" : "Cloud Hosting:",
     "serverSizeRequired" : "Size of the Entity:",

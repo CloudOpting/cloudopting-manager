@@ -7,6 +7,10 @@ import eu.cloudopting.provision.azure.AzureResult;
 import eu.cloudopting.provision.cloudstack.CloudstackProvision;
 import eu.cloudopting.provision.cloudstack.CloudstackRequest;
 import eu.cloudopting.provision.cloudstack.CloudstackResult;
+import eu.cloudopting.provision.digitalocean.DigitaloceanProvision;
+import eu.cloudopting.provision.digitalocean.DigitaloceanRequest;
+import eu.cloudopting.provision.digitalocean.DigitaloceanResult;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -35,5 +39,9 @@ public class ProvisionConfig {
         return new CloudstackProvision();
     }
 
-
+    @Bean
+    @Scope(value = "prototype")
+    public ProvisionComponent<DigitaloceanResult, DigitaloceanRequest> digitaloceanProvision() {
+        return new DigitaloceanProvision();
+    }
 }

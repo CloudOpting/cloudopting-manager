@@ -2,6 +2,10 @@
 ${dockerDataVolumeContainer['container']}:
   image: ${dockerDataVolumeContainer['image']}
   entrypoint: ${dockerDataVolumeContainer['entrypoint']}
+<#if dockerDataVolumeContainer['volumes']?has_content>  volumes:
+<#list dockerDataVolumeContainer['volumes'] as volume>
+    - <#if volume['container']?has_content>${volume['container']}</#if>
+</#list></#if>
 </#list>
 <#list dockerContainers as dockerContainer>
 ${dockerContainer['container']}:
@@ -23,5 +27,9 @@ ${dockerContainer['volumesFrom']}</#if>
 <#if dockerContainer['volumes']?has_content>  volumes:
 <#list dockerContainer['volumes'] as volume>
     - <#if volume['container']?has_content>${volume['container']}</#if>
+</#list></#if>
+<#if dockerContainer['environments']?has_content>  environment:
+<#list dockerContainer['environments'] as environment>
+    - <#if environment['envvar']?has_content>${environment['envvar']}</#if>=<#if environment['envvalue']?has_content>${environment['envvalue']}</#if>
 </#list></#if>
 </#list>

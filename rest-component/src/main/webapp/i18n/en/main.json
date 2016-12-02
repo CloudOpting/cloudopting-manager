@@ -5,11 +5,11 @@
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
-        "question": "Cloudopting:",
+        "question": "CloudOpting:",
         "link": {
             "homepage": "CloudOpting homepage",
             "stackoverflow": "CloudOpting on Stack Overflow",
-            "bugtracker": "CluodOpting bug tracker",
+            "bugtracker": "CloudOpting bug tracker",
             "contact": "contact @cloudopting on Twitter"
         },
         "like": "If you like CloudOpting, don't forget to give us a star on",

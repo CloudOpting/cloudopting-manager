@@ -49,12 +49,27 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style type="text/css">
+            .loading {
+                width: 100%;
+                z-index: 1050;
+                height: 100%;
+                position: absolute;
+                background: black;
+                opacity: 0.6;
+                padding: 45%;
+                color: white;
+            }
+        </style>
+        <base href="/">
     </head>
     <body ng-app="cloudoptingApp" id="page-top" class="index">
+
         <!--[if lt IE 10]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <loading></loading>
         <!--
         <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
         -->

@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
@@ -56,16 +57,16 @@ public class DefaultZabbixApi implements ZabbixApi {
 
 	@Override
 	public void init() {
-		if (httpClient == null) {
-			httpClient = HttpClients.custom().build();
+		if (this.httpClient == null) {
+			this.httpClient = HttpClients.custom().build();
 		}
 	}
 
 	@Override
 	public void destory() {
-		if (httpClient != null) {
+		if (this.httpClient != null) {
 			try {
-				httpClient.close();
+				this.httpClient.close();
 			} catch (Exception e) {
 				log.error("close httpclient error!", e);
 			}
@@ -184,13 +185,26 @@ public class DefaultZabbixApi implements ZabbixApi {
 			request.setAuth(auth);
 		}
 		log.debug("request in call"+request.toString());
+		CloseableHttpResponse response = null;
 		try {
 			HttpUriRequest httpRequest = org.apache.http.client.methods.RequestBuilder
 					.post().setUri(uri)
 					.addHeader("Content-Type", "application/json")
 					.setEntity(new StringEntity(request.toString()))
 					.build();
-			CloseableHttpResponse response = httpClient.execute(httpRequest);
+			try{
+				response = this.httpClient.execute(httpRequest);
+			}catch(ClientProtocolException e){
+/*				if (response != null){ 
+					response.close();
+				}
+	*/			log.debug(e.getMessage());
+			}catch(IOException e){
+	/*			if (response != null){ 
+					response.close();
+				}
+		*/		log.debug(e.getMessage());
+			}
 			log.debug("response"+response.toString());
 //			HttpEntity entity = response.getEntity();
 //			byte[] data = EntityUtils.toByteArray(entity);
@@ -199,12 +213,16 @@ public class DefaultZabbixApi implements ZabbixApi {
 			JSONObject jresult = new JSONObject(responseContent);
 			log.debug("test"+jresult.toString());
 //			JSONTokener tokener = new JSONTokener(responseContent);
+			response.close();
 			return jresult;
 		} catch (IOException e) {
+			
 			throw new RuntimeException("DefaultZabbixApi call exception!", e);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+			
 		}
 		return null;
 	}

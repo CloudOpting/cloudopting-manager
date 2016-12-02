@@ -1,0 +1,23 @@
+<NodeType name="WarWildfly" shape="ellipse" color="#ffffff" image="war.jpg">
+	<DerivedFrom typeRef="root" />
+	<PropertiesDefinition element="WarWildflyProperties"
+		type="tWarWildflyProperties" />
+	<Interfaces>
+		<Interface name="Install">
+			<Operation name="compilePuppetTemplateHierarchy"></Operation>
+		</Interface>
+	</Interfaces>
+</NodeType>
+<NodeTypeImplementation nodeType="WarWildfly"
+	name="WarWildflyImpl">
+	<DeploymentArtifacts>
+		<DeploymentArtifact name="WarWildflyPT.ftl"
+			artifactType="PuppetTemplate" artifactRef="WarWildflyPT">
+		</DeploymentArtifact>
+	</DeploymentArtifacts>
+</NodeTypeImplementation>
+<ArtifactTemplate type="PuppetTemplate" id="WarWildflyPT">
+	<ArtifactReferences>
+		<ArtifactReference reference="Templates/WarWildflyPT.ftl"></ArtifactReference>
+	</ArtifactReferences>
+</ArtifactTemplate>

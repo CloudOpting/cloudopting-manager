@@ -26,18 +26,18 @@
                 },
                 "password" :{
                     "required": "Your password is required.",
-                    "minlength": "Your password is required to be at least 5 character",
+                    "minlength": "Your password is required to be at least 5 characters",
                     "maxlength": "Your password cannot be longer than 50 characters"
                 },
                 "password2" :{
                     "required": "Your password confirmation is required.",
-                    "minlength": "Your password is required to be at least 5 character",
+                    "minlength": "Your password is required to be at least 5 characters",
                     "maxlength": "Your password cannot be longer than 50 characters"
                 },
                 "email" :{
                     "required": "Your e-mail is required.",
                     "invalid": "Your e-mail is invalid.",
-                    "minlength": "Your e-mail is required to be at least 5 character",
+                    "minlength": "Your e-mail is required to be at least 5 characters",
                     "maxlength": "Your e-mail cannot be longer than 100 characters"
                 }
             },

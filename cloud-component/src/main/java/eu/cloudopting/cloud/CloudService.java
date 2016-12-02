@@ -1,6 +1,7 @@
 package eu.cloudopting.cloud;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import eu.cloudopting.provision.ProvisionComponent;
 import eu.cloudopting.provision.cloudstack.CloudstackRequest;
 import eu.cloudopting.provision.cloudstack.CloudstackResult;
+import eu.cloudopting.provision.digitalocean.DigitaloceanRequest;
+import eu.cloudopting.provision.digitalocean.DigitaloceanResult;
 
 @Service
 public class CloudService {
@@ -33,6 +36,9 @@ public class CloudService {
 	@Inject
 	ProvisionComponent<CloudstackResult, CloudstackRequest> cloudStackProvision;
 
+	@Inject
+	ProvisionComponent<DigitaloceanResult, DigitaloceanRequest> digitaloceanProvision;
+	
 	public boolean setUpCloud(String apikey, String secretKey, String endpoint, String provider, Long id) {
 		HashMap<String, String> theAccount = this.accounts.get(id);
 		if (theAccount == null) {
@@ -58,6 +64,14 @@ public class CloudService {
 		return myRequest;
 	}
 
+	private DigitaloceanRequest createDigitaloceanRequest(HashMap<String, String> theAccount) {
+		DigitaloceanRequest request = new DigitaloceanRequest();
+		request.setEndpoint(theAccount.get("endpoint"));
+		request.setIdentity(theAccount.get("apikey"));
+		request.setCredential(theAccount.get("secretKey"));
+		return request;
+	}
+	
 	/**
 	 * This method is the one that create the VM and return a String with the
 	 * JobId so that we can than do the check of the async creation operation If
@@ -75,21 +89,57 @@ public class CloudService {
 		if (theAccount == null)
 			return null;
 		String cloudTaskId = null;
+		String unencodedData = null;
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
 			log.debug("before creating the cloudstack VM");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
-			String unencodedData = "#cloud-config\n"
+			unencodedData = "#cloud-config\n"
 					+"runcmd:\n"
 					+"  - touch /root/cloudinitexecuted.txt\n"
 					+"phone_home:\n"
-					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId+"\n"
+					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
 					+"  post: all";
 			myRequest.setUserData(unencodedData);
 			myRequest.setDiskId(this.diskId);
 
 			// cloudStackProvision.provision(myRequest);
 			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
+			log.debug("after creation" + cloudTaskId.toString());
+			break;
+		case "digitalocean":
+			log.debug("before creating the digitalocean VM");
+			
+			//TODO: per Luca Gioppo: questi sono i valori passati allo userData alla creazione della VM
+			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
+			//TODO: add the cpu and memory when all works
+			//TODO: change the phone_home url
+			unencodedData = String.join("\n"
+					, "#cloud-config"
+					, "chpasswd:"
+					, "  list: |"
+					, "    root:gioppopass"
+					, "  expire: False"
+					, "packages:"
+					, "  - epel-release"
+					, "  - augeas"
+					, "runcmd:"
+					, "  - yum update --quiet -y"
+					, "  - echo '===== Installing Docker'"
+					, "  - curl -sSL https://get.docker.com/ | sh"
+					, "  - echo '===== Installing Zabbix'"
+					, "  - rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm"
+					, "  - yum install --quiet -y fail2ban"
+					, "  - yum install --quiet -y zabbix-agent"
+					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Hostname $(hostname -f) -s"
+					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Server cloudoptingmaster.cloudopen.csipiemonte.it,84.240.187.3,172.16.1.63 -s"
+					, "  - augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s"
+					, "phone_home:"
+					, "  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html"
+					);
+
+			doRequest.setUserData(unencodedData);
+			cloudTaskId = digitaloceanProvision.provisionVM(doRequest);
 			log.debug("after creation" + cloudTaskId.toString());
 			break;
 		case "azure":
@@ -111,6 +161,15 @@ public class CloudService {
 		log.debug("in checkVM");
 		// TODO this will have to be set to false in production
 		boolean theCheck = true;
+		log.debug("***ACCOUNTS***");
+		for(Long acc : this.accounts.keySet()) {
+			log.debug("ID: " + acc);
+			HashMap<String, String> hashMap = this.accounts.get(acc);
+			for (String k: hashMap.keySet()) {
+				log.debug(k + ": " + hashMap.get(k));
+			}
+		}
+		log.debug("***FINE ACCOUNTS***");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
 			return false;
@@ -119,6 +178,11 @@ public class CloudService {
 			log.debug("before checking the cloudstack VM");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			theCheck = cloudStackProvision.checkVMdeployed(myRequest, taskId);
+			break;
+		case "digitalocean":
+			log.debug("before checking the digitalocean VM");
+			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
+			theCheck = digitaloceanProvision.checkVMdeployed(doRequest, taskId);
 			break;
 		case "azure":
 
@@ -142,6 +206,11 @@ public class CloudService {
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			
 			vmData = cloudStackProvision.getVMinfo(myRequest, taskId);
+			log.debug(vmData.toString());
+			break;
+		case "digitalocean":
+			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
+			vmData = digitaloceanProvision.getVMinfo(doRequest, taskId);
 			log.debug(vmData.toString());
 			break;
 		case "azure":
@@ -169,6 +238,9 @@ public class CloudService {
 			acquireTaskId = cloudStackProvision.acquireIp(myRequest);
 			log.debug("after creation" + acquireTaskId.toString());
 			break;
+		case "digitalocean":
+			// Nothing to do here
+			break;
 		case "azure":
 
 			break;
@@ -180,10 +252,11 @@ public class CloudService {
 		return acquireTaskId;
 	}
 
-	public boolean checkAssociateIp(Long cloudAccountId, String taskId) {
+	public boolean checkAssociateIp(Map<String, Object> cloudParams) {
 		log.debug("in checkAssociateIp");
 		// TODO this will have to be set to false in production
 		boolean theCheck = true;
+		Long cloudAccountId = (Long)cloudParams.get("cloudAccountId");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
 			return false;
@@ -191,7 +264,11 @@ public class CloudService {
 		case "cloudstack":
 			log.debug("before checking the associated IP");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
+			String taskId = (String)cloudParams.get("acquireJobId");
 			theCheck = cloudStackProvision.checkIpAcquired(myRequest, taskId);
+			break;
+		case "digitalocean":
+			// Nothing to do here
 			break;
 		case "azure":
 
@@ -203,9 +280,10 @@ public class CloudService {
 		return theCheck;
 	}
 
-	public JSONObject getAssociatedIpinfo(Long cloudAccountId, String taskId) {
+	public JSONObject getAssociatedIpinfo(Map<String, Object> cloudParams) {
 		log.debug("CloudService in getAssociatedIpinfo");
 		// TODO this will have to be set to false in production
+		Long cloudAccountId = (Long)cloudParams.get("cloudAccountId");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		JSONObject ipData = null;
 		if (theAccount == null)
@@ -213,14 +291,19 @@ public class CloudService {
 		switch (theAccount.get("provider")) {
 		case "cloudstack":
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
-			
+			String taskId = (String)cloudParams.get("acquireJobId");
 			ipData = cloudStackProvision.getAcquiredIpinfo(myRequest, taskId);
+			log.debug(ipData.toString());
+			break;
+		case "digitalocean":
+			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
+			String vmId = (String)cloudParams.get("vmId");
+			ipData = digitaloceanProvision.getAcquiredIpinfo(doRequest, vmId);
 			log.debug(ipData.toString());
 			break;
 		case "azure":
 
 			break;
-
 		default:
 			break;
 		}
@@ -353,6 +436,23 @@ public class CloudService {
 			}
 			log.debug(vmData.toString());
 			break;
+		case "digitalocean":
+			log.debug("before checking if Vm is down");
+			DigitaloceanRequest request = createDigitaloceanRequest(theAccount);
+			request.setVirtualMachineId(vmId);
+			vmData = digitaloceanProvision.getVMinfoById(request);
+			
+			try {
+				String state = vmData.getString("state");
+				log.debug("The state is:"+state);
+				if(!state.equals("ACTIVE")){
+					isRunning = false;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			log.debug(vmData.toString());
+			break;
 		case "azure":
 
 			break;
@@ -384,6 +484,9 @@ public class CloudService {
 			isoTaskId = cloudStackProvision.removeISO(myRequest);
 			log.debug(isoTaskId);
 			break;
+		case "digitalocean":
+			// Nothing to do here
+			break;
 		case "azure":
 
 			break;
@@ -407,6 +510,9 @@ public class CloudService {
 			log.debug("before checking the ISO removal");
 			CloudstackRequest myRequest = createCloudStackRequest(theAccount);
 			theCheck = cloudStackProvision.checkIso(myRequest, taskId);
+			break;
+		case "digitalocean":
+			// Nothing to do here
 			break;
 		case "azure":
 
@@ -432,6 +538,9 @@ public class CloudService {
 			// cloudStackProvision.provision(myRequest);
 			startTaskId = cloudStackProvision.startVM(myRequest);
 			log.debug(startTaskId);
+			break;
+		case "digitalocean":
+			// Nothing to do here, the machine is already started
 			break;
 		case "azure":
 

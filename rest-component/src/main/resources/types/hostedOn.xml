@@ -1,2 +1,2 @@
-<RelationshipType name="hostedOn" style="solid" color="#992222">
+<RelationshipType name="hostedOn" style="solid" color="#992222" sourcearrow="triangle" targetarrow="none">
 </RelationshipType>

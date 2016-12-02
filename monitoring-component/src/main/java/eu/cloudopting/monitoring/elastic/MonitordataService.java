@@ -27,10 +27,12 @@ import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryFilterBuilder;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.RangeFilterBuilder;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -97,7 +99,7 @@ public class MonitordataService {
 				.interval(DateHistogram.Interval.DAY).format("yyyy-MM-dd hh:mm:ss");
 		log.debug(dayly.toString());
 		// we need to filter the data for time range AND data match
-		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte(startDate);
+		RangeFilterBuilder rangeFilter = FilterBuilders.rangeFilter("@timestamp").gte(startDate).lte(endDate);
 		log.debug(rangeFilter.toString());
 		// we need to match on the path AND containername
 		MatchQueryBuilder pathMatch = QueryBuilders.matchQuery(fields, condition)
@@ -105,6 +107,13 @@ public class MonitordataService {
 		MatchQueryBuilder contMatch = QueryBuilders.matchQuery("container_name", container)
 				.operator(MatchQueryBuilder.Operator.AND);
 
+		// ++++++++++ START NEW CODE
+		QueryStringQueryBuilder queryString = QueryBuilders.queryString("container_name:"+container+" AND "+fields+":\""+condition+"\"");
+		queryString.analyzeWildcard(true);
+		FilteredQueryBuilder filteredQuery = QueryBuilders.filteredQuery(queryString, rangeFilter);
+		log.debug("NEW FILTER");
+		log.debug(filteredQuery.toString());
+		
 		// place the match in bool AND
 		BoolQueryBuilder boolQ = QueryBuilders.boolQuery().must(pathMatch);
 		boolQ.must(contMatch);
@@ -113,15 +122,20 @@ public class MonitordataService {
 
 		// place the match in AND with the range
 		AndFilterBuilder filter = FilterBuilders.andFilter(rangeFilter, queryF);
-
+		log.debug("AndFilterBuilder");
+		log.debug(filter.toString());
 		// we need the filter aggregation
-		FilterAggregationBuilder containerFilter = AggregationBuilders.filter("containers").filter(filter)
-				.subAggregation(dayly);
-		log.debug(containerFilter.toString());
+//		FilterAggregationBuilder containerFilter = AggregationBuilders.filter("containers").filter(dayly);
+				//.subAggregation(dayly);
+		log.debug("Containerfilter");
+	//	log.debug(containerFilter.toString());
 		// build the aggregation native search query
-		SearchQuery searchQ = new NativeSearchQueryBuilder().withQuery(all).withSearchType(COUNT).withIndices("coidx-")
-				.withTypes("fluentd").addAggregation(containerFilter).build();
+		// removed all for filteredQuery
+		SearchQuery searchQ = new NativeSearchQueryBuilder().withQuery(filteredQuery).withSearchType(COUNT).withIndices("coidx-*")
+				.withTypes("fluentd").addAggregation(dayly).build();
 
+		log.debug("+++++++++++++++ aggregation");
+		log.debug(searchQ.toString());
 		// do the query
 		Aggregations aggregations = null;
 		try {
@@ -130,8 +144,8 @@ public class MonitordataService {
 				public Aggregations extract(SearchResponse response) {
 					// TODO Auto-generated method stub
 					// response.
-//					log.debug(response.toString());
-//					log.debug(response.getHits().toString());
+					log.debug(response.toString());
+					log.debug(response.getHits().toString());
 					return response.getAggregations();
 				}
 
@@ -144,12 +158,13 @@ public class MonitordataService {
 		}
 		log.debug("PARSING---------------");
 		for (Aggregation aAgg : aggregations.asList()) {
-			InternalFilter cnt = (InternalFilter) aAgg;
-			log.debug("aggregation name:" + cnt.getName());
+//			InternalFilter cnt = (InternalFilter) aAgg;
+			InternalDateHistogram idh = (InternalDateHistogram) aAgg;
+			log.debug("aggregation name:" + idh.getName());
 	//		log.debug(cnt.toString());
 
-			for (Aggregation theA : cnt.getAggregations().asList()) {
-				InternalDateHistogram idh = (InternalDateHistogram) theA;
+//			for (Aggregation theA : cnt.getAggregations().asList()) {
+	//			InternalDateHistogram idh = (InternalDateHistogram) theA;
 				graphData = new ElasticData[idh.getBuckets().size()];
 				int gdi = 0;
 				for (Histogram.Bucket entry : idh.getBuckets()) {
@@ -165,7 +180,7 @@ public class MonitordataService {
 				// log.debug(new Integer(graphData.size()).toString());
 				// if (!graphData.isEmpty()) {
 				egd.setData(graphData);
-			}
+		//	}
 			// logger.debug(cnt.;
 			// logger.debug(new Long(cnt.getValue()).toString());
 		}

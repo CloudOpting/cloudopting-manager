@@ -5,6 +5,8 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	$scope.mapData = [];
 	$scope.edgeData = [];
 	$scope.formTypes = [];
+	$scope.maxNodes = 0;
+	$scope.maxEdges = 0;
 	// data types/groups object - used Cytoscape's shapes just
 	// to make it more clear
 	$scope.form = [ "*", {
@@ -110,12 +112,13 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		// sample (you
 		// can do it any other way)
 		var newNode = {
-			id : ($scope.mapData.length),
+			id : ($scope.maxNodes),
 			name : newObj,
 			type : newObjType
 		};
 		// adding the new Node to the nodes array
 		$scope.mapData.push(newNode);
+		$scope.maxNodes++;
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
 		// resetting the form
@@ -134,13 +137,14 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		// sample (you
 		// can do it any other way)
 		var newEdge = {
-			id : "e" + ($scope.edgeData.length),
+			id : "e" + ($scope.maxEdges),
 			source : edge1,
 			target : edge2,
 			type : $scope.formEdges.type
 		};
 		// adding the new edge object to the adges array
 		$scope.edgeData.push(newEdge);
+		$scope.maxEdges++;
 		// broadcasting the event
 		$rootScope.$broadcast('appChanged');
 		// resetting the form
@@ -155,11 +159,19 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		// the
 		// console and to an alert
 		console.debug(value);
+//		nodeIndex = 0;
+		for (var i=0; i< $scope.mapData.length; i++){
+			if(parseInt($scope.mapData[i].id) === parseInt(value.id)){
+				$scope.workingNode = i;
+			}
+		}
 		// alert(value);
 		console.debug('before' + $scope.schema);
 		console.debug($scope.schema);
+		console.debug('workingnode:');
+		console.debug($scope.workingNode);
 		$scope.schema = JSON.parse(JSON.stringify(value.props));
-		$scope.workingNode = value.id;
+//		$scope.workingNode = value.id;
 		$scope.isFormNode = true;
 		console.debug('after' + $scope.schema);
 		console.debug($scope.schema);
@@ -170,12 +182,12 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		} ];
 
 		console.debug("value.model");
-		console.debug($scope.mapData[value.id].model);
+		console.debug($scope.mapData[$scope.workingNode].model);
 
-		if (typeof $scope.mapData[value.id].model == "undefined") {
+		if (typeof $scope.mapData[$scope.workingNode].model == "undefined") {
 			$scope.model = {};
 		} else {
-			$scope.model = $scope.mapData[value.id].model;
+			$scope.model = $scope.mapData[$scope.workingNode].model;
 		}
 		$scope.$broadcast('schemaFormRedraw');
 
@@ -185,7 +197,14 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	$scope.doEdgeClick = function(value) {
 		console.debug(value);
 		$scope.schema = JSON.parse(JSON.stringify(value.props));
-		$scope.workingEdge = value.id.substring(1);
+		for (var i=0; i< $scope.edgeData.length; i++){
+			if(parseInt($scope.edgeData[i].id.substring(1)) === parseInt(value.id.substring(1))){
+				$scope.workingEdge = i;
+			}
+		}
+//		$scope.workingEdge = value.id.substring(1);
+		console.debug('workingedge');
+//		console.debug($scope.workingEdge);
 		$scope.isFormNode = false;
 		console.debug($scope.workingEdge);
 		console.debug('after' + $scope.schema);
@@ -213,16 +232,18 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		console.log("in remove node");
 		console.log(value.id);
 		console.debug($scope.mapData);
-		for (var index = 0; index < $scope.mapData.length; index++) {
+		if(value.id>-1 && value.id<$scope.maxNodes){
+			$scope.mapData.splice(value.id, 1);
+		}
+		for (var index = $scope.edgeData.length-1; index >0; index--) {
             // If current array item equals itemToRemove then
-            if ($scope.mapData[index].id == value.id) {
+            if (($scope.edgeData[index].source == value.id)||($scope.edgeData[index].target == value.id)) {
                 // Remove array item at current index
-            	$scope.mapData.splice(index, 1);
+            	$scope.edgeData.splice(index, 1);
 
                 // Decrement index to iterate current position 
                 // one more time, because we just removed item 
                 // that occupies it, and next item took it place
-                index--;
             }
         }
 		console.debug($scope.mapData);
@@ -289,6 +310,8 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	$scope.reset = function() {
 		$scope.mapData = [];
 		$scope.edgeData = [];
+		$scope.maxNodes = 0;
+		$scope.maxEdges = 0;
 		// $scope.$broadcast('schemaFormRedraw');
 		$scope.$apply();
 		$rootScope.$broadcast('appChanged');
@@ -323,6 +346,10 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			serviceName : $scope.serviceName
 		});
 
+		var jsonFile = new Blob([data], {type: 'application/json'});
+        var fileName = $scope.serviceName+'.json';
+        FileSaver.saveAs(jsonFile, fileName);
+		
 		var callback = function(data, status, headers, config) {
 			console.debug(data);
 		};
@@ -351,7 +378,10 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 			});
 			console.debug(data.nodes);
 			console.debug($scope.mapData);
+			$scope.maxNodes = $scope.mapData[$scope.mapData.length -1].id + 1;
+			$scope.maxEdges = parseInt($scope.edgeData[$scope.edgeData.length -1].id.substring(1)) + 1;
 			// $scope.edgeData = data.edges;
+			$scope.$apply();
 			$rootScope.$broadcast('appChanged');
 
 		};
@@ -360,6 +390,8 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 	
 	$scope.importJson = function(){
 		console.log($scope.dynamicPopover);
+		$scope.mapData = [];
+		$scope.edgeData = [];
 		var data = JSON.parse($scope.dynamicPopover.content);
 		data.nodes.forEach(function(entry) {
 			console.log(entry);
@@ -372,7 +404,10 @@ angular.module('cloudoptingApp').controller('ToscaideController', function(SERVI
 		$scope.serviceName = data.serviceName;
 		console.debug(data.nodes);
 		console.debug($scope.mapData);
+		$scope.maxNodes = $scope.mapData[$scope.mapData.length -1].id + 1;
+		$scope.maxEdges = parseInt($scope.edgeData[$scope.edgeData.length -1].id.substring(1)) + 1;
 		// $scope.edgeData = data.edges;
+		$scope.$apply();
 		$rootScope.$broadcast('appChanged');
 	}
 

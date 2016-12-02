@@ -55,17 +55,9 @@
 										<div class="row" ng-show="mapData.length>1">
 											<div class="col-md-3">
 												<div class="form-group">
-													<label for="fromNode" translate="toscaide.select_1">Select node 1:</label>
-	  												<select id="fromNode" name="fromNode" class="form-control" ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
-	  			 										<option value="" translate="toscaide.from">From</option>
-	  			 									</select>
-												</div>
-											</div>
-											<div class="col-md-3">
-												<div class="form-group">
-													<label for="toNode" translate="toscaide.select_2">Select node 2:</label>
+													<label for="toNode" translate="toscaide.select_2">Select Hosted/Vol. offer/Linked node:</label>
 													<select id="toNode" name="toNode" class="form-control" ng-model="formEdges.toName" ng-options="c.name for c in mapData">
-														<option value="" translate="toscaide.to">To</option>
+														<option value="" translate="toscaide.to">Hosted</option>
 													</select>
 												</div>
 											</div>
@@ -74,6 +66,14 @@
 													<label for="connectionType" translate="toscaide.selectRelationship">Select relationship:</label>
 													<select id="connectionType" name="connectionType" class="form-control" ng-model="formEdges.type" ng-options="name for name in formArr">
 				 									</select>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label for="fromNode" translate="toscaide.select_1">Select Hosting/Vol. need/Links node:</label>
+	  												<select id="fromNode" name="fromNode" class="form-control" ng-model="formEdges.fromName" ng-options="c.name for c in mapData">
+	  			 										<option value="" translate="toscaide.from">Hosting</option>
+	  			 									</select>
 												</div>
 											</div>
 											<div class="col-md-3">

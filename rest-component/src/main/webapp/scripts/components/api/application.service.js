@@ -17,7 +17,7 @@ angular.module('cloudoptingApp')
          * @param type Type of the file that will be uploaded.
          * @param callback Function that will take care of the returned objects.
          */
-        function upload(applicationId, processID, file, type, callback) {
+        function upload(applicationId, processID, file, type, isZipFile, callback) {
             var endpoint = baseURI +
                 SERVICE.SEPARATOR +
                 applicationId +
@@ -28,7 +28,7 @@ angular.module('cloudoptingApp')
             Upload.upload({
                 method: 'POST',
                 url: endpoint,
-                fields: { 'name': file.name, 'type' : type },
+                fields: { 'name': file.name, 'type' : type, 'isZipFile' : isZipFile },
                 file: file
             }).progress(function (evt) {
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -57,10 +57,10 @@ angular.module('cloudoptingApp')
             findAll: function (page, size, sortBy, sortOrder, filter, callback) {
                 var endpoint = baseURI +
                     '?page=' + page +
-                    '&size=' + size +
-                    '&sortBy=' + sortBy +
-                    '&sortOrder=' + sortOrder +
-                    '&filter=' + filter;
+                    '&size=' + size;
+                if(sortBy != null && sortBy != undefined) { endpoint += '&sortBy=' + sortBy; }
+                if(sortOrder != null && sortOrder != undefined) { endpoint += '&sortOrder=' + sortOrder; }
+                if(filter != null && filter != undefined) { endpoint += '&filter=' + filter; }
                 return $http.get(endpoint)
                     .success(function (data, status, headers, config) {
                         callback(data, status, headers, config);
@@ -188,7 +188,7 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             addPromotionalImage: function (applicationId, processID, file, callback) {
-                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.PROMO_IMAGE, callback);
+                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.PROMO_IMAGE, false, callback);
             },
 
             /**
@@ -200,8 +200,8 @@ angular.module('cloudoptingApp')
              * @param callback Function that will take care of the returned objects.
              * @returns {*}
              */
-            addContentLibrary: function (applicationId, processID, file, callback) {
-                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.CONTENT_LIBRARY, callback);
+            addContentLibrary: function (applicationId, processID, file, isZipFile, callback) {
+                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.CONTENT_LIBRARY, isZipFile, callback);
             },
 
             /**
@@ -214,7 +214,7 @@ angular.module('cloudoptingApp')
              * @returns {*}
              */
             addToscaArchive: function (applicationId, processID, file, callback) {
-                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, callback);
+                return upload(applicationId, processID, file, SERVICE.FILE_TYPE.TOSCA_ARCHIVE, false, callback);
             },
 
             /**
@@ -261,7 +261,92 @@ angular.module('cloudoptingApp')
                             "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
                         callback(data, status, headers, config);
                     });
-            }
+            },
+
+            updateLogo: function (applicationId, file, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'updatelogo';
+                return Upload.upload({
+                    method: 'POST',
+                    url: endpoint,
+                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.PROMO_IMAGE },
+                    file: file
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    $log.debug('ApplicationService.updateLogo progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                    callback(data, status, headers, config);
+                }).error(function (data, status, headers, config) {
+                    $log.error("ApplicationService.updateLogo error. Data: " + data +
+                        ", status: " + status + ", headers: " + headers + ", config: " + config);
+                    callback(data, status, headers, config);
+                });
+            },
+
+            updateMetadata: function(applicationId, application, callback){
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'updatemetadata';
+                return $http.put(endpoint, application)
+                    .success(function (data, status, headers, config) {
+                        callback(data, status, headers, config);
+                    })
+                    .error(function (data, status, headers, config) {
+                        $log.error("ApplicationService.update error. " +
+                            "Data: " + data + ", status: " + status + ", headers: " + headers + ", config: " + config);
+                        callback(data, status, headers, config);
+                    });
+            },
+            addMediaFile: function(applicationId, file, isZipFile, callback){
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'mediafile';
+                return Upload.upload({
+                    method: 'POST',
+                    url: endpoint,
+                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.CONTENT_LIBRARY, 'isZipFile' :  isZipFile },
+                    file: file
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    $log.debug('ApplicationService.addMediaFile progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                    callback(data, status, headers, config);
+                }).error(function (data, status, headers, config) {
+                    $log.error("ApplicationService.addMediaFile error. Data: " + data +
+                        ", status: " + status + ", headers: " + headers + ", config: " + config);
+                    callback(data, status, headers, config);
+                });
+            },
+
+            updateToscaFile: function (applicationId, file, callback) {
+                var endpoint = baseURI +
+                    SERVICE.SEPARATOR +
+                    applicationId +
+                    SERVICE.SEPARATOR +
+                    'updatetoscafile';
+                return Upload.upload({
+                    method: 'POST',
+                    url: endpoint,
+                    fields: { 'name': file.name, 'type' : SERVICE.FILE_TYPE.TOSCA_ARCHIVE },
+                    file: file
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    $log.debug('ApplicationService.updateToscaFile progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                    callback(data, status, headers, config);
+                }).error(function (data, status, headers, config) {
+                    $log.error("ApplicationService.updateToscaFile error. Data: " + data +
+                        ", status: " + status + ", headers: " + headers + ", config: " + config);
+                    callback(data, status, headers, config);
+                });
+            },
         }
     }
 );

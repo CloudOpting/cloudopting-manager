@@ -45,7 +45,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <!--<button type="button" class="btn btn-reverse">+ Add item in library</button>-->
-                                        <div class="btn btn-reverse" ngf-select ng-model="contentLib" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
+                                        <div class="btn btn-reverse" ngf-select ngf-multiple="false" ngf-change="newContentLib($files)" translate="publish.button.add">+ Add Item in Library</div>
                                     </div>
                                 </div>
                             </div>
@@ -74,16 +74,27 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                        <!-- FIXME: Deleted sr-only class -->
+                                        <label for="isZipFile">
+                                            <input type="checkbox" id="isZipFile" placeholder="{{'publish.service.isZipFile' | translate}}"
+                                                   autocomplete="off" name="isZipFile" ng-model="isZipFile" />
+                                            {{'publish.service.isZipFile' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row row-actions">
                                 <div class="col-xs-6">
-                                    <!--
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                    <button type="submit" class="btn btn-secondary">Update</button>
-                                    -->
+                                    <button type="button" class="btn btn-primary" ng-disabled="form_publish.$invalid" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save" ng-autodisable>Save</button>
                                 </div>
                                 <div class="col-xs-6">
                                     <!-- ng-disabled="isLibraryEmpty()" -->
-                                    <button type="button" class="btn btn-primary pull-right" ng-click="saveConfigurationWizardTwo()" translate="publish.button.save_n_next" ng-autodisable>Save Configuration & Next</button>
+                                    <button type="button" class="btn btn-primary pull-right" ng-disabled="disableNextTwo" ng-click="nextWizardTwo()" translate="publish.button.next" ng-autodisable>Next</button>
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="skipWizardTwo()" translate="publish.button.skip" ng-autodisable>Skip</button>
                                 </div>
                             </div>
                         </form>

@@ -45,6 +45,8 @@ console.debug(scope.elements.nodes);
                     var eStyle = scope.cyEdgetemplates[eType].style;
                     var eProps = scope.cyEdgetemplates[eType].props;
                     var eColor = scope.cyEdgetemplates[eType].color;
+                    var eSourcearrow = scope.cyEdgetemplates[eType].sourcearrow;
+                    var eTargetarrow = scope.cyEdgetemplates[eType].targetarrow;
                     console.debug("edge type:" + scope.cyEdges[i].type);
                     // build the edge object
                     var edgeObj = {
@@ -54,6 +56,8 @@ console.debug(scope.elements.nodes);
                         target:eTarget,
                         color:eColor,
                         style:eStyle,
+                        sourcearrow:eSourcearrow,
+                        targetarrow:eTargetarrow,
                         properties:eProps,
                         type: eType
                         }
@@ -121,8 +125,8 @@ console.debug(scope.elements.nodes);
                         .selector('edge')
                         .css({
                             'width': '5',
-                            'target-arrow-shape': 'triangle',
-                            'source-arrow-shape': 'none',
+                            'target-arrow-shape': 'data(targetarrow)',
+                            'source-arrow-shape': 'data(sourcearrow)',
                             'content': 'data(type)',
                             'line-color': 'data(color)',
                             'line-style': 'data(style)'

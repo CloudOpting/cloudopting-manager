@@ -137,6 +137,15 @@ public class MailService {
 		String subject = "CloudOpting Catalogue Reset Password Link";
 		sendEmail(user.getEmail(), subject, content, false, true);
 	}
+	
+	@Async
+	public void sendPasswordChangeMail(User user, String baseUrl) {
+		log.debug("Sending password change e-mail to '{}'", user.getEmail());
+		String content = "<html>" + "<body>" + "<p> Dear " + user.getFirstName() + ", </p>" + "Your password have been changed successfully</p><p>Best regards,</p>"
+				+ "<p>CloudOpting team.</p>" + "</body>" + "</html>";
+		String subject = "CloudOpting Catalogue Password changed succesfully";
+		sendEmail(user.getEmail(), subject, content, false, true);
+	}
 
 	@Async
 	public void sendTemplatedMail(String to, String subject, String template, HashMap<String, Object> templateData,

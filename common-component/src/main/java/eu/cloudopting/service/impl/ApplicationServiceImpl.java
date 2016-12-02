@@ -1,26 +1,22 @@
 package eu.cloudopting.service.impl;
 
-import eu.cloudopting.domain.Applications;
-import eu.cloudopting.events.api.SearchCommonUtil;
-import eu.cloudopting.events.api.constants.ClientOperation;
-import eu.cloudopting.events.api.exceptions.ConflictException;
-import eu.cloudopting.repository.ApplicationsRepository;
-import eu.cloudopting.service.ApplicationService;
+import javax.inject.Inject;
 
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import eu.cloudopting.domain.Applications;
 import eu.cloudopting.events.api.service.AbstractService;
-
-import javax.inject.Inject;
-import java.util.List;
+import eu.cloudopting.repository.ApplicationsRepository;
+import eu.cloudopting.service.ApplicationService;
 
 /**
  * @author Daniel P.
@@ -55,16 +51,14 @@ public class ApplicationServiceImpl extends AbstractService<Applications> implem
 	@Transactional(readOnly = true)
 	public Page<Applications> findForApiGetAll(int page, int size, String sortBy, String sortOrder,
 			String filterObj) {
+		
         final Sort sortInfo = constructSort(sortBy, sortOrder);
-
-        List<Triple<String, ClientOperation, String>> parsedQuery;
-
-        if (filterObj != null) {
-            return new PageImpl(searchAll(filterObj));
+        if(filterObj != null){
+        	final Specification<Applications> filterSpec = createFilterSpecifications(filterObj);
+        	return applicationsRepository.findAll(filterSpec, new PageRequest(page, size, sortInfo));
         }
-        else {
-            return applicationsRepository.findForApiGetAll(new PageRequest(page, size, sortInfo));
-        }
+        
+        return applicationsRepository.findAll(new PageRequest(page, size, sortInfo));
 	}
 
 	@Override

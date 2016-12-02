@@ -6,7 +6,8 @@ angular.module('cloudoptingApp')
                                             $state, $scope, $document, $rootScope, $window, $translate, $timeout, $cookieStore,
                                             Principal, Auth) {
 
-        $scope.logoutButton = Principal.isAuthenticated();
+    $scope.showDropDownMenu = true;
+    $scope.logoutButton = Principal.isAuthenticated();
         //$scope.name = Principal.isAuthenticated ? Principal.identity().login : '';
         if (Principal.isAuthenticated()) {
             Principal.identity().then(function (account) {
@@ -81,22 +82,23 @@ angular.module('cloudoptingApp')
 
         $scope.showMenu = function(item){
             if(Principal.isInRole(SERVICE.ROLE.ADMIN)){
+                if(item=='dashboard') return false;
                 return true;
             }
             else if(Principal.isInRole(SERVICE.ROLE.OPERATOR)){
-                if(item=='catalogue' || item=='detail' || item=='detail') {
+                if(item=='dashboard' || item=='list' || item=='user_manager' || item=='org_manager' ) {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.PUBLISHER)){
-                if(item=='catalogue' || item=='detail' || item=='instances' || item=='publish' || item=='list' || item=='toscaide') {
+                if(item=='dashboard' || item=='publish' || item=='toscaide') {
                     return true;
                 }
             }
             else if(Principal.isInRole(SERVICE.ROLE.SUBSCRIBER)){
-                if(item=='catalogue' || item=='detail' || item=='instances') {
-                    return true;
-                }
+                $scope.showDropDownMenu = false;
+                if(item=='dashboard') return true;
+                return false;
             }
         };
 

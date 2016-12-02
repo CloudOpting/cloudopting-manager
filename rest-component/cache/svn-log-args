@@ -1,0 +1,4 @@
+args=( ${(Q)"${(z)$(<<\EO:args
+'(--revision)-r:arg:' '(-r)--revision:arg:' '(--quiet)-q' '(-q)--quiet' '(--verbose)-v' '(-v)--verbose' '(--use-merge-history)-g' '(-g)--use-merge-history' '(--change)-c:arg:' '(-c)--change:arg:' '--targets:arg:' '--stop-on-copy' '--incremental' '--xml' '(--limit)-l:arg:' '(-l)--limit:arg:' '--with-all-revprops' '--with-no-revprops' '--with-revprop:arg:' '--depth:arg:' '--diff' '--diff-cmd:arg:' '--internal-diff' '(--extensions)-x:arg:' '(-x)--extensions:arg:' '--search:arg:' '--search-and:arg:' '--username:arg:' '--password:arg:' '--no-auth-cache' '--non-interactive' '--force-interactive' '--trust-server-cert' '--config-dir:arg:' '--config-option:arg:'
+EO:args
+)}"} )

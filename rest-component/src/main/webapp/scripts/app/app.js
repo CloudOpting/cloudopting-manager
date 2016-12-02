@@ -91,6 +91,8 @@ angular.module('cloudoptingApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'vc
 
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage('NG_TRANSLATE_LANG_KEY');
+
+        $locationProvider.html5Mode(true);
     });
 
 function loadScript(url, callback)
@@ -120,3 +122,19 @@ function loadScript(url, callback)
 function vcRecaptchaApiLoaded(){
     grecaptcha.render();
 }*/
+angular.module('cloudoptingApp')
+    .directive('loading', function () {
+        return {
+            restrict: 'E',
+            replace:true,
+            template: '<div class="loading"><i class="fa-4x fa fa-spinner fa-spin"></i></div>',
+            link: function (scope, element, attr) {
+                scope.$watch('loading', function (val) {
+                    if (val)
+                        $(element).show();
+                    else
+                        $(element).hide();
+                });
+            }
+        }
+    });

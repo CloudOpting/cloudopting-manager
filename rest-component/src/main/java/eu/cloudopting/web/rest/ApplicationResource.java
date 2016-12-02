@@ -1,12 +1,28 @@
 package eu.cloudopting.web.rest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileAttribute;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,11 +43,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import eu.cloudopting.bpmn.BpmnService;
+import eu.cloudopting.domain.ApplicationMedia;
 import eu.cloudopting.domain.Applications;
+import eu.cloudopting.domain.ApplicationFile;
 import eu.cloudopting.domain.Organizations;
 import eu.cloudopting.domain.User;
 import eu.cloudopting.dto.ActivitiDTO;
 import eu.cloudopting.dto.ApplicationDTO;
+import eu.cloudopting.dto.MultipleUploadDTO;
 import eu.cloudopting.dto.UploadDTO;
 import eu.cloudopting.events.api.constants.QueryConstants;
 import eu.cloudopting.events.api.controller.AbstractController;
@@ -185,16 +204,16 @@ public class ApplicationResource extends AbstractController<Applications> {
      * @return The set of of associated files paths.
      */
     @RequestMapping(value = "/application/{idApp}/file", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final @ResponseBody Set<String> getApplicationFiles(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
+    public final @ResponseBody Map<String, Set<ApplicationFile>> getApplicationFiles(@PathVariable("idApp") final Long idApp, final UriComponentsBuilder uriBuilder,
                                                final HttpServletResponse response, final HttpServletRequest request) {
         Applications app = getService().findOne(idApp);
-        String toscaName = app.getApplicationToscaName();
-        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
-        Organizations org = user.getOrganizationId();
-        String orgKey = org.getOrganizationKey();
-        String path = getStoreService().getTemplatePath(orgKey, toscaName);
-        StoreService ss = this.getStoreService(); 
-        return ss.getFilesStartingFromPath(path);
+        
+        Set<ApplicationFile> allFiles = app.getAllFiles();
+        
+        Map<String, Set<ApplicationFile>> outObject = new HashMap<String, Set<ApplicationFile>>();
+        outObject.put("files", allFiles);
+        return outObject;
+
     }
     
     /**
@@ -243,17 +262,54 @@ public class ApplicationResource extends AbstractController<Applications> {
     public final ActivitiDTO upload( HttpServletRequest request, @PathVariable String idApp,
                                      @PathVariable String processId,
                                      @RequestParam("file") MultipartFile file) throws IOException {
+    	String isZipFile = request.getParameter("isZipFile");  
     	User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
         Organizations org = user.getOrganizationId();
-		UploadDTO dto = new UploadDTO();
-        dto.setName(request.getParameter("name"));
-        dto.setType(request.getParameter("type"));
-        dto.setProcessId(processId);
-        dto.setIdApp(idApp);
-        dto.setFile(file.getInputStream());
-        dto.setOrg(org);
-        dto.setUser(user);
-        return getBpmnService().upload(dto);
+    	if (isZipFile == null || !isZipFile.equals("true")) {
+	    	
+			UploadDTO dto = new UploadDTO();
+	        dto.setName(request.getParameter("name"));
+	        dto.setType(request.getParameter("type"));
+	        dto.setProcessId(processId);
+	        dto.setIdApp(idApp);
+	        dto.setFile(file.getInputStream());
+	        dto.setOrg(org);
+	        dto.setUser(user);
+	        return getBpmnService().upload(dto);
+    	}
+    	else {
+    		File tempFile = Files.createTempFile(null, ".zip").toFile();
+    		File tempDir = Files.createTempDirectory(null).toFile();
+    		OutputStream out  = new FileOutputStream(tempFile);
+    		IOUtils.copy(file.getInputStream(), out);
+    		out.close();
+    		ZipFile zipFile = new ZipFile(tempFile);
+    		List<File> imageList = new ArrayList<File>();
+    		
+    		 MultipleUploadDTO dto = new MultipleUploadDTO();
+		      dto.setType(request.getParameter("type"));
+		        dto.setProcessId(processId);
+		        dto.setIdApp(idApp);
+		        dto.setOrg(org);
+		        dto.setUser(user);
+    		try {
+    			  Enumeration<? extends ZipEntry> entries = zipFile.entries();
+    			  while (entries.hasMoreElements()) {
+    			    ZipEntry entry = entries.nextElement();
+    			    File entryDestination = new File(tempDir,  entry.getName());
+    			    if (entry.isDirectory()) {
+    			        entryDestination.mkdirs();
+    			    } else {
+    			        dto.addImage(entry.getName(), zipFile.getInputStream(entry));
+    			    }
+    			    imageList.add(entryDestination);
+    			  }
+    			  
+    			  return getBpmnService().uploadMultiple(dto);
+    			} finally {
+    			  zipFile.close();
+    			}
+    	}
     }
 
     @RequestMapping(value="/application/{idApp}/{processId}/file/{idFile}", method = RequestMethod.PUT,
@@ -284,5 +340,89 @@ public class ApplicationResource extends AbstractController<Applications> {
         dto.setIdApp(idApp);
         dto.setProcessId(processId);
         return getBpmnService().deleteFile(dto);
+    }
+    
+    //update application logo
+    @RequestMapping(value = "/application/{idApp}/updatelogo", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean updateApplicationLogo(@PathVariable Long idApp, 
+    											HttpServletRequest request, 
+    											@RequestParam("file") MultipartFile file) throws IOException {
+        ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        //the path of the logo image must come from the frontend
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().updateApplicationLogo(application, file, request.getParameter("name"), request.getParameter("type"), user, org);
+        
+        
+        return result;
+        //return getBpmnService().deleteApplication(application);
+    }
+    
+  //update tosca file
+    @RequestMapping(value = "/application/{idApp}/updatetoscafile", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean updateToscaFile(@PathVariable Long idApp, 
+    											HttpServletRequest request, 
+    											@RequestParam("file") MultipartFile file) throws IOException {
+        ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().updateToscaFile(application, file, request.getParameter("name"), request.getParameter("type"), user, org);
+
+        return result;
+        //return getBpmnService().deleteApplication(application);
+    }
+    
+    
+    //update application metadata
+    @RequestMapping(value = "/application/{idApp}/updatemetadata", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean updateApplicationMetadata(@RequestBody ApplicationDTO application, @PathVariable Long idApp, HttpServletRequest request) {
+    	User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().updateApplicationMetadata(application, user, org);
+        return result;
+    }
+    
+  //add media file
+    @RequestMapping(value = "/application/{idApp}/mediafile", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean addMediaFile(@PathVariable Long idApp, 
+    											HttpServletRequest request, 
+    											@RequestParam("file") MultipartFile file) throws IOException {
+        ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().addMediaFile(application, file, request.getParameter("name"), request.getParameter("type"), user, org);
+
+        return result;
+        //return getBpmnService().deleteApplication(application);
+    }
+    
+    //delete media file
+    @RequestMapping(value = "/application/{idApp}/mediafile/{idMedia}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public final boolean addMediaFile(@PathVariable Long idApp, @PathVariable Long idMedia, HttpServletRequest request){
+    	ApplicationDTO application = new ApplicationDTO();
+        application.setId(idApp);
+        User user = getUserService().loadUserByLogin(request.getUserPrincipal().getName());
+        Organizations org = user.getOrganizationId();
+        boolean result = getBpmnService().deleteMediaFile(application, idMedia, user, org);
+
+    	return result;
     }
 }

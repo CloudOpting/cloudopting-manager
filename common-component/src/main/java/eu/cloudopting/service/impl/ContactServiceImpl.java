@@ -60,11 +60,14 @@ public class ContactServiceImpl extends AbstractService<Contact> implements Cont
 		String content = "<html>" +
 				"<body>" +
 				"<p> Dear " + contactDTO.getName() + ", </p>" +
-				"<p>Message:</p>" +
+				"<p>We have received the following message from you:</p>" +
 				"<p>" + contactDTO.getMessage() + "</p>" +
-				"<p>has been sent.</p>" +
+				"<p>We will get back to you with an answer as soon as possible.</p>" +
+				"<p>Kind regards,</p>" +
+				"<p><b>CloudOpting Team</b></p>" +
 				"</body>" +
 				"</html>";
+		
 		String subject = "Message sent";
 		mailService.sendEmail(contactDTO.getEmail(), subject, content, false, true);
 	}
