@@ -1238,7 +1238,7 @@ if(listOfFiles!=null){
 	public HashMap<String, String> getCloudData(String customizationId) {
 		HashMap<String, String> retData = new HashMap<String, String>();
 		retData.put("cpu", "1");
-		retData.put("mamory", "1");
+		retData.put("memory", "1");
 		retData.put("disk", "1");
 
 		return retData;
