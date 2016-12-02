@@ -134,6 +134,8 @@ public class CloudService {
 					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Hostname $(hostname -f) -s"
 					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Server cloudoptingmaster.cloudopen.csipiemonte.it,84.240.187.3,172.16.1.63 -s"
 					, "  - augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s"
+					, "  - systemctl start fail2ban"
+					, "  - systemctl start docker"
 					, "phone_home:"
 					, "  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html"
 					);
