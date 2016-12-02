@@ -112,30 +112,32 @@ public class CloudService {
 			
 			//TODO: per Luca Gioppo: questi sono i valori passati allo userData alla creazione della VM
 			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
-			unencodedData = "#cloud-config\n"
-/*					"yum_repos:\n" +
-					"  docker:\n" +
-					"    baseurl: https://yum.dockerproject.org/repo/main/centos/7\n" +
-					"    enabled: 1\n" +
-					"    gpgcheck: 1\n" +
-					"    gpgkey: https://yum.dockerproject.org/gpg\n" +
-					"    name: Docker Repository\n" +
-					"packages:\n" +
-					"- docker-engine\n" +
-					"write_files:\n" +
-					"- path: /etc/systemd/system/docker.service.d/docker.conf\n" +
-					"  content: |\n" +
-					"    [Service]\n" +
-					"    ExecStart=\n" +
-					"    ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:2375\n" +
-					"runcmd:\n" +
-					"- 'systemctl daemon-reload'\n" +
-					"- 'systemctl enable docker'\n" +
-					"- 'systemctl start docker'\n"
-	*/				+"phone_home:\n"
-//					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
-                    +"  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html\n"
-					+"  post: all";
+			//TODO: add the cpu and memory when all works
+			//TODO: change the phone_home url
+			unencodedData = String.join("\n"
+					, "#cloud-config"
+					, "chpasswd:"
+					, "  list: |"
+					, "    root:gioppopass"
+					, "  expire: False"
+					, "packages:"
+					, "  - epel-release"
+					, "  - augeas"
+					, "runcmd:"
+					, "  - yum update --quiet -y"
+					, "  - echo '===== Installing Docker'"
+					, "  - curl -sSL https://get.docker.com/ | sh"
+					, "  - echo '===== Installing Zabbix'"
+					, "  - rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm"
+					, "  - yum install --quiet -y fail2ban"
+					, "  - yum install --quiet -y zabbix-agent"
+					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Hostname $(hostname -f) -s"
+					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Server cloudoptingmaster.cloudopen.csipiemonte.it,84.240.187.3,172.16.1.63 -s"
+					, "  - augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s"
+					, "phone_home:"
+					, "  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html"
+					);
+
 			doRequest.setUserData(unencodedData);
 			cloudTaskId = digitaloceanProvision.provisionVM(doRequest);
 			log.debug("after creation" + cloudTaskId.toString());
