@@ -22,7 +22,7 @@ public class DeploySetup implements JavaDelegate {
 	
 	@Value("${cloud.doDeploy}")
 	private boolean doDeploy;
-
+	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// TODO Auto-generated method stub

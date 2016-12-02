@@ -1226,7 +1226,6 @@ if(listOfFiles!=null){
 		log.debug("in manageToscaCsar");
 		String fileName = service + ".czar";
 		String path = "/cloudOptingData/";
-
 		csarUtils.unzipToscaCsar(toscaCsarPath, serviceHome + "/tosca");
 		/*
 		 * try { toscaUtils.unzip(path + service + ".czar", serviceHome +
