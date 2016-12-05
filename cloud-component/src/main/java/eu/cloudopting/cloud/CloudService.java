@@ -83,7 +83,7 @@ public class CloudService {
 	 * @param disk
 	 * @return
 	 */
-	public String createVM(Long cloudAccountId, String cpu, String memory, String disk, String processInstanceId) {
+	public String createVM(Long cloudAccountId, HashMap<String, String> data, String processInstanceId) {
 		log.debug("in createVM");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
@@ -104,7 +104,7 @@ public class CloudService {
 			myRequest.setDiskId(this.diskId);
 
 			// cloudStackProvision.provision(myRequest);
-			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
+			cloudTaskId = cloudStackProvision.provisionVM(myRequest, data);
 			log.debug("after creation" + cloudTaskId.toString());
 			break;
 		case "digitalocean":
@@ -141,7 +141,7 @@ public class CloudService {
 					);
 
 			doRequest.setUserData(unencodedData);
-			cloudTaskId = digitaloceanProvision.provisionVM(doRequest);
+			cloudTaskId = digitaloceanProvision.provisionVM(doRequest, data);
 			log.debug("after creation" + cloudTaskId.toString());
 			break;
 		case "azure":

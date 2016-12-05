@@ -2,6 +2,7 @@ package eu.cloudopting.provision.digitalocean;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.digitalocean2.DigitalOcean2Api;
@@ -54,7 +55,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 	}
 
 	@Override
-	public String provisionVM(DigitaloceanRequest request) {
+	public String provisionVM(DigitaloceanRequest request, HashMap<String, String> vmdata) {
 		log.debug("in DO ProvisionVM");
 		DigitalOcean2Api api = getClient(request);
 		Size machineType = getMachineType(api); 
@@ -79,7 +80,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 			throw new RuntimeException("Error setting user data info at digitalocean provision");
 		}
 		log.debug("Before calling create");
-		DropletCreate result = api.dropletApi().create("testOcean", region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
+		DropletCreate result = api.dropletApi().create(vmdata.get("vmname"), region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
 		log.debug("After calling create");
 		
 		return String.valueOf(result.droplet().id());

@@ -42,7 +42,7 @@ public class DeployGenerateDoVm implements JavaDelegate {
 		//TODO for Davide save privatekey file
 		String cloudtask = "";
 		if (this.doDeploy) {
-			cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"),execution.getProcessInstanceId());
+			cloudtask = cloudService.createVM(cloudAccountId, data,execution.getProcessInstanceId());
 		log.debug("Cloudtask content:  " + cloudtask);
 		}
 
