@@ -5,6 +5,7 @@ import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -214,7 +215,7 @@ public class AzureProvision extends AbstractProvision<AzureResult, AzureRequest>
     }
 
 	@Override
-	public String provisionVM(AzureRequest request) {
+	public String provisionVM(AzureRequest request, HashMap<String, String> vmdata) {
 		return provision(request).getRequestId();
 	}
 

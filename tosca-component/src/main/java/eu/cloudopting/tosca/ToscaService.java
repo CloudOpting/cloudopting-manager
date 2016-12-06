@@ -1235,12 +1235,13 @@ if(listOfFiles!=null){
 	}
 
 	public HashMap<String, String> getCloudData(String customizationId) {
-		HashMap<String, String> retData = new HashMap<String, String>();
+/*		HashMap<String, String> retData = new HashMap<String, String>();
 		retData.put("cpu", "1");
 		retData.put("memory", "1");
 		retData.put("disk", "1");
 
-		return retData;
+		return retData;*/
+		return getVMdata(customizationId);
 
 	}
 
@@ -1257,6 +1258,21 @@ if(listOfFiles!=null){
 	public void getRootNode(String customizationId) {
 		// getNodesByType("VMhost");
 		return;
+	}
+	
+	public HashMap<String, String> getVMdata(String customizationId){
+		HashMap<String, String> retInfo= new HashMap<>();
+		
+		DTMNodeList node = getNodesByType(customizationId, "VMHost");
+		String vmid = node.item(0).getAttributes().getNamedItem("id").getNodeValue();
+		HashMap vmprops = getPropertiesForNode(customizationId, vmid);
+		retInfo.put("memory", (String)vmprops.get("ram"));
+		retInfo.put("cpu", (String)vmprops.get("cpu"));
+		retInfo.put("disk", (String)vmprops.get("disk"));
+		retInfo.put("vmname", (String)vmprops.get("vmname")!=null?(String)vmprops.get("vmname"):"cloudoptingVm");
+		retInfo.put("passphrase", (String)vmprops.get("passphrase")!=null?(String)vmprops.get("passphrase"):"secret");
+		
+		return retInfo;
 	}
 
 	public String getTemplateForNode(String customizationId, String id, String templateType) {

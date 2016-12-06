@@ -9,6 +9,7 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.bouncycastle.asn1.eac.RSAPublicKey;
 import org.bouncycastle.asn1.pkcs.RSAPrivateKey;
@@ -63,7 +64,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 	}
 
 	@Override
-	public String provisionVM(DigitaloceanRequest request) {
+	public String provisionVM(DigitaloceanRequest request, HashMap<String, String> vmdata) {
 		log.debug("in DO ProvisionVM");
 		DigitalOcean2Api api = getClient(request);
 		Size machineType = getMachineType(api); 
@@ -113,7 +114,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		
 		
 		log.debug("Before calling create");
-		DropletCreate result = api.dropletApi().create("testOcean", region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
+		DropletCreate result = api.dropletApi().create(vmdata.get("vmname"), region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
 		log.debug("After calling create");
 		
 		return String.valueOf(result.droplet().id());

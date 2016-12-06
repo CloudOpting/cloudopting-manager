@@ -1,5 +1,7 @@
 package eu.cloudopting.provision;
 
+import java.util.HashMap;
+
 import org.json.JSONObject;
 
 
@@ -11,7 +13,7 @@ import org.json.JSONObject;
 public interface ProvisionComponent<Resp extends ProvisionResult,Req extends ProvisionRequest> {
     public Resp provision(Req request);
 
-	public String provisionVM(Req request);
+	public String provisionVM(Req request, HashMap<String, String> vmdata);
 
 	public boolean checkVMdeployed(Req myRequest, String taskId);
 

@@ -9,7 +9,7 @@ public class DigitaloceanRequest implements ProvisionRequest {
     String endpoint;
     String virtualMachineId;
     String userData;
-    
+
 	public String getIdentity() {
 		return identity;
 	}

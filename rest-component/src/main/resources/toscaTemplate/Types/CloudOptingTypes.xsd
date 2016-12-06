@@ -103,6 +103,26 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="vmname">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Name of the VM"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="passphrase">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="title" fixed="Passphrase for the SSH private key"></xs:attribute>
+							<xs:attribute name="formtype" fixed="string"></xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="VMhostProperties" type="tVMhostProperties" />
