@@ -1,16 +1,23 @@
 package eu.cloudopting.bpmn.tasks.deploy;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.KeyPair;
 
 import eu.cloudopting.tosca.ToscaService;
 
@@ -22,6 +29,8 @@ public class DeploySetup implements JavaDelegate {
 	
 	@Value("${cloud.doDeploy}")
 	private boolean doDeploy;
+	private String publicKey;
+	private String privateKey;
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -64,8 +73,12 @@ public class DeploySetup implements JavaDelegate {
 		ArrayList<String> dockerDataVolumeNodesList = toscaService.getArrNodesByType(customizationId, "DockerDataVolumeContainer");
 		
 		//TODO for Davide create the keys for SSH
-		execution.setVariable("publickey", "");
-		execution.setVariable("privatekey", "");
+		
+		String RSApassphrase = "foo"; //we should find a way to get this password from the user
+		createRSAKeys(RSApassphrase );
+
+		execution.setVariable("publickey", publicKey);
+		execution.setVariable("privatekey", privateKey); 
 		
 		
 		log.debug("dockerNodesList");
@@ -87,6 +100,30 @@ public class DeploySetup implements JavaDelegate {
 		execution.setVariable("serviceHome", serviceHome);
 
 		
+	}
+	
+	private void createRSAKeys(String passphrase) throws JSchException, FileNotFoundException, IOException {
+		JSch jsch = new JSch();
+
+		KeyPair kpair;
+
+		kpair = KeyPair.genKeyPair(jsch, KeyPair.RSA);
+
+		kpair.writePrivateKey("/cloudOptingData/private.key", passphrase.getBytes());
+		kpair.writePublicKey("/cloudOptingData/public.key", "");
+		
+		System.out.println("Finger print: " + kpair.getFingerPrint());
+		kpair.dispose();
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		
+		kpair.writePublicKey(out, "");
+		publicKey = out.toString("UTF-8");
+		
+		out = new ByteArrayOutputStream();
+		kpair.writePrivateKey(out, passphrase.getBytes());
+		privateKey = out.toString("UTF-8");
+
 	}
 
 }
