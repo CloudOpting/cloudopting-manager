@@ -136,6 +136,10 @@ public class CloudService {
 					, "  - augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s"
 					, "  - systemctl start fail2ban"
 					, "  - systemctl start docker"
+					, "  - systemctl activate fail2ban"
+					, "  - systemctl activate docker"
+					, "ssh_authorized_keys:"
+					, "  - " + data.get("publickey")
 					, "phone_home:"
 					, "  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html"
 					);
