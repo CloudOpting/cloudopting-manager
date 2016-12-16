@@ -25,6 +25,15 @@ public class CloudService {
 	@Value("${cloud.ip}")
 	String myIP = "127.0.0.1";
 
+	@Value("${swarm.token}")
+	String swarmToken = "token";
+
+	@Value("${swarm.ip}")
+	String swarmIp = "0.0.0.0";
+
+	@Value("${swarm.port}")
+	String swarmPort = "2377";
+
 	@Value("${cloud.templateId}")
 	String templateId = "88fcdf8f-891a-4d11-b02f-448861216b02";
 
@@ -123,6 +132,14 @@ public class CloudService {
 					, "packages:"
 					, "  - epel-release"
 					, "  - augeas"
+					, "write_files:"
+					, "  - path: /etc/systemd/system/docker.service.d/docker.conf"
+					, "    permissions: \"0644\""
+					, "    content: |"
+					, "      [Service]"
+					, "      ExecStart="
+					, "      ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 --label=eu.cloudopting.owner="+data.get("customizationName")
+					, "    owner: root:root"
 					, "runcmd:"
 					, "  - yum update --quiet -y"
 					, "  - echo '===== Installing Docker'"
@@ -138,6 +155,7 @@ public class CloudService {
 					, "  - systemctl start docker"
 					, "  - systemctl activate fail2ban"
 					, "  - systemctl activate docker"
+					, "  - docker -H tcp://0.0.0.0:2375 swarm join --token "+swarmToken+" "+swarmIp+":"+swarmPort+""
 					, "ssh_authorized_keys:"
 					, "  - " + data.get("publickey")
 					, "phone_home:"
