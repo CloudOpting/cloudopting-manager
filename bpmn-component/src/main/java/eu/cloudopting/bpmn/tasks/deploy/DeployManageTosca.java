@@ -32,6 +32,8 @@ public class DeployManageTosca implements JavaDelegate {
 		
 		toscaService.manageToscaCsar(customizationId, service, serviceHome, provider, toscaCsarPath);
 		
+		boolean isDevelopment = true; //must be get from the environement execution
+		execution.setVariable("isDevelopment", isDevelopment);
 	}
 
 }

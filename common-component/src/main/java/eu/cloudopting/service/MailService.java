@@ -8,12 +8,14 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -172,6 +174,26 @@ public class MailService {
 		} catch (Exception e) {
 			log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
 		}
+	}
+	
+	public void sendPrivateKeyEmail(String to, String filePath) {
+		boolean isMultipart = true;
+		boolean isHtml = true;
+		String content = "Find the private key in attachment";
+		setSubject("Private Key");
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		try {
+			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
+			message.setTo(to);
+			message.setFrom(from);
+			message.setSubject(subject);
+			message.setText(content, isHtml);
+			FileSystemResource file = new FileSystemResource(filePath);
+			message.addAttachment(file.getFilename(), file);
+		} catch (MessagingException e) {
+			log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
+		}
+		javaMailSender.send(mimeMessage);
 	}
 
 }

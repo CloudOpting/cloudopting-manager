@@ -19,6 +19,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.KeyPair;
 
+import eu.cloudopting.service.MailService;
 import eu.cloudopting.tosca.ToscaService;
 
 @Service
@@ -31,6 +32,7 @@ public class DeploySetup implements JavaDelegate {
 	private boolean doDeploy;
 	private String publicKey;
 	private String privateKey;
+	private String privateKeyPath;
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -76,10 +78,11 @@ public class DeploySetup implements JavaDelegate {
 		
 		String RSApassphrase = "foo"; //we should find a way to get this password from the user
 		createRSAKeys(RSApassphrase );
+		
 
 		execution.setVariable("publickey", publicKey);
-		execution.setVariable("privatekey", privateKey); 
-		
+		execution.setVariable("privatekey", privateKey);
+		execution.setVariable("privateKeyPath", privateKeyPath);
 		
 		log.debug("dockerNodesList");
 		log.debug(dockerNodesList.toString());
@@ -103,13 +106,17 @@ public class DeploySetup implements JavaDelegate {
 	}
 	
 	private void createRSAKeys(String passphrase) throws JSchException, FileNotFoundException, IOException {
+		// http://www.jcraft.com/jsch/examples/KeyGen.java.html
 		JSch jsch = new JSch();
 
 		KeyPair kpair;
 
 		kpair = KeyPair.genKeyPair(jsch, KeyPair.RSA);
+		
+		//private key file name should lesse generic - something like {servicename}-{userid}.key?
+		privateKeyPath = "/cloudOptingData/private.key";
 
-		kpair.writePrivateKey("/cloudOptingData/private.key", passphrase.getBytes());
+		kpair.writePrivateKey(privateKeyPath, passphrase.getBytes());
 		kpair.writePublicKey("/cloudOptingData/public.key", "");
 		
 		System.out.println("Finger print: " + kpair.getFingerPrint());
