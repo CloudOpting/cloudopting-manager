@@ -1,7 +1,15 @@
 package eu.cloudopting.provision.digitalocean;
 
 import java.lang.reflect.Field;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.digitalocean2.DigitalOcean2Api;
@@ -54,7 +62,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 	}
 
 	@Override
-	public String provisionVM(DigitaloceanRequest request) {
+	public String provisionVM(DigitaloceanRequest request, HashMap<String, String> vmdata) {
 		log.debug("in DO ProvisionVM");
 		DigitalOcean2Api api = getClient(request);
 		Size machineType = getMachineType(api); 
@@ -67,9 +75,31 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		CreateDropletOptions digitalOceanSpecificParams = 
 				CreateDropletOptions.builder().backupsEnabled(false).privateNetworking(false).build();
 		
+		//TODO create public/private key
+		/******/		
+//		try {
+//			KeyPairGenerator generator;
+//			generator = KeyPairGenerator.getInstance("RSA", "BC");
+//			generator.initialize(1024);
+//			KeyPair keyPair = generator.generateKeyPair();
+//			RSAPrivateKey priv = (RSAPrivateKey) keyPair.getPrivate();
+//			RSAPublicKey pub = (RSAPublicKey) keyPair.getPublic();
+//		} catch (NoSuchAlgorithmException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (NoSuchProviderException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//
+//		/*****/
+
+		//Key key = Key.create("id", "name", "fingerprint", publicKey);
+		
 		//TODO: per Luca Gioppo: qui viene settato il campo userData nell'oggetto che rappresenta le opzioni delle droplte DigitalOcean
 		// CreateDropletOptions builder does not have a method for setting userData field.
 		// We set userData field by reflection
+		
 		try {
 			Field userData = CreateDropletOptions.class.getDeclaredField("userData");
 			userData.setAccessible(true);
@@ -78,8 +108,11 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 			e.printStackTrace();
 			throw new RuntimeException("Error setting user data info at digitalocean provision");
 		}
+		
+		
+		
 		log.debug("Before calling create");
-		DropletCreate result = api.dropletApi().create("testOcean", region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
+		DropletCreate result = api.dropletApi().create(vmdata.get("vmname"), region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
 		log.debug("After calling create");
 		
 		return String.valueOf(result.droplet().id());

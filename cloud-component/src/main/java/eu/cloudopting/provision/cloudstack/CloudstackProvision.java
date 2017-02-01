@@ -8,6 +8,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.jclouds.cloudstack.options.ListNetworksOptions.Builder.isDefault;
 import static org.jclouds.util.Predicates2.retry;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Properties;
@@ -133,7 +134,7 @@ public class CloudstackProvision extends AbstractProvision<CloudstackResult, Clo
 	 * @param request
 	 * @return
 	 */
-	public String provisionVM(CloudstackRequest request) {
+	public String provisionVM(CloudstackRequest request, HashMap<String, String> vmdata) {
 		ContextBuilder builder = ContextBuilder.newBuilder(provider)
 				.credentials(request.getIdentity(), request.getCredential()).endpoint(request.getEndpoint());
 		CloudStackContext theContext = builder.buildView(CloudStackContext.class);

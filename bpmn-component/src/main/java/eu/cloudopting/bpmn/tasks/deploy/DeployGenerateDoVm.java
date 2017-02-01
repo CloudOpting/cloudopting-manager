@@ -30,6 +30,8 @@ public class DeployGenerateDoVm implements JavaDelegate {
 		// TODO Auto-generated method stub
 		log.debug("in DeployGenerateDoVm");
 		String customizationId = (String) execution.getVariable("customizationId");
+		String publickey = (String) execution.getVariable("publickey");
+		String customizationName = (String) execution.getVariable("customizationName");
 		log.debug("customizationId " + customizationId);
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		log.debug("cloudAccountId " + cloudAccountId);
@@ -39,10 +41,12 @@ public class DeployGenerateDoVm implements JavaDelegate {
 		for(String k : data.keySet()) {
 			log.debug(k + ": " + data.get(k));
 		}
-		
+		//TODO for Davide save privatekey file
+		data.put("publickey", publickey);
+		data.put("customizationName", customizationName);
 		String cloudtask = "";
 		if (this.doDeploy) {
-			cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"),execution.getProcessInstanceId());
+			cloudtask = cloudService.createVM(cloudAccountId, data,execution.getProcessInstanceId());
 		log.debug("Cloudtask content:  " + cloudtask);
 		}
 

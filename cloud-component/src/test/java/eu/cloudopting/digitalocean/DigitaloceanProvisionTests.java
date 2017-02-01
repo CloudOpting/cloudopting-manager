@@ -45,7 +45,7 @@ public class DigitaloceanProvisionTests {
 	 */
 	@Test
 	public void testCreateVM() {
-		String dropletId = cloudService.createVM(-1l, null, null, null, null);
+		String dropletId = cloudService.createVM(-1l, null,  null);
 		System.out.println(dropletId);
 	}
 
