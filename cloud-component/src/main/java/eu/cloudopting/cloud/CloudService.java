@@ -155,6 +155,9 @@ public class CloudService {
 					, "  - systemctl start docker"
 					, "  - systemctl activate fail2ban"
 					, "  - systemctl activate docker"
+					, "  - firewall-cmd --permanent --zone=trusted --change-interface=docker0"
+					, "  - firewall-cmd --permanent --zone=public --add-port=2375/tcp"
+					, "  - firewall-cmd --reload"
 					, "  - docker -H tcp://0.0.0.0:2375 swarm join --token "+swarmToken+" "+swarmIp+":"+swarmPort+""
 					, "ssh_authorized_keys:"
 					, "  - " + data.get("publickey")
