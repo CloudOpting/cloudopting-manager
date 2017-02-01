@@ -143,7 +143,7 @@ public class CloudService {
 					, "    content: |"
 					, "      [Service]"
 					, "      ExecStart="
-					, "      ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 --label=eu.cloudopting.owner="+data.get("customizationName")
+					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 --label=eu.cloudopting.owner="+data.get("customizationName")
 					, "    owner: root:root"
 					, "runcmd:"
 					, "  - yum update --quiet -y"
@@ -157,8 +157,10 @@ public class CloudService {
 					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Hostname $(hostname -f) -s"
 					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Server cloudoptingmaster.cloudopen.csipiemonte.it,84.240.187.3,172.16.1.63 -s"
 					, "  - augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s"
+					, "  - systemctl start firewalld"
 					, "  - systemctl start fail2ban"
 					, "  - systemctl start docker"
+					, "  - systemctl activate firewalld"
 					, "  - systemctl activate fail2ban"
 					, "  - systemctl activate docker"
 					, "  - firewall-cmd --permanent --zone=trusted --change-interface=docker0"
