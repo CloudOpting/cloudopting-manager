@@ -166,7 +166,7 @@ public class CloudService {
 					, "  - firewall-cmd --permanent --zone=trusted --change-interface=docker0"
 					, "  - firewall-cmd --permanent --zone=public --add-port=2375/tcp"
 					, "  - firewall-cmd --reload"
-					, "  - docker -H tcp://0.0.0.0:2375 swarm join --token "+swarmToken+" "+swarmIp+":"+swarmPort+""
+//					, "  - docker -H tcp://0.0.0.0:2375 swarm join --token "+swarmToken+" "+swarmIp+":"+swarmPort+""
 					, "ssh_authorized_keys:"
 					, "  - " + data.get("publickey")
 					, "phone_home:"
