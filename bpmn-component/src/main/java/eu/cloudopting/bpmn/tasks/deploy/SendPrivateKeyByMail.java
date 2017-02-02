@@ -24,7 +24,7 @@ public class SendPrivateKeyByMail implements JavaDelegate{
 		String to = "";  //the email of the user of the organization that has bought the service
 		mailService.sendPrivateKeyEmail(to, privateKeyPath);
 		
-		//delete the private key on the server?
+		//the private key must be deleted after the VM has joined the Swarm
 		
 	}
 

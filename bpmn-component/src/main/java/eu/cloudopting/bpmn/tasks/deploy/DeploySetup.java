@@ -77,7 +77,7 @@ public class DeploySetup implements JavaDelegate {
 		//TODO for Davide create the keys for SSH
 		
 		String RSApassphrase = "foo"; //TODO we should find a way to get this password from the user -  from the TOSCA file?
-		createRSAKeys(RSApassphrase );
+		createRSAKeys(RSApassphrase, service, organizationName);
 		
 
 		execution.setVariable("publickey", publicKey);
@@ -106,7 +106,7 @@ public class DeploySetup implements JavaDelegate {
 		
 	}
 	
-	private void createRSAKeys(String passphrase) throws JSchException, FileNotFoundException, IOException {
+	private void createRSAKeys(String passphrase, String servicename, String organizationName) throws JSchException, FileNotFoundException, IOException {
 		// http://www.jcraft.com/jsch/examples/KeyGen.java.html
 		JSch jsch = new JSch();
 
@@ -114,11 +114,14 @@ public class DeploySetup implements JavaDelegate {
 
 		kpair = KeyPair.genKeyPair(jsch, KeyPair.RSA);
 		
-		//private key file name should lesse generic - something like {servicename}-{userid}.key?
-		privateKeyPath = "/cloudOptingData/private.key";
+		String privateKeyName = String.format("private-%s-%s.key", servicename, organizationName);
+		String publicKeyName = String.format("public-%s-%s.key", servicename, organizationName);
+		
+		//private key file name should less generic - something like {servicename}-{userid}.key?
+		privateKeyPath = "/cloudOptingData/" + privateKeyName;
 
 		kpair.writePrivateKey(privateKeyPath, passphrase.getBytes());
-		kpair.writePublicKey("/cloudOptingData/public.key", "");
+		kpair.writePublicKey("/cloudOptingData/" + publicKeyName, "");
 		
 		System.out.println("Finger print: " + kpair.getFingerPrint());
 		kpair.dispose();
