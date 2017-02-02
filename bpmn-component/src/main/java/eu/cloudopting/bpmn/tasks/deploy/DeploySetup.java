@@ -76,13 +76,14 @@ public class DeploySetup implements JavaDelegate {
 		
 		//TODO for Davide create the keys for SSH
 		
-		String RSApassphrase = "foo"; //we should find a way to get this password from the user
+		String RSApassphrase = "foo"; //TODO we should find a way to get this password from the user -  from the TOSCA file?
 		createRSAKeys(RSApassphrase );
 		
 
 		execution.setVariable("publickey", publicKey);
 		execution.setVariable("privatekey", privateKey);
 		execution.setVariable("privateKeyPath", privateKeyPath);
+		execution.setVariable("passphrase", RSApassphrase);
 		
 		log.debug("dockerNodesList");
 		log.debug(dockerNodesList.toString());
