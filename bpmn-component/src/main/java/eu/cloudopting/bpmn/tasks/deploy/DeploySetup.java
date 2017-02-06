@@ -40,8 +40,7 @@ public class DeploySetup implements JavaDelegate {
 		log.info("in DeploySetup");
 		String customizationId = (String) execution.getVariable("customizationId");
 		String organizationName = (String) execution.getVariable("organizationName");
-		//TODO for Luca need a method to get the passphrase from TOSCA
-		String passphrase = "";
+
 		String service = toscaService.getServiceName(customizationId);
 		log.debug("service: "+service);
 		String coRoot = new String("/cloudOptingData");
@@ -74,7 +73,6 @@ public class DeploySetup implements JavaDelegate {
 		ArrayList<String> dockerNodesList = toscaService.getArrNodesByType(customizationId, "DockerContainer");
 		ArrayList<String> dockerDataVolumeNodesList = toscaService.getArrNodesByType(customizationId, "DockerDataVolumeContainer");
 		
-		//TODO for Davide create the keys for SSH
 		
 		String RSApassphrase = "foo"; //TODO we should find a way to get this password from the user -  from the TOSCA file?
 		createRSAKeys(RSApassphrase, service, organizationName);
