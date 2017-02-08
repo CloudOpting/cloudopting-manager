@@ -89,3 +89,9 @@ orchestrator:
 
 flyway:
     baseline-on-migrate: false
+    
+swarm:
+    token: abcde
+    ip: 127.0.0.1
+    port: 2735
+    
