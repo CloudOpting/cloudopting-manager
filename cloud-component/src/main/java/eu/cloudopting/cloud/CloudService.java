@@ -22,8 +22,10 @@ import eu.cloudopting.provision.digitalocean.DigitaloceanResult;
 public class CloudService {
 	private final Logger log = LoggerFactory.getLogger(CloudService.class);
 	
-	@Value("${cloud.ip}")
-	String myIP = "127.0.0.1";
+	@Value("${server.ip}")
+	String orchestratorIP = "127.0.0.1";
+	@Value("${server.port}")
+	String orchestratorPort = "8080";
 
 	@Value("${swarm.token}")
 	String swarmToken = "token";
@@ -107,7 +109,7 @@ public class CloudService {
 					+"runcmd:\n"
 					+"  - touch /root/cloudinitexecuted.txt\n"
 					+"phone_home:\n"
-					+"  url: http://"+myIP+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
+					+"  url: http://"+orchestratorIP+":"+orchestratorPort+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
 					+"  post: all";
 			myRequest.setUserData(unencodedData);
 			myRequest.setDiskId(this.diskId);
@@ -170,7 +172,7 @@ public class CloudService {
 					, "ssh_authorized_keys:"
 					, "  - " + data.get("publickey")
 					, "phone_home:"
-					, "  url: http://cloudoptingmasterdemo.cloudopen.csipiemonte.it/test.html"
+					, "  url: http://"+orchestratorIP+":"+orchestratorPort+"/api/bpmnunlock/configuredVM/"+processInstanceId
 					);
 
 			doRequest.setUserData(unencodedData);
