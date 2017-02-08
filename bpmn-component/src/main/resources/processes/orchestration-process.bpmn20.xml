@@ -303,7 +303,7 @@ This task will probably be transformed into a subprocess, but at the moment we n
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isDevelopment == false}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="exclusivegateway17" targetRef="sendPrivateKeyEmailTask">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isDevelopement == true}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isDevelopment == true}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="sendPrivateKeyEmailTask" name="Send private Key by Email" activiti:delegateExpression="${sendPrivateKeyByMail}"></serviceTask>
     <sequenceFlow id="flow58" sourceRef="sendPrivateKeyEmailTask" targetRef="getToscaCsar"></sequenceFlow>

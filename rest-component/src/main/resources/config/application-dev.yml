@@ -1,6 +1,6 @@
 server:
     port: 8080
-    ip: 127.0.0.1 #modify this with the real IP
+    ip: 2.238.86.41 #modify this with the real IP
 
 spring:
     profiles:

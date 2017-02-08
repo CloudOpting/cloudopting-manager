@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.jcraft.jsch.JSch;
@@ -27,6 +29,9 @@ public class DeploySetup implements JavaDelegate {
 	private final Logger log = LoggerFactory.getLogger(DeploySetup.class);
 	@Autowired
 	ToscaService toscaService;
+	
+	@Autowired
+	private Environment environment;
 	
 	@Value("${cloud.doDeploy}")
 	private boolean doDeploy;
@@ -95,6 +100,14 @@ public class DeploySetup implements JavaDelegate {
 		log.debug("service:"+service);
 		log.debug("coRoot:"+coRoot);
 		log.debug("serviceHome:"+serviceHome);
+		
+		String[] activeProfile = this.environment.getActiveProfiles();
+		execution.setVariable("isDevelopment", false);
+		if(Arrays.stream(environment.getActiveProfiles()).anyMatch(
+				   env -> (env.equalsIgnoreCase("dev")) )) 
+				{		
+			execution.setVariable("isDevelopment", true);
+				}
 		// setting the variables for the rest of the tasks
 		execution.setVariable("customizationName", organizationName+"-"+service);
 		execution.setVariable("coRoot", coRoot);
