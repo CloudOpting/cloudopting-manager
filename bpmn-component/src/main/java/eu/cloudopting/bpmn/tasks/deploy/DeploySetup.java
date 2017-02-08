@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -38,6 +39,7 @@ public class DeploySetup implements JavaDelegate {
 	private String publicKey;
 	private String privateKey;
 	private String privateKeyPath;
+	private String publicKeyPath;
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -86,6 +88,7 @@ public class DeploySetup implements JavaDelegate {
 		execution.setVariable("publickey", publicKey);
 		execution.setVariable("privatekey", privateKey);
 		execution.setVariable("privateKeyPath", privateKeyPath);
+		execution.setVariable("publicKeyPath", publicKeyPath);
 		execution.setVariable("passphrase", RSApassphrase);
 		
 		log.debug("dockerNodesList");
@@ -130,9 +133,9 @@ public class DeploySetup implements JavaDelegate {
 		
 		//private key file name should less generic - something like {servicename}-{userid}.key?
 		privateKeyPath = "/cloudOptingData/" + privateKeyName;
-
+		publicKeyPath = "/cloudOptingData/" + publicKeyName;
 		kpair.writePrivateKey(privateKeyPath, passphrase.getBytes());
-		kpair.writePublicKey("/cloudOptingData/" + publicKeyName, "");
+		kpair.writePublicKey(publicKeyPath, "");
 		
 		System.out.println("Finger print: " + kpair.getFingerPrint());
 		// TODO strange that we dispose of the privatekey before writing it to the string

@@ -43,7 +43,7 @@ public class DeployDockerSwarm implements JavaDelegate {
 		String passphrase = (String) execution.getVariable("passphrase");
 		
 		//join the new machine to the swarm
-		String remote_command = "docker run -d swarm join --advertise="+ip+":2375 consul://"+hostip+":8500";
+		String remote_command = "/usr/bin/docker run -d swarm join --advertise="+ip+":2375 consul://"+hostip+":8500";
 		
 		Properties config = new Properties(); 
 		config.put("StrictHostKeyChecking", "no"); 	//without this it cannot connect because the host key verification fails
@@ -54,6 +54,7 @@ public class DeployDockerSwarm implements JavaDelegate {
 		jsch.addIdentity(privateKeyPath, passphrase);
 		
 		Session session = jsch.getSession(ROOT_USER, ip, SSH_PORT);
+		session.setConfig(config);
 		session.connect();
 		
 		ChannelExec channel = (ChannelExec) session.openChannel("exec");
@@ -104,7 +105,8 @@ public class DeployDockerSwarm implements JavaDelegate {
 		
 		log.debug("in DeployDockerSwarm");
 //		toscaService.getNodeType("");
-		dockerService.addMachine(ip, 2376);
+		//dockerService.addMachine(ip, 2376); //SSL
+		dockerService.addMachine(ip, 2375); //no SSL
 		
 	}
 

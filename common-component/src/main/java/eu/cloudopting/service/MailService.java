@@ -183,7 +183,7 @@ public class MailService {
 		}
 	}
 	
-	public void sendPrivateKeyEmail(String to, String filePath) {
+	public void sendPrivateKeyEmail(String to, String privateKeyfilePath, String publicKeyFilePath) {
 		boolean isMultipart = true;
 		boolean isHtml = true;
 		String content = "Find the private key in attachment";
@@ -195,8 +195,10 @@ public class MailService {
 			message.setFrom(from);
 			message.setSubject(subject);
 			message.setText(content, isHtml);
-			FileSystemResource file = new FileSystemResource(filePath);
+			FileSystemResource file = new FileSystemResource(privateKeyfilePath);
 			message.addAttachment(file.getFilename(), file);
+			FileSystemResource file2 = new FileSystemResource(publicKeyFilePath);
+			message.addAttachment(file2.getFilename(), file2);
 		} catch (MessagingException e) {
 			log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
 		}

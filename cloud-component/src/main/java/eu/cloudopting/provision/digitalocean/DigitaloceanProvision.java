@@ -181,6 +181,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 	public boolean checkVMdeployed(DigitaloceanRequest request, String taskId) {
 		DigitalOcean2Api api = getClient(request);
 		Droplet droplet = api.dropletApi().get(Integer.valueOf(taskId));
+		//droplet.getPublicAddresses();
 		if(droplet != null && droplet.status() == Droplet.Status.ACTIVE){
 			return true;
 		}
@@ -231,7 +232,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		JSONObject ipData = new JSONObject();
 		try {
 			ipData.put("ip", droplet.getPublicAddresses().iterator().next().ip());
-			ipData.put("ipId", "");
+			ipData.put("ipId", ""); //??
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

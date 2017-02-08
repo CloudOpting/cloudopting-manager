@@ -47,7 +47,7 @@ public class DeployDoVmIp implements JavaDelegate {
 			String key = (String)it.next();
 			log.debug(key + ": " +result.get(key));
 		}
-		String ip = "";
+		String ip = result.getString("ip");
 		execution.setVariable("ip", ip);
 
 	}

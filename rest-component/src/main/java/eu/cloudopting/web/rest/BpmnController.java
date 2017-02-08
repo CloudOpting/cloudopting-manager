@@ -165,6 +165,7 @@ public class BpmnController {
 	public @ResponseBody void configuredVM(@PathVariable String processInstanceId, @RequestBody  String vmdata) {
 		log.info("VMDATA");
 		log.info(vmdata);
+		log.info(processInstanceId);
 		bpmn.configuredVM(processInstanceId);
 	}
 
