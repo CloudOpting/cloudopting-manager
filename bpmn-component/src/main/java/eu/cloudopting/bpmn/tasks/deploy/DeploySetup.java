@@ -122,17 +122,20 @@ public class DeploySetup implements JavaDelegate {
 		kpair.writePublicKey("/cloudOptingData/" + publicKeyName, "");
 		
 		System.out.println("Finger print: " + kpair.getFingerPrint());
-		kpair.dispose();
+		// TODO strange that we dispose of the privatekey before writing it to the string
+//		kpair.dispose();
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		
 		kpair.writePublicKey(out, "");
 		publicKey = out.toString("UTF-8");
-		
+		log.debug("publicKey: "+publicKey);
 		out = new ByteArrayOutputStream();
 		kpair.writePrivateKey(out, passphrase.getBytes());
 		privateKey = out.toString("UTF-8");
-
+		log.debug("privateKey: "+privateKey);
+		// moved to end to safety
+		kpair.dispose();
 	}
 
 }
