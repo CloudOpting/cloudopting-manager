@@ -36,7 +36,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="instance in instancesList | filter:searchTextInstance | startFrom:currentPage*pageSize | limitTo:pageSize">
+                                            <tr ng-repeat="instance in instancesList | filter:searchTextInstance | startFrom:currentPage*pageSize | limitTo:pageSize | orderBy :'id':true">
                                                 <td>{{instance.applicationName}}</td>
                                                 <td>{{instance.customerOrganizationId.organizationName}}</td>
                                                 <td>{{instance.customizationCreation}}</td>
