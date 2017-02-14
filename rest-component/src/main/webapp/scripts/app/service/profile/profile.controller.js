@@ -7,6 +7,7 @@ angular.module('cloudoptingApp')
 
 
         $scope.hideAddEditButton = Principal.isInRole(SERVICE.ROLE.OPERATOR) || Principal.isInRole(SERVICE.ROLE.PUBLISHER);
+        $scope.isOrgEditable = Principal.isInRole(SERVICE.ROLE.ADMIN) == true;
 
         $scope.tab_selected = 'tab_settings';
         if($stateParams.tab!=null && $stateParams.tab!=undefined && $stateParams.tab!="") {
