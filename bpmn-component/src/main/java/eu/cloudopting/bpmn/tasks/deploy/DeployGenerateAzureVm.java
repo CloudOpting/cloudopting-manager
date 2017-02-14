@@ -35,7 +35,7 @@ public class DeployGenerateAzureVm implements JavaDelegate {
 		
 		String cloudtask = "";
 		if (this.doDeploy) {
-			cloudtask = cloudService.createVM(cloudAccountId, data.get("cpu"), data.get("memory"), data.get("disk"),execution.getProcessInstanceId());
+			cloudtask = cloudService.createVM(cloudAccountId, data,execution.getProcessInstanceId());
 		}
 
 		execution.setVariable("cloudtask", cloudtask);

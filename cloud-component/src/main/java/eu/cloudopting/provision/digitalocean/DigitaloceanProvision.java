@@ -1,7 +1,15 @@
 package eu.cloudopting.provision.digitalocean;
 
 import java.lang.reflect.Field;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.digitalocean2.DigitalOcean2Api;
@@ -16,6 +24,9 @@ import org.jclouds.digitalocean2.domain.options.CreateDropletOptions;
 import org.jclouds.digitalocean2.domain.options.ImageListOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -25,7 +36,9 @@ import com.google.common.primitives.Floats;
 import eu.cloudopting.cloud.CloudProvider;
 import eu.cloudopting.provision.AbstractProvision;
 
+@Service
 public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult, DigitaloceanRequest> {
+	private final Logger log = LoggerFactory.getLogger(DigitaloceanProvision.class);
 
 	private static final String OS_TYPE = "CentOS";
 	
@@ -49,15 +62,44 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 	}
 
 	@Override
-	public String provisionVM(DigitaloceanRequest request) {
+	public String provisionVM(DigitaloceanRequest request, HashMap<String, String> vmdata) {
+		log.debug("in DO ProvisionVM");
 		DigitalOcean2Api api = getClient(request);
 		Size machineType = getMachineType(api); 
+		log.debug("Size: " + machineType.toString());
 		Region region = getRegion(api, machineType);
+		log.debug("Region null? " + (region == null));
+		log.debug("Region: " + region);
 		Image image = getImage(api, region);
+		log.debug("Image: " + image.name());
 		CreateDropletOptions digitalOceanSpecificParams = 
 				CreateDropletOptions.builder().backupsEnabled(false).privateNetworking(false).build();
+		
+		//TODO create public/private key
+		/******/		
+//		try {
+//			KeyPairGenerator generator;
+//			generator = KeyPairGenerator.getInstance("RSA", "BC");
+//			generator.initialize(1024);
+//			KeyPair keyPair = generator.generateKeyPair();
+//			RSAPrivateKey priv = (RSAPrivateKey) keyPair.getPrivate();
+//			RSAPublicKey pub = (RSAPublicKey) keyPair.getPublic();
+//		} catch (NoSuchAlgorithmException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (NoSuchProviderException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//
+//		/*****/
+
+		//Key key = Key.create("id", "name", "fingerprint", publicKey);
+		
+		//TODO: per Luca Gioppo: qui viene settato il campo userData nell'oggetto che rappresenta le opzioni delle droplte DigitalOcean
 		// CreateDropletOptions builder does not have a method for setting userData field.
 		// We set userData field by reflection
+		
 		try {
 			Field userData = CreateDropletOptions.class.getDeclaredField("userData");
 			userData.setAccessible(true);
@@ -65,8 +107,13 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error setting user data info at digitalocean provision");
-		} 
-		DropletCreate result = api.dropletApi().create("testOcean", region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
+		}
+		
+		
+		
+		log.debug("Before calling create");
+		DropletCreate result = api.dropletApi().create(vmdata.get("vmname"), region.slug(), machineType.slug(), image.slug(), digitalOceanSpecificParams);
+		log.debug("After calling create");
 		
 		return String.valueOf(result.droplet().id());
 	}
@@ -134,6 +181,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 	public boolean checkVMdeployed(DigitaloceanRequest request, String taskId) {
 		DigitalOcean2Api api = getClient(request);
 		Droplet droplet = api.dropletApi().get(Integer.valueOf(taskId));
+		//droplet.getPublicAddresses();
 		if(droplet != null && droplet.status() == Droplet.Status.ACTIVE){
 			return true;
 		}
@@ -184,7 +232,7 @@ public class DigitaloceanProvision extends AbstractProvision<DigitaloceanResult,
 		JSONObject ipData = new JSONObject();
 		try {
 			ipData.put("ip", droplet.getPublicAddresses().iterator().next().ip());
-			ipData.put("ipId", "");
+			ipData.put("ipId", ""); //??
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -40,14 +40,14 @@ public class DeployDoVmIp implements JavaDelegate {
 		
 		Map<String, Object> cloudParams = new HashMap<>();
 		cloudParams.put("vmId", cloudtask);
-		cloudParams.put("cloudAccountId", -1l);
+		cloudParams.put("cloudAccountId", cloudAccountId);
 		JSONObject result = cloudService.getAssociatedIpinfo(cloudParams);
 		Iterator it = result.keys();
 		while(it.hasNext()) {
 			String key = (String)it.next();
 			log.debug(key + ": " +result.get(key));
 		}
-		String ip = "";
+		String ip = result.getString("ip");
 		execution.setVariable("ip", ip);
 
 	}

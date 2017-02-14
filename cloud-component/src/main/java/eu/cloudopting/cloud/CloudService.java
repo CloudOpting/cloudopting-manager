@@ -22,8 +22,19 @@ import eu.cloudopting.provision.digitalocean.DigitaloceanResult;
 public class CloudService {
 	private final Logger log = LoggerFactory.getLogger(CloudService.class);
 	
-	@Value("${cloud.ip}")
-	String myIP = "127.0.0.1";
+	@Value("${server.ip}")
+	String orchestratorIP = "127.0.0.1";
+	@Value("${server.port}")
+	String orchestratorPort = "8080";
+
+	@Value("${swarm.token}")
+	String swarmToken = "token";
+
+	@Value("${swarm.ip}")
+	String swarmIp = "0.0.0.0";
+
+	@Value("${swarm.port}")
+	String swarmPort = "2377";
 
 	@Value("${cloud.templateId}")
 	String templateId = "88fcdf8f-891a-4d11-b02f-448861216b02";
@@ -83,7 +94,7 @@ public class CloudService {
 	 * @param disk
 	 * @return
 	 */
-	public String createVM(Long cloudAccountId, String cpu, String memory, String disk, String processInstanceId) {
+	public String createVM(Long cloudAccountId, HashMap<String, String> data, String processInstanceId) {
 		log.debug("in createVM");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
@@ -98,40 +109,76 @@ public class CloudService {
 					+"runcmd:\n"
 					+"  - touch /root/cloudinitexecuted.txt\n"
 					+"phone_home:\n"
-					+"  url: http://"+myIP+"/api/bpmn/configuredVM/"+processInstanceId+"\n"
+					+"  url: http://"+orchestratorIP+":"+orchestratorPort+"/api/bpmnunlock/configuredVM/"+processInstanceId+"\n"
 					+"  post: all";
 			myRequest.setUserData(unencodedData);
 			myRequest.setDiskId(this.diskId);
 
 			// cloudStackProvision.provision(myRequest);
-			cloudTaskId = cloudStackProvision.provisionVM(myRequest);
+			cloudTaskId = cloudStackProvision.provisionVM(myRequest, data);
 			log.debug("after creation" + cloudTaskId.toString());
 			break;
 		case "digitalocean":
 			log.debug("before creating the digitalocean VM");
+			
+			//TODO: per Luca Gioppo: questi sono i valori passati allo userData alla creazione della VM
 			DigitaloceanRequest doRequest = createDigitaloceanRequest(theAccount);
-			unencodedData = "#cloud-config\n" +
-					"yum_repos:\n" +
-					"    docker:\n" +
-					"        baseurl: https://yum.dockerproject.org/repo/main/centos/7\n" +
-					"        enabled: 1\n" +
-					"        gpgcheck: 1\n" +
-					"        gpgkey: https://yum.dockerproject.org/gpg\n" +
-					"        name: Docker Repository\n" +
-					"packages:\n" +
-					"- docker-engine\n" +
-					"write_files:\n" +
-					"- path: /etc/systemd/system/docker.service.d/docker.conf\n" +
-					"  content: |\n" +
-					"    [Service]\n" +
-					"    ExecStart=\n" +
-					"    ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:2375\n" +
-					"runcmd:\n" +
-					"- 'systemctl daemon-reload'\n" +
-					"- 'systemctl enable docker'\n" +
-					"- 'systemctl start docker'";
+			//TODO: add the cpu and memory when all works
+			//TODO: change the phone_home url
+			unencodedData = String.join("\n"
+					, "#cloud-config"
+					, "chpasswd:"
+					, "  list: |"
+					, "    root:gioppopass"
+					, "  expire: False"
+					, "packages:"
+					, "  - epel-release"
+					, "  - augeas"
+					, "  - trupwire"
+					, "  - yum-utils"
+					, "ssh_pwauth: no"
+					, "ssh_authorized_keys:"
+//					, "  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDf3QNXDPZc7zNkXOKxs1Q+kuMJ5G8KkcuAOyjoxV58lhiyysuFltf/ZMJasJ5kVnXEl18Yg8hXwEGururOKdyZVT9cmPGCZjaBHOOi89uLM2jDo6SsboDsHuUvv2BVQDETWdtnt+rsXY9OVBOy85/qBxeCeba83HGJ8uWy22s2yo4jOqiN2bdAvGsWoX/upReMcHO4fPzPsgX+jNquydLyB2ZaOq7XWimGfNrihnE+Y9NwYCtVTkEjBD64SZhfPK6OyAQ0R9Y7U8yCExLomZG4RODFpsNQL39TY+fHJTHSkXm/SlHxqhWylSNm3AI9NLE2LD0lMvfhrNxUP3z8lQap root@localhost.localdomain"
+					, "  - " + data.get("publickey")
+					, "write_files:"
+					, "  - path: /etc/systemd/system/docker.service.d/docker.conf"
+					, "    permissions: \"0644\""
+					, "    content: |"
+					, "      [Service]"
+					, "      ExecStart="
+					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 --label=eu.cloudopting.owner="+data.get("customizationName")
+					, "    owner: root:root"
+					, "runcmd:"
+					, "  - yum update --quiet -y"
+					, "  - echo '===== Installing Docker'"
+					, "  - yum-config-manager --add-repo https://docs.docker.com/engine/installation/linux/repo_files/centos/docker.repo"
+					, "  - yum install --quiet -y docker-engine-1.8.3"
+					, "  - echo '===== Installing Zabbix'"
+					, "  - rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm"
+					, "  - yum install --quiet -y fail2ban"
+					, "  - yum install --quiet -y zabbix-agent"
+					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Hostname $(hostname -f) -s"
+					, "  - augtool set /files/etc/zabbix/zabbix_agentd.conf/Server cloudoptingmaster.cloudopen.csipiemonte.it,84.240.187.3,172.16.1.63 -s"
+					, "  - augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s"
+					, "  - systemctl start firewalld"
+					, "  - systemctl start fail2ban"
+					, "  - systemctl start docker"
+					, "  - systemctl activate firewalld"
+					, "  - systemctl activate fail2ban"
+					, "  - systemctl activate docker"
+					, "  - firewall-cmd --permanent --zone=trusted --change-interface=docker0"
+					, "  - firewall-cmd --permanent --zone=public --add-port=2375/tcp"
+					, "  - firewall-cmd --reload"
+//					, "  - docker -H tcp://0.0.0.0:2375 swarm join --token "+swarmToken+" "+swarmIp+":"+swarmPort+""
+//					, "ssh_authorized_keys:"
+					, "phone_home:"
+//					, "  url: http://"+orchestratorIP+":"+orchestratorPort+"/api/bpmnunlock/configuredVM/"+processInstanceId
+					, "  url: http://ildave.000webhostapp.com/post.php"
+					, "  post: all"
+					);
+
 			doRequest.setUserData(unencodedData);
-			cloudTaskId = digitaloceanProvision.provisionVM(doRequest);
+			cloudTaskId = digitaloceanProvision.provisionVM(doRequest, data);
 			log.debug("after creation" + cloudTaskId.toString());
 			break;
 		case "azure":
@@ -153,6 +200,15 @@ public class CloudService {
 		log.debug("in checkVM");
 		// TODO this will have to be set to false in production
 		boolean theCheck = true;
+		log.debug("***ACCOUNTS***");
+		for(Long acc : this.accounts.keySet()) {
+			log.debug("ID: " + acc);
+			HashMap<String, String> hashMap = this.accounts.get(acc);
+			for (String k: hashMap.keySet()) {
+				log.debug(k + ": " + hashMap.get(k));
+			}
+		}
+		log.debug("***FINE ACCOUNTS***");
 		HashMap<String, String> theAccount = this.accounts.get(cloudAccountId);
 		if (theAccount == null)
 			return false;

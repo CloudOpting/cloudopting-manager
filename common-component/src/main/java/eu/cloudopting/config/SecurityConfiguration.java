@@ -77,7 +77,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/i18n/**")
             .antMatchers("/assets/**")
             .antMatchers("/swagger-ui/**")
-            .antMatchers("/test/**");
+            .antMatchers("/test/**")
+            .antMatchers("/api/bpmnunlock/**");
     }
 
     @Override
@@ -112,7 +113,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .authorizeRequests()
                 .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/bpmnunlock/**").permitAll()
+               // .antMatchers("/api/bpmnunlock/**").permitAll()
                 .antMatchers("/api/activate").permitAll()
                 .antMatchers("/api/account/reset_password/init").permitAll()
                 .antMatchers("/api/account/reset_password/finish").permitAll()
