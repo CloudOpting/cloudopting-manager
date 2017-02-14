@@ -11,7 +11,7 @@ angular.module('cloudoptingApp')
 				}, 1);
 		};
 	})
-	.controller( 'MonitoringController', function(SERVICE, localStorageService,
+	.controller( 'MonitoringController', function(SERVICE, localStorageService, $rootScope,
 												  $scope, $state, $log, $timeout, $translate,
 												  MonitoringService, Principal) {
 
@@ -122,6 +122,7 @@ angular.module('cloudoptingApp')
 		};
 
 		$scope.changeDate = function() {
+			$rootScope.loading = true;
 			console.log("in changeDate");
 			console.log($scope.dater);
 			MonitoringService.findOneDataById(instance.id,
@@ -156,6 +157,7 @@ angular.module('cloudoptingApp')
 					 * break; } }, 1000);
 					 */
 				}
+				$rootScope.loading = false;
 				console.log("filled data for elastic graphs");
 			}
 		};
