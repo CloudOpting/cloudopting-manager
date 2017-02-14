@@ -114,8 +114,8 @@ public class MailService {
 		String content = "<html>" + "<body>" + "<p> Hi " + user.getFirstName() + ", </p>"
 				+ "<p>Thanks for joining CloudOpting!</p>"
 				+ "<p>Please, click the following link to verify your email: <a href='"
-				+ baseUrl + "/cloudopting/#/activate?key=" + user.getActivationKey() + "'>"+ 
-				baseUrl + "/cloudopting/#/activate?key=" + user.getActivationKey() + "</a></p>" + "<p>Best regards,</p>"
+				+ baseUrl + "/activate?key=" + user.getActivationKey() + "'>"+
+				baseUrl + "/activate?key=" + user.getActivationKey() + "</a></p>" + "<p>Best regards,</p>"
 				+ "<p>CloudOpting team.</p>" + "</body>" + "</html>";
 		String subject = "CloudOpting Catalogue Activation Link";
 		sendEmail(user.getEmail(), subject, content, false, true);
@@ -125,7 +125,7 @@ public class MailService {
 	public void sendPasswordResetMail(User user, String baseUrl) {
 		log.debug("Sending password reset e-mail to '{}'", user.getEmail());
 		String content = "<html>" + "<body>" + "<p> Dear " + user.getFirstName() + ", </p>" + "<p>Reset password URL: "
-				+ baseUrl + "/cloudopting/#/reset/finish?key=" + user.getResetKey() + "</p>" + "<p>Best regards,</p>"
+				+ baseUrl + "/reset/finish?key=" + user.getResetKey() + "</p>" + "<p>Best regards,</p>"
 				+ "<p>CloudOpting team.</p>" + "</body>" + "</html>";
 		String subject = "CloudOpting Catalogue Reset Password Link";
 		sendEmail(user.getEmail(), subject, content, false, true);
