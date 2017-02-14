@@ -10,7 +10,6 @@ angular.module('cloudoptingApp')
         };
         $scope.scrollTo( "#page-top");
 
-
         $scope.currentApp = localStorageService.get(SERVICE.STORAGE.DETAIL.APPLICATION);
         $scope.showButton = true;
 
@@ -59,6 +58,7 @@ angular.module('cloudoptingApp')
         };
 
         $scope.goToRegister = function(){
+            localStorageService.set(SERVICE.STORAGE.REGISTER.APPLICATION, $scope.currentApp);
             $state.go('register');
         };
 

@@ -13,10 +13,11 @@ angular.module('cloudoptingApp')
                         // After the login the language will be changed to
                         // the language selected by the user during his registration
                         $translate.use(account.langKey);
-                    });
-                    deferred.resolve(data);
 
-                    return cb();
+                        deferred.resolve(data);
+
+                        return cb();
+                    });
                 }).catch(function (err) {
                     this.logout();
                     deferred.reject(err);

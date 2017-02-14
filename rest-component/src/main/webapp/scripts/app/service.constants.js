@@ -52,6 +52,9 @@ angular.module('cloudoptingApp')
             },
             "ORG_MANAGER" : {
                 "ORGANIZATION" : "orgManagerOrganization"
+            },
+            "REGISTER" : {
+                "APPLICATION" : "registerApplication"
             }
         },
         "FILE_TYPE" : {

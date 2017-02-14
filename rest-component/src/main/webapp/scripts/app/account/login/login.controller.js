@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('cloudoptingApp')
-    .controller('LoginController', function ($rootScope, $scope, $state, $timeout, Auth) {
+    .controller('LoginController', function (SERVICE, localStorageService, $rootScope, $scope, $state, $timeout, Auth) {
 
         $scope.scrollTo = function(element) {
             $( 'html, body').animate({
@@ -24,7 +24,14 @@ angular.module('cloudoptingApp')
                 $scope.authenticationError = false;
                 if ($rootScope.previousStateName === 'register') {
                     //$state.go('home');
-                    $state.go('catalogue');
+                    var currentApp = localStorageService.get(SERVICE.STORAGE.REGISTER.APPLICATION);
+                    if(currentApp!=null) {
+                        localStorageService.set(SERVICE.STORAGE.REGISTER.APPLICATION, null)
+                        localStorageService.set(SERVICE.STORAGE.DETAIL.APPLICATION, currentApp);
+                        $state.go('detail');
+                    } else {
+                        $state.go('catalogue');
+                    }
                 } else {
                     $rootScope.back();
                 }
