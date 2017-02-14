@@ -36,6 +36,7 @@
 					<div class="wrapper-graph">
 						<h3>{{zabbixGraphTitle}}</h3>
 						<div id="itemSelected" class="graph-content"></div>
+						<button ng-show="zabbixGraphTitle" type="button" class="btn btn-success" ng-click="print('itemSelected')" >Get PDFs</button>
 					</div>
 
 					</div>
@@ -44,6 +45,7 @@
 						<div class="wrapper-graph" ng-repeat="graph in graphsList" on-last-repeat>
 							<h3>{{graph.title}}</h3>
 							<div id="{{graph.chartId}}" class="graph-content"></div>
+							<button type="button" class="btn btn-success" ng-click="print(graph.chartId)" >Get PDFs</button>
 						</div>
 					</div>
 				</div>
