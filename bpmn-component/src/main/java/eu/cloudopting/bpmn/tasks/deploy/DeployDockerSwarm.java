@@ -30,6 +30,9 @@ public class DeployDockerSwarm implements JavaDelegate {
 	@Value("${server.ip}")
 	private String hostip;
 	
+	@Value("${docker.port}")
+	String dockerPort = "2377";
+
 	private static int SSH_PORT = 22;
 	private static String ROOT_USER = "root";
 
@@ -43,7 +46,7 @@ public class DeployDockerSwarm implements JavaDelegate {
 		String passphrase = (String) execution.getVariable("passphrase");
 		
 		//join the new machine to the swarm
-		String remote_command = "/usr/bin/docker run -d swarm join --advertise="+ip+":2375 consul://"+hostip+":8500";
+		String remote_command = "/usr/bin/docker run -d swarm join --advertise="+ip+":"+dockerPort+" consul://"+hostip+":8500";
 		
 		Properties config = new Properties(); 
 		config.put("StrictHostKeyChecking", "no"); 	//without this it cannot connect because the host key verification fails
@@ -106,7 +109,7 @@ public class DeployDockerSwarm implements JavaDelegate {
 		log.debug("in DeployDockerSwarm");
 //		toscaService.getNodeType("");
 		//dockerService.addMachine(ip, 2376); //SSL
-		dockerService.addMachine(ip, 2375); //no SSL
+		dockerService.addMachine(ip, Integer.parseInt(dockerPort)); //no SSL
 		
 	}
 

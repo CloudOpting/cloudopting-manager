@@ -36,6 +36,9 @@ public class CloudService {
 	@Value("${swarm.port}")
 	String swarmPort = "2377";
 
+	@Value("${docker.port}")
+	String dockerPort = "2377";
+
 	@Value("${cloud.templateId}")
 	String templateId = "88fcdf8f-891a-4d11-b02f-448861216b02";
 
@@ -146,7 +149,7 @@ public class CloudService {
 					, "    content: |"
 					, "      [Service]"
 					, "      ExecStart="
-					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="+data.get("customizationName")
+					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="+data.get("customizationName")
 					, "    owner: root:root"
 					, "  - path: /etc/yum.repos.d/docker.repo"
 					, "    content: |"
@@ -175,7 +178,7 @@ public class CloudService {
 					, "  - systemctl activate fail2ban"
 					, "  - systemctl activate docker"
 					, "  - firewall-cmd --permanent --zone=trusted --change-interface=docker0"
-					, "  - firewall-cmd --permanent --zone=public --add-port=2376/tcp"
+					, "  - firewall-cmd --permanent --zone=public --add-port="+dockerPort+"/tcp"
 					, "  - firewall-cmd --reload"
 //					, "  - docker -H tcp://0.0.0.0:2375 swarm join --token "+swarmToken+" "+swarmIp+":"+swarmPort+""
 //					, "ssh_authorized_keys:"
