@@ -146,12 +146,20 @@ public class CloudService {
 					, "    content: |"
 					, "      [Service]"
 					, "      ExecStart="
-					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 --label=eu.cloudopting.owner="+data.get("customizationName")
+					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2376 --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="+data.get("customizationName")
 					, "    owner: root:root"
+					, "  - path: /etc/yum.repos.d/docker.repo"
+					, "    content: |"
+					, "      [docker-repo]"
+					, "      name=Docker Repository"
+					, "      baseurl=https://yum.dockerproject.org/repo/main/centos/7"
+					, "      enabled=1"
+					, "      gpgcheck=1"
+					, "      gpgkey=https://yum.dockerproject.org/gpg"
 					, "runcmd:"
 					, "  - yum update --quiet -y"
 					, "  - echo '===== Installing Docker'"
-					, "  - yum-config-manager --add-repo https://docs.docker.com/engine/installation/linux/repo_files/centos/docker.repo"
+//					, "  - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
 					, "  - yum install --quiet -y docker-engine-1.8.3"
 					, "  - echo '===== Installing Zabbix'"
 					, "  - rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm"
@@ -167,13 +175,13 @@ public class CloudService {
 					, "  - systemctl activate fail2ban"
 					, "  - systemctl activate docker"
 					, "  - firewall-cmd --permanent --zone=trusted --change-interface=docker0"
-					, "  - firewall-cmd --permanent --zone=public --add-port=2375/tcp"
+					, "  - firewall-cmd --permanent --zone=public --add-port=2376/tcp"
 					, "  - firewall-cmd --reload"
 //					, "  - docker -H tcp://0.0.0.0:2375 swarm join --token "+swarmToken+" "+swarmIp+":"+swarmPort+""
 //					, "ssh_authorized_keys:"
 					, "phone_home:"
-//					, "  url: http://"+orchestratorIP+":"+orchestratorPort+"/api/bpmnunlock/configuredVM/"+processInstanceId
-					, "  url: http://ildave.000webhostapp.com/post.php"
+					, "  url: http://"+orchestratorIP+":"+orchestratorPort+"/api/bpmnunlock/configuredVM/"+processInstanceId
+//					, "  url: http://ildave.000webhostapp.com/post.php"
 					, "  post: all"
 					);
 
