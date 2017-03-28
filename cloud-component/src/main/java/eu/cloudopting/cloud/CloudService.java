@@ -1,6 +1,11 @@
 package eu.cloudopting.cloud;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -11,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.Yaml;
 
 import eu.cloudopting.provision.ProvisionComponent;
 import eu.cloudopting.provision.cloudstack.CloudstackRequest;
@@ -52,6 +58,153 @@ public class CloudService {
 
 	@Inject
 	ProvisionComponent<DigitaloceanResult, DigitaloceanRequest> digitaloceanProvision;
+	
+	public CloudService(){
+		generateCloudInit();
+	}
+
+	/**
+	 * 
+	 */
+	private void generateCloudInit() {
+		log.debug("*******////////////*********////////////");
+		Map<String, Object> cloudconfig = new HashMap<String, Object>();
+		Map<String, Object> chpasswd = new HashMap<String, Object>();
+		Map<String, Object> user = new HashMap<String, Object>();
+		Map<String, Object> puppetconf = new HashMap<String, Object>();
+		Map<String, Object> puppetagent = new HashMap<String, Object>();
+		Map<String, Object> dockerrepo = new HashMap<String, Object>();
+		Map<String, Object> dockerconf = new HashMap<String, Object>();
+		Map<String, Object> fail2banjail = new HashMap<String, Object>();
+		Map<String, Object> cafile = new HashMap<String, Object>();
+		Map<String, Object> ca_regfile = new HashMap<String, Object>();
+		Map<String, Object> host_keyfile = new HashMap<String, Object>();
+		Map<String, Object> host_certfile = new HashMap<String, Object>();
+		List<Map<String , Object>> userlist  = new ArrayList<Map<String,Object>>();
+		dockerrepo.put("path", "/etc/yum.repos.d/docker.repo");
+		dockerrepo.put("permissions", "0644");
+		dockerrepo.put("owner", "root:root");
+		dockerrepo.put("content", "[docker-repo]\nname=Docker Repository\nbaseurl=https://yum.dockerproject.org/repo/main/centos/7\nenabled=1\ngpgcheck=1\ngpgkey=https://yum.dockerproject.org/gpg");
+		
+		dockerconf.put("path", "/etc/systemd/system/docker.service.d/docker.conf");
+		dockerconf.put("permissions", "0644");
+		dockerconf.put("owner", "root:root");
+		dockerconf.put("content", "[Service]\nExecStart=\nExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert=/tmp/ca.pem --tlscert=/tmp/host-cert.pem --tlskey=/tmp/host-key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="/*+data.get("customizationName")*/);
+		
+		
+		fail2banjail.put("path", "/etc/fail2ban/jail.d/sshd.local");
+		fail2banjail.put("owner", "root:root");
+		fail2banjail.put("content", "[sshd]\nenabled = true\nport = 22000\nlogpath = %(sshd_log)s\nmaxretry = 3\nbantime = 86400");
+
+		puppetagent.put("server", "cloudoptingmasterdemo.cloudopen.csipiemonte.it");
+		puppetagent.put("certname", "%i.%f");
+		puppetagent.put("masterport", "8080");
+
+		
+		FileInputStream in;
+		byte[] keyBytes = null;
+		byte[] ca_registry = null;
+		byte[] host_key = null;
+		byte[] host_cert = null;
+		try {
+			in = new FileInputStream("/home/gioppo/ca_crt.pem");
+			keyBytes = new byte[in.available()];
+			in.read(keyBytes);
+			in.close();
+			
+			in = new FileInputStream("/home/gioppo/ca_crt.pem");
+			ca_registry = new byte[in.available()];
+			in.read(ca_registry);
+			in.close();
+			
+			in = new FileInputStream("/home/gioppo/ca_crt.pem");
+			host_key = new byte[in.available()];
+			in.read(host_key);
+			in.close();
+			
+			in = new FileInputStream("/home/gioppo/ca_crt.pem");
+			host_cert = new byte[in.available()];
+			in.read(host_cert);
+			in.close();
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		log.debug(new String(keyBytes));
+		cafile.put("path", "/tmp/ca.pem");
+		cafile.put("permissions", "0644");
+		cafile.put("owner", "root:root");
+		cafile.put("content", new String(keyBytes));
+		
+		ca_regfile.put("path", "/etc/docker/certs.d/coregistry:5000/ca.crt");
+		ca_regfile.put("permissions", "0644");
+		ca_regfile.put("owner", "root:root");
+		ca_regfile.put("content", new String(ca_registry));
+		
+		host_keyfile.put("path", "/tmp/host-key.pem");
+		host_keyfile.put("permissions", "0644");
+		host_keyfile.put("owner", "root:root");
+		host_keyfile.put("content", new String(host_key));
+		
+		host_certfile.put("path", "/tmp/host-cert.pem");
+		host_certfile.put("permissions", "0644");
+		host_certfile.put("owner", "root:root");
+		host_certfile.put("content", new String(host_cert));
+		
+		puppetagent.put("ca_cert", new String(keyBytes));
+		puppetconf.put("conf", puppetagent);
+//		user.put("root", "gioppopass");
+//		userlist.add(user);
+		chpasswd.put("list", "root:gioppopass\n");
+		chpasswd.put("expire", false);
+		cloudconfig.put("chpasswd", chpasswd);
+		cloudconfig.put("packages", new String[] { "epel-release", "augeas", "nano", "yum-utils", "ntp" });
+		cloudconfig.put("ssh_pwauth", "no");
+		cloudconfig.put("ssh_authorized_keys", new String[] { "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDf3QNXDPZc7zNkXOKxs1Q+kuMJ5G8KkcuAOyjoxV58lhiyysuFltf/ZMJasJ5kVnXEl18Yg8hXwEGururOKdyZVT9cmPGCZjaBHOOi89uLM2jDo6SsboDsHuUvv2BVQDETWdtnt+rsXY9OVBOy85/qBxeCeba83HGJ8uWy22s2yo4jOqiN2bdAvGsWoX/upReMcHO4fPzPsgX+jNquydLyB2ZaOq7XWimGfNrihnE+Y9NwYCtVTkEjBD64SZhfPK6OyAQ0R9Y7U8yCExLomZG4RODFpsNQL39TY+fHJTHSkXm/SlHxqhWylSNm3AI9NLE2LD0lMvfhrNxUP3z8lQap root@localhost.localdomain", 
+	    		/*data.get("publickey")*/ });
+		cloudconfig.put("runcmd", new String[] { "yum update --quiet -y", 
+	    		                          "echo '===== Installing Docker'", 
+	    		                          "yum install --quiet -y docker-engine-1.8.3", 
+	    		                          "echo '===== Installing Zabbix'", 
+	    		                          "rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm", 
+	    		                          "yum install --quiet -y fail2ban", 
+	    		                          "yum install --quiet -y tripwire", 
+	    		                          "yum install --quiet -y zabbix-agent", 
+	    		                          "augtool set /files/etc/zabbix/zabbix_agentd.conf/Hostname $(hostname -f) -s", 
+	    		                          "augtool set /files/etc/zabbix/zabbix_agentd.conf/Server cloudoptingmaster.cloudopen.csipiemonte.it,84.240.187.3,172.16.1.63 -s", 
+	    		                          "augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s",
+	    		                          "timedatectl set-timezone Europe/Rome",
+	    		                          "timedatectl set-ntp yes",
+	    		                          "systemctl start firewalld", 
+	    		                          "systemctl start fail2ban", 
+	    		                          "systemctl enable firewalld", 
+	    		                          "systemctl enable fail2ban", 
+	    		                          "firewall-cmd --permanent --zone=trusted --change-interface=docker0",
+	    		                          "firewall-cmd --add-service=ntp --permanent",
+	    		                          "firewall-cmd --reload",
+	    		                          "echo '===== END'" });
+		cloudconfig.put("puppet", puppetconf);
+	    List<Map<String , Object>> filelist  = new ArrayList<Map<String,Object>>();
+	    filelist.add(dockerrepo);
+	    filelist.add(dockerconf);
+	    filelist.add(cafile);
+	    filelist.add(ca_regfile);
+	    filelist.add(host_keyfile);
+	    filelist.add(host_certfile);
+	    filelist.add(fail2banjail);
+
+	    cloudconfig.put("write_files", filelist);
+	    Yaml yaml = new Yaml();
+	    String output = yaml.dump(cloudconfig);
+//	    System.out.println(output);
+	    log.debug("#cloud-config\n"+output);
+	    log.debug("*******////////////*********////////////");
+	}
 	
 	public boolean setUpCloud(String apikey, String secretKey, String endpoint, String provider, Long id) {
 		HashMap<String, String> theAccount = this.accounts.get(id);
@@ -137,7 +290,7 @@ public class CloudService {
 					, "packages:"
 					, "  - epel-release"
 					, "  - augeas"
-					, "  - trupwire"
+					, "  - tripwire"
 					, "  - yum-utils"
 					, "ssh_pwauth: no"
 					, "ssh_authorized_keys:"
