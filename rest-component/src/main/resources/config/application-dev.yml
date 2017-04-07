@@ -86,6 +86,9 @@ cloud:
 
 orchestrator:
     logger_address: 84.240.187.4:4044
+    caPath: /cloudoptinData
+    caPassword: 
+    hostCertPath: /root/coCerts/
 
 flyway:
     baseline-on-migrate: false

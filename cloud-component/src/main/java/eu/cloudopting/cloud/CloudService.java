@@ -44,6 +44,12 @@ public class CloudService {
 
 	@Value("${docker.port}")
 	String dockerPort = "2377";
+	
+	@Value("${orchestrator.hostCertPath}")
+	private String hostCertPath;
+
+	@Value("${orchestrator.caPath}")
+	private String caPath;
 
 	@Value("${cloud.templateId}")
 	String templateId = "88fcdf8f-891a-4d11-b02f-448861216b02";
@@ -60,13 +66,14 @@ public class CloudService {
 	ProvisionComponent<DigitaloceanResult, DigitaloceanRequest> digitaloceanProvision;
 	
 	public CloudService(){
-		generateCloudInit();
+	//	generateCloudInit();
 	}
 
 	/**
+	 * @return 
 	 * 
 	 */
-	private void generateCloudInit() {
+	private String generateCloudInit(HashMap<String, String> data, String pathCA) {
 		log.debug("*******////////////*********////////////");
 		Map<String, Object> cloudconfig = new HashMap<String, Object>();
 		Map<String, Object> chpasswd = new HashMap<String, Object>();
@@ -89,7 +96,8 @@ public class CloudService {
 		dockerconf.put("path", "/etc/systemd/system/docker.service.d/docker.conf");
 		dockerconf.put("permissions", "0644");
 		dockerconf.put("owner", "root:root");
-		dockerconf.put("content", "[Service]\nExecStart=\nExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert=/tmp/ca.pem --tlscert=/tmp/host-cert.pem --tlskey=/tmp/host-key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="/*+data.get("customizationName")*/);
+		dockerconf.put("content", "[Service]\nExecStart=\nExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert="+hostCertPath+"ca.pem --tlscert=/root/docker-certs/cert.pem --tlskey=/root/docker-certs/key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:"+dockerPort+" --label=eu.cloudopting.owner="+data.get("customizationName"));
+//		dockerconf.put("content", "[Service]\nExecStart=\nExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert=/tmp/ca.pem --tlscert=/tmp/host-cert.pem --tlskey=/tmp/host-key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="/*+data.get("customizationName")*/);
 		
 		
 		fail2banjail.put("path", "/etc/fail2ban/jail.d/sshd.local");
@@ -102,22 +110,22 @@ public class CloudService {
 
 		
 		FileInputStream in;
-		byte[] keyBytes = null;
-		byte[] ca_registry = null;
-		byte[] host_key = null;
-		byte[] host_cert = null;
+		byte[] ca_cert = null;
+		byte[] ca_cert_registry = null;
+//		byte[] host_key = null;
+//		byte[] host_cert = null;
 		try {
-			in = new FileInputStream("/home/gioppo/ca_crt.pem");
-			keyBytes = new byte[in.available()];
-			in.read(keyBytes);
+			in = new FileInputStream(pathCA+"ca_crt.pem");
+			ca_cert = new byte[in.available()];
+			in.read(ca_cert);
 			in.close();
 			
-			in = new FileInputStream("/home/gioppo/ca_crt.pem");
-			ca_registry = new byte[in.available()];
-			in.read(ca_registry);
+			in = new FileInputStream(pathCA+"ca_crt.pem");
+			ca_cert_registry = new byte[in.available()];
+			in.read(ca_cert_registry);
 			in.close();
 			
-			in = new FileInputStream("/home/gioppo/ca_crt.pem");
+/*			in = new FileInputStream("/home/gioppo/ca_crt.pem");
 			host_key = new byte[in.available()];
 			in.read(host_key);
 			in.close();
@@ -126,7 +134,7 @@ public class CloudService {
 			host_cert = new byte[in.available()];
 			in.read(host_cert);
 			in.close();
-			
+	*/		
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -135,17 +143,17 @@ public class CloudService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		log.debug(new String(keyBytes));
-		cafile.put("path", "/tmp/ca.pem");
+		log.debug(new String(ca_cert));
+		cafile.put("path", hostCertPath+"ca.pem");
 		cafile.put("permissions", "0644");
 		cafile.put("owner", "root:root");
-		cafile.put("content", new String(keyBytes));
+		cafile.put("content", new String(ca_cert));
 		
 		ca_regfile.put("path", "/etc/docker/certs.d/coregistry:5000/ca.crt");
 		ca_regfile.put("permissions", "0644");
 		ca_regfile.put("owner", "root:root");
-		ca_regfile.put("content", new String(ca_registry));
-		
+		ca_regfile.put("content", new String(ca_cert_registry));
+	/*	
 		host_keyfile.put("path", "/tmp/host-key.pem");
 		host_keyfile.put("permissions", "0644");
 		host_keyfile.put("owner", "root:root");
@@ -155,8 +163,8 @@ public class CloudService {
 		host_certfile.put("permissions", "0644");
 		host_certfile.put("owner", "root:root");
 		host_certfile.put("content", new String(host_cert));
-		
-		puppetagent.put("ca_cert", new String(keyBytes));
+		*/
+		puppetagent.put("ca_cert", new String(ca_cert));
 		puppetconf.put("conf", puppetagent);
 //		user.put("root", "gioppopass");
 //		userlist.add(user);
@@ -169,12 +177,14 @@ public class CloudService {
 	    		/*data.get("publickey")*/ });
 		cloudconfig.put("runcmd", new String[] { "yum update --quiet -y", 
 	    		                          "echo '===== Installing Docker'", 
-	    		                          "yum install --quiet -y docker-engine-1.8.3", 
+	    		                          "yum install --quiet -y docker-engine-1.10.0", 
 	    		                          "echo '===== Installing Zabbix'", 
 	    		                          "rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm", 
 	    		                          "yum install --quiet -y fail2ban", 
 	    		                          "yum install --quiet -y tripwire", 
 	    		                          "yum install --quiet -y zabbix-agent", 
+	    		                          "echo \""+orchestratorIP+"    coregistry\" >> /etc/hosts",
+	    		                          "echo \""+orchestratorIP+"    coregistry\" >> /etc/cloud/templates/hosts.redhat.tmpl",
 	    		                          "augtool set /files/etc/zabbix/zabbix_agentd.conf/Hostname $(hostname -f) -s", 
 	    		                          "augtool set /files/etc/zabbix/zabbix_agentd.conf/Server cloudoptingmaster.cloudopen.csipiemonte.it,84.240.187.3,172.16.1.63 -s", 
 	    		                          "augtool defnode EnableRemoteCommands /files/etc/zabbix/zabbix_agentd.conf/EnableRemoteCommands 1 -s",
@@ -184,8 +194,15 @@ public class CloudService {
 	    		                          "systemctl start fail2ban", 
 	    		                          "systemctl enable firewalld", 
 	    		                          "systemctl enable fail2ban", 
+	    		                          "systemctl enable docker", 
 	    		                          "firewall-cmd --permanent --zone=trusted --change-interface=docker0",
 	    		                          "firewall-cmd --add-service=ntp --permanent",
+	    		                          "firewall-cmd --permanent --zone=public --add-port="+dockerPort+"/tcp",
+	    		                          "firewall-cmd --permanent --zone=trusted --add-port=7946/tcp",
+	    		                          "firewall-cmd --permanent --zone=trusted --add-port=4789/tcp",
+	    		                          "firewall-cmd --permanent --zone=trusted --add-port=2376/tcp",
+	    		                          "firewall-cmd --zone=public --add-port=10050/tcp --permanent",
+	    		                          "firewall-cmd --zone=public --add-port=10051/tcp --permanent",
 	    		                          "firewall-cmd --reload",
 	    		                          "echo '===== END'" });
 		cloudconfig.put("puppet", puppetconf);
@@ -200,10 +217,11 @@ public class CloudService {
 
 	    cloudconfig.put("write_files", filelist);
 	    Yaml yaml = new Yaml();
-	    String output = yaml.dump(cloudconfig);
+	    String output = "#cloud-config\n"+yaml.dump(cloudconfig);
 //	    System.out.println(output);
-	    log.debug("#cloud-config\n"+output);
+	 //   log.debug("#cloud-config\n"+output);
 	    log.debug("*******////////////*********////////////");
+	    return output;
 	}
 	
 	public boolean setUpCloud(String apikey, String secretKey, String endpoint, String provider, Long id) {
@@ -302,7 +320,7 @@ public class CloudService {
 					, "    content: |"
 					, "      [Service]"
 					, "      ExecStart="
-					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="+data.get("customizationName")
+					, "      ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert=/root/docker-certs/ca.pem --tlscert=/root/docker-certs/cert.pem --tlskey=/root/docker-certs/key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:"+dockerPort+" --label=eu.cloudopting.owner="+data.get("customizationName")
 					, "    owner: root:root"
 					, "  - path: /etc/yum.repos.d/docker.repo"
 					, "    content: |"
@@ -341,6 +359,7 @@ public class CloudService {
 					, "  post: all"
 					);
 
+			unencodedData = generateCloudInit(data, caPath);
 			doRequest.setUserData(unencodedData);
 			cloudTaskId = digitaloceanProvision.provisionVM(doRequest, data);
 			log.debug("after creation" + cloudTaskId.toString());
