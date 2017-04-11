@@ -29,7 +29,7 @@ public class DeployCheckBuild implements JavaDelegate {
 		log.debug("in DeployCheckBuild");
 		String buildToken = (String) execution.getVariable("buildToken");
 		String cloudtask = (String) execution.getVariable("cloudtask");
-		String cloudId = (String) execution.getVariable("cloudId");
+//		String cloudId = (String) execution.getVariable("cloudId");
 
 		log.debug("buildToken:" + buildToken);
 

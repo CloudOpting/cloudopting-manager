@@ -28,7 +28,7 @@ public class DeployAcquireIp implements JavaDelegate {
 		log.debug("in DeployAcquireIp");
 		String customizationId = (String) execution.getVariable("customizationId");
 		String cloudtask = (String) execution.getVariable("cloudtask");
-		String cloudId = (String) execution.getVariable("cloudId");
+//		String cloudId = (String) execution.getVariable("cloudId");
 		String vmId = (String) execution.getVariable("vmId");
 		Long cloudAccountId = (Long) execution.getVariable("cloudAccountId");
 		log.debug(vmId);

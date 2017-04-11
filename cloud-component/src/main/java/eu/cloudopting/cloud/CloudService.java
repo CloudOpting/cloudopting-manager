@@ -73,7 +73,7 @@ public class CloudService {
 	 * @return 
 	 * 
 	 */
-	private String generateCloudInit(HashMap<String, String> data, String pathCA) {
+	private String generateCloudInit(HashMap<String, String> data, String pathCA, String processInstanceId) {
 		log.debug("*******////////////*********////////////");
 		Map<String, Object> cloudconfig = new HashMap<String, Object>();
 		Map<String, Object> chpasswd = new HashMap<String, Object>();
@@ -96,7 +96,7 @@ public class CloudService {
 		dockerconf.put("path", "/etc/systemd/system/docker.service.d/docker.conf");
 		dockerconf.put("permissions", "0644");
 		dockerconf.put("owner", "root:root");
-		dockerconf.put("content", "[Service]\nExecStart=\nExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert="+hostCertPath+"ca.pem --tlscert=/root/docker-certs/cert.pem --tlskey=/root/docker-certs/key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:"+dockerPort+" --label=eu.cloudopting.owner="+data.get("customizationName"));
+		dockerconf.put("content", "[Service]\nExecStart=\nExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert="+hostCertPath+"ca.pem --tlscert="+hostCertPath+"cert.pem --tlskey="+hostCertPath+"key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:"+dockerPort+" --label=eu.cloudopting.owner="+data.get("customizationName"));
 //		dockerconf.put("content", "[Service]\nExecStart=\nExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:"+dockerPort+" --tlsverify --tlscacert=/tmp/ca.pem --tlscert=/tmp/host-cert.pem --tlskey=/tmp/host-key.pem --cluster-store=consul://"+orchestratorIP+":8500 --cluster-advertise=eth0:2376 --label=eu.cloudopting.owner="/*+data.get("customizationName")*/);
 		
 		
@@ -115,12 +115,12 @@ public class CloudService {
 //		byte[] host_key = null;
 //		byte[] host_cert = null;
 		try {
-			in = new FileInputStream(pathCA+"ca_crt.pem");
+			in = new FileInputStream(pathCA+"/ca.pem");
 			ca_cert = new byte[in.available()];
 			in.read(ca_cert);
 			in.close();
 			
-			in = new FileInputStream(pathCA+"ca_crt.pem");
+			in = new FileInputStream(pathCA+"/registry-ca.crt");
 			ca_cert_registry = new byte[in.available()];
 			in.read(ca_cert_registry);
 			in.close();
@@ -174,7 +174,7 @@ public class CloudService {
 		cloudconfig.put("packages", new String[] { "epel-release", "augeas", "nano", "yum-utils", "ntp" });
 		cloudconfig.put("ssh_pwauth", "no");
 		cloudconfig.put("ssh_authorized_keys", new String[] { "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDf3QNXDPZc7zNkXOKxs1Q+kuMJ5G8KkcuAOyjoxV58lhiyysuFltf/ZMJasJ5kVnXEl18Yg8hXwEGururOKdyZVT9cmPGCZjaBHOOi89uLM2jDo6SsboDsHuUvv2BVQDETWdtnt+rsXY9OVBOy85/qBxeCeba83HGJ8uWy22s2yo4jOqiN2bdAvGsWoX/upReMcHO4fPzPsgX+jNquydLyB2ZaOq7XWimGfNrihnE+Y9NwYCtVTkEjBD64SZhfPK6OyAQ0R9Y7U8yCExLomZG4RODFpsNQL39TY+fHJTHSkXm/SlHxqhWylSNm3AI9NLE2LD0lMvfhrNxUP3z8lQap root@localhost.localdomain", 
-	    		/*data.get("publickey")*/ });
+	    		data.get("publickey") });
 		cloudconfig.put("runcmd", new String[] { "yum update --quiet -y", 
 	    		                          "echo '===== Installing Docker'", 
 	    		                          "yum install --quiet -y docker-engine-1.10.0", 
@@ -211,15 +211,22 @@ public class CloudService {
 	    filelist.add(dockerconf);
 	    filelist.add(cafile);
 	    filelist.add(ca_regfile);
-	    filelist.add(host_keyfile);
-	    filelist.add(host_certfile);
+//	    filelist.add(host_keyfile);
+//	    filelist.add(host_certfile);
 	    filelist.add(fail2banjail);
 
 	    cloudconfig.put("write_files", filelist);
+	    
+	    HashMap<String , Object> phone_list  = new HashMap<String, Object>();
+	    phone_list.put("url", "http://"+orchestratorIP+":"+orchestratorPort+"/api/bpmnunlock/configuredVM/"+processInstanceId);
+	    phone_list.put("post", "all");
+	    cloudconfig.put("phone_home", phone_list);
+	    
 	    Yaml yaml = new Yaml();
 	    String output = "#cloud-config\n"+yaml.dump(cloudconfig);
 //	    System.out.println(output);
 	 //   log.debug("#cloud-config\n"+output);
+	    log.debug(output);
 	    log.debug("*******////////////*********////////////");
 	    return output;
 	}
@@ -359,7 +366,7 @@ public class CloudService {
 					, "  post: all"
 					);
 
-			unencodedData = generateCloudInit(data, caPath);
+			unencodedData = generateCloudInit(data, caPath, processInstanceId);
 			doRequest.setUserData(unencodedData);
 			cloudTaskId = digitaloceanProvision.provisionVM(doRequest, data);
 			log.debug("after creation" + cloudTaskId.toString());

@@ -86,8 +86,8 @@ cloud:
 
 orchestrator:
     logger_address: 84.240.187.4:4044
-    caPath: /cloudoptinData
-    caPassword: 
+    caPath: /cloudOptingData
+    caPassword: p4ssw0rd
     hostCertPath: /root/coCerts/
 
 flyway:
@@ -96,7 +96,7 @@ flyway:
 swarm:
     token: abcde
     ip: 127.0.0.1
-    port: 2735
+    port: 2736
 docker:
     port: 2376
     
