@@ -5,10 +5,12 @@ mod '<#if module['module']?has_content>${module['module']}</#if>',
 </#list>
 
 mod 'concat',
-  :git => 'https://github.com/puppetlabs/puppetlabs-concat'
+  :git => 'https://github.com/puppetlabs/puppetlabs-concat',
+  :tag => '2.2.0'
 
 mod 'stdlib',
-  :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'
+  :git => 'https://github.com/puppetlabs/puppetlabs-stdlib',
+  :tag => '14.5.0'
   
 mod 'java',
   :git => 'https://github.com/puppetlabs/puppetlabs-java'
