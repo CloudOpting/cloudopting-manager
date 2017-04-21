@@ -49,7 +49,12 @@ public class DeployDockerSwarm implements JavaDelegate {
 
 	@Value("${docker.port}")
 	String dockerPort = "2377";
+	
+	@Value("${swarm.ip}")
+	String swarmIp = "0.0.0.0";
 
+	@Value("${swarm.port}")
+	String swarmPort = "2377";
 	private static int SSH_PORT = 22;
 	private static String ROOT_USER = "root";
 
@@ -111,8 +116,9 @@ public class DeployDockerSwarm implements JavaDelegate {
 		log.debug("in DeployDockerSwarm");
 		// toscaService.getNodeType("");
 		// dockerService.addMachine(ip, 2376); //SSL
-		dockerService.addMachine(ip, Integer.parseInt(dockerPort)); // no SSL
-
+		String clusterToken = dockerService.addMachine(swarmIp, Integer.parseInt(swarmPort)); // no SSL
+		execution.setVariable("clusterToken", clusterToken);
+		String clusterInfo = dockerService.clusterDetail(clusterToken);
 	}
 
 	/**

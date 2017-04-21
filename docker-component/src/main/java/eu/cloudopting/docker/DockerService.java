@@ -479,6 +479,8 @@ public class DockerService {
 	 */
 	public String deployComposition(String composerFilePath, String clusterToken) throws DockerError{
 		log.debug("in deployComposition and calling the API");
+		log.debug(clusterToken);
+		log.debug(composerFilePath);
 		
 		ResponseEntity<String> response = composer.startDeployment(composerFilePath, clusterToken);
 		Map<String, Object> map = parser.parseMap(response.getBody());

@@ -95,8 +95,8 @@ flyway:
     
 swarm:
     token: abcde
-    ip: 127.0.0.1
-    port: 2736
+    ip: 45.55.234.229
+    port: 3376
 docker:
     port: 2376
     
