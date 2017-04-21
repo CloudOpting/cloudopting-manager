@@ -12,7 +12,7 @@ mod 'concat',
 
 mod 'stdlib',
   :git => 'https://github.com/puppetlabs/puppetlabs-stdlib',
-  :tag => '14.5.0'
+  :tag => '4.15.0'
   
 mod 'java',
   :git => 'https://github.com/puppetlabs/puppetlabs-java'
